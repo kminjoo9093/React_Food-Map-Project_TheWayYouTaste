@@ -27,6 +27,13 @@ body {
     margin-right: 10px;
 }
 
+.logo a {
+    text-decoration: none;
+    color: #ffab15;
+    align-items: center;
+    cursor: pointer;
+}
+
 /* 검색창 */
 .search-container {
     display: flex;

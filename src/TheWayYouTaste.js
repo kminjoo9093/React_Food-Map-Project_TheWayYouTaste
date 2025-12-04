@@ -6,6 +6,7 @@ import Error404Page from "./Error404Page";
 // import CreateDay from "./component/CreateDay";
 import { useEffect, useState } from "react";
 import MemberListCheck from "./pages/admin/MemberListCheck"
+import MainPage from "./pages/main/MainPage"
 import Header from "./pages/Header";
 
 function TheWayYouTaste() {
@@ -29,6 +30,7 @@ function TheWayYouTaste() {
           <Routes>
             {/* <Route exact path="/" element={ <DayList/> }/> */}
             {/* <Route exact path="/" element={ <Navigate to="/day/1" replace/> }/> */}
+            <Route path="/main" element={ <MainPage /> }/>
             <Route path="/admin/member/list" element={ <MemberListCheck /> }/> 
             <Route path="/*" element={<Error404Page/>}/>
           </Routes>

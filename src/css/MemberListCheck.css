@@ -1,0 +1,98 @@
+table {
+  width: 50%;
+  border-collapse: collapse;
+  margin: 10px auto; 
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 14px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+th {
+  background-color: #DDA94B; 
+  color: white;
+  font-weight: 600;
+  padding: 10px;
+  border-bottom: 2px solid #DDA94B;
+  text-align: center;
+}
+
+td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: center;
+  color: #333;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color:#FFDFB9; 
+  cursor: pointer;
+  transition: 0.2s;
+}
+input[type="checkbox"] {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+input[type=text] {
+	  width: 100%;
+	  padding: 12px 20px;
+	  margin: 8px 0;
+	  display: inline-block;
+	  border: 1px solid #ccc;
+	  box-sizing: border-box;
+	}
+select{
+  min-width: 80px;
+  height : 40px;
+  border: 2px solid black;
+}
+.listbtn {
+  min-width: 80px;
+  height: 40px;
+  display: inline-flex; 
+  justify-content: center; 
+  align-items: center; 
+  font-family: segoe UI;
+  font-size: 14px;
+  outline: none;
+  color: #78736c;
+  border: 2px solid #40ffc8;
+  background-color:#40ffc8;
+  font-weight: bold;
+}
+
+.listbtn:hover {
+  background: #815854;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.5s, color 0.5s;
+}
+
+.HomeButton {
+  min-width: 80px;
+  height : 40px;
+  display: inline-block;
+  font-family: segoe UI;
+  font-size: 14px;
+  outline: none;
+  color: #5c5954	;
+  border: 2px solid #40ffc8;
+  background-color:#40ffc8;
+  font-weight: bold;
+}
+
+.HomeButton:hover {
+  background: #1ce8e3;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.5s, color 0.5s;
+}
+tr.visited{
+	background-color: #FFD700;
+}

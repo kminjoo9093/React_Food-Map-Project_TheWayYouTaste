@@ -1,11 +1,11 @@
-import "./Header.css";
+import "../css/Header.css";
 
 function Header(){
     return(
         <>
             <div className="header">
                 <div className="logo">
-                     니맛대로    {/* <p style={{fontSize: 12}}>TheWayYouTaste</p> */}
+                     <a href="http://localhost:3000/main"> 니맛대로 </a>    {/* <p style={{fontSize: 12}}>TheWayYouTaste</p> */}
                 </div>
                 <div className="search-container">
                     <input type="text" placeholder="지역, 음식 또는 식당명을 검색하세요"/>
@@ -18,7 +18,7 @@ function Header(){
                 <a>지역 맛집</a>
                 <a>지도 찾기</a>
                 <a>가게등록</a>
-                <a>공지사항</a>
+                <a href="http://localhost:3000/admin/member/list">공지사항</a>
             </div>
         </>
     )
