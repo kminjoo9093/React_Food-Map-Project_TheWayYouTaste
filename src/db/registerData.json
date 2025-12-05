@@ -1,0 +1,37 @@
+{
+  "registers": 
+    [
+  { "id": "1001", "name": "김윤중", "email": "user1@example.com", "store":"홍콩반점" },
+  { "id": "1002", "name": "이서윤", "email": "user2@example.com", "store":"배스킨라빈스" },
+  { "id": "1003", "name": "박민재", "email": "user3@example.com", "store":"스타벅스" },
+  { "id": "1004", "name": "최하은", "email": "user4@example.com", "store":"던킨도너츠" },
+  { "id": "1005", "name": "정우진", "email": "user5@example.com", "store":"투썸플레이스" },
+  { "id": "1006", "name": "한지민", "email": "user6@example.com", "store":"맥도날드" },
+  { "id": "1007", "name": "오세훈", "email": "user7@example.com", "store":"파리바게뜨" },
+  { "id": "1008", "name": "강다연", "email": "user8@example.com", "store":"롯데리아" },
+  { "id": "1009", "name": "신동혁", "email": "user9@example.com", "store":"버거킹" },
+  { "id": "1010", "name": "유채원", "email": "user10@example.com", "store":"GS25" },
+  { "id": "1011", "name": "배준호", "email": "user11@example.com", "store":"CU" },
+  { "id": "1012", "name": "서예린", "email": "user12@example.com", "store":"이디야" },
+  { "id": "1013", "name": "조현우", "email": "user13@example.com", "store":"빽다방" },
+  { "id": "1014", "name": "윤세아", "email": "user14@example.com", "store":"공차" },
+  { "id": "1015", "name": "임태훈", "email": "user15@example.com", "store":"노브랜드버거" },
+  { "id": "1016", "name": "강하늘", "email": "user16@example.com", "store":"파파이스" }
+],
+
+  "sample":[
+    { "id": "1008", "name": "유지호", "email": "user8@example.com", "reported": "o", "role": "사업자" },
+    { "id": "1009", "name": "신지우", "email": "user9@example.com", "reported": "x", "role": "손님" },
+    { "id": "1010", "name": "윤세빈", "email": "user10@example.com", "reported": "x", "role": "손님" },
+    { "id": "1011", "name": "김서현", "email": "user11@example.com", "reported": "o", "role": "사업자" },
+    { "id": "1012", "name": "이준혁", "email": "user12@example.com", "reported": "x", "role": "손님" },
+    { "id": "1013", "name": "박예린", "email": "user13@example.com", "reported": "x", "role": "손님" },
+    { "id": "1014", "name": "최우진", "email": "user14@example.com", "reported": "o", "role": "사업자" },
+    { "id": "1015", "name": "한서연", "email": "user15@example.com", "reported": "x", "role": "손님" },
+    { "id": "1016", "name": "강다윤", "email": "user16@example.com", "reported": "x", "role": "손님" },
+    { "id": "1017", "name": "유준서", "email": "user17@example.com", "reported": "o", "role": "사업자" },
+    { "id": "1018", "name": "신예린", "email": "user18@example.com", "reported": "x", "role": "손님" },
+    { "id": "1019", "name": "윤민재", "email": "user19@example.com", "reported": "x", "role": "손님" },
+    { "id": "1020", "name": "김하늘", "email": "user20@example.com", "reported": "o", "role": "사업자" }
+  ]
+}

@@ -1,0 +1,68 @@
+
+.sideWrapper {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    z-index: 2000;
+}
+
+.open {
+    right: 0;
+}
+
+
+.dimmed {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+
+.sideBox {
+    width: 280px;
+    background: white;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.menuList {
+    list-style: none;
+    padding: 0;
+}
+
+.menuList li {
+    text-decoration: none;
+    text-align: right;
+    padding: 12px 0;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.menuList a {
+    text-decoration: none;
+    color: black;
+    padding: 12px 0;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.logoutBtn {
+    background: #ff4d4d;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+
+}
+.tripleLine {
+    font-size: 26px;
+    margin-right: 20px;
+    cursor: pointer;
+    user-select: none;
+}

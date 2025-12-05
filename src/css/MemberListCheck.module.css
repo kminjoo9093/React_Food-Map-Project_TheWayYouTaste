@@ -1,34 +1,51 @@
+@font-face {
+    font-family: 'NexonLv1Gothic';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+body {
+    margin: 0;
+    font-family: 'NexonLv1Gothic';
+}
+
+
+.middleContainer{
+  padding-top : 50px;
+}
+h1{
+  text-align: center;
+}
+
 table {
-  width: 50%;
+  width: 60%;
   border-collapse: collapse;
   margin: 10px auto; 
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   background-color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border-radius: 6px;
-  overflow: hidden;
 }
 
 th {
-  background-color: #DDA94B; 
-  color: white;
+  background-color: #e8e5dc; 
+  color: black;
   font-weight: 600;
   padding: 10px;
-  border-bottom: 2px solid #DDA94B;
+  border-bottom: 2px solid #e8e5dc;
   text-align: center;
 }
 
 td {
   padding: 8px 10px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #a8a6a0;
   text-align: center;
-  color: #333;
+  color: black;
+  height: 50px;
 }
 
-tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
+/* tr:nth-child(even) {
+  background-color: #ffffff;
+} */
 
 tr:hover {
   background-color:#FFDFB9; 
@@ -95,4 +112,7 @@ select{
 }
 tr.visited{
 	background-color: #FFD700;
+}
+button{
+  cursor:pointer;
 }

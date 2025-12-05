@@ -1,26 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
-import memberData from "../../db/memberData.json"; 
+import registerData from "../../db/registerData.json";
 
 
-function MemberListCheck() {
-  const [members, setMembers] = useState(memberData.members); 
+function RegisterListCheck() {
+  const [register, setregister] = useState(registerData.registers);
   const [nowPage, setNowPage] = useState(1);
   const viewPeople = 5;
   const limitBlock = 5;            
 
-  const deleteMember = (id) => {
-    if (window.confirm("정말 삭제하시겠습니까?")) {
-      setMembers(members.filter((m) => m.id !== id));
-    }
-  };
-
   const lastMember = nowPage * viewPeople;
   const firstMember = lastMember - viewPeople;
-  const nowMembers = members.slice(firstMember, lastMember);
+  const nowRegister = register.slice(firstMember, lastMember);
 
-  const totalPages = Math.ceil(members.length / viewPeople);
+  const totalPages = Math.ceil(register.length / viewPeople);
 
   const paginate = (pageNumber) => setNowPage(pageNumber);
 
@@ -43,29 +37,23 @@ function MemberListCheck() {
 
   return (
     <div className={styleMember.middleContainer}>
-      <h1>회원 정보 조회</h1>
+      <h1>등록 신청 조회</h1>
       <table>
         <thead>
           <tr>
             <th>회원명</th>
             <th>ID</th>
             <th>회원Email</th>
-            <th>신고처리여부</th>
-            <th>이용자 권한</th>
-            <th>탈퇴</th>
+            <th>상호 명</th>
           </tr>
         </thead>
         <tbody>
-          {nowMembers.map((member) => (
-            <tr key={member.id}>
-              <td>{member.name}</td>
-              <td>{member.id}</td>
-              <td>{member.email}</td>
-              <td>{member.reported}</td>
-              <td>{member.role}</td>
-              <td>
-                <button type="button" onClick={() => deleteMember(member.id)}>탈퇴</button>
-              </td>
+          {nowRegister.map((register) => (
+            <tr key={register.id}>
+              <td>{register.name}</td>
+              <td>{register.id}</td>
+              <td>{register.email}</td>
+              <td>{register.store}</td>
             </tr>
           ))}
         </tbody>
@@ -81,7 +69,6 @@ function MemberListCheck() {
           >
             {number}
           </button>
-
           
         ))}
         <button onClick={goNext} disabled={nowPage === totalPages}> 다음 </button>
@@ -90,4 +77,4 @@ function MemberListCheck() {
   );
 }
 
-export default MemberListCheck;
+export default RegisterListCheck;

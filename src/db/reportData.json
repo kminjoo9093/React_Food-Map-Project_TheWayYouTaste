@@ -1,0 +1,115 @@
+{
+  "reports": [
+    { 
+      "id": "1001", 
+      "name": "김윤중", 
+      "email": "user1@example.com", 
+      "storeAddress": "경남 진주시 초북로 00-11", 
+      "reportTilte": "여기 망함", 
+      "reportDetail": "여기 맛있다고해서 가봤는데 망했던데요?"
+    },
+    {
+    "id": "1002",
+    "name": "박서준",
+    "email": "user2@example.com",
+    "storeAddress": "서울 강서구 화곡로 12길 20",
+    "reportTilte": "재료 상태 안 좋음",
+    "reportDetail": "고기가 너무 질기고 냄새가 났어요. 관리가 필요해보여요."
+  },
+  {
+    "id": "1003",
+    "name": "이지은",
+    "email": "user3@example.com",
+    "storeAddress": "부산 해운대구 센텀중앙로 55",
+    "reportTilte": "청결 문제 있음",
+    "reportDetail": "테이블이 안 닦여있고 위생이 전체적으로 나빴습니다."
+  },
+  {
+    "id": "1004",
+    "name": "최민호",
+    "email": "user4@example.com",
+    "storeAddress": "대구 수성구 달구벌대로 2400",
+    "reportTilte": "서비스 품질 낮음",
+    "reportDetail": "직원분들이 너무 불친절했어요. 개선이 필요합니다."
+  },
+  {
+    "id": "1005",
+    "name": "서예린",
+    "email": "user5@example.com",
+    "storeAddress": "광주 북구 용봉로 83",
+    "reportTilte": "사진과 다름",
+    "reportDetail": "메뉴 사진과 실제 음식이 너무 달라 실망했습니다."
+  },
+  {
+    "id": "1006",
+    "name": "정우석",
+    "email": "user6@example.com",
+    "storeAddress": "인천 연수구 송도국제대로 123",
+    "reportTilte": "가격 대비 별로",
+    "reportDetail": "가격은 비싼데 음식량도 적고 특별한 점이 없었어요."
+  },
+  {
+    "id": "1007",
+    "name": "한지민",
+    "email": "user7@example.com",
+    "storeAddress": "경기도 수원시 장안구 서부로 301",
+    "reportTilte": "예약 시스템 문제",
+    "reportDetail": "예약했는데도 자리가 없어서 30분 넘게 기다렸습니다."
+  },
+  {
+    "id": "1008",
+    "name": "강도윤",
+    "email": "user8@example.com",
+    "storeAddress": "울산 남구 삼산로 210",
+    "reportTilte": "맛이 일정하지 않음",
+    "reportDetail": "예전에 왔을 때는 맛있었는데 이번엔 조미료맛이 강했어요."
+  },
+  {
+    "id": "1009",
+    "name": "김혜림",
+    "email": "user9@example.com",
+    "storeAddress": "대전 서구 둔산대로 75",
+    "reportTilte": "계산 오류 발생",
+    "reportDetail": "계산할 때 금액이 잘못 되어 다시 계산했습니다."
+  },
+  {
+    "id": "1010",
+    "name": "오세훈",
+    "email": "user10@example.com",
+    "storeAddress": "충북 청주시 상당구 상당로 102",
+    "reportTilte": "불친절 민원",
+    "reportDetail": "문의했는데 직원이 화난 듯한 말투로 응대해서 기분 나빴어요."
+  },
+  {
+    "id": "1011",
+    "name": "윤다인",
+    "email": "user11@example.com",
+    "storeAddress": "경북 포항시 남구 중앙로 55",
+    "reportTilte": "주차 공간 부족",
+    "reportDetail": "주차 공간이 너무 좁아서 주차하는데 20분 걸렸어요."
+  },
+  {
+    "id": "1012",
+    "name": "조성준",
+    "email": "user12@example.com",
+    "storeAddress": "강원 춘천시 중앙로 180",
+    "reportTilte": "맛이 없진 않은데…",
+    "reportDetail": "무난하긴 하지만 특별한 매력이 없어 다시 방문할지는 모르겠어요."
+  }
+  ],
+  "sample":[
+    { "id": "1008", "name": "유지호", "email": "user8@example.com", "reported": "o", "role": "사업자" },
+    { "id": "1009", "name": "신지우", "email": "user9@example.com", "reported": "x", "role": "손님" },
+    { "id": "1010", "name": "윤세빈", "email": "user10@example.com", "reported": "x", "role": "손님" },
+    { "id": "1011", "name": "김서현", "email": "user11@example.com", "reported": "o", "role": "사업자" },
+    { "id": "1012", "name": "이준혁", "email": "user12@example.com", "reported": "x", "role": "손님" },
+    { "id": "1013", "name": "박예린", "email": "user13@example.com", "reported": "x", "role": "손님" },
+    { "id": "1014", "name": "최우진", "email": "user14@example.com", "reported": "o", "role": "사업자" },
+    { "id": "1015", "name": "한서연", "email": "user15@example.com", "reported": "x", "role": "손님" },
+    { "id": "1016", "name": "강다윤", "email": "user16@example.com", "reported": "x", "role": "손님" },
+    { "id": "1017", "name": "유준서", "email": "user17@example.com", "reported": "o", "role": "사업자" },
+    { "id": "1018", "name": "신예린", "email": "user18@example.com", "reported": "x", "role": "손님" },
+    { "id": "1019", "name": "윤민재", "email": "user19@example.com", "reported": "x", "role": "손님" },
+    { "id": "1020", "name": "김하늘", "email": "user20@example.com", "reported": "o", "role": "사업자" }
+  ]
+}

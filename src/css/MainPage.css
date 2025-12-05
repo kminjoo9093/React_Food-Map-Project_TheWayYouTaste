@@ -1,0 +1,83 @@
+.start{
+  background-color: orange;
+  
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+  }
+  section {
+    padding: 50px 20px;
+    text-align: center;
+  }
+  h2 {
+    margin-bottom: 20px;
+  }
+  .banner {
+    padding: 20px;
+    color: white;
+    font-size: 1.5em;
+  }
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 20px;
+    border-radius: 5px;
+  }
+  /* 1. 초록 + 베이지 */
+  #combo1 {
+    background-color: #F5F5DC;
+  }
+  #combo1 .banner { background-color: #4CAF50; }
+  #combo1 .btn {
+    background-color: #4CAF50;
+    color: white;
+  }
+  #combo1 .btn:hover { background-color: #388E3C; }
+
+  /* 2. 레드 + 크림 */
+  #combo2 {
+    background-color: #FFF5E1;
+  }
+  #combo2 .banner { background-color: #D32F2F; }
+  #combo2 .btn {
+    background-color: #D32F2F;
+    color: white;
+  }
+  #combo2 .btn:hover { background-color: #B71C1C; }
+
+  /* 3. 와인레드 + 골드 */
+  #combo3 {
+    background-color: #FFF8DC; /* 배경은 부드러운 골드 느낌 */
+  }
+  #combo3 .banner { background-color: #800020; }
+  #combo3 .btn {
+    background-color: #800020;
+    color: white;
+  }
+  #combo3 .btn:hover { background-color: #4B0010; }
+
+  /* 4. 민트 + 연회색 */
+  #combo4 {
+    background-color: #E0E0E0;
+  }
+  #combo4 .banner { background-color: #3EB489; }
+  #combo4 .btn {
+    background-color: #3EB489;
+    color: white;
+  }
+  #combo4 .btn:hover { background-color: #2E8B70; }
+
+  /* 5. 퍼플 + 연핑크 */
+  #combo5 {
+    background-color: #F8BBD0;
+  }
+  #combo5 .banner { background-color: #8A2BE2; }
+  #combo5 .btn {
+    background-color: #8A2BE2;
+    color: white;
+  }
+  #combo5 .btn:hover { background-color: #6A1FB3; }
