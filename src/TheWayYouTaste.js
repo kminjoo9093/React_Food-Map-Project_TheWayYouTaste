@@ -1,6 +1,5 @@
-import { BrowserRouter,Routes,Route, Navigate } from "react-router-dom";
+import { Routes,Route, useLocation } from "react-router-dom";
 import Error404Page from "./Error404Page";
-import { useEffect, useState } from "react";
 import MemberListCheck from "./pages/admin/MemberListCheck"
 import MainPage from "./pages/main/MainPage"
 import Header from "./pages/Header";
@@ -9,23 +8,14 @@ import ReportListCheck from "./pages/admin/ReportListCheck";
 import RegisterListCheck from "./pages/admin/RegisterListCheck";
 
 function TheWayYouTaste() {
-  //  const[days,setDays] = useState([]);
-
-  //  useEffect( ()=> {
-  //   const fetchDays = async () => {
-  //       const res = await fetch("http://localhost:3001/days");
-  //       const data = await res.json();
-  //       setDays(data);
-  //   }
-  //   fetchDays();
-   
-  
-  // },[]);
+  const location = useLocation();
+  const hideHeaderRoutes = ["/admin/member/list"];
+  const hideHeader = hideHeaderRoutes.includes(location.pathname);
 
   return (
-     <BrowserRouter>
+     
       <div className="App">
-          <Header />
+          {!hideHeader && <Header />}
           <Routes>
             {/* <Route exact path="/" element={ <DayList/> }/> */}
             {/* <Route exact path="/" element={ <Navigate to="/day/1" replace/> }/> */}
@@ -37,7 +27,7 @@ function TheWayYouTaste() {
           </Routes>
           <Footer />
       </div>
-    </BrowserRouter>
+    
   );
 }
 
