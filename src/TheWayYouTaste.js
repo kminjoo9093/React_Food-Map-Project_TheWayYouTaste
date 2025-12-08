@@ -6,10 +6,11 @@ import Header from "./pages/Header";
 import Footer from "./pages/Footer";
 import ReportListCheck from "./pages/admin/ReportListCheck";
 import RegisterListCheck from "./pages/admin/RegisterListCheck";
+import Notice from "./pages/main/Notice";
 
 function TheWayYouTaste() {
   const location = useLocation();
-  const hideHeaderRoutes = ["/admin/member/list"];
+  const hideHeaderRoutes = [];
   const hideHeader = hideHeaderRoutes.includes(location.pathname);
 
   return (
@@ -19,6 +20,7 @@ function TheWayYouTaste() {
           <Routes>
             <Route path="/" element={<Navigate to = "/main" replace/>} />
             <Route path="/main" element={ <MainPage /> }/>
+            <Route path="/notice" element={ <Notice /> }/>
             <Route path="/admin/member/list" element={ <MemberListCheck /> }/> 
             <Route path="/admin/report/list" element={ <ReportListCheck /> }/> 
             <Route path="/admin/register/list" element={ <RegisterListCheck /> }/> 

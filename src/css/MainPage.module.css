@@ -6,26 +6,47 @@ h1{
   margin : 50px 0px;
 }
 
+h4{
+  margin-bottom: 0px;
+}
+
+a {
+  text-decoration: none;
+}
+
 .mainContainer{
   margin: 0 auto;
-  padding : 30px;
-  width: 80%;
-  height: 390px;
-  background-color: #ffce75;
+  padding : 50px;
+  width: 70%;
+  height: 500px;
+  /* background-color:bisque; */
+  justify-items: center;
+  /* background-color: #ffce75; */
+  background: linear-gradient(180deg, #ffe1bd 0%, #ffd7a6 100%);
+  box-shadow: 0px 6px 18px rgba(0,0,0,0.08);
+  text-align: center;
+  align-items: center;
   border-radius: 4px;
 }
-
-.mainContainer p{
-  margin: 50px 0px 30px 21px;
+.sectionTitle {
+  font-size: 20px;
+  font-weight: bold;
 }
-
+.mainContainer p{
+  margin : 0px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 20px;
+}
 
 .iconGrid {
   display: grid;
-  grid-template-columns: repeat(6, 80px);
+  justify-items: center;
+  grid-template-columns: repeat(7, 60px);
   gap: 14px;
-  font-size: 32px;
-  margin: 40px 0px;
+  font-size: 30px;
+  margin: 20px 0px;
 }
 
 .iconRight {
@@ -39,7 +60,8 @@ h1{
   text-align: center;
   cursor: pointer;
   padding: 10px;
-  /* border-radius: 50%; */
+  background-color: white;
+  border-radius: 12px;
   transition: 0.2s;
 }
 
@@ -83,4 +105,208 @@ h1{
 .iconBtn:hover .tooltip {
   opacity: 1;
   bottom: -45px;
+}
+.iconSearch{
+  background-color: #FF8F00;
+  border: none;
+  color: white;
+  padding: 15px 40px;
+  font-size: 18px;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 0 5px 10px #FFB74D;
+  transition: background-color 0.3s ease;
+}
+
+.iconSearch a{
+  color : black;
+  text-decoration: none;
+}
+
+.titleBox{
+  width : 503px;
+  text-align: left;
+  margin: 0px;
+}
+
+
+/* 지역 선택 필터 버튼 */
+.filterBox {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 10px 0;
+}
+
+.filterBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  background: #ffffff;
+  padding: 14px 22px;
+  border-radius: 30px;
+  font-size: 17px;
+
+  border: 1.8px solid #ff9800;
+  color: #444;
+  cursor: pointer;
+
+  box-shadow: 0 4px 10px rgba(255, 153, 0, 0.25);
+  transition: all 0.25s ease;
+}
+
+.filterBtn:hover {
+  background: #ffe0b2;
+  box-shadow: 0 6px 14px rgba(255, 153, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+.filterBtn:active {
+  transform: scale(0.98);
+}
+
+/* 아이콘 */
+.filterIcon {
+  font-size: 20px;
+}
+
+/* 선택된 텍스트 */
+.filterText {
+  flex-grow: 1;
+  text-align: left;
+  font-weight: 500;
+}
+
+/* ▼ 화살표 */
+.arrowIcon {
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+/* 모달 오버레이 */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 모달 본체 */
+.modalBox {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modalBox select {
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+}
+
+/* 확인 버튼 */
+.modalBtnWrap {
+  text-align: center;
+}
+
+.modalBtn {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: #FF8F00;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modalBtn:hover {
+  background: #e67c00;
+}
+
+/* 화면 전체 어둡게 */
+.regionModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 500;
+}
+
+/* 중앙 모달 */
+.regionModal {
+  background: white;
+  width: 600px;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+/* 도 / 시 / 동 3컬럼 */
+.regionContainer {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.regionColumn {
+  width: 30%;
+  max-height: 300px;
+  overflow-y: auto;
+  border-right: 1px solid #ddd;
+}
+
+.regionColumn:last-child {
+  border-right: none;
+}
+
+/* 리스트 아이템 */
+.regionItem {
+  padding: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: 0.2s;
+}
+
+.regionItem:hover {
+  background: #ffe0b2;
+}
+
+.activeItem {
+  background: #ffb74d;
+  color: white;
+}
+
+/* 확인 버튼 */
+.regionConfirm {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #ff8f00;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.regionConfirm:hover {
+  background: #e67c00;
+}
+
+.regionColumn p{
+  font-size: 15px;
 }
