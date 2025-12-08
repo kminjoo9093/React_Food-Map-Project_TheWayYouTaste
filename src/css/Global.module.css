@@ -1,0 +1,75 @@
+/* 변수 (컬러, 폰트사이즈) */
+:root {
+    /* 컬러 */
+  --primary-color: #800020;
+  --secondary-color: #ffab15;
+  --base-color: #FFF8DC;
+
+  /* 페이지/섹션 별 폰트 스타일 */
+
+  /* 제목 사이즈(임의설정임으로 변경희망시 상의) */
+
+  /* 버튼 사이즈 */
+  --btn-width: 8rem;
+  --btn-height: 4rem;
+  --btn-font-size: 1.4rem;
+
+  /* 아래,위 여백(추후 수정 예정)  */
+  --spacing-sm: 0.8rem;
+  --spacing-md: 1.6rem;
+  --spacing-lg: 3.2rem;
+  --spacing-60: 6rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 폰트 초기화 */
+/* 10px -> 1rem 으로 계산 */
+html{
+  font-size: 62.5%; 
+}
+
+body {
+  font-family: Arial, sans-serif;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.5em;
+  overflow-x: hidden;
+}
+
+ul {
+  list-style: none;
+}
+
+/* 링크 초기화 */
+a,
+a:hover,
+a:focus {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+/* 컨텐츠 너비 */
+/* PC 버전 너비 */
+.container {
+  width: 60%;
+  max-width: 128rem;
+  margin: 0 auto;
+  padding: 7rem 2rem;
+}
+
+.heading{
+    font-size: 3rem;
+    padding-block: 2rem 4rem;
+}

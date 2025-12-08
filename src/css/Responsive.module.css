@@ -1,0 +1,30 @@
+@media (max-width: 430px) {
+    :root {
+        /* 페이지/섹션 별 폰트 스타일 */
+
+        /* 제목 사이즈(임의설정임으로 변경희망시 상의) */
+        --heading-01: 3.2rem;
+        --heading-02: 2.4rem;
+        --heading-03: 1.8rem;
+
+        /* 버튼 사이즈 */
+        --btn-width: 8rem;
+        --btn-height: 4rem;
+        --btn-font-size: 1.4rem;
+    }
+
+    html{
+        font-size: 56.25%; /* 9px = 1rem */
+    }
+
+    .container {
+        width: 95%;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+}
+
+
+
+
