@@ -1,4 +1,4 @@
-import { Routes,Route, useLocation } from "react-router-dom";
+import { Routes,Route, useLocation, Navigate } from "react-router-dom";
 import Error404Page from "./Error404Page";
 import MemberListCheck from "./pages/admin/MemberListCheck"
 import MainPage from "./pages/main/MainPage"
@@ -17,8 +17,7 @@ function TheWayYouTaste() {
       <div className="App">
           {!hideHeader && <Header />}
           <Routes>
-            {/* <Route exact path="/" element={ <DayList/> }/> */}
-            {/* <Route exact path="/" element={ <Navigate to="/day/1" replace/> }/> */}
+            <Route path="/" element={<Navigate to = "/main" replace/>} />
             <Route path="/main" element={ <MainPage /> }/>
             <Route path="/admin/member/list" element={ <MemberListCheck /> }/> 
             <Route path="/admin/report/list" element={ <ReportListCheck /> }/> 
