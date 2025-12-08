@@ -71,5 +71,5 @@ button {
 
 .heading{
     font-size: 3rem;
-    padding-block: 2rem 4rem;
+    /* padding-block: 0rem 4rem; */
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import global from "../../css/Global.module.css";
+import styleGlobal from "../../css/Global.module.css";
 import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
 import memberData from "../../db/memberData.json"; 
@@ -43,9 +43,9 @@ function MemberListCheck() {
   }
 
   return (
-    <div className={global.container}>
-      <h1 className={global.heading}>회원 정보 조회</h1>
-      <table>
+    <div>
+      <h1 className={styleGlobal.heading}>회원 정보 조회</h1>
+      <table className={styleGlobal.container}>
         <thead>
           <tr>
             <th>회원명</th>
