@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
+import styleGlobal from "../../css/Global.module.css"
 import reportData from "../../db/reportData.json";
+
 
 
 function ReportListCheck() {
@@ -38,8 +40,8 @@ function ReportListCheck() {
 
   return (
     <div className={styleMember.middleContainer}>
-      <h1>신고 내역 조회</h1>
-      <table>
+      <h1 className={styleGlobal.heading}>신고 내역 조회</h1>
+      <table className={styleGlobal.container}>
         <thead>
           <tr>
             <th>회원명</th>

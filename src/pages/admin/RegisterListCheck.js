@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
+import styleGlobal from "../../css/Global.module.css"
 import registerData from "../../db/registerData.json";
 
 
@@ -37,8 +38,8 @@ function RegisterListCheck() {
 
   return (
     <div className={styleMember.middleContainer}>
-      <h1>등록 신청 조회</h1>
-      <table>
+      <h1 className={styleGlobal.heading}>등록 신청 조회</h1>
+      <table className={styleGlobal.container}>
         <thead>
           <tr>
             <th>회원명</th>
