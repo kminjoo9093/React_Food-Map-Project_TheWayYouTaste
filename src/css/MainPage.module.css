@@ -43,6 +43,8 @@ a {
 .iconGrid {
   display: grid;
   justify-items: center;
+  align-items: center;
+  justify-content: center;
   grid-template-columns: repeat(7, 60px);
   gap: 14px;
   font-size: 30px;

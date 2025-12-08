@@ -151,8 +151,7 @@ function MainPage() {
           ))}
         </div>
         <div className={mainstyle.iconRight}>
-          <div className={mainstyle.iconSearch}><Link to = "/notice"> 🔍 검색</Link> 
-          </div>
+          <div className={mainstyle.iconSearch}><Link to = "/notice">🔍검색</Link></div>
         </div>
       </div>
     </>
