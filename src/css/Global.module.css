@@ -21,6 +21,18 @@
   --spacing-60: 6rem;
 }
 
+ /* div사용별모음 */
+ .doubleContainer{
+    display: grid;
+    grid-template-columns: repeat(2, 48%);
+    gap : 4%;
+}
+
+.rightContainer {
+    padding-top: 30px;
+    text-align: right;
+}
+
 * {
   margin: 0;
   padding: 0;

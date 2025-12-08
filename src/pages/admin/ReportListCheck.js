@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import styleGlobal from "../../css/Global.module.css"
 import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
-import styleGlobal from "../../css/Global.module.css"
 import reportData from "../../db/reportData.json";
 
 
