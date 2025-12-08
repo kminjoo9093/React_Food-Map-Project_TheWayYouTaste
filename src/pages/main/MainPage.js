@@ -31,7 +31,7 @@ function MainPage() {
   const [selectedSi, setSelectedSi] = useState("");
   const [selectedDong, setSelectedDong] = useState("");
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
 
   return (
     <>
@@ -44,7 +44,7 @@ function MainPage() {
       <div className={mainstyle.filterBox}>
         <button 
           className={mainstyle.filterBtn}
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => setIsDimmedMiddleOpen(true)}
         >
           <span className={mainstyle.filterIcon}>📍</span>
           <span className={mainstyle.filterText}>
@@ -54,10 +54,9 @@ function MainPage() {
         </button>
       </div>
 
-      {/* 영화관 스타일 모달 */}
-      {isModalOpen && (
-        <div className={mainstyle.regionModalOverlay}>
-          <div className={mainstyle.regionModal}>
+      {isDimmedMiddleOpen && (
+        <div className={mainstyle.regionDimmed}>
+          <div className={mainstyle.regionDimmedMiddle}>
             <h2>지역 선택</h2>
 
             <div className={mainstyle.regionContainer}>
@@ -122,7 +121,7 @@ function MainPage() {
 
             <button
               className={mainstyle.regionConfirm}
-              onClick={() => setIsModalOpen(false)}
+              onClick={() => setIsDimmedMiddleOpen(false)}
             >
               확인
             </button>

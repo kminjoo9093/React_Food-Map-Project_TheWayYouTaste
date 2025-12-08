@@ -183,58 +183,8 @@ a {
   opacity: 0.6;
 }
 
-/* 모달 오버레이 */
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* 모달 본체 */
-.modalBox {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.modalBox select {
-  padding: 8px;
-  border-radius: 6px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-}
-
-/* 확인 버튼 */
-.modalBtnWrap {
-  text-align: center;
-}
-
-.modalBtn {
-  margin-top: 10px;
-  padding: 8px 16px;
-  background: #FF8F00;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.modalBtn:hover {
-  background: #e67c00;
-}
-
 /* 화면 전체 어둡게 */
-.regionModalOverlay {
+.regionDimmed {
   position: fixed;
   top: 0;
   left: 0;
@@ -248,7 +198,7 @@ a {
 }
 
 /* 중앙 모달 */
-.regionModal {
+.regionDimmedMiddle {
   background: white;
   width: 600px;
   padding: 20px;
