@@ -6,7 +6,8 @@ import Header from "./pages/Header";
 import Footer from "./pages/Footer";
 import ReportListCheck from "./pages/admin/ReportListCheck";
 import RegisterListCheck from "./pages/admin/RegisterListCheck";
-import Notice from "./pages/main/Notice";
+import SearchStore from "./pages/search/SearchStore";
+
 
 function TheWayYouTaste() {
   const location = useLocation();
@@ -24,6 +25,7 @@ function TheWayYouTaste() {
             <Route path="/admin/member/list" element={ <MemberListCheck /> }/> 
             <Route path="/admin/report/list" element={ <ReportListCheck /> }/> 
             <Route path="/admin/register/list" element={ <RegisterListCheck /> }/> 
+            <Route path="/search/store" element={ <SearchStore /> }/> 
             <Route path="/*" element={<Error404Page/>}/>
           </Routes>
           <Footer />

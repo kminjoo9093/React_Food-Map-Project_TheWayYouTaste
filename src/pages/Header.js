@@ -28,7 +28,7 @@ function Header(){
             
             <div className={styleHeader.menubar}>
                 <a>지역 맛집</a>
-                <a>지도 찾기</a>
+                <Link to = "/search/store" >지도 찾기</Link>
                 <a>가게 등록</a>
                 <Link to = "/notice"> 공지사항 </Link> 
             </div>
