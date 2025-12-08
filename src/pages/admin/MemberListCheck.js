@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import global from "../../css/Global.module.css";
 import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
 import memberData from "../../db/memberData.json"; 
@@ -42,8 +43,8 @@ function MemberListCheck() {
   }
 
   return (
-    <div className={styleMember.middleContainer}>
-      <h1>회원 정보 조회</h1>
+    <div className={global.container}>
+      <h1 className={global.heading}>회원 정보 조회</h1>
       <table>
         <thead>
           <tr>
