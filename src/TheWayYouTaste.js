@@ -8,14 +8,18 @@ import ReportListCheck from "./pages/admin/ReportListCheck";
 import RegisterListCheck from "./pages/admin/RegisterListCheck";
 import SearchStore from "./pages/search/SearchStore";
 import Notice from "./pages/main/Notice";
+<<<<<<< HEAD
+=======
 import ReportRequest from "./pages/report/ReportRequest";
 import ReportDetail from "./pages/report/ReportDetail";
 import { useEffect, useState } from "react";
 
+>>>>>>> de0e72bd0b33038a7a8b45189f6957fa521bec11
 
 function TheWayYouTaste() {
   const location = useLocation();
   const hideHeaderRoutes = [];
+  const hideFooter = ["/search/store"];
   const hideHeader = hideHeaderRoutes.includes(location.pathname);
   
   const [reports, setReports] = useState([]);
@@ -49,7 +53,7 @@ function TheWayYouTaste() {
             <Route path="/store/reportDetail" element={ <ReportDetail /> }/> 
             <Route path="/*" element={<Error404Page/>}/>
           </Routes>
-          <Footer />
+          { !hideFooter && <Footer /> }
       </div>
     
   );

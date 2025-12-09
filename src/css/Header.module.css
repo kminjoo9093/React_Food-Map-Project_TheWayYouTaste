@@ -12,6 +12,7 @@ body {
 
 /* Header */
 .header {
+    height: 10rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -83,6 +84,7 @@ body {
 
 /* Menubar */
 .menubar {
+    height: 4.6rem;
     background: #800020;
     padding: 12px 5%;
     display: flex;
