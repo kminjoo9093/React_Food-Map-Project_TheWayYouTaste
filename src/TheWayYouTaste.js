@@ -9,6 +9,7 @@ import RegisterListCheck from "./pages/admin/RegisterListCheck";
 import SearchStore from "./pages/search/SearchStore";
 import Notice from "./pages/main/Notice";
 import ReportRequest from "./pages/report/ReportRequest";
+import ReportDetail from "./pages/report/ReportDetail";
 
 
 function TheWayYouTaste() {
@@ -29,6 +30,7 @@ function TheWayYouTaste() {
             <Route path="/admin/register/list" element={ <RegisterListCheck /> }/> 
             <Route path="/search/store" element={ <SearchStore /> }/> 
             <Route path="/store/report" element={ <ReportRequest /> }/> 
+            <Route path="/store/reportDetail" element={ <ReportDetail /> }/> 
             <Route path="/*" element={<Error404Page/>}/>
           </Routes>
           <Footer />

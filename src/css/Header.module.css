@@ -56,6 +56,7 @@ body {
 
 .searchContainer input {
     width: 100%;
+    height: 3vh;
     border: none;
     outline: none;
     background: none;

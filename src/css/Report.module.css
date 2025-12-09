@@ -16,3 +16,8 @@
 .button:hover {
   background: #e67c00;
 }
+
+.ReportContainer{
+  border: 2px solid black;
+  height: 15vh;
+}

@@ -9,24 +9,30 @@ function ReportRequest() {
   const [address, setAddress] = useState(""); // 주소
   const [title, setTitle] = useState(""); // 신고 제목
   const [reason, setReason] = useState(""); // 신고 사유
+  const [category, setCategory] = useState(""); //카테고리
 
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (title && reason) {
-      // 신고 정보를 ReportDetail 페이지로 전달하며 이동
-      navigate("/reportDetail", {
-        state: { writer, storeName, address, title, reason },
-      });
-    } else {
+    if (!title || !reason) {
       alert("신고 제목과 사유를 입력해주세요.");
+      return;
     }
+
+    if (!category) {
+      alert("카테고리를 선택해주세요.");
+      return;
+    }
+
+    navigate("/store/reportDetail", {
+      state: { writer, storeName, address, title, reason, category },
+    });
   };
 
   return (
     <div className={styleGlobal.container}>
-      <p>안녕하세요 여기는 신고접수페이징입니다.</p>
+      <p>안녕하세요 여기는 신고접수페이지입니다.</p>
 
       <form onSubmit={handleSubmit}>
         <p>작성자명</p>
@@ -54,13 +60,16 @@ function ReportRequest() {
             />
           </div>
         </div>
-
+        <p>카테고리</p>
+        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <option value="">카테고리를 선택하세요</option>
+          <option value="매장폐업">매장폐업</option>
+          <option value="허위사실">허위사실</option>
+          <option value="리뷰신고">리뷰신고</option>
+          <option value="기타">기타</option>
+        </select>
         <p>신고 제목</p>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
 
         <p>신고 사유</p>
         <textarea
