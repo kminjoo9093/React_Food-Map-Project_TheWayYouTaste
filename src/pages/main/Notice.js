@@ -1,11 +1,11 @@
 import { useState } from "react";
 import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
-import styleGlobal from "../../css/Global.module.css"
 import registerData from "../../db/registerData.json";
+import styleGlobal from "../../css/Global.module.css"
 
 
-function RegisterListCheck() {
+function Notice() {
   const [register, setregister] = useState(registerData.registers);
   const [nowPage, setNowPage] = useState(1);
   const viewPeople = 5;
@@ -38,14 +38,14 @@ function RegisterListCheck() {
 
   return (
     <div className={styleMember.middleContainer}>
-      <h1 className={styleGlobal.heading}>등록 신청 조회</h1>
+      <h1>공지사항</h1>
       <table className={styleGlobal.container}>
         <thead>
           <tr>
-            <th>회원명</th>
-            <th>ID</th>
-            <th>회원Email</th>
-            <th>상호 명</th>
+            <th>승인 / 반려 표시</th>
+            <th>id</th>
+            <th>제목</th>
+            <th>관리자 명</th>
           </tr>
         </thead>
         <tbody>
@@ -53,8 +53,8 @@ function RegisterListCheck() {
             <tr key={register.id}>
               <td>{register.name}</td>
               <td>{register.id}</td>
-              <td>{register.email}</td>
               <td>{register.store}</td>
+              <td>{register.name}</td>
             </tr>
           ))}
         </tbody>
@@ -78,4 +78,4 @@ function RegisterListCheck() {
   );
 }
 
-export default RegisterListCheck;
+export default Notice;
