@@ -1,5 +1,34 @@
-body{
-  background-color: #f5f5f5;
+body {
+  /* background-image: url("../resources/img/system/main.png"); */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* 스크롤해도 고정 */
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255,255,255,0.7); /* 원하는 투명도 */
+  backdrop-filter: blur(2px); /* (선택) 흐림 효과 */
+  z-index: -1; /* 실제 내용보다 뒤로 */
+}
+.bigContainer{
+
+}
+
+.mainFont {
+  margin: 60px 0 60px;
+  font-size: 50px;
+  font-weight: 900;
+  text-align: center;
+  color: black;
+  text-shadow:
+    0 0 8px rgba(247, 169, 106, 0.8),
+    0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 h1{
@@ -15,19 +44,23 @@ a {
 }
 
 .mainContainer{
+  position: relative;
+  z-index: 1;
   margin: 0 auto;
   padding : 50px;
-  width: 70%;
+  width: 50%;
   height: 500px;
   /* background-color:bisque; */
   justify-items: center;
   /* background-color: #ffce75; */
-  background: linear-gradient(180deg, #ffe1bd 0%, #ffd7a6 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.13) 0%, #b6c5c4  100%);
+  /* background: linear-gradient(180deg, #f5f5f5 0%, #ffe0b2 100%); */
   box-shadow: 0px 6px 18px rgba(0,0,0,0.08);
   text-align: center;
   align-items: center;
   border-radius: 4px;
 }
+
 .sectionTitle {
   font-size: 20px;
   font-weight: bold;
@@ -43,8 +76,10 @@ a {
 .iconGrid {
   display: grid;
   justify-items: center;
+  align-items: center;
+  justify-content: center;
   grid-template-columns: repeat(7, 60px);
-  gap: 14px;
+  gap: 40px;
   font-size: 30px;
   margin: 20px 0px;
 }
@@ -60,7 +95,7 @@ a {
   text-align: center;
   cursor: pointer;
   padding: 10px;
-  background-color: white;
+  background-color: f5f5f5;
   border-radius: 12px;
   transition: 0.2s;
 }
@@ -107,7 +142,8 @@ a {
   bottom: -45px;
 }
 .iconSearch{
-  background-color: #FF8F00;
+  /* background-color: #FF8F00; */
+  background-color: #ffab15;
   border: none;
   color: white;
   padding: 15px 40px;
@@ -124,7 +160,7 @@ a {
 }
 
 .titleBox{
-  width : 503px;
+  width : 660px;
   text-align: left;
   margin: 0px;
 }
@@ -183,58 +219,8 @@ a {
   opacity: 0.6;
 }
 
-/* 모달 오버레이 */
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* 모달 본체 */
-.modalBox {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.modalBox select {
-  padding: 8px;
-  border-radius: 6px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-}
-
-/* 확인 버튼 */
-.modalBtnWrap {
-  text-align: center;
-}
-
-.modalBtn {
-  margin-top: 10px;
-  padding: 8px 16px;
-  background: #FF8F00;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.modalBtn:hover {
-  background: #e67c00;
-}
-
 /* 화면 전체 어둡게 */
-.regionModalOverlay {
+.regionDimmed {
   position: fixed;
   top: 0;
   left: 0;
@@ -248,7 +234,7 @@ a {
 }
 
 /* 중앙 모달 */
-.regionModal {
+.regionDimmedMiddle {
   background: white;
   width: 600px;
   padding: 20px;

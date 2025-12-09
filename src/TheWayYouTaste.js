@@ -8,12 +8,34 @@ import ReportListCheck from "./pages/admin/ReportListCheck";
 import RegisterListCheck from "./pages/admin/RegisterListCheck";
 import SearchStore from "./pages/search/SearchStore";
 import Notice from "./pages/main/Notice";
+<<<<<<< HEAD
+=======
+import ReportRequest from "./pages/report/ReportRequest";
+import ReportDetail from "./pages/report/ReportDetail";
+import { useEffect, useState } from "react";
+
+>>>>>>> de0e72bd0b33038a7a8b45189f6957fa521bec11
 
 function TheWayYouTaste() {
   const location = useLocation();
   const hideHeaderRoutes = [];
   const hideFooter = ["/search/store"];
   const hideHeader = hideHeaderRoutes.includes(location.pathname);
+  
+  const [reports, setReports] = useState([]);
+
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const res = await fetch("http://localhost:3001/youtaste/reports");
+        const data = await res.json();
+        setReports(data);
+      } catch (err) {
+        console.error("신고 목록 로드 실패:", err);
+      }
+    };
+    fetchReports();
+  }, []);
 
   return (
      
@@ -24,9 +46,11 @@ function TheWayYouTaste() {
             <Route path="/main" element={ <MainPage /> }/>
             <Route path="/notice" element={ <Notice /> }/>
             <Route path="/admin/member/list" element={ <MemberListCheck /> }/> 
-            <Route path="/admin/report/list" element={ <ReportListCheck /> }/> 
+            <Route path="/admin/report/list"  element={<ReportListCheck reports={reports}/>}/> 
             <Route path="/admin/register/list" element={ <RegisterListCheck /> }/> 
             <Route path="/search/store" element={ <SearchStore /> }/> 
+            <Route path="/store/report" element={ <ReportRequest /> }/> 
+            <Route path="/store/reportDetail" element={ <ReportDetail /> }/> 
             <Route path="/*" element={<Error404Page/>}/>
           </Routes>
           { !hideFooter && <Footer /> }

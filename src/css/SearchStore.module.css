@@ -4,9 +4,6 @@
     grid-template-columns: 45rem 1fr;
     height: calc(100vh - 14.6rem); /*14.6rem = 헤더(10rem) + 메뉴바(4.6rem)*/
 }
-.gridMap div{
-    /* border: 1px solid red; */
-}
 .leftArea{
     background-color: #fff;
     display: flex;
@@ -87,9 +84,6 @@
     min-height: 0;
     overflow-y: scroll;
     padding-bottom: 2rem;
-}
-.storeList{
-    /* border: 1px solid red; */
 }
 .storeListItem{
     margin-inline: 1rem;

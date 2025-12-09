@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import mainstyle from '../../css/MainPage.module.css';
 import { useState } from 'react';
+import mainbody from "../../resources/img/system/main.png";
 
 const foodIcons = [
   { emoji: "🍚", label: "한식" },
@@ -31,128 +32,127 @@ function MainPage() {
   const [selectedSi, setSelectedSi] = useState("");
   const [selectedDong, setSelectedDong] = useState("");
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
 
   return (
     <>
-    <h1>The Way You Taste</h1>
+    <div className={mainstyle.bigContainer}>
+      <h1 className={mainstyle.mainFont}>The Way You Taste</h1>
+      <div className={mainstyle.mainContainer}>
+        <h3>원하시는 식당 유형을 선택해 주세요</h3>
 
-     <div className={mainstyle.mainContainer}>
-      <h3>원하시는 식당 유형을 선택해 주세요</h3>
+        {/* 필터 버튼 */}
+        <div className={mainstyle.filterBox}>
+          <button 
+            className={mainstyle.filterBtn}
+            onClick={() => setIsDimmedMiddleOpen(true)}
+          >
+            <span className={mainstyle.filterIcon}>📍</span>
+            <span className={mainstyle.filterText}>
+              {selectedDong ? `${selectedDo} ${selectedSi} ${selectedDong}` : "지역을 선택하세요"}
+            </span>
+            <span className={mainstyle.arrowIcon}>▼</span>
+          </button>
+        </div>
 
-      {/* 필터 버튼 */}
-      <div className={mainstyle.filterBox}>
-        <button 
-          className={mainstyle.filterBtn}
-          onClick={() => setIsModalOpen(true)}
-        >
-          <span className={mainstyle.filterIcon}>📍</span>
-          <span className={mainstyle.filterText}>
-            {selectedDong ? `${selectedDo} ${selectedSi} ${selectedDong}` : "지역을 선택하세요"}
-          </span>
-          <span className={mainstyle.arrowIcon}>▼</span>
-        </button>
-      </div>
+        {isDimmedMiddleOpen && (
+          <div className={mainstyle.regionDimmed}>
+            <div className={mainstyle.regionDimmedMiddle}>
+              <h2>지역 선택</h2>
 
-      {/* 영화관 스타일 모달 */}
-      {isModalOpen && (
-        <div className={mainstyle.regionModalOverlay}>
-          <div className={mainstyle.regionModal}>
-            <h2>지역 선택</h2>
+              <div className={mainstyle.regionContainer}>
 
-            <div className={mainstyle.regionContainer}>
-
-              {/* ▼ 도 리스트 */}
-              <div className={mainstyle.regionColumn}>
-                <p>광역시/도</p>
-                {Object.keys(regionData).map((d) => (
-                  <div
-                    key={d}
-                    className={`${mainstyle.regionItem} ${
-                      selectedDo === d ? mainstyle.activeItem : ""
-                    }`}
-                    onClick={() => {
-                      setSelectedDo(d);
-                      setSelectedSi("");
-                      setSelectedDong("");
-                    }}
-                  >
-                    {d}
-                  </div>
-                ))}
-              </div>
-
-              {/* ▼ 시 리스트 */}
-              <div className={mainstyle.regionColumn}>
-                <p>시/군/구</p>
-                {selectedDo &&
-                  Object.keys(regionData[selectedDo]).map((s) => (
+                {/* ▼ 도 리스트 */}
+                <div className={mainstyle.regionColumn}>
+                  <p>광역시/도</p>
+                  {Object.keys(regionData).map((d) => (
                     <div
-                      key={s}
+                      key={d}
                       className={`${mainstyle.regionItem} ${
-                        selectedSi === s ? mainstyle.activeItem : ""
+                        selectedDo === d ? mainstyle.activeItem : ""
                       }`}
                       onClick={() => {
-                        setSelectedSi(s);
+                        setSelectedDo(d);
+                        setSelectedSi("");
                         setSelectedDong("");
                       }}
                     >
-                      {s}
+                      {d}
                     </div>
                   ))}
+                </div>
+
+                {/* ▼ 시 리스트 */}
+                <div className={mainstyle.regionColumn}>
+                  <p>시/군/구</p>
+                  {selectedDo &&
+                    Object.keys(regionData[selectedDo]).map((s) => (
+                      <div
+                        key={s}
+                        className={`${mainstyle.regionItem} ${
+                          selectedSi === s ? mainstyle.activeItem : ""
+                        }`}
+                        onClick={() => {
+                          setSelectedSi(s);
+                          setSelectedDong("");
+                        }}
+                      >
+                        {s}
+                      </div>
+                    ))}
+                </div>
+
+                {/* ▼ 동 리스트 */}
+                <div className={mainstyle.regionColumn}>
+                  <p>읍/면/동</p>
+                  {selectedSi &&
+                    regionData[selectedDo][selectedSi].map((dong) => (
+                      <div
+                        key={dong}
+                        className={`${mainstyle.regionItem} ${
+                          selectedDong === dong ? mainstyle.activeItem : ""
+                        }`}
+                        onClick={() => setSelectedDong(dong)}
+                      >
+                        {dong}
+                      </div>
+                    ))}
+                </div>
               </div>
 
-              {/* ▼ 동 리스트 */}
-              <div className={mainstyle.regionColumn}>
-                <p>읍/면/동</p>
-                {selectedSi &&
-                  regionData[selectedDo][selectedSi].map((dong) => (
-                    <div
-                      key={dong}
-                      className={`${mainstyle.regionItem} ${
-                        selectedDong === dong ? mainstyle.activeItem : ""
-                      }`}
-                      onClick={() => setSelectedDong(dong)}
-                    >
-                      {dong}
-                    </div>
-                  ))}
-              </div>
+              <button
+                className={mainstyle.regionConfirm}
+                onClick={() => setIsDimmedMiddleOpen(false)}
+              >
+                확인
+              </button>
             </div>
-
-            <button
-              className={mainstyle.regionConfirm}
-              onClick={() => setIsModalOpen(false)}
-            >
-              확인
-            </button>
           </div>
-        </div>
-      )}
-        <div className={mainstyle.titleBox}>
-          <h4 className={mainstyle.sectionTitle}>업종</h4>
-        </div>
-        <div className={mainstyle.iconGrid}>
-          {foodIcons.map((item, index) => (
-            <div key={index} className={mainstyle.iconBtn}>
-              {item.emoji}
-              <div className={mainstyle.tooltip}>{item.label}</div>
-            </div>
-          ))}
-        </div>
-        <div className={mainstyle.titleBox}>
-          <h4 className={mainstyle.sectionTitle}>편의</h4>
-        </div>
-        <div className={mainstyle.iconGrid}>
-          {icons.map((item, index) => (
-            <div key={index} className={mainstyle.iconBtn}>
-              {item.emoji}
-              <div className={mainstyle.tooltip}>{item.label}</div>
-            </div>
-          ))}
-        </div>
-        <div className={mainstyle.iconRight}>
-          <div className={mainstyle.iconSearch}><Link to = "/notice"> 🔍 검색</Link> 
+        )}
+          <div className={mainstyle.titleBox}>
+            <h4 className={mainstyle.sectionTitle}>업종</h4>
+          </div>
+          <div className={mainstyle.iconGrid}>
+            {foodIcons.map((item, index) => (
+              <div key={index} className={mainstyle.iconBtn}>
+                {item.emoji}
+                <div className={mainstyle.tooltip}>{item.label}</div>
+              </div>
+            ))}
+          </div>
+          <div className={mainstyle.titleBox}>
+            <h4 className={mainstyle.sectionTitle}>편의</h4>
+          </div>
+          <div className={mainstyle.iconGrid}>
+            {icons.map((item, index) => (
+              <div key={index} className={mainstyle.iconBtn}>
+                {item.emoji}
+                <div className={mainstyle.tooltip}>{item.label}</div>
+              </div>
+            ))}
+          </div>
+          <div className={mainstyle.iconRight}>
+            <div className={mainstyle.iconSearch}><Link to = "/notice">🔍검색</Link></div>
           </div>
         </div>
       </div>
