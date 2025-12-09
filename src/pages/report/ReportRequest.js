@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styleGlobal from "../../css/Global.module.css";
-import styleReport from "../../css/Report.module.css"
+import styleReport from "../../css/Report.module.css";
 
 function ReportRequest() {
   const [writer, setWriter] = useState(""); // 작성자명
@@ -13,8 +13,9 @@ function ReportRequest() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!title || !reason) {
       alert("신고 제목과 사유를 입력해주세요.");
       return;
@@ -25,9 +26,41 @@ function ReportRequest() {
       return;
     }
 
-    navigate("/store/reportDetail", {
-      state: { writer, storeName, address, title, reason, category },
-    });
+    // 카테고리 문자열 → 숫자 매핑
+    const categoryMap = {
+      "매장폐업": 1,
+      "허위사실": 2,
+      "리뷰신고": 3,
+      "기타": 4
+    };
+
+    const reportData = {
+      userSn: 1000, // 예시:(추후변경예정:실제로는 로그인 정보로 가져오기)
+      bplcSn: 2001, // 예시:(추후변경예정: 매장 선택 UI에서 가져오기)
+      dclrTtl: title,
+      dclrCn: reason,
+      dclrCatNo: categoryMap[category]
+    };
+
+    try {
+      const res = await fetch("http://localhost:3001/youtaste/reports", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(reportData)
+      });
+
+      if (!res.ok) throw new Error("신고 등록 실패");
+
+      alert("신고가 등록되었습니다!");
+      navigate("/store/reportDetail", {
+        state: { ...reportData, storeName, address, writer }
+      });
+    } catch (err) {
+      console.error(err);
+      alert("신고 등록 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -60,6 +93,7 @@ function ReportRequest() {
             />
           </div>
         </div>
+
         <p>카테고리</p>
         <select value={category} onChange={(e) => setCategory(e.target.value)}>
           <option value="">카테고리를 선택하세요</option>
@@ -68,8 +102,13 @@ function ReportRequest() {
           <option value="리뷰신고">리뷰신고</option>
           <option value="기타">기타</option>
         </select>
+
         <p>신고 제목</p>
-        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
 
         <p>신고 사유</p>
         <textarea
@@ -80,7 +119,9 @@ function ReportRequest() {
         />
 
         <div className={styleGlobal.rightContainer}>
-          <button className={styleReport.button} type="submit">등록</button>
+          <button className={styleReport.button} type="submit">
+            등록
+          </button>
         </div>
       </form>
     </div>
