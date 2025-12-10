@@ -2,10 +2,12 @@ import { useState } from "react";
 import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
 import styleGlobal from "../../css/Global.module.css"
+import { useNavigate } from "react-router-dom";
 
 
 function Notice({ notices }) {
   const [nowPage, setNowPage] = useState(1);
+  const navigate = useNavigate();
   
   const viewPeople = 5;
   const limitBlock = 5;            
@@ -35,6 +37,10 @@ function Notice({ notices }) {
     pageNumbers.push(i);
   }
 
+  const handleClick = (notice) => {
+    navigate("/notice/noticeDetail", { state: notice });
+  };
+
   function getDclrCatName(catNo) {
     switch(catNo) {
       case 1:
@@ -61,7 +67,6 @@ function Notice({ notices }) {
   if (!date) return ""; // null이나 undefined 대비
   return date.split("T")[0].replace(/-/g, ".");
   }
-
   return (
     <div className={styleMember.middleContainer}>
       <h1>공지사항</h1>
@@ -76,7 +81,7 @@ function Notice({ notices }) {
         </thead>
         <tbody>
           {nowNotice.map((notice) => (
-            <tr key={notice.notiSn}>
+            <tr key={notice.notiSn} onClick={() => handleClick(notice)}>
               <td>{getDclrCatName(notice.dclrCatNo)}</td>
               <td>{getPrcsYn(notice.prcsYn)}</td>
               <td>{notice.notiTtl}</td>

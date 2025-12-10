@@ -120,13 +120,13 @@ function ReportDetail() {
       )}
 
       {isActionBoxOpen && (
-        <div className={styleNotice.modalDimmed}>
-          <div className={styleNotice.modalBox}>
+        <div className={styleNotice.popupDimmed}>
+          <div className={styleNotice.popupBox}>
             <h2>{actionType} 처리</h2>
             <p>제목:</p>
             <input
               type="text"
-              className={styleNotice.modalInput}
+              className={styleNotice.popupInput}
               value={noticeTitle}
               onChange={(e) => setNoticeTitle(e.target.value)}
               placeholder="제목을 입력하세요"
@@ -134,12 +134,12 @@ function ReportDetail() {
             <p>날짜: {new Date().toLocaleDateString()}</p>
             <p>카테고리 : {getDclrCatName(report.dclrCatNo)}</p>
             <textarea
-              className={styleNotice.modalTextarea}
+              className={styleNotice.popupTextarea}
               placeholder="사유를 작성하세요"
               value={actionReason}
               onChange={(e) => setActionReason(e.target.value)}
             />
-            <div className={styleNotice.modalButtonGroup}>
+            <div className={styleNotice.popupButtonGroup}>
               <button className={styleNotice.confirmBtn} onClick={() => handleSubmit(noticeTitle)}>
                 등록
               </button>

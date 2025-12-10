@@ -11,6 +11,7 @@ import NoticeList from "./pages/main/NoticeList";
 import ReportRequest from "./pages/admin/report/ReportRequest";
 import ReportDetail from "./pages/admin/report/ReportDetail";
 import { useEffect, useState } from "react";
+import NoticeDetail from "./pages/main/NoticeDetail";
 
 function TheWayYouTaste() {
   const location = useLocation();
@@ -48,6 +49,7 @@ function TheWayYouTaste() {
             <Route path="/" element={<Navigate to = "/main" replace/>} />
             <Route path="/main" element={ <MainPage /> }/>
             <Route path="/notice/list" element={ <NoticeList notices={notices}/> }/>
+            <Route path="/notice/noticeDetail" element={ <NoticeDetail /> }/>
             <Route path="/admin/member/list" element={ <MemberListCheck /> }/> 
             <Route path="/admin/report/list"  element={<ReportListCheck reports={reports}/>}/> 
             <Route path="/admin/register/list" element={ <RegisterListCheck /> }/> 

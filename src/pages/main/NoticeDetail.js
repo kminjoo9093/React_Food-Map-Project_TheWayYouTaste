@@ -1,0 +1,47 @@
+import { useLocation } from "react-router-dom";
+import styleGlobal from "../../css/Global.module.css";
+import styleReport from "../../css/Report.module.css"
+import styleNotice from "../../css/Notice.module.css";
+
+function NoticeDetail() {
+  const location = useLocation();
+  const notice = location.state; // Notice 목록에서 전달된 notice 데이터
+
+  if (!notice) return <p>공지사항 정보를 불러올 수 없습니다.</p>;
+
+  function getDclrCatName(catNo) {
+    switch (catNo) {
+      case 1: return "폐업 신고";
+      case 2: return "허위 사실 신고";
+      case 3: return "리뷰 신고";
+      default: return "기타 신고";
+    }
+  }
+
+  function getDate(date) {
+    if (!date) return "";
+    return date.split("T")[0].replace(/-/g, ".");
+  }
+
+  return (
+    <div className={styleGlobal.container}>
+      <h1 className={styleGlobal.heading}>공지사항 상세</h1>
+      <p><strong>제목</strong></p>
+      <input  type="text" value={notice.notiTtl} readOnly/>
+      <div className={styleGlobal.doubleContainer}>
+        <div>
+          <p><strong>카테고리</strong> </p>
+          <input  type="text" value={getDclrCatName(notice.dclrCatNo)} readOnly/>
+        </div>
+        <div>
+          <p><strong>작성일</strong> </p>
+          <input  type="text" value={getDate(notice.prcsRegYmd)} readOnly/>
+        </div>
+      </div>
+      <p><strong>사유</strong> </p>
+      <textarea className={styleReport.textarea} value={notice.notiCn} readOnly></textarea>
+    </div>
+  );
+}
+
+export default NoticeDetail;
