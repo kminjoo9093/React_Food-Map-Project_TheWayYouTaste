@@ -52,9 +52,11 @@ function TheWayYouTaste() {
             <Route path="/admin/report/list"  element={<ReportListCheck reports={reports}/>}/> 
             <Route path="/admin/register/list" element={ <RegisterListCheck /> }/> 
             <Route path="/search/store" element={ <SearchStore /> }/> 
+            <Route path="/search/storeDetail" element={ <StoreDetail /> }/> 
             <Route path="/store/report/:userSn" element={ <ReportRequest /> }/> 
             <Route path="/store/reportDetail" element={ <ReportDetail /> }/> 
             <Route path="/*" element={<Error404Page/>}/>
+           
           </Routes>
           { !hideFooter && <Footer /> }
       </div>
