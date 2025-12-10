@@ -1,21 +1,20 @@
 import { useState } from "react";
 import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
-import registerData from "../../db/registerData.json";
 import styleGlobal from "../../css/Global.module.css"
 
 
-function Notice() {
-  const [register, setregister] = useState(registerData.registers);
+function Notice({ notices }) {
   const [nowPage, setNowPage] = useState(1);
+  
   const viewPeople = 5;
   const limitBlock = 5;            
 
   const lastMember = nowPage * viewPeople;
   const firstMember = lastMember - viewPeople;
-  const nowRegister = register.slice(firstMember, lastMember);
+  const nowNotice = notices.slice(firstMember, lastMember);
 
-  const totalPages = Math.ceil(register.length / viewPeople);
+  const totalPages = Math.ceil(notices.length / viewPeople);
 
   const paginate = (pageNumber) => setNowPage(pageNumber);
 
@@ -36,25 +35,52 @@ function Notice() {
     pageNumbers.push(i);
   }
 
+  function getDclrCatName(catNo) {
+    switch(catNo) {
+      case 1:
+        return "폐업 신고";
+      case 2:
+        return "허위 사실 신고";
+      case 3:
+        return "리뷰 신고";
+      default:
+        return "기타 신고";
+    }
+  }
+
+  function getPrcsYn(YorN) {
+    switch(YorN) {
+      case 'Y':
+        return "승인";
+      default:
+        return "반려";
+    }
+  }
+
+  function getDate(date) {
+  if (!date) return ""; // null이나 undefined 대비
+  return date.split("T")[0].replace(/-/g, ".");
+  }
+
   return (
     <div className={styleMember.middleContainer}>
       <h1>공지사항</h1>
       <table className={styleGlobal.container}>
         <thead>
           <tr>
+            <th>카테고리</th>
             <th>승인 / 반려 표시</th>
-            <th>id</th>
             <th>제목</th>
-            <th>관리자 명</th>
+            <th>작성일</th>
           </tr>
         </thead>
         <tbody>
-          {nowRegister.map((register) => (
-            <tr key={register.id}>
-              <td>{register.name}</td>
-              <td>{register.id}</td>
-              <td>{register.store}</td>
-              <td>{register.name}</td>
+          {nowNotice.map((notice) => (
+            <tr key={notice.notiSn}>
+              <td>{getDclrCatName(notice.dclrCatNo)}</td>
+              <td>{getPrcsYn(notice.prcsYn)}</td>
+              <td>{notice.notiTtl}</td>
+              <td>{getDate(notice.prcsRegYmd)}</td>
             </tr>
           ))}
         </tbody>
