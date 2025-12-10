@@ -12,6 +12,8 @@ import ReportRequest from "./pages/admin/report/ReportRequest";
 import ReportDetail from "./pages/admin/report/ReportDetail";
 import { useEffect, useState } from "react";
 import NoticeDetail from "./pages/main/NoticeDetail";
+import StoreDetail from "./pages/search/StoreDetail";
+
 
 function TheWayYouTaste() {
   const location = useLocation();
@@ -54,9 +56,11 @@ function TheWayYouTaste() {
             <Route path="/admin/report/list"  element={<ReportListCheck reports={reports}/>}/> 
             <Route path="/admin/register/list" element={ <RegisterListCheck /> }/> 
             <Route path="/search/store" element={ <SearchStore /> }/> 
+            <Route path="/search/storeDetail" element={ <StoreDetail /> }/> 
             <Route path="/store/report/:userSn" element={ <ReportRequest /> }/> 
             <Route path="/store/reportDetail" element={ <ReportDetail /> }/> 
             <Route path="/*" element={<Error404Page/>}/>
+           
           </Routes>
           { !hideFooter && <Footer /> }
       </div>

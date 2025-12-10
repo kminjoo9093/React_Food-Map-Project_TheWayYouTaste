@@ -1,5 +1,6 @@
 import global from "../../css/Global.module.css";
 import responsive from "../../css/Responsive.module.css";
+import { Link } from "react-router-dom";
 import styleSearchStore from "../../css/SearchStore.module.css";
 import stylePagination from "../../css/Pagination.module.css";
 import { useState } from "react";
@@ -9,6 +10,8 @@ function SearchStore(){
 
     // const [storeList, setStoreList] = useState([]);
     // const [categoryList, setCategoryList] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState([]); //선택된 카테고리
+    const [isOpen, setIsOpen] = useState(false);
 
     const stores = UseSearchStoreFetch("http://localhost:3001/store");
     const categories = UseSearchStoreFetch("http://localhost:3001/category");
@@ -27,7 +30,6 @@ function SearchStore(){
         });
     //console.log(categoryList);
 
-    const [selectedCategories, setSelectedCategories] = useState([]);
     function onSelectCategory(id){
         //이미 선택된 카테고리면 빼고, 아니면 넣기
         setSelectedCategories(prev => {
@@ -43,9 +45,22 @@ function SearchStore(){
         });
     }
 
+    // 음식 카테고리에 일치하는 맛집 목록만 표시하기
+    // let filterdStoreList = storeList.filter(record => {
+    //     //selectedCategories에 있는 카테고리와 일치하는 맛집들
+    //     selectedCategories.forEach(category => {
+            
+    //     })
+    // })
+
+
     function resetFilter(){
         setSelectedCategories([]);
         console.log("필터 초기화");
+    }
+
+    function coverMapArea(){
+        setIsOpen(prev => !prev);
     }
 
     // Pagination
@@ -79,47 +94,58 @@ function SearchStore(){
 
     return(
         <div className={styleSearchStore.gridMap}>
-            <div className={styleSearchStore.leftArea}>
+            <div className={`${styleSearchStore.leftArea} ${isOpen ? styleSearchStore.open : ""}`} >
+                <button id="btnViewList" 
+                        onClick={coverMapArea}
+                        className={styleSearchStore.btnViewList}
+                >
+                    {/* <img src={arrow} alt="목록 펼쳐보기"/> */}
+                </button>
                 <div className={styleSearchStore.filterArea}>
-                    <button className={styleSearchStore.btnResetFilter} onClick={resetFilter}>초기화</button>
-                    <button className={styleSearchStore.btnRegion}>지역 설정</button>
-                    <ul className={styleSearchStore.categoryList}>
-                        {
-                            categoryList.map(record => (
-                                <li key={record.STORE_CAT_NO}>
-                                <button id={record.STORE_CAT_NO} 
-                                        className={selectedCategories.includes(record.STORE_CAT_NO) ? styleSearchStore.active : null} 
-                                        onClick={() => onSelectCategory(record.STORE_CAT_NO)}
-                                >
-                                    {record.STORE_CAT}
-                                </button>
-                                </li>
-                            ))
-                        }
-                    </ul>
+                    <div className={styleSearchStore.filterTopWrap}>
+                        <button className={styleSearchStore.btnResetFilter} onClick={resetFilter}>초기화</button>
+                        <button className={styleSearchStore.btnRegion}>지역 설정</button>
+                    </div>
+                    <div className={styleSearchStore.filterBottomWrap}>
+                        <ul className={styleSearchStore.categoryList}>
+                            {
+                                categoryList.map(record => (
+                                    <li key={record.STORE_CAT_NO}>
+                                    <button id={record.STORE_CAT_NO} 
+                                            className={selectedCategories.includes(record.STORE_CAT_NO) ? styleSearchStore.active : null} 
+                                            onClick={() => onSelectCategory(record.STORE_CAT_NO)}
+                                    >
+                                        {record.STORE_CAT}
+                                    </button>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    </div>
                 </div>
                 <div className={styleSearchStore.storeListArea}>
                     <ul className={styleSearchStore.storeList}>
                         {
                             viewStoreItems.map(record => {
                                 return (<li key={record.BPLC_SN} className={styleSearchStore.storeListItem}>
-                                        <a href="#" className={styleSearchStore.storeListLink}>
+                                        <Link to="/search/storeDetail" className={styleSearchStore.storeListLink}>
                                             <img className={styleSearchStore.storeImg} src="#" />
                                             <div className={styleSearchStore.storeInfo}>
+                                                <h2 className={styleSearchStore.storeName}>{record.BPLC_NM}</h2>
                                                 <div>
-                                                    <h2 className={styleSearchStore.storeName}>{record.BPLC_NM}</h2>
+                                                    <span className={styleSearchStore.storeRating}>{record.AVG}</span>
                                                     <span className={styleSearchStore.storeCategory}>{record.MENU_CAT}</span>
                                                 </div>
-                                                <span className={styleSearchStore.storeRating}>{record.AVG}</span>
                                                 <span className={styleSearchStore.storeTime}>영업시간</span>
+                                                <span className={styleSearchStore.storeAddress}>{record.DADDR}</span>
                                             </div>
-                                        </a>
+                                        </Link>
                                     </li>);
                             })
                         }
                         
                     </ul>
-                    <div className={stylePagination.pagination}>
+                    <div className={`${stylePagination.pagination} ${styleSearchStore.pagination}`}>
                         <button onClick={goPrev} disabled={nowPage === 1}> 이전 </button>
                         {pageNumbers.map((number) => (
                         <button
@@ -135,7 +161,7 @@ function SearchStore(){
                     </div>
                 </div>
             </div>
-            <div>지도</div>
+            <div className={styleSearchStore.mapArea}>지도</div>
         </div>
     )
 }
