@@ -18,7 +18,8 @@ import StoreDetail from "./pages/search/StoreDetail";
 function TheWayYouTaste() {
   const location = useLocation();
   const hideHeaderRoutes = [];
-  const hideFooter = ["/search/store"];
+  const hideFooterRoutes = ["/search/store"];
+  const hideFooter = hideFooterRoutes.includes(location.pathname);
   const hideHeader = hideHeaderRoutes.includes(location.pathname);
   
   const [reports, setReports] = useState([]);
@@ -60,7 +61,6 @@ function TheWayYouTaste() {
             <Route path="/store/report/:userSn" element={ <ReportRequest /> }/> 
             <Route path="/store/reportDetail" element={ <ReportDetail /> }/> 
             <Route path="/*" element={<Error404Page/>}/>
-           
           </Routes>
           { !hideFooter && <Footer /> }
       </div>

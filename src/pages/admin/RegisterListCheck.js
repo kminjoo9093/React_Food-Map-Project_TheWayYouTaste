@@ -3,6 +3,7 @@ import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
 import styleGlobal from "../../css/Global.module.css"
 import registerData from "../../db/registerData.json";
+import Pagination from "../Pagination";
 
 
 function RegisterListCheck() {
@@ -14,27 +15,6 @@ function RegisterListCheck() {
   const lastMember = nowPage * viewPeople;
   const firstMember = lastMember - viewPeople;
   const nowRegister = register.slice(firstMember, lastMember);
-
-  const totalPages = Math.ceil(register.length / viewPeople);
-
-  const paginate = (pageNumber) => setNowPage(pageNumber);
-
-  const goPrev = () => {
-    if (nowPage > 1) setNowPage(nowPage - 1);
-  };
-
-  const goNext = () => {
-    if (nowPage < totalPages) setNowPage(nowPage + 1);
-  };
-
-  const nowBlock = Math.floor((nowPage - 1) / limitBlock);
-  const startPage = nowBlock * limitBlock + 1;
-  const endPage = Math.min(startPage + limitBlock - 1, totalPages);
-
-  const pageNumbers = [];
-  for (let i = startPage; i <= endPage; i++) {
-    pageNumbers.push(i);
-  }
 
   return (
     <div className={styleMember.middleContainer}>
@@ -60,20 +40,13 @@ function RegisterListCheck() {
         </tbody>
       </table>
 
-      <div className={stylePagination.pagination}>
-        <button onClick={goPrev} disabled={nowPage === 1}> 이전 </button>
-        {pageNumbers.map((number) => (
-          <button
-            key={number}
-            onClick={() => paginate(number)}
-            className={nowPage === number ? stylePagination.active : ""}
-          >
-            {number}
-          </button>
-          
-        ))}
-        <button onClick={goNext} disabled={nowPage === totalPages}> 다음 </button>
-      </div>
+      <Pagination
+        nowPage={nowPage}
+        totalItems={register.length}
+        itemsPerPage={viewPeople}
+        limitBlock={limitBlock}
+        onPageChange={setNowPage}
+      />
     </div>
   );
 }

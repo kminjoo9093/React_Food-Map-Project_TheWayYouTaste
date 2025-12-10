@@ -3,6 +3,7 @@ import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
 import styleGlobal from "../../css/Global.module.css"
 import { useNavigate } from "react-router-dom";
+import Pagination from "../Pagination";
 
 
 function Notice({ notices }) {
@@ -15,27 +16,6 @@ function Notice({ notices }) {
   const lastMember = nowPage * viewPeople;
   const firstMember = lastMember - viewPeople;
   const nowNotice = notices.slice(firstMember, lastMember);
-
-  const totalPages = Math.ceil(notices.length / viewPeople);
-
-  const paginate = (pageNumber) => setNowPage(pageNumber);
-
-  const goPrev = () => {
-    if (nowPage > 1) setNowPage(nowPage - 1);
-  };
-
-  const goNext = () => {
-    if (nowPage < totalPages) setNowPage(nowPage + 1);
-  };
-
-  const nowBlock = Math.floor((nowPage - 1) / limitBlock);
-  const startPage = nowBlock * limitBlock + 1;
-  const endPage = Math.min(startPage + limitBlock - 1, totalPages);
-
-  const pageNumbers = [];
-  for (let i = startPage; i <= endPage; i++) {
-    pageNumbers.push(i);
-  }
 
   const handleClick = (notice) => {
     navigate("/notice/noticeDetail", { state: notice });
@@ -91,20 +71,13 @@ function Notice({ notices }) {
         </tbody>
       </table>
 
-      <div className={stylePagination.pagination}>
-        <button onClick={goPrev} disabled={nowPage === 1}> 이전 </button>
-        {pageNumbers.map((number) => (
-          <button
-            key={number}
-            onClick={() => paginate(number)}
-            className={nowPage === number ? stylePagination.active : ""}
-          >
-            {number}
-          </button>
-          
-        ))}
-        <button onClick={goNext} disabled={nowPage === totalPages}> 다음 </button>
-      </div>
+      <Pagination
+        nowPage={nowPage}
+        totalItems={notices.length}
+        itemsPerPage={viewPeople}
+        limitBlock={limitBlock}
+        onPageChange={setNowPage}
+      />
     </div>
   );
 }
