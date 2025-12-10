@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import styleGlobal from "../../css/Global.module.css";
-import styleMember from "../../css/MemberListCheck.module.css";
-import stylePagination from "../../css/Pagination.module.css";
+import styleGlobal from "../../../css/Global.module.css";
+import styleMember from "../../../css/MemberListCheck.module.css";
+import stylePagination from "../../../css/Pagination.module.css";
+import { useNavigate } from "react-router-dom";
+
 
 function ReportListCheck({ reports }) {
   const [nowPage, setNowPage] = useState(1);
+  const navigate = useNavigate();
 
   const viewPeople = 5; // 한 페이지에 보여줄 항목 수
   const limitBlock = 5; // 페이지 블록 수
@@ -24,6 +27,12 @@ function ReportListCheck({ reports }) {
 
   const pageNumbers = [];
   for (let i = startPage; i <= endPage; i++) pageNumbers.push(i);
+
+    const goDetail = (report) => {
+    navigate("/store/reportDetail", {
+      state: { ...report, isAdmin: true }   // 관리자라서 true
+    });
+  };
 
   function getDclrCatName(catNo) {
     switch(catNo) {
@@ -54,7 +63,11 @@ function ReportListCheck({ reports }) {
         </thead>
         <tbody>
           {nowReports.map((report) => (
-            <tr key={report.dclrSn}>
+             <tr 
+              key={report.dclrSn} 
+              onClick={() => goDetail(report)}       // 클릭 시 이동!
+              style={{ cursor: "pointer" }}         // 클릭 가능 표시
+            >
               <td>{report.userSn}</td> {/* 회원명은 나중에 JOIN해서 가져와야 함 */}
               <td>{report.userSn}</td>
               <td>{"user@email.com"}</td> {/* 실제 이메일도 JOIN 필요 */}

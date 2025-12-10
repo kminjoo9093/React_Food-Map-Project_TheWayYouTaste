@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styleGlobal from "../../css/Global.module.css";
-import styleReport from "../../css/Report.module.css";
+import { useNavigate, useParams } from "react-router-dom";
+import styleGlobal from "../../../css/Global.module.css";
+import styleReport from "../../../css/Report.module.css";
 
 function ReportRequest() {
   const [writer, setWriter] = useState(""); // 작성자명
@@ -12,7 +12,7 @@ function ReportRequest() {
   const [category, setCategory] = useState(""); //카테고리
 
   const navigate = useNavigate();
-
+  const { userSn } = useParams();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -35,7 +35,7 @@ function ReportRequest() {
     };
 
     const reportData = {
-      userSn: 1000, // 예시:(추후변경예정:실제로는 로그인 정보로 가져오기)
+      userSn: userSn, // 예시:(추후변경예정:실제로는 로그인 정보로 가져오기)
       bplcSn: 2001, // 예시:(추후변경예정: 매장 선택 UI에서 가져오기)
       dclrTtl: title,
       dclrCn: reason,

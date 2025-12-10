@@ -30,7 +30,7 @@ function Header(){
                 <a>지역 맛집</a>
                 <Link to = "/search/store" >지도 찾기</Link>
                 <a>가게 등록</a>
-                <Link to = "/notice"> 공지사항 </Link> 
+                <Link to = "/notice/list"> 공지사항 </Link> 
             </div>
             <div className={`${styleSiderbar.sideWrapper} ${open ? styleSiderbar.open : ""}`}>
                 <div className={styleSiderbar.dimmed} onClick={() => setOpen(false)}></div>
