@@ -8,13 +8,10 @@ import ReportListCheck from "./pages/admin/ReportListCheck";
 import RegisterListCheck from "./pages/admin/RegisterListCheck";
 import SearchStore from "./pages/search/SearchStore";
 import Notice from "./pages/main/Notice";
-<<<<<<< HEAD
-=======
 import ReportRequest from "./pages/report/ReportRequest";
 import ReportDetail from "./pages/report/ReportDetail";
 import { useEffect, useState } from "react";
-
->>>>>>> de0e72bd0b33038a7a8b45189f6957fa521bec11
+import StoreDetail from "./pages/search/StoreDetail";
 
 function TheWayYouTaste() {
   const location = useLocation();
@@ -49,6 +46,7 @@ function TheWayYouTaste() {
             <Route path="/admin/report/list"  element={<ReportListCheck reports={reports}/>}/> 
             <Route path="/admin/register/list" element={ <RegisterListCheck /> }/> 
             <Route path="/search/store" element={ <SearchStore /> }/> 
+            <Route path="/search/storeDetail" element={ <StoreDetail /> }/> 
             <Route path="/store/report" element={ <ReportRequest /> }/> 
             <Route path="/store/reportDetail" element={ <ReportDetail /> }/> 
             <Route path="/*" element={<Error404Page/>}/>

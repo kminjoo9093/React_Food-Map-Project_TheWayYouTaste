@@ -1,0 +1,71 @@
+/* 상세페이지 레이아웃 */
+.container{
+    border: 1px solid #000;
+}
+.storeInfoArea{
+    height: 60rem; /*임시높이*/
+    margin-bottom: 3rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr 1.5fr;
+    gap: 3rem;
+}
+.storeInfoArea > div{
+    border: 1px solid #000;
+}
+
+/* 상세정보 */
+.storeInfoWrap{
+    padding: 2rem;
+}
+.storeInfoWrap > span{
+    display: block;
+    margin-bottom: 1rem;
+}
+.storeNameWrap{
+    display: flex;
+    gap: 4rem;
+    margin-bottom: 3rem;
+}
+.storeName{
+    font-size: 2.4rem;
+}
+.linkWrap{
+    margin-top: 2rem;
+}
+.linkWriteReview, .linkReportStore {
+    width: 30%;
+    min-width: 15rem;
+    height: 4.2rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 4.2rem;
+    text-align: center;
+    border-radius: 4.2rem;
+    display: inline-block;
+    margin-right: 1.5rem;
+}
+.linkWriteReview{
+    background-color: var(--secondary-color);
+}
+.linkReportStore{
+    background-color: #333;
+    color: #fff;
+}
+.linkReportStore:hover{
+    color: #fff;
+}
+
+/* 이미지 */
+
+/* 메뉴, 편의정보 */
+.storeMenuWrap{
+    grid-column: 1 / -1;
+}
+
+/* 리뷰 */
+.storeReviewArea{
+    border: 1px solid #333;
+    height: 40rem; /*임시높이*/
+}
+

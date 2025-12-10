@@ -58,9 +58,7 @@ ul {
 }
 
 /* 링크 초기화 */
-a,
-a:hover,
-a:focus {
+a{
   color: inherit;
   text-decoration: none;
   cursor: pointer;
@@ -75,10 +73,14 @@ button {
 /* 컨텐츠 너비 */
 /* PC 버전 너비 */
 .container {
-  width: 60%;
+  width: 70%;
   max-width: 128rem;
+  /* min-width: 78rem; */
   margin: 0 auto;
   padding: 7rem 2rem;
+  
+  /* test */
+  /* background-color: #ddd; */
 }
 
 .heading{
