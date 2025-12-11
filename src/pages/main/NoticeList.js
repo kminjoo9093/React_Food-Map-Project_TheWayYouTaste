@@ -6,11 +6,11 @@ import { useNavigate } from "react-router-dom";
 import Pagination from "../Pagination";
 
 
-function Notice({ notices }) {
+function Notice({ notices, isAdmin }) {
   const [nowPage, setNowPage] = useState(1);
   const navigate = useNavigate();
   
-  const viewPeople = 5;
+  const viewPeople = 8;
   const limitBlock = 5;            
 
   const lastMember = nowPage * viewPeople;
@@ -29,8 +29,12 @@ function Notice({ notices }) {
         return "허위 사실 신고";
       case 3:
         return "리뷰 신고";
-      default:
+      case 4:
         return "기타 신고";
+      case 5:
+        return "서버 점검";
+      default :
+        return "대표 공지";  
     }
   }
 
@@ -39,7 +43,7 @@ function Notice({ notices }) {
       case 'Y':
         return "승인";
       default:
-        return "반려";
+        return "공지";
     }
   }
 
@@ -50,11 +54,18 @@ function Notice({ notices }) {
   return (
     <div className={styleMember.middleContainer}>
       <h1>공지사항</h1>
+      {isAdmin && (
+        <div style={{width:"85%" ,textAlign:"right" , paddingBottom:"20px"}}>
+          <button className={stylePagination.button} onClick={() => navigate("/notice/write")}>
+            공지 작성
+          </button>
+        </div>
+      )}
       <table className={styleGlobal.container}>
         <thead>
           <tr>
             <th>카테고리</th>
-            <th>승인 / 반려 표시</th>
+            <th>구분</th>
             <th>제목</th>
             <th>작성일</th>
           </tr>

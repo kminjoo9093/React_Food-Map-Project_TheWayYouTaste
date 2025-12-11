@@ -15,6 +15,7 @@ import NoticeDetail from "./pages/main/NoticeDetail";
 import StoreDetail from "./pages/search/StoreDetail";
 import NoticeMemberList from "./pages/main/NoticeMemberList";
 import NoticeMemberDetail from "./pages/main/NoticeMemberDetail";
+import NoticeWrite from "./pages/main/NoticeWrite";
 
 
 function TheWayYouTaste() {
@@ -59,8 +60,9 @@ function TheWayYouTaste() {
           <Routes>
             <Route path="/" element={<Navigate to="/main" replace />} />
             <Route path="/main" element={<MainPage />} />
-            <Route path="/notice/list" element={<NoticeList notices={notices} />} />
+            <Route path="/notice/list" element={<NoticeList notices={notices} isAdmin={true}/>} />
             <Route path="/notice/noticeDetail" element={<NoticeDetail />} />
+            <Route path="/notice/write" element={<NoticeWrite />}/>
             <Route path="/member/notice/list" element={<NoticeMemberList notices={memberNotices} />} />
             <Route path="/member/notice/noticeDetail" element={<NoticeMemberDetail />} />
             <Route path="/admin/member/list" element={<MemberListCheck />} />
