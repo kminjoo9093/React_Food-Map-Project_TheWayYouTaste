@@ -3,6 +3,7 @@ import styleGlobal from "../../../css/Global.module.css";
 import styleMember from "../../../css/MemberListCheck.module.css";
 import stylePagination from "../../../css/Pagination.module.css";
 import { useNavigate } from "react-router-dom";
+import Pagination from "../../Pagination";
 
 
 function ReportListCheck({ reports }) {
@@ -14,21 +15,11 @@ function ReportListCheck({ reports }) {
 
   const lastMember = nowPage * viewPeople;
   const firstMember = lastMember - viewPeople;
-  const nowReports = reports.slice(firstMember, lastMember);
-  const totalPages = Math.ceil(reports.length / viewPeople);
+  const pendingReports = reports.filter(r => !r.prcsYn); 
+  const nowReports = pendingReports.slice(firstMember, lastMember);
 
-  const paginate = (pageNumber) => setNowPage(pageNumber);
-  const goPrev = () => nowPage > 1 && setNowPage(nowPage - 1);
-  const goNext = () => nowPage < totalPages && setNowPage(nowPage + 1);
 
-  const nowBlock = Math.floor((nowPage - 1) / limitBlock);
-  const startPage = nowBlock * limitBlock + 1;
-  const endPage = Math.min(startPage + limitBlock - 1, totalPages);
-
-  const pageNumbers = [];
-  for (let i = startPage; i <= endPage; i++) pageNumbers.push(i);
-
-    const goDetail = (report) => {
+  const goDetail = (report) => {
     navigate("/store/reportDetail", {
       state: { ...report, isAdmin: true }   // 관리자라서 true
     });
@@ -79,23 +70,13 @@ function ReportListCheck({ reports }) {
         </tbody>
       </table>
 
-      <div className={stylePagination.pagination}>
-        <button onClick={goPrev} disabled={nowPage === 1}>
-          이전
-        </button>
-        {pageNumbers.map((number) => (
-          <button
-            key={number}
-            onClick={() => paginate(number)}
-            className={nowPage === number ? stylePagination.active : ""}
-          >
-            {number}
-          </button>
-        ))}
-        <button onClick={goNext} disabled={nowPage === totalPages}>
-          다음
-        </button>
-      </div>
+      <Pagination
+        nowPage={nowPage}
+        totalItems={nowPage.length}
+        itemsPerPage={viewPeople}
+        limitBlock={limitBlock}
+        onPageChange={setNowPage}
+      />
     </div>
   );
 }

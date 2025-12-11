@@ -27,6 +27,10 @@
     grid-template-columns: repeat(2, 48%);
     gap : 4%;
 }
+.leftContainer {
+    padding : 15px 0px;
+    text-align: left;
+}
 
 .rightContainer {
     padding-top: 30px;
