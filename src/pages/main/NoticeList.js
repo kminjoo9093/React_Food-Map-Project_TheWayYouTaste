@@ -11,7 +11,7 @@ function Notice({ notices, isAdmin }) {
 
   const navigate = useNavigate();
   
-  const viewPeople = 8;
+  const viewPeople = 1;
   const lastIndex = nowPage * viewPeople;
   const firstIndex = lastIndex - viewPeople;
 

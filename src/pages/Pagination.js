@@ -11,7 +11,9 @@ function Pagination({ nowPage, totalItems, itemsPerPage, limitBlock, onPageChang
 
   const pageNumbers = [];
   for (let i = startPage; i <= endPage; i++) pageNumbers.push(i);
-
+  const goFirst = () =>{
+    if( nowPage > 1 ) onPageChange(1);
+  };
   const goPrev = () => {
     if (nowPage > 1) onPageChange(nowPage - 1);
   };
@@ -19,10 +21,14 @@ function Pagination({ nowPage, totalItems, itemsPerPage, limitBlock, onPageChang
   const goNext = () => {
     if (nowPage < totalPages) onPageChange(nowPage + 1);
   };
+  const goLast = () =>{
+    if( nowPage < totalPages ) onPageChange(totalPages);
+  };
 
   return (
     <div className={stylePagination.pagination}>
-      <button onClick={goPrev} disabled={nowPage === 1}>이전</button>
+      <button onClick={goFirst} disabled={nowPage === 1}> {"<<"} </button>
+      <button onClick={goPrev} disabled={nowPage === 1}>{"<"}</button>
       {pageNumbers.map((number) => (
         <button
           key={number}
@@ -32,7 +38,8 @@ function Pagination({ nowPage, totalItems, itemsPerPage, limitBlock, onPageChang
           {number}
         </button>
       ))}
-      <button onClick={goNext} disabled={nowPage === totalPages}>다음</button>
+      <button onClick={goNext} disabled={nowPage === totalPages}>{">"}</button>
+      <button onClick={goLast} disabled={nowPage === totalPages}>{">>"}</button>
     </div>
   );
 }
