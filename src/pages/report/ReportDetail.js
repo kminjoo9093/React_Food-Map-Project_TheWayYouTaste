@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import styleReport from "../../css/Report.module.css";
-import styleGlobal from "../../css/Global.module.css"
+// import styleGlobal from "../../css/Global.module.css"
 
 function ReportDetail() {
   const location = useLocation();
@@ -14,8 +14,8 @@ function ReportDetail() {
 
   return (
     <div>
-      <h1 className={styleGlobal.heading}>신고 내역</h1>
-      <table className={styleGlobal.container}>
+      <h1 className="heading">신고 내역</h1>
+      <table className="container">
         <thead>
           <tr>
             <th>카테고리</th>
@@ -40,7 +40,7 @@ function ReportDetail() {
         </tbody>
       </table>
       {showDetail && 
-      <div className={styleGlobal.container}>
+      <div className="container">
         <h3>신고 사유</h3>
         <textarea className={styleReport.textarea} disabled> 
           {reason}

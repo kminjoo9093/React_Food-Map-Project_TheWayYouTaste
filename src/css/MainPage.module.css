@@ -16,8 +16,9 @@ body::before {
   backdrop-filter: blur(2px); /* (선택) 흐림 효과 */
   z-index: -1; /* 실제 내용보다 뒤로 */
 }
-.bigContainer{
 
+.mainPageContainer{
+  border: 1px solid transparent;
 }
 
 .mainFont {
@@ -39,9 +40,9 @@ h4{
   margin-bottom: 0px;
 }
 
-a {
+/* a {
   text-decoration: none;
-}
+} */
 
 .mainContainer{
   position: relative;

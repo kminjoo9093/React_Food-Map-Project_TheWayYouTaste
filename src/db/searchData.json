@@ -8,35 +8,103 @@
         ,{ "STORE_CAT_NO": "c06", "STORE_CAT": "카페"}
     ],
     "store" : [
-        { "BPLC_SN": 1, "BPLC_NM": "천황식당", "DADDR": "경남 진주시 촉석로207번길 3", "LAT": 35.19352, "LOT": 128.08411, "MENU_CAT": "한식", "AVG": 4.5, "STDG_CD": "4817010100", "SGG_DC": "48170", "CTPV_NM" : "경남", "SGG_NM" : "진주시", "STTY_EMD": "대안동" }
-        ,{ "BPLC_SN": 2, "BPLC_NM": "제일식당", "DADDR": "경남 진주시 중앙시장길 37-8", "LAT": 35.19398, "LOT": 128.08267, "MENU_CAT": "한식", "AVG": 4.2, "STDG_CD": "4817010200", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "중앙동" }
-        ,{ "BPLC_SN": 3, "BPLC_NM": "하연옥 본점", "DADDR": "경남 진주시 진양호로 435", "LAT": 35.16792, "LOT": 128.07813, "MENU_CAT": "한식", "AVG": 4.6, "STDG_CD": "4817010300", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "상대동" }
-        ,{ "BPLC_SN": 4, "BPLC_NM": "용희식당", "DADDR": "경남 진주시 동진로 33", "LAT": 35.19067, "LOT": 128.08754, "MENU_CAT": "한식", "AVG": 4.3, "STDG_CD": "4817010400", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "상대동" }
-        ,{ "BPLC_SN": 5, "BPLC_NM": "진주문고기", "DADDR": "경남 진주시 봉래로 91", "LAT": 35.19428, "LOT": 128.08242, "MENU_CAT": "한식", "AVG": 4.4, "STDG_CD": "4817010500", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "봉래동" }
-        ,{ "BPLC_SN": 6, "BPLC_NM": "송학식당", "DADDR": "경남 진주시 진양호로 393", "LAT": 35.17031, "LOT": 128.07698, "MENU_CAT": "한식", "AVG": 4.1, "STDG_CD": "4817010600", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "신안동" }
-        ,{ "BPLC_SN": 7, "BPLC_NM": "라라스시", "DADDR": "경남 진주시 충무공동 291-4", "LAT": 35.18152, "LOT": 128.10715, "MENU_CAT": "일식", "AVG": 4.3, "STDG_CD": "4817010700", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "충무공동" }
-        ,{ "BPLC_SN": 8, "BPLC_NM": "몽찌카츠", "DADDR": "경남 진주시 충무공동 289-5", "LAT": 35.18093, "LOT": 128.10794, "MENU_CAT": "일식", "AVG": 4.1, "STDG_CD": "4817010800", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "충무공동" }
-        ,{ "BPLC_SN": 9, "BPLC_NM": "차이나문 진주점", "DADDR": "경남 진주시 가좌동 1234-8", "LAT": 35.16953, "LOT": 128.11112, "MENU_CAT": "중식", "AVG": 4.0, "STDG_CD": "4817010900", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "가좌동" }
-        ,{ "BPLC_SN": 10, "BPLC_NM": "홍콩반점 진주중앙점", "DADDR": "경남 진주시 대안동 14-2", "LAT": 35.19321, "LOT": 128.08048, "MENU_CAT": "중식", "AVG": 3.9, "STDG_CD": "4817011000", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "대안동" }
-        ,{ "BPLC_SN": 11, "BPLC_NM": "스윗리브", "DADDR": "경남 진주시 초전동 987", "LAT": 35.19727, "LOT": 128.13362, "MENU_CAT": "카페", "AVG": 4.7, "STDG_CD": "4817011100", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "초전동" }
-        ,{ "BPLC_SN": 12, "BPLC_NM": "카페노마드", "DADDR": "경남 진주시 비봉로 17-1", "LAT": 35.18224, "LOT": 128.09674, "MENU_CAT": "카페", "AVG": 4.5, "STDG_CD": "4817011200", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "평거동" }
-        ,{ "BPLC_SN": 13, "BPLC_NM": "알라또레", "DADDR": "경남 진주시 진양호로 271", "LAT": 35.17761, "LOT": 128.06891, "MENU_CAT": "양식", "AVG": 4.2, "STDG_CD": "4817011300", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "신안동" }
-        ,{ "BPLC_SN": 14, "BPLC_NM": "퍼펙트버거", "DADDR": "경남 진주시 판문로 22-4", "LAT": 35.21985, "LOT": 128.07571, "MENU_CAT": "양식", "AVG": 4.4, "STDG_CD": "4817011400", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "초전동" }
-        ,{ "BPLC_SN": 15, "BPLC_NM": "라라파스타", "DADDR": "경남 진주시 충무공동 292-5", "LAT": 35.18113, "LOT": 128.10815, "MENU_CAT": "양식", "AVG": 4.1, "STDG_CD": "4817011500", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "충무공동" }
-        ,{ "BPLC_SN": 16, "BPLC_NM": "하대맛길분식", "DADDR": "경남 진주시 하대로 123", "LAT": 35.18090, "LOT": 128.10750, "MENU_CAT": "분식", "AVG": 4.2, "STDG_CD": "4817011600", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "하대동" }
-        ,{ "BPLC_SN": 17, "BPLC_NM": "초전돼지국밥", "DADDR": "경남 진주시 초전안로 45", "LAT": 35.19512, "LOT": 128.10245, "MENU_CAT": "한식", "AVG": 4.3, "STDG_CD": "4817011700", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "초전동" }
-        ,{ "BPLC_SN": 18, "BPLC_NM": "라온돈까스", "DADDR": "경남 진주시 초전로 102", "LAT": 35.19601, "LOT": 128.09985, "MENU_CAT": "일식", "AVG": 4.6, "STDG_CD": "4817011800", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "초전동" }
-        ,{ "BPLC_SN": 19, "BPLC_NM": "빨봉분식 초전점", "DADDR": "경남 진주시 초전로 88", "LAT": 35.19478, "LOT": 128.10133, "MENU_CAT": "분식", "AVG": 4.2, "STDG_CD": "4817011900", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "초전동" }
-        ,{ "BPLC_SN": 20, "BPLC_NM": "윙스타파스타", "DADDR": "경남 진주시 가좌길 32", "LAT": 35.18191, "LOT": 128.09628, "MENU_CAT": "양식", "AVG": 4.4, "STDG_CD": "4817012000", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "가좌동" }
-        ,{ "BPLC_SN": 21, "BPLC_NM": "몽돌한식뷔페", "DADDR": "경남 진주시 가좌안골길 12", "LAT": 35.18234, "LOT": 128.09755, "MENU_CAT": "한식", "AVG": 4.1, "STDG_CD": "4817012100", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "가좌동" }
-        ,{ "BPLC_SN": 22, "BPLC_NM": "가좌돈가", "DADDR": "경남 진주시 가좌로 77", "LAT": 35.18075, "LOT": 128.09540, "MENU_CAT": "한식", "AVG": 4.7, "STDG_CD": "4817012200", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "가좌동" }
-        ,{ "BPLC_SN": 23, "BPLC_NM": "사천숯불정식", "DADDR": "경남 사천시 사천대로 122", "LAT": 35.08241, "LOT": 128.08312, "MENU_CAT": "한식", "AVG": 4.6, "STDG_CD": "4824010100", "SGG_CD": "48240", "CTPV_NM": "경남", "SGG_NM": "사천시", "STTY_EMD": "사천읍" }
-        ,{ "BPLC_SN": 24, "BPLC_NM": "창원돼지한판", "DADDR": "경남 창원시 의창구 창원대로 301", "LAT": 35.25490, "LOT": 128.64021, "MENU_CAT": "한식", "AVG": 4.5, "STDG_CD": "4812110100", "SGG_CD": "48121", "CTPV_NM": "경남", "SGG_NM": "창원시 의창구", "STTY_EMD": "팔용동" }
-        ,{ "BPLC_SN": 25, "BPLC_NM": "고성참숯가든", "DADDR": "경남 고성군 고성읍 공룡로 55", "LAT": 34.97322, "LOT": 128.32288, "MENU_CAT": "한식", "AVG": 4.8, "STDG_CD": "4872031000", "SGG_CD": "48720", "CTPV_NM": "경남", "SGG_NM": "고성군", "STTY_EMD": "고성읍" }
-        ,{ "BPLC_SN": 26, "BPLC_NM": "서울정가네", "DADDR": "서울특별시 중구 세종대로 110", "LAT": 37.56642, "LOT": 126.97795, "MENU_CAT": "한식", "AVG": 4.3, "STDG_CD": "1114010100", "SGG_CD": "11140", "CTPV_NM": "서울", "SGG_NM": "중구", "STTY_EMD": "태평로1가" }
-        ,{ "BPLC_SN": 27, "BPLC_NM": "경기맛고을", "DADDR": "경기도 수원시 팔달구 정조로 825", "LAT": 37.28032, "LOT": 127.00956, "MENU_CAT": "한식", "AVG": 4.4, "STDG_CD": "4111510100", "SGG_CD": "41115", "CTPV_NM": "경기", "SGG_NM": "수원시 팔달구", "STTY_EMD": "팔달로2가" }
-        ,{ "BPLC_SN": 28, "BPLC_NM": "경북풍년식당", "DADDR": "경북 포항시 남구 중앙로 80", "LAT": 36.01830, "LOT": 129.34348, "MENU_CAT": "한식", "AVG": 4.2, "STDG_CD": "4711110100", "SGG_CD": "47111", "CTPV_NM": "경북", "SGG_NM": "포항시 남구", "STTY_EMD": "상도동" }
-        ,{ "BPLC_SN": 29, "BPLC_NM": "전북한정식담", "DADDR": "전북 전주시 완산구 전주객사3길 72", "LAT": 35.81513, "LOT": 127.14793, "MENU_CAT": "한식", "AVG": 4.5, "STDG_CD": "4511310100", "SGG_CD": "45113", "CTPV_NM": "전북", "SGG_NM": "전주시 완산구", "STTY_EMD": "중앙동" }
-        ,{ "BPLC_SN": 30, "BPLC_NM": "충남토속촌", "DADDR": "충남 천안시 동남구 만남로 33", "LAT": 36.81523, "LOT": 127.11389, "MENU_CAT": "한식", "AVG": 4.4, "STDG_CD": "4413110100", "SGG_CD": "44131", "CTPV_NM": "충남", "SGG_NM": "천안시 동남구", "STTY_EMD": "신부동" }
+        { "BPLC_SN": 1, "BPLC_NM": "천황식당", "DADDR": "경남 진주시 촉석로207번길 3", "LAT": 35.19352, "LOT": 128.08411, "MENU_CAT": "한식", "AVG": 4.5, "STDG_CD": "4817010100", "SGG_DC": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "대안동",
+        "BPLC_TELNO": "010-1111-1001", "BGNG_TM": "0900", "DDLN_TM": "2100", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 2, "BPLC_NM": "제일식당", "DADDR": "경남 진주시 중앙시장길 37-8", "LAT": 35.19398, "LOT": 128.08267, "MENU_CAT": "한식", "AVG": 4.2, "STDG_CD": "4817010200", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "중앙동",
+        "BPLC_TELNO": "010-1111-1002", "BGNG_TM": "0900", "DDLN_TM": "2100", "PK_YN": 0, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 3, "BPLC_NM": "하연옥 본점", "DADDR": "경남 진주시 진양호로 435", "LAT": 35.16792, "LOT": 128.07813, "MENU_CAT": "한식", "AVG": 4.6, "STDG_CD": "4817010300", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "상대동",
+        "BPLC_TELNO": "010-1111-1003", "BGNG_TM": "0800", "DDLN_TM": "2000", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 4, "BPLC_NM": "용희식당", "DADDR": "경남 진주시 동진로 33", "LAT": 35.19067, "LOT": 128.08754, "MENU_CAT": "한식", "AVG": 4.3, "STDG_CD": "4817010400", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "상대동",
+        "BPLC_TELNO": "010-1111-1004", "BGNG_TM": "0900", "DDLN_TM": "2100", "PK_YN": 0, "TKO_YN": 1, "PET_YN": 1 }
+        ,{ "BPLC_SN": 5, "BPLC_NM": "진주문고기", "DADDR": "경남 진주시 봉래로 91", "LAT": 35.19428, "LOT": 128.08242, "MENU_CAT": "한식", "AVG": 4.4, "STDG_CD": "4817010500", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "봉래동",
+        "BPLC_TELNO": "010-1111-1005", "BGNG_TM": "1100", "DDLN_TM": "2300", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 6, "BPLC_NM": "송학식당", "DADDR": "경남 진주시 진양호로 393", "LAT": 35.17031, "LOT": 128.07698, "MENU_CAT": "한식", "AVG": 4.1, "STDG_CD": "4817010600", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "신안동",
+        "BPLC_TELNO": "010-1111-1006", "BGNG_TM": "1000", "DDLN_TM": "2100", "PK_YN": 1, "TKO_YN": 0, "PET_YN": 0 }
+        ,{ "BPLC_SN": 7, "BPLC_NM": "라라스시", "DADDR": "경남 진주시 충무공동 291-4", "LAT": 35.18152, "LOT": 128.10715, "MENU_CAT": "일식", "AVG": 4.3, "STDG_CD": "4817010700", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "충무공동",
+        "BPLC_TELNO": "010-1111-1007", "BGNG_TM": "1100", "DDLN_TM": "2200", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 8, "BPLC_NM": "몽찌카츠", "DADDR": "경남 진주시 충무공동 289-5", "LAT": 35.18093, "LOT": 128.10794, "MENU_CAT": "일식", "AVG": 4.1, "STDG_CD": "4817010800", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "충무공동",
+        "BPLC_TELNO": "010-1111-1008", "BGNG_TM": "1100", "DDLN_TM": "2100", "PK_YN": 0, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 9, "BPLC_NM": "차이나문 진주점", "DADDR": "경남 진주시 가좌동 1234-8", "LAT": 35.16953, "LOT": 128.11112, "MENU_CAT": "중식", "AVG": 4.0, "STDG_CD": "4817010900", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "가좌동",
+        "BPLC_TELNO": "010-1111-1009", "BGNG_TM": "1100", "DDLN_TM": "2200", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 10, "BPLC_NM": "홍콩반점 진주중앙점", "DADDR": "경남 진주시 대안동 14-2", "LAT": 35.19321, "LOT": 128.08048, "MENU_CAT": "중식", "AVG": 3.9, "STDG_CD": "4817011000", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "대안동",
+        "BPLC_TELNO": "010-1111-1010", "BGNG_TM": "1100", "DDLN_TM": "2100", "PK_YN": 0, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 11, "BPLC_NM": "스윗리브", "DADDR": "경남 진주시 초전동 987", "LAT": 35.19727, "LOT": 128.13362, "MENU_CAT": "카페", "AVG": 4.7, "STDG_CD": "4817011100", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "초전동",
+        "BPLC_TELNO": "010-1111-1011", "BGNG_TM": "1100", "DDLN_TM": "2100", "PK_YN": 0, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 12, "BPLC_NM": "카페노마드", "DADDR": "경남 진주시 비봉로 17-1", "LAT": 35.18224, "LOT": 128.09674, "MENU_CAT": "카페", "AVG": 4.5, "STDG_CD": "4817011200", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "평거동",
+        "BPLC_TELNO": "010-1111-1012", "BGNG_TM": "0900", "DDLN_TM": "2200", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 1 }
+        ,{ "BPLC_SN": 13, "BPLC_NM": "알라또레", "DADDR": "경남 진주시 진양호로 271", "LAT": 35.17761, "LOT": 128.06891, "MENU_CAT": "양식", "AVG": 4.2, "STDG_CD": "4817011300", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "신안동",
+        "BPLC_TELNO": "010-1111-1013", "BGNG_TM": "1100", "DDLN_TM": "2200", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 14, "BPLC_NM": "퍼펙트버거", "DADDR": "경남 진주시 판문로 22-4", "LAT": 35.21985, "LOT": 128.07571, "MENU_CAT": "양식", "AVG": 4.4, "STDG_CD": "4817011400", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "초전동",
+        "BPLC_TELNO": "010-1111-1014", "BGNG_TM": "1100", "DDLN_TM": "2200", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 15, "BPLC_NM": "라라파스타", "DADDR": "경남 진주시 충무공동 292-5", "LAT": 35.18113, "LOT": 128.10815, "MENU_CAT": "양식", "AVG": 4.1, "STDG_CD": "4817011500", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "충무공동",
+        "BPLC_TELNO": "010-1111-1015", "BGNG_TM": "1100", "DDLN_TM": "2200", "PK_YN": 0, "TKO_YN": 1, "PET_YN": 1 }
+        ,{ "BPLC_SN": 16, "BPLC_NM": "하대맛길분식", "DADDR": "경남 진주시 하대로 123", "LAT": 35.18090, "LOT": 128.10750, "MENU_CAT": "분식", "AVG": 4.2, "STDG_CD": "4817011600", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "하대동",
+        "BPLC_TELNO": "010-1111-1016", "BGNG_TM": "1000", "DDLN_TM": "2030", "PK_YN": 0, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 17, "BPLC_NM": "초전돼지국밥", "DADDR": "경남 진주시 초전안로 45", "LAT": 35.19512, "LOT": 128.10245, "MENU_CAT": "한식", "AVG": 4.3, "STDG_CD": "4817011700", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "초전동",
+        "BPLC_TELNO": "010-1111-1017", "BGNG_TM": "0900", "DDLN_TM": "2100", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 18, "BPLC_NM": "라온돈까스", "DADDR": "경남 진주시 초전로 102", "LAT": 35.19601, "LOT": 128.09985, "MENU_CAT": "일식", "AVG": 4.6, "STDG_CD": "4817011800", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "초전동",
+        "BPLC_TELNO": "010-1111-1018", "BGNG_TM": "1100", "DDLN_TM": "2100", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 19, "BPLC_NM": "빨봉분식 초전점", "DADDR": "경남 진주시 초전로 88", "LAT": 35.19478, "LOT": 128.10133, "MENU_CAT": "분식", "AVG": 4.2, "STDG_CD": "4817011900", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "초전동",
+        "BPLC_TELNO": "010-1111-1019", "BGNG_TM": "1000", "DDLN_TM": "2030", "PK_YN": 0, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 20, "BPLC_NM": "윙스타파스타", "DADDR": "경남 진주시 가좌길 32", "LAT": 35.18191, "LOT": 128.09628, "MENU_CAT": "양식", "AVG": 4.4, "STDG_CD": "4817012000", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "가좌동",
+        "BPLC_TELNO": "010-1111-1020", "BGNG_TM": "1100", "DDLN_TM": "2200", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 21, "BPLC_NM": "몽돌한식뷔페", "DADDR": "경남 진주시 가좌안골길 12", "LAT": 35.18234, "LOT": 128.09755, "MENU_CAT": "한식", "AVG": 4.1, "STDG_CD": "4817012100", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "가좌동",
+        "BPLC_TELNO": "010-1111-1021", "BGNG_TM": "1000", "DDLN_TM": "2100", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 22, "BPLC_NM": "가좌돈가", "DADDR": "경남 진주시 가좌로 77", "LAT": 35.18075, "LOT": 128.09540, "MENU_CAT": "한식", "AVG": 4.7, "STDG_CD": "4817012200", "SGG_CD": "48170", "CTPV_NM": "경남", "SGG_NM": "진주시", "STTY_EMD": "가좌동",
+        "BPLC_TELNO": "010-1111-1022", "BGNG_TM": "1000", "DDLN_TM": "2100", "PK_YN": 1, "TKO_YN": 0, "PET_YN": 0 }
+        ,{ "BPLC_SN": 23, "BPLC_NM": "사천숯불정식", "DADDR": "경남 사천시 사천대로 122", "LAT": 35.08241, "LOT": 128.08312, "MENU_CAT": "한식", "AVG": 4.6, "STDG_CD": "4824010100", "SGG_CD": "48240", "CTPV_NM": "경남", "SGG_NM": "사천시", "STTY_EMD": "사천읍",
+        "BPLC_TELNO": "010-1111-1023", "BGNG_TM": "1000", "DDLN_TM": "2100", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 24, "BPLC_NM": "창원돼지한판", "DADDR": "경남 창원시 의창구 창원대로 301", "LAT": 35.25490, "LOT": 128.64021, "MENU_CAT": "한식", "AVG": 4.5, "STDG_CD": "4812110100", "SGG_CD": "48121", "CTPV_NM": "경남", "SGG_NM": "창원시 의창구", "STTY_EMD": "팔용동",
+        "BPLC_TELNO": "010-1111-1024", "BGNG_TM": "1000", "DDLN_TM": "2100", "PK_YN": 1, "TKO_YN": 0, "PET_YN": 0 }
+        ,{ "BPLC_SN": 25, "BPLC_NM": "고성참숯가든", "DADDR": "경남 고성군 고성읍 공룡로 55", "LAT": 34.97322, "LOT": 128.32288, "MENU_CAT": "한식", "AVG": 4.8, "STDG_CD": "4872031000", "SGG_CD": "48720", "CTPV_NM": "경남", "SGG_NM": "고성군", "STTY_EMD": "고성읍",
+        "BPLC_TELNO": "010-1111-1025", "BGNG_TM": "1000", "DDLN_TM": "2100", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 26, "BPLC_NM": "서울정가네", "DADDR": "서울특별시 중구 세종대로 110", "LAT": 37.56642, "LOT": 126.97795, "MENU_CAT": "한식", "AVG": 4.3, "STDG_CD": "1114010100", "SGG_CD": "11140", "CTPV_NM": "서울", "SGG_NM": "중구", "STTY_EMD": "태평로1가",
+        "BPLC_TELNO": "010-1111-1026", "BGNG_TM": "1000", "DDLN_TM": "2100", "PK_YN": 0, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 27, "BPLC_NM": "경기맛고을", "DADDR": "경기도 수원시 팔달구 정조로 825", "LAT": 37.28032, "LOT": 127.00956, "MENU_CAT": "한식", "AVG": 4.4, "STDG_CD": "4111510100", "SGG_CD": "41115", "CTPV_NM": "경기", "SGG_NM": "수원시 팔달구", "STTY_EMD": "팔달로2가",
+        "BPLC_TELNO": "010-1111-1027", "BGNG_TM": "1000", "DDLN_TM": "2100", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 28, "BPLC_NM": "경북풍년식당", "DADDR": "경북 포항시 남구 중앙로 80", "LAT": 36.01830, "LOT": 129.34348, "MENU_CAT": "한식", "AVG": 4.2, "STDG_CD": "4711110100", "SGG_CD": "47111", "CTPV_NM": "경북", "SGG_NM": "포항시 남구", "STTY_EMD": "상도동",
+        "BPLC_TELNO": "010-1111-1028", "BGNG_TM": "1000", "DDLN_TM": "2100", "PK_YN": 1, "TKO_YN": 0, "PET_YN": 0 }
+        ,{ "BPLC_SN": 29, "BPLC_NM": "전북한정식담", "DADDR": "전북 전주시 완산구 전주객사3길 72", "LAT": 35.81513, "LOT": 127.14793, "MENU_CAT": "한식", "AVG": 4.5, "STDG_CD": "4511310100", "SGG_CD": "45113", "CTPV_NM": "전북", "SGG_NM": "전주시 완산구", "STTY_EMD": "중앙동",
+        "BPLC_TELNO": "010-1111-1029", "BGNG_TM": "1000", "DDLN_TM": "2100", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
+        ,{ "BPLC_SN": 30, "BPLC_NM": "충남토속촌", "DADDR": "충남 천안시 동남구 만남로 33", "LAT": 36.81523, "LOT": 127.11389, "MENU_CAT": "한식", "AVG": 4.4, "STDG_CD": "4413110100", "SGG_CD": "44131", "CTPV_NM": "충남", "SGG_NM": "천안시 동남구", "STTY_EMD": "신부동",
+        "BPLC_TELNO": "010-1111-1030", "BGNG_TM": "1000", "DDLN_TM": "2100", "PK_YN": 0, "TKO_YN": 1, "PET_YN": 0 }
+    ],
+    "menu" : [
+        {   
+            "MENU_SN": 1111
+            ,"BPLC_SN": 1
+            ,"MENU_NM": "메뉴1"
+            ,"MENU_PRC": 11000
+        }
+        ,{   
+            "MENU_SN": 2222
+            ,"BPLC_SN": 1
+            ,"MENU_NM": "메뉴2"
+            ,"MENU_PRC": 12000
+        }
+        ,{   
+            "MENU_SN": 3333
+            ,"BPLC_SN": 1
+            ,"MENU_NM": "메뉴3"
+            ,"MENU_PRC": 13000
+        }
+        ,{   
+            "MENU_SN": 4444
+            ,"BPLC_SN": 1
+            ,"MENU_NM": "메뉴4"
+            ,"MENU_PRC": 14000
+        }
+        ,{   
+            "MENU_SN": 5555
+            ,"BPLC_SN": 1
+            ,"MENU_NM": "메뉴5"
+            ,"MENU_PRC": 15000
+        }
+        ,{   
+            "MENU_SN": 6666
+            ,"BPLC_SN": 1
+            ,"MENU_NM": "메뉴6"
+            ,"MENU_PRC": 16000
+        }
     ]
 }

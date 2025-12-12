@@ -2,7 +2,6 @@ import { useState } from "react";
 import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
 import registerData from "../../db/registerData.json";
-import styleGlobal from "../../css/Global.module.css"
 
 
 function Notice() {
@@ -37,9 +36,9 @@ function Notice() {
   }
 
   return (
-    <div className={styleMember.middleContainer}>
+    <div className="contentTopPosition container">
       <h1>공지사항</h1>
-      <table className={styleGlobal.container}>
+      <table>
         <thead>
           <tr>
             <th>승인 / 반려 표시</th>
@@ -60,19 +59,19 @@ function Notice() {
         </tbody>
       </table>
 
-      <div className={stylePagination.pagination}>
-        <button onClick={goPrev} disabled={nowPage === 1}> 이전 </button>
-        {pageNumbers.map((number) => (
+      <div className={`${stylePagination.pagination}`}>
+          <button onClick={goPrev} disabled={nowPage === 1} className={stylePagination.button}> 이전 </button>
+          {pageNumbers.map((number) => (
           <button
-            key={number}
-            onClick={() => paginate(number)}
-            className={nowPage === number ? stylePagination.active : ""}
+              key={number}
+              onClick={() => paginate(number)}
+              className={`${nowPage === number ? stylePagination.active : ""} ${stylePagination.button}`}
           >
-            {number}
+              {number}
           </button>
           
-        ))}
-        <button onClick={goNext} disabled={nowPage === totalPages}> 다음 </button>
+          ))}
+          <button  className={stylePagination.button} onClick={goNext} disabled={nowPage === totalPages}> 다음 </button>
       </div>
     </div>
   );

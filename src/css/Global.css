@@ -4,6 +4,7 @@
   --primary-color: #800020;
   --secondary-color: #ffab15;
   --base-color: #FFF8DC;
+  --gray-f5: #f5f5f5;
 
   /* 페이지/섹션 별 폰트 스타일 */
 
@@ -14,23 +15,14 @@
   --btn-height: 4rem;
   --btn-font-size: 1.4rem;
 
+  /* border-radius level*/
+  --radius-1: 1rem;
+
   /* 아래,위 여백(추후 수정 예정)  */
   --spacing-sm: 0.8rem;
   --spacing-md: 1.6rem;
   --spacing-lg: 3.2rem;
   --spacing-60: 6rem;
-}
-
- /* div사용별모음 */
- .doubleContainer{
-    display: grid;
-    grid-template-columns: repeat(2, 48%);
-    gap : 4%;
-}
-
-.rightContainer {
-    padding-top: 30px;
-    text-align: right;
 }
 
 * {
@@ -49,8 +41,12 @@ body {
   font-family: Arial, sans-serif;
   font-weight: 400;
   font-size: 1.5rem;
-  line-height: 1.5em;
+  /* line-height: 1em; */
   overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6{
+  margin: 0;
 }
 
 ul {
@@ -77,13 +73,56 @@ button {
   max-width: 128rem;
   /* min-width: 78rem; */
   margin: 0 auto;
-  padding: 7rem 2rem;
+  padding: 5rem 2rem;
   
   /* test */
   /* background-color: #ddd; */
 }
+.contentTopPosition{
+  margin-top: 14.6rem; /*header+menubar height*/
+}
 
+ /* div사용별모음 */
+ .doubleContainer{
+    display: grid;
+    grid-template-columns: repeat(2, 48%);
+    gap : 4%;
+}
+
+.rightContainer {
+    padding-top: 30px;
+    text-align: right;
+}
+
+/* 컨텐츠 box 스타일 */
+.contentBox{
+    border-radius: var(--radius-1);
+    box-shadow: 0 0.3rem 1rem rgba(0, 0, 0, 0.15);
+    background-color: #fff;
+}
+
+/* 제목 */
 .heading{
     font-size: 3rem;
     /* padding-block: 0rem 4rem; */
+}
+.contentHeading{
+    font-size: 2.4rem;
+    margin-block: 1.2rem;
+}
+
+
+@media (max-width: 430px){
+    html{
+        font-size: 56.25%; /* 9px = 1rem */
+    }
+    .contentTopPosition {
+      margin-top: 7rem;
+    }
+    .container {
+        width: 95%;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 4rem 1rem;
+    }
 }

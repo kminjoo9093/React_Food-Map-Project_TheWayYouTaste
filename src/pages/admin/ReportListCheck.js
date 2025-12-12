@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import styleGlobal from "../../css/Global.module.css";
 import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
 
@@ -40,8 +39,8 @@ function ReportListCheck({ reports }) {
 
   return (
     <div className={styleMember.middleContainer}>
-      <h1 className={styleGlobal.heading}>신고 내역 조회</h1>
-      <table className={styleGlobal.container}>
+      <h1 className="heading">신고 내역 조회</h1>
+      <table className="container">
         <thead>
           <tr>
             <th>회원명</th>
@@ -67,19 +66,19 @@ function ReportListCheck({ reports }) {
       </table>
 
       <div className={stylePagination.pagination}>
-        <button onClick={goPrev} disabled={nowPage === 1}>
+        <button onClick={goPrev} disabled={nowPage === 1} className={stylePagination.button}>
           이전
         </button>
         {pageNumbers.map((number) => (
           <button
             key={number}
             onClick={() => paginate(number)}
-            className={nowPage === number ? stylePagination.active : ""}
+            className={`${nowPage === number ? stylePagination.active : ""} ${stylePagination.button}`}
           >
             {number}
           </button>
         ))}
-        <button onClick={goNext} disabled={nowPage === totalPages}>
+        <button onClick={goNext} disabled={nowPage === totalPages} className={stylePagination.button}>
           다음
         </button>
       </div>

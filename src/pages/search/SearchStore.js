@@ -1,5 +1,3 @@
-import global from "../../css/Global.module.css";
-import responsive from "../../css/Responsive.module.css";
 import { Link } from "react-router-dom";
 import styleSearchStore from "../../css/SearchStore.module.css";
 import stylePagination from "../../css/Pagination.module.css";
@@ -23,7 +21,7 @@ function SearchStore(){
     let storeList = stores.map(record => {
             return {"id" : record.BPLC_SN, ...record}
         });
-    //console.log(storeList);
+    // console.log(storeList);
     
     let categoryList = categories.map(record => {
             return {"id" : record.STORE_CAT_NO, ...record}
@@ -88,12 +86,12 @@ function SearchStore(){
         pageNumbers.push(i);
     }
 
-    const indexOfLastItem = (nowPage * viewListItemNum) + 1;
+    const indexOfLastItem = nowPage * viewListItemNum;
     const indexOfStartItem = indexOfLastItem - viewListItemNum;
     const viewStoreItems = storeList.slice(indexOfStartItem, indexOfLastItem);
 
     return(
-        <div className={styleSearchStore.gridMap}>
+        <div className={`${styleSearchStore.gridMap} contentTopPosition`}>
             <div className={`${styleSearchStore.leftArea} ${isOpen ? styleSearchStore.open : ""}`} >
                 <button id="btnViewList" 
                         onClick={coverMapArea}
@@ -145,19 +143,19 @@ function SearchStore(){
                         }
                         
                     </ul>
-                    <div className={`${stylePagination.pagination} ${styleSearchStore.pagination}`}>
-                        <button onClick={goPrev} disabled={nowPage === 1}> 이전 </button>
+                    <div className={`${stylePagination.pagination}`}>
+                        <button onClick={goPrev} disabled={nowPage === 1} className={stylePagination.button}> 이전 </button>
                         {pageNumbers.map((number) => (
                         <button
                             key={number}
                             onClick={() => paginate(number)}
-                            className={nowPage === number ? stylePagination.active : ""}
+                            className={`${nowPage === number ? stylePagination.active : ""} ${stylePagination.button}`}
                         >
                             {number}
                         </button>
                         
                         ))}
-                        <button onClick={goNext} disabled={nowPage === totalPages}> 다음 </button>
+                        <button  className={stylePagination.button} onClick={goNext} disabled={nowPage === totalPages}> 다음 </button>
                     </div>
                 </div>
             </div>
