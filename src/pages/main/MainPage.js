@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import mainstyle from '../../css/MainPage.module.css';
+import styleMain from "../../css/MainPage.module.css";
+// import styleGlobal from "../../css/Global.module.css";
 import { useState } from 'react';
 import mainbody from "../../resources/img/system/main.png";
 
@@ -12,64 +13,69 @@ const foodIcons = [
   { emoji: "🍗", label: "치킨" },
 ];
 
-const icons= [
+const icons = [
   { emoji: "🐕", label: "반려동물허용" },
   { emoji: "🅿️", label: "주차" },
-  { emoji: "🥡", label: "포장" }
+  { emoji: "🥡", label: "포장" },
 ];
+
 const regionData = {
   "서울": {
     "강남구": ["삼성동", "역삼동", "청담동"],
-    "마포구": ["합정동", "서교동", "상수동"]
+    "마포구": ["합정동", "서교동", "상수동"],
   },
   "경기도": {
     "성남시": ["분당동", "정자동"],
-    "수원시": ["영통구", "장안구"]
-  }
+    "수원시": ["영통구", "장안구"],
+  },
 };
+
 function MainPage() {
   const [selectedDo, setSelectedDo] = useState("");
   const [selectedSi, setSelectedSi] = useState("");
   const [selectedDong, setSelectedDong] = useState("");
-
   const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
 
   return (
     <div className='contentTopPosition'>
-      <div className={mainstyle.mainPageContainer}>
-        <h1 className={mainstyle.mainFont}>The Way You Taste</h1>
-        <div className={mainstyle.mainContainer}>
+      <div className={styleMain.bigContainer}>
+        <h1 className={`${styleMain.mainFont} heading`}>
+          The Way You Taste
+        </h1>
+
+        <div className={styleMain.mainContainer}>
           <h3>원하시는 식당 유형을 선택해 주세요</h3>
 
           {/* 필터 버튼 */}
-          <div className={mainstyle.filterBox}>
-            <button 
-              className={mainstyle.filterBtn}
+          <div className={styleMain.filterBox}>
+            <button
+              className={styleMain.filterBtn}
               onClick={() => setIsDimmedMiddleOpen(true)}
             >
-              <span className={mainstyle.filterIcon}>📍</span>
-              <span className={mainstyle.filterText}>
-                {selectedDong ? `${selectedDo} ${selectedSi} ${selectedDong}` : "지역을 선택하세요"}
+              <span className={styleMain.filterIcon}>📍</span>
+              <span className={styleMain.filterText}>
+                {selectedDong
+                  ? `${selectedDo} ${selectedSi} ${selectedDong}`
+                  : "지역을 선택하세요"}
               </span>
-              <span className={mainstyle.arrowIcon}>▼</span>
+              <span className={styleMain.arrowIcon}>▼</span>
             </button>
           </div>
 
+          {/* 지역 선택 모달 */}
           {isDimmedMiddleOpen && (
-            <div className={mainstyle.regionDimmed}>
-              <div className={mainstyle.regionDimmedMiddle}>
+            <div className={styleMain.regionDimmed}>
+              <div className={styleMain.regionDimmedMiddle}>
                 <h2>지역 선택</h2>
-
-                <div className={mainstyle.regionContainer}>
-
-                  {/* ▼ 도 리스트 */}
-                  <div className={mainstyle.regionColumn}>
+                <div className={styleMain.regionContainer}>
+                  {/* 도 리스트 */}
+                  <div className={styleMain.regionColumn}>
                     <p>광역시/도</p>
                     {Object.keys(regionData).map((d) => (
                       <div
                         key={d}
-                        className={`${mainstyle.regionItem} ${
-                          selectedDo === d ? mainstyle.activeItem : ""
+                        className={`${styleMain.regionItem} ${
+                          selectedDo === d ? styleMain.activeItem : ""
                         }`}
                         onClick={() => {
                           setSelectedDo(d);
@@ -82,15 +88,15 @@ function MainPage() {
                     ))}
                   </div>
 
-                  {/* ▼ 시 리스트 */}
-                  <div className={mainstyle.regionColumn}>
+                  {/* 시 리스트 */}
+                  <div className={styleMain.regionColumn}>
                     <p>시/군/구</p>
                     {selectedDo &&
                       Object.keys(regionData[selectedDo]).map((s) => (
                         <div
                           key={s}
-                          className={`${mainstyle.regionItem} ${
-                            selectedSi === s ? mainstyle.activeItem : ""
+                          className={`${styleMain.regionItem} ${
+                            selectedSi === s ? styleMain.activeItem : ""
                           }`}
                           onClick={() => {
                             setSelectedSi(s);
@@ -102,15 +108,15 @@ function MainPage() {
                       ))}
                   </div>
 
-                  {/* ▼ 동 리스트 */}
-                  <div className={mainstyle.regionColumn}>
+                  {/* 동 리스트 */}
+                  <div className={styleMain.regionColumn}>
                     <p>읍/면/동</p>
                     {selectedSi &&
                       regionData[selectedDo][selectedSi].map((dong) => (
                         <div
                           key={dong}
-                          className={`${mainstyle.regionItem} ${
-                            selectedDong === dong ? mainstyle.activeItem : ""
+                          className={`${styleMain.regionItem} ${
+                            selectedDong === dong ? styleMain.activeItem : ""
                           }`}
                           onClick={() => setSelectedDong(dong)}
                         >
@@ -121,7 +127,7 @@ function MainPage() {
                 </div>
 
                 <button
-                  className={mainstyle.regionConfirm}
+                  className={styleMain.regionConfirm}
                   onClick={() => setIsDimmedMiddleOpen(false)}
                 >
                   확인
@@ -129,35 +135,42 @@ function MainPage() {
               </div>
             </div>
           )}
-            <div className={mainstyle.titleBox}>
-              <h4 className={mainstyle.sectionTitle}>업종</h4>
-            </div>
-            <div className={mainstyle.iconGrid}>
-              {foodIcons.map((item, index) => (
-                <div key={index} className={mainstyle.iconBtn}>
-                  {item.emoji}
-                  <div className={mainstyle.tooltip}>{item.label}</div>
-                </div>
-              ))}
-            </div>
-            <div className={mainstyle.titleBox}>
-              <h4 className={mainstyle.sectionTitle}>편의</h4>
-            </div>
-            <div className={mainstyle.iconGrid}>
-              {icons.map((item, index) => (
-                <div key={index} className={mainstyle.iconBtn}>
-                  {item.emoji}
-                  <div className={mainstyle.tooltip}>{item.label}</div>
-                </div>
-              ))}
-            </div>
-            <div className={mainstyle.iconRight}>
-              <div className={mainstyle.iconSearch}><Link to = "/notice">🔍검색</Link></div>
+
+          {/* 업종 */}
+          <div className={styleMain.titleBox}>
+            <h4 className={styleMain.sectionTitle}>업종</h4>
+          </div>
+          <div className={styleMain.iconGrid}>
+            {foodIcons.map((item, index) => (
+              <div key={index} className={styleMain.iconBtn}>
+                {item.emoji}
+                <div className={styleMain.tooltip}>{item.label}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* 편의 */}
+          <div className={styleMain.titleBox}>
+            <h4 className={styleMain.sectionTitle}>편의</h4>
+          </div>
+          <div className={styleMain.iconGrid}>
+            {icons.map((item, index) => (
+              <div key={index} className={styleMain.iconBtn}>
+                {item.emoji}
+                <div className={styleMain.tooltip}>{item.label}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* 검색 버튼 */}
+          <div className={styleMain.iconRight}>
+            <div className={styleMain.iconSearch}>
+              <Link to="/notice">🔍검색</Link>
             </div>
           </div>
         </div>
+      </div>
     </div>
-
   );
 }
 

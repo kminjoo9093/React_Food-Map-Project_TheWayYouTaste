@@ -1,15 +1,17 @@
 .pagination {
-    margin-top: 20px;
+    margin: 20px 0px 50px;
     display: flex;
     justify-content: center;
     gap: 5px;
     flex-wrap: wrap;
+    
 }
 
 .button {
     padding: 5px 10px;
-    border: 1px solid #ddd;
+    border: 0px solid #ddd;
     background-color: white;
+    font-size: 16px;
     cursor: pointer;
     border-radius: 4px;
 }
@@ -20,11 +22,17 @@
     border-color: #ffb92e;
 }
 
-.button:hover:not(.active) {
+button:hover:not(.active) {
     background-color: #ffe0a0;
 }
 
-.button:disabled {
+button:disabled {
     cursor: not-allowed;
     opacity: 0.5;
+}
+
+button:hover {
+    background-color: #ffb92e;
+    color:white;
+    transition: background-color 0.5s, color 0.5s;
 }

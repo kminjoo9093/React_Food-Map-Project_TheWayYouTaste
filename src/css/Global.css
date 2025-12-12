@@ -25,6 +25,22 @@
   --spacing-60: 6rem;
 }
 
+ /* div사용별모음 */
+ .doubleContainer{
+    display: grid;
+    grid-template-columns: repeat(2, 48%);
+    gap : 4%;
+}
+.leftContainer {
+    padding : 15px 0px;
+    text-align: left;
+}
+
+.rightContainer {
+    padding-top: 30px;
+    text-align: right;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -66,7 +82,7 @@ button {
   cursor: pointer;
 }
 
-/* 컨텐츠 너비 */
+/* 컨텐츠 너비, 마진 */
 /* PC 버전 너비 */
 .container {
   width: 70%;
@@ -75,23 +91,10 @@ button {
   margin: 0 auto;
   padding: 5rem 2rem;
   
-  /* test */
-  /* background-color: #ddd; */
 }
+
 .contentTopPosition{
   margin-top: 14.6rem; /*header+menubar height*/
-}
-
- /* div사용별모음 */
- .doubleContainer{
-    display: grid;
-    grid-template-columns: repeat(2, 48%);
-    gap : 4%;
-}
-
-.rightContainer {
-    padding-top: 30px;
-    text-align: right;
 }
 
 /* 컨텐츠 box 스타일 */

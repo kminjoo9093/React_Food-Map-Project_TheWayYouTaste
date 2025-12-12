@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
 import memberData from "../../db/memberData.json"; 
+import Pagination from "../Pagination";
 
 
 function MemberListCheck() {
@@ -19,27 +20,6 @@ function MemberListCheck() {
   const lastMember = nowPage * viewPeople;
   const firstMember = lastMember - viewPeople;
   const nowMembers = members.slice(firstMember, lastMember);
-
-  const totalPages = Math.ceil(members.length / viewPeople);
-
-  const paginate = (pageNumber) => setNowPage(pageNumber);
-
-  const goPrev = () => {
-    if (nowPage > 1) setNowPage(nowPage - 1);
-  };
-
-  const goNext = () => {
-    if (nowPage < totalPages) setNowPage(nowPage + 1);
-  };
-
-  const nowBlock = Math.floor((nowPage - 1) / limitBlock);
-  const startPage = nowBlock * limitBlock + 1;
-  const endPage = Math.min(startPage + limitBlock - 1, totalPages);
-
-  const pageNumbers = [];
-  for (let i = startPage; i <= endPage; i++) {
-    pageNumbers.push(i);
-  }
 
   return (
     <div className='contentTopPosition'>
@@ -71,23 +51,14 @@ function MemberListCheck() {
             ))}
           </tbody>
         </table>
-
-        <div className={stylePagination.pagination}>
-          <button onClick={goPrev} disabled={nowPage === 1} className={stylePagination.button}> 이전 </button>
-          {pageNumbers.map((number) => (
-            <button
-              key={number}
-              onClick={() => paginate(number)}
-              className={`${nowPage === number ? stylePagination.active : ""} ${stylePagination.button}`}
-            >
-              {number}
-            </button>
-
-            
-          ))}
-          <button className={stylePagination.button} onClick={goNext} disabled={nowPage === totalPages}> 다음 </button>
-        </div>
       </div>
+      <Pagination
+        nowPage={nowPage}
+        totalItems={members.length}
+        itemsPerPage={viewPeople}
+        limitBlock={limitBlock}
+        onPageChange={setNowPage}
+      />
     </div>
   );
 }

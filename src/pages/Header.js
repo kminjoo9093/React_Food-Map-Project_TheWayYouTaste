@@ -71,7 +71,7 @@ function Header(){
                         <a>가게 등록</a>
                     </li>
                     <li>
-                        <Link to = "/notice"> 공지사항 </Link> 
+                        <Link to = "/notice/list"> 공지사항 </Link> 
                     </li>
                 </ul>
 
@@ -92,7 +92,7 @@ function Header(){
                                 <Link to = "#" onClick={() => setOpenMobMenu(false)}>가게 등록</Link>
                             </li>
                             <li>
-                                <Link to = "/notice" onClick={() => setOpenMobMenu(false)}> 공지사항 </Link> 
+                                <Link to = "/notice/list" onClick={() => setOpenMobMenu(false)}> 공지사항 </Link> 
                             </li>
                         </ul>
                     </div>

@@ -4,52 +4,75 @@ import MemberListCheck from "./pages/admin/MemberListCheck"
 import MainPage from "./pages/main/MainPage"
 import Header from "./pages/Header";
 import Footer from "./pages/Footer";
-import ReportListCheck from "./pages/admin/ReportListCheck";
+import ReportListCheck from "./pages/admin/report/ReportListCheck";
 import RegisterListCheck from "./pages/admin/RegisterListCheck";
 import SearchStore from "./pages/search/SearchStore";
-import Notice from "./pages/main/Notice";
-import ReportRequest from "./pages/report/ReportRequest";
-import ReportDetail from "./pages/report/ReportDetail";
+import NoticeList from "./pages/main/NoticeList";
+import ReportRequest from "./pages/admin/report/ReportRequest";
+import ReportDetail from "./pages/admin/report/ReportDetail";
 import { useEffect, useState } from "react";
+import NoticeDetail from "./pages/main/NoticeDetail";
 import StoreDetail from "./pages/search/StoreDetail";
+import NoticeMemberList from "./pages/main/NoticeMemberList";
+import NoticeMemberDetail from "./pages/main/NoticeMemberDetail";
+import NoticeWrite from "./pages/main/NoticeWrite";
+
 
 function TheWayYouTaste() {
   const location = useLocation();
   const hideHeaderRoutes = [];
-  const hideFooter = ["/search/store"];
+  const hideFooterRoutes = ["/search/store"];
+  const hideFooter = hideFooterRoutes.includes(location.pathname);
   const hideHeader = hideHeaderRoutes.includes(location.pathname);
   
   const [reports, setReports] = useState([]);
+  const [notices, setNotices] = useState([]);
+  const [memberNotices, setMemberNotices] = useState([]);
+  const userSn = 1001; // 예시, 실제 로그인 정보로 가져오기
 
   useEffect(() => {
-    const fetchReports = async () => {
-      try {
-        const res = await fetch("http://localhost:3001/youtaste/reports");
-        const data = await res.json();
-        setReports(data);
-      } catch (err) {
-        console.error("신고 목록 로드 실패:", err);
-      }
-    };
-    fetchReports();
-  }, []);
+  const fetchData = async () => {
+    try {
+      const reportsRes = await fetch("http://localhost:3001/youtaste/reports");
+      const noticesRes = await fetch("http://localhost:3001/youtaste/notice");
+      const memberNoticesRes = await fetch(`http://localhost:3001/youtaste/member-notices?userSn=${userSn}`);
 
+      const reportsData = reportsRes.ok ? await reportsRes.json() : [];
+      const noticesData = noticesRes.ok ? await noticesRes.json() : [];
+      const memberNoticesData = memberNoticesRes.ok ? await memberNoticesRes.json() : [];
+
+      setReports(reportsData);
+      setNotices(noticesData);
+      setMemberNotices(memberNoticesData);
+
+    } catch (err) {
+      console.error("데이터 로드 중 오류:", err);
+    }
+  };
+
+  fetchData();
+}, []);
+  
   return (
      
       <div className="App">
           {!hideHeader && <Header />}
           <Routes>
-            <Route path="/" element={<Navigate to = "/main" replace/>} />
-            <Route path="/main" element={ <MainPage /> }/>
-            <Route path="/notice" element={ <Notice /> }/>
-            <Route path="/admin/member/list" element={ <MemberListCheck /> }/> 
-            <Route path="/admin/report/list"  element={<ReportListCheck reports={reports}/>}/> 
-            <Route path="/admin/register/list" element={ <RegisterListCheck /> }/> 
-            <Route path="/search/store" element={ <SearchStore /> }/> 
-            <Route path="/search/storeDetail" element={ <StoreDetail /> }/> 
-            <Route path="/store/report" element={ <ReportRequest /> }/> 
-            <Route path="/store/reportDetail" element={ <ReportDetail /> }/> 
-            <Route path="/*" element={<Error404Page/>}/>
+            <Route path="/" element={<Navigate to="/main" replace />} />
+            <Route path="/main" element={<MainPage />} />
+            <Route path="/notice/list" element={<NoticeList notices={notices} isAdmin={true}/>} />
+            <Route path="/notice/noticeDetail" element={<NoticeDetail />} />
+            <Route path="/notice/write" element={<NoticeWrite />}/>
+            <Route path="/member/notice/list" element={<NoticeMemberList notices={memberNotices} />} />
+            <Route path="/member/notice/noticeDetail" element={<NoticeMemberDetail />} />
+            <Route path="/admin/member/list" element={<MemberListCheck />} />
+            <Route path="/admin/report/list" element={<ReportListCheck reports={reports} />} />
+            <Route path="/admin/register/list" element={<RegisterListCheck />} />
+            <Route path="/search/store" element={<SearchStore />} />
+            <Route path="/search/storeDetail" element={<StoreDetail />} />
+            <Route path="/store/report/:userSn" element={<ReportRequest />} />
+            <Route path="/store/reportDetail" element={<ReportDetail setMemberNotices={setMemberNotices} />} />
+            <Route path="/*" element={<Error404Page />} />
           </Routes>
           { !hideFooter && <Footer /> }
       </div>
