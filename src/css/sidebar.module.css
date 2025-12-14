@@ -1,68 +1,162 @@
-
 .sideWrapper {
     position: fixed;
     top: 0;
     right: -100%;
-    width: 100%;
+    width: 28rem;
     height: 100vh;
-    display: flex;
+    /* display: flex; */
     z-index: 2000;
+    transition: right 0.4s;
 }
-
-.open {
+.sideWrapper.open {
     right: 0;
 }
 
-
 .dimmed {
-    flex: 1;
+    position: fixed;
+    inset: 0;
+    /* z-index: 1000; */
+    /* flex: 1; */
     background: rgba(0, 0, 0, 0.3);
+    transition: all 0.4s;
 }
-
 
 .sideBox {
-    width: 280px;
+    width: 100%;
+    height: inherit;
     background: white;
-    padding: 25px;
+    padding: 15rem 4rem 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    z-index: 2000;
+}
+.btnCloseMyMenu{
+    display: inline-block;
+    padding: 0;
+    width: 3rem;
+    height: 2.6rem;
+    background: url(../resources/img/search/iconClose.svg) no-repeat center / cover;
+    border: none;
+    position: absolute;
+    top: 2.5rem;
+    right: 2.5rem;
 }
 
-.menuList {
+.greeting{
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+}
+.myPageList {
     list-style: none;
     padding: 0;
 }
 
-.menuList li {
+.myPageList li {
     text-decoration: none;
     text-align: right;
-    padding: 12px 0;
-    font-size: 18px;
+    /* padding: 12px 0; */
+    /* font-size: 1.8rem; */
     cursor: pointer;
 }
 
-.menuList a {
+.myPageList a {
     text-decoration: none;
     color: black;
-    padding: 12px 0;
-    font-size: 18px;
+    display: block;
+    font-size: 1.8rem;
+    line-height: 3em;
     cursor: pointer;
 }
 
 .logoutBtn {
-    background: #ff4d4d;
-    color: #fff;
-    padding: 12px;
+    background: var(--primary-color);
+    padding: 1.2rem;
+    margin-top: 3rem;
     border: none;
     border-radius: 6px;
-    font-size: 16px;
+    color: #fff;
+    font-size: 1.6rem;
     cursor: pointer;
-
 }
-.tripleLine {
-    font-size: 26px;
-    margin-right: 20px;
+.btnMobMenu {
+    /* font-size: 26px;
+    margin-right: 20px; */
     cursor: pointer;
     user-select: none;
+
+    /* test */
+    display: none;
+}
+
+
+@media (max-width: 430px){
+    /* 모바일 사이드 메뉴 */
+    .mobMenuBar{
+        background-color: var(--primary-color);
+    }
+    /* 메뉴 버튼 */
+    .btnMobMenu{
+        display: block;
+        /* border: 1px solid #000; */
+        width: 3rem;
+        height: 2.6rem;
+        position: relative;
+        background: none;
+        border: none;
+        z-index: 3000;
+    }
+    .menuLine{
+        display: block;
+        width: 100%;
+        height: 0.3rem;
+        background-color: #333;
+        position: absolute;
+        left: 0;
+        transition: 0.4s;
+    }
+    .menuLine:first-child{
+        top: 0;
+    }
+    .menuLine:nth-child(2){
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .menuLine:last-child{
+        top: 100%;
+        transform: translateY(-50%);
+    }
+    .btnMobMenu.open .menuLine{
+        background-color: #fff;
+    }
+    .btnMobMenu.open .menuLine:first-child{
+        transform: rotate(45deg);
+        top: 50%;
+    }
+    .btnMobMenu.open .menuLine:nth-child(2){
+        opacity: 0;
+    }
+    .btnMobMenu.open .menuLine:last-child{
+        transform: rotate(-45deg);
+        top: 50%;
+    }
+    /* 모바일 메뉴 리스트 */
+    .mobMenuList li{
+        font-size: 2rem;
+        line-height: 3em;
+        color: #fff;
+    }
+    .mobMenuList li{
+        text-align: right;
+    }
+
+    /* 모바일 마이메뉴 */
+    .greeting{
+        font-size: 1.8rem;
+    }
+    .myPageList a{
+        font-size: 2rem;
+    }
+    .logoutBtn{
+        font-size: 1.8rem;
+    }
 }

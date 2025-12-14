@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styleGlobal from "../../../css/Global.module.css";
+// import styleGlobal from "../../../css/Global.module.css";
 import styleMember from "../../../css/MemberListCheck.module.css";
 import stylePagination from "../../../css/Pagination.module.css";
 import { useNavigate } from "react-router-dom";
@@ -39,44 +39,45 @@ function ReportListCheck({ reports }) {
   }
 
   return (
-    <div className={styleMember.middleContainer}>
-      <h1 className={styleGlobal.heading}>신고 내역 조회</h1>
-      <table className={styleGlobal.container}>
-        <thead>
-          <tr>
-            <th>회원명</th>
-            <th>ID</th>
-            <th>회원Email</th>
-            <th>신고한 가게 명</th>
-            <th>신고 제목</th>
-            <th>카테고리</th>
-          </tr>
-        </thead>
-        <tbody>
-          {nowReports.map((report) => (
-             <tr 
-              key={report.dclrSn} 
-              onClick={() => goDetail(report)}       // 클릭 시 이동!
-              style={{ cursor: "pointer" }}         // 클릭 가능 표시
-            >
-              <td>{report.userSn}</td> {/* 회원명은 나중에 JOIN해서 가져와야 함 */}
-              <td>{report.userSn}</td>
-              <td>{"user@email.com"}</td> {/* 실제 이메일도 JOIN 필요 */}
-              <td>{report.bplcSn}</td> {/* 실제 가게명도 JOIN 필요 */}
-              <td>{report.dclrTtl}</td>
-              <td>{getDclrCatName(report.dclrCatNo)}</td>
+    <div className="contentTopPosition">
+      <div className={styleMember.middleContainer}>
+        <h1 className="heading">신고 내역 조회</h1>
+        <table className="container">
+          <thead>
+            <tr>
+              <th>회원명</th>
+              <th>ID</th>
+              <th>회원Email</th>
+              <th>신고한 가게 명</th>
+              <th>신고 제목</th>
+              <th>카테고리</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <Pagination
-        nowPage={nowPage}
-        totalItems={nowPage.length}
-        itemsPerPage={viewPeople}
-        limitBlock={limitBlock}
-        onPageChange={setNowPage}
-      />
+          </thead>
+          <tbody>
+            {nowReports.map((report) => (
+              <tr 
+                key={report.dclrSn} 
+                onClick={() => goDetail(report)}       // 클릭 시 이동!
+                style={{ cursor: "pointer" }}         // 클릭 가능 표시
+              >
+                <td>{report.userSn}</td> {/* 회원명은 나중에 JOIN해서 가져와야 함 */}
+                <td>{report.userSn}</td>
+                <td>{"user@email.com"}</td> {/* 실제 이메일도 JOIN 필요 */}
+                <td>{report.bplcSn}</td> {/* 실제 가게명도 JOIN 필요 */}
+                <td>{report.dclrTtl}</td>
+                <td>{getDclrCatName(report.dclrCatNo)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <Pagination
+          nowPage={nowPage}
+          totalItems={nowPage.length}
+          itemsPerPage={viewPeople}
+          limitBlock={limitBlock}
+          onPageChange={setNowPage}
+        />
+      </div>
     </div>
   );
 }

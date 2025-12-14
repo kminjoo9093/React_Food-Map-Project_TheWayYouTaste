@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styleGlobal from "../../css/Global.module.css";
 import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
 import memberData from "../../db/memberData.json"; 
@@ -23,35 +22,36 @@ function MemberListCheck() {
   const nowMembers = members.slice(firstMember, lastMember);
 
   return (
-    <div>
-      <h1 className={styleGlobal.heading}>회원 정보 조회</h1>
-      <table className={styleGlobal.container}>
-        <thead>
-          <tr>
-            <th>회원명</th>
-            <th>ID</th>
-            <th>회원Email</th>
-            <th>신고처리여부</th>
-            <th>이용자 권한</th>
-            <th>탈퇴</th>
-          </tr>
-        </thead>
-        <tbody>
-          {nowMembers.map((member) => (
-            <tr key={member.id}>
-              <td>{member.name}</td>
-              <td>{member.id}</td>
-              <td>{member.email}</td>
-              <td>{member.reported}</td>
-              <td>{member.role}</td>
-              <td>
-                <button type="button" onClick={() => deleteMember(member.id)}>탈퇴</button>
-              </td>
+    <div className='contentTopPosition'>
+      <div className="container">
+        <h1 className="heading">회원 정보 조회</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>회원명</th>
+              <th>ID</th>
+              <th>회원Email</th>
+              <th>신고처리여부</th>
+              <th>이용자 권한</th>
+              <th>탈퇴</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-
+          </thead>
+          <tbody>
+            {nowMembers.map((member) => (
+              <tr key={member.id}>
+                <td>{member.name}</td>
+                <td>{member.id}</td>
+                <td>{member.email}</td>
+                <td>{member.reported}</td>
+                <td>{member.role}</td>
+                <td>
+                  <button type="button" onClick={() => deleteMember(member.id)}>탈퇴</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <Pagination
         nowPage={nowPage}
         totalItems={members.length}

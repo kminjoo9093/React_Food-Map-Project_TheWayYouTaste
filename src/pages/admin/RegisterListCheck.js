@@ -1,7 +1,6 @@
 import { useState } from "react";
 import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
-import styleGlobal from "../../css/Global.module.css"
 import registerData from "../../db/registerData.json";
 import Pagination from "../Pagination";
 
@@ -17,29 +16,30 @@ function RegisterListCheck() {
   const nowRegister = register.slice(firstMember, lastMember);
 
   return (
-    <div className={styleMember.middleContainer}>
-      <h1 className={styleGlobal.heading}>등록 신청 조회</h1>
-      <table className={styleGlobal.container}>
-        <thead>
-          <tr>
-            <th>회원명</th>
-            <th>ID</th>
-            <th>회원Email</th>
-            <th>상호 명</th>
-          </tr>
-        </thead>
-        <tbody>
-          {nowRegister.map((register) => (
-            <tr key={register.id}>
-              <td>{register.name}</td>
-              <td>{register.id}</td>
-              <td>{register.email}</td>
-              <td>{register.store}</td>
+    <div className='contentTopPosition'>
+      <div className={styleMember.middleContainer}>
+        <h1 className="heading">등록 신청 조회</h1>
+        <table className="container">
+          <thead>
+            <tr>
+              <th>회원명</th>
+              <th>ID</th>
+              <th>회원Email</th>
+              <th>상호 명</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-
+          </thead>
+          <tbody>
+            {nowRegister.map((register) => (
+              <tr key={register.id}>
+                <td>{register.name}</td>
+                <td>{register.id}</td>
+                <td>{register.email}</td>
+                <td>{register.store}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <Pagination
         nowPage={nowPage}
         totalItems={register.length}

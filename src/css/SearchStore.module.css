@@ -225,6 +225,8 @@
         min-width: 10rem;
         order: 1;
         font-size: 1.6rem;
+        color: #fff;
+        background-color: var(--primary-color);
         /* height: 4.8rem;
         font-size: 1.8rem;
         align-self: center;

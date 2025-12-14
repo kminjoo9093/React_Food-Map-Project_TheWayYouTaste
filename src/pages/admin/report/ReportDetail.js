@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import styleReport from "../../../css/Report.module.css";
-import styleGlobal from "../../../css/Global.module.css";
+// import styleGlobal from "../../../css/Global.module.css";
 import styleNotice from "../../../css/Notice.module.css";
 
 function ReportDetail({ setMemberNotices }) {
@@ -93,9 +93,9 @@ function ReportDetail({ setMemberNotices }) {
 
   return (
     <div>
-      <h1 className={styleGlobal.heading}>신고 내역</h1>
+      <h1 className='heading'>신고 내역</h1>
 
-      <table className={styleGlobal.container}>
+      <table className='container'>
         <thead>
           <tr>
             <th>카테고리</th>
@@ -122,14 +122,14 @@ function ReportDetail({ setMemberNotices }) {
       </table>
 
       {showDetail && (
-        <div className={styleGlobal.container}>
+        <div className='container'>
           <h3>신고 사유</h3>
           <textarea className={styleReport.textarea} disabled>
             {dclrCn}
           </textarea>
 
           {isAdmin && (
-            <div className={styleGlobal.rightContainer}>
+            <div className='rightContainer'>
               <button onClick={() => openActionBox("수리")}>수리</button>
               <button onClick={() => openActionBox("반려")}>반려</button>
             </div>

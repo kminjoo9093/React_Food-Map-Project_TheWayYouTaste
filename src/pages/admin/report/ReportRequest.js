@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import styleGlobal from "../../../css/Global.module.css";
+// import styleGlobal from "../../../css/Global.module.css";
 import styleReport from "../../../css/Report.module.css";
 
 function ReportRequest() {
@@ -64,7 +64,7 @@ function ReportRequest() {
   };
 
   return (
-    <div className={styleGlobal.container}>
+    <div className="container">
       <p>안녕하세요 여기는 신고접수페이지입니다.</p>
 
       <form onSubmit={handleSubmit}>
@@ -75,7 +75,7 @@ function ReportRequest() {
           onChange={(e) => setWriter(e.target.value)}
         />
 
-        <div className={styleGlobal.doubleContainer}>
+        <div className="doubleContainer">
           <div>
             <p>매장 상호 명</p>
             <input
@@ -118,7 +118,7 @@ function ReportRequest() {
           className={styleReport.textarea}
         />
 
-        <div className={styleGlobal.rightContainer}>
+        <div className="rightContainer">
           <button className={styleReport.button} type="submit">
             등록
           </button>

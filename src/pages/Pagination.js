@@ -27,19 +27,19 @@ function Pagination({ nowPage, totalItems, itemsPerPage, limitBlock, onPageChang
 
   return (
     <div className={stylePagination.pagination}>
-      <button onClick={goFirst} disabled={nowPage === 1}> {"<<"} </button>
-      <button onClick={goPrev} disabled={nowPage === 1}>{"<"}</button>
+      <button onClick={goFirst} disabled={nowPage === 1} className={stylePagination.button}> {"<<"} </button>
+      <button onClick={goPrev} disabled={nowPage === 1} className={stylePagination.button}>{"<"}</button>
       {pageNumbers.map((number) => (
         <button
           key={number}
           onClick={() => onPageChange(number)}
-          className={nowPage === number ? stylePagination.active : ""}
+          className={`${nowPage === number ? stylePagination.active : ""} ${stylePagination.button}`}
         >
           {number}
         </button>
       ))}
-      <button onClick={goNext} disabled={nowPage === totalPages}>{">"}</button>
-      <button onClick={goLast} disabled={nowPage === totalPages}>{">>"}</button>
+      <button onClick={goNext} disabled={nowPage === totalPages} className={stylePagination.button}>{">"}</button>
+      <button onClick={goLast} disabled={nowPage === totalPages} className={stylePagination.button}>{">>"}</button>
     </div>
   );
 }

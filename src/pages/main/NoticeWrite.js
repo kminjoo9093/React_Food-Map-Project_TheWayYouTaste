@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styleGlobal from "../../css/Global.module.css";
+// import styleGlobal from "../../css/Global.module.css";
 import styleReport from "../../css/Report.module.css";
 
 function NoticeWrite() {
@@ -50,8 +50,8 @@ function NoticeWrite() {
   };
 
   return (
-    <div className={styleGlobal.container}>
-      <h1 className={styleGlobal.heading}>공지사항 작성</h1>
+    <div className='container contentTopPosition'>
+      <h1 className='heading'>공지사항 작성</h1>
 
       <p><strong>제목</strong></p>
       <input
@@ -62,7 +62,7 @@ function NoticeWrite() {
         onChange={(e) => setTitle(e.target.value)}
       />
 
-      <div className={styleGlobal.doubleContainer}>
+      <div className='doubleContainer'>
         <div>
           <p><strong>카테고리</strong></p>
           <select
@@ -94,7 +94,7 @@ function NoticeWrite() {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
-      <div className={styleGlobal.rightContainer}>
+      <div className='rightContainer'>
         <button onClick={handleSubmit}>
           등록하기
         </button>

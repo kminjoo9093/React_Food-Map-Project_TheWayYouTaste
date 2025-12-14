@@ -20,9 +20,16 @@
   /* -webkit-backdrop-filter: blur(5px); 사파리 지원 */
   z-index: 1; /* 내용보다 위로 */
 }
+
+
+/* .mainPageContainer{
+  border: 1px solid transparent; 
+  }*/
+
 .bigContainer > * {
   position: relative; /* 내용이 overlay 위에 나오도록 */
   z-index: 2;
+
 }
 
 .mainFont {
@@ -45,9 +52,9 @@ h4{
   margin-bottom: 0px;
 }
 
-a {
+/* a {
   text-decoration: none;
-}
+} */
 
 .mainContainer{
   position: relative;

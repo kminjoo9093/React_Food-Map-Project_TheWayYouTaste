@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import styleGlobal from "../../css/Global.module.css";
+// import styleGlobal from "../../css/Global.module.css";
 import styleReport from "../../css/Report.module.css"
 import styleNotice from "../../css/Notice.module.css";
 
@@ -18,12 +18,12 @@ function NoticeMemberDetail() {
   }
 
   return (
-    <div className={styleGlobal.container}>
-      <h1 className={styleGlobal.heading}>공지사항 상세</h1>
+    <div className='container'>
+      <h1 className='heading'>공지사항 상세</h1>
       <p><strong>제목</strong></p>
       <input  type="text" value={noticeMember.notiTtl} readOnly/>
       
-      <div className={styleGlobal.leftContainer}>
+      <div className='leftContainer'>
             <div>
                 <button style={getColor(noticeMember)}readOnly>{getPrcsYn(noticeMember)}</button>
             </div>

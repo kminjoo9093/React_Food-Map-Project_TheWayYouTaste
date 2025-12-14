@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styleMain from "../../css/MainPage.module.css";
-import styleGlobal from "../../css/Global.module.css";
+// import styleGlobal from "../../css/Global.module.css";
 import { useState } from 'react';
 import mainbody from "../../resources/img/system/main.png";
 
@@ -37,9 +37,9 @@ function MainPage() {
   const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
 
   return (
-    <div>
+    <div className='contentTopPosition'>
       <div className={styleMain.bigContainer}>
-        <h1 className={`${styleMain.mainFont} ${styleGlobal.heading}`}>
+        <h1 className={`${styleMain.mainFont} heading`}>
           The Way You Taste
         </h1>
 
