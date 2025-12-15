@@ -5,9 +5,7 @@ function StoreResister() {
 
   /* 손님/사업자 선택 */
   const user = () => {}
-  const br = () => {
-
-  }
+  const br = () => {}
 
   /* 사업자번호 API */
   const [brNo, setBrNo] = useState("");
@@ -291,13 +289,12 @@ function StoreResister() {
               onChange={(e) => setOwner(e.target.value)}
             />
 
-            <label htmlFor="openDate">개업일</label><br />
+            <label>개업일</label><br />
             <input
               type="date"
               className={styleStore.inputBox}
               value={openDate}
               onChange={(e) => setOpenDate(e.target.value)}
-              id="openDate"
             /><br />
 
             <label>매장 명</label>
@@ -445,7 +442,7 @@ function StoreResister() {
             <br />
 
             {/* 이미지 업로드 */}
-            <label htmlFor="storeImg">가게 대표 이미지</label><br/>
+            <label>가게 대표 이미지</label><br/>
             {preview && (
               <div style={{ marginTop: "10px" }}>
                 <img src={preview} alt="미리보기" width="200" />
@@ -455,7 +452,6 @@ function StoreResister() {
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              id="storeImg"
             />
 
             <button className={styleStore.submit} type="submit">등록</button>
