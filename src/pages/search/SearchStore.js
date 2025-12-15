@@ -98,7 +98,7 @@ function SearchStore(){
                                     </li>
                                 ))
                             }
-                        </ul>
+                        </ul>   
                     </div>
                 </div>
                 <div className={styleSearchStore.storeListArea}>

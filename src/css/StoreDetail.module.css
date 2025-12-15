@@ -183,7 +183,7 @@
     
 }
 
-@media (max-width: 430px){
+@media (max-width: 1024px){
     .storeInfoArea{
         width: 100%;
         grid-template-columns: 1fr;
@@ -193,6 +193,21 @@
     .linkWrap, .serviceTypes{
         text-wrap: wrap;
     }
+    .storeImageWrap{
+        order: -1;
+    }
+}
+
+@media (max-width: 480px){
+    /* .storeInfoArea{
+        width: 100%;
+        grid-template-columns: 1fr;
+        grid-template-rows: 30rem 1fr 1fr;
+        gap: 3rem;
+    } */
+    /* .linkWrap, .serviceTypes{
+        text-wrap: wrap;
+    } */
     .linkWrap{
         margin-top: 3rem;
     }
@@ -205,9 +220,9 @@
     .linkWriteReview{
         margin-bottom: 1.5rem;
     }
-    .storeImageWrap{
+    /* .storeImageWrap{
         order: -1;
-    }
+    } */
     .serviceTypes > span{
         color: #777;
         padding-inline: 0.5rem;
