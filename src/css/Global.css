@@ -78,10 +78,31 @@ a{
   cursor: pointer;
 }
 
-button {
-  border: none;
+/* button {
+  border: 1px solid black;
   background-color: transparent;
   cursor: pointer;
+} */
+
+.button {
+  padding: 0.8rem 1.6rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  background-color: #80002050;
+  border-color: #ccc;
+  color: white;
+}
+
+.button:active {
+  transform: translateY(1px);
 }
 
 /* 컨텐츠 너비, 마진 */

@@ -5,6 +5,8 @@ import { useState } from "react";
 import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
 import styleRegionModal from "../../css/RegionModal.module.css";
 import RegionModal from "./RegionModal";
+import Pagination from "../Pagination";
+
 
 function SearchStore(){
 
@@ -87,28 +89,7 @@ function SearchStore(){
 
     // Pagination
     const viewListItemNum = 10;
-    const limitBlock = 5;
     const [nowPage, setNowPage] = useState(1);
-    const totalPages = Math.ceil(storeList.length / viewListItemNum);
-
-    const paginate = (pageNumber) => setNowPage(pageNumber);
-
-    const goPrev = () => {
-        if (nowPage > 1) setNowPage(nowPage - 1);
-    };
-
-    const goNext = () => {
-        if (nowPage < totalPages) setNowPage(nowPage + 1);
-    };
-
-    const nowBlock = Math.floor((nowPage - 1) / limitBlock); //0 : 1 - 5까지
-    const startPage = nowBlock * limitBlock + 1;
-    const endPage = Math.min(startPage + limitBlock - 1, totalPages);
-
-    const pageNumbers = [];
-    for (let i = startPage; i <= endPage; i++) {
-        pageNumbers.push(i);
-    }
 
     const indexOfLastItem = nowPage * viewListItemNum;
     const indexOfStartItem = indexOfLastItem - viewListItemNum;
@@ -175,20 +156,13 @@ function SearchStore(){
                         }
                         
                     </ul>
-                    <div className={`${stylePagination.pagination}`}>
-                        <button onClick={goPrev} disabled={nowPage === 1} className={stylePagination.button}> 이전 </button>
-                        {pageNumbers.map((number) => (
-                        <button
-                            key={number}
-                            onClick={() => paginate(number)}
-                            className={`${nowPage === number ? stylePagination.active : ""} ${stylePagination.button}`}
-                        >
-                            {number}
-                        </button>
-                        
-                        ))}
-                        <button  className={stylePagination.button} onClick={goNext} disabled={nowPage === totalPages}> 다음 </button>
-                    </div>
+                    <Pagination
+                        nowPage={nowPage}
+                        totalItems={storeList.length}
+                        itemsPerPage={viewListItemNum}
+                        limitBlock={5}
+                        onPageChange={setNowPage}
+                    />
                 </div>
             </div>
             <div className={styleSearchStore.mapArea}>지도</div>

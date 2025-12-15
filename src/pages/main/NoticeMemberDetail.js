@@ -18,18 +18,20 @@ function NoticeMemberDetail() {
   }
 
   return (
-    <div className='container'>
-      <h1 className='heading'>공지사항 상세</h1>
-      <p><strong>제목</strong></p>
-      <input  type="text" value={noticeMember.notiTtl} readOnly/>
-      
-      <div className='leftContainer'>
-            <div>
-                <button style={getColor(noticeMember)}readOnly>{getPrcsYn(noticeMember)}</button>
-            </div>
+    <div className='contentTopPosition'>
+      <div className="container">
+        <h1>공지사항 상세</h1>
+        <p><strong>제목</strong></p>
+        <input  type="text" value={noticeMember.notiTtl} readOnly/>
+        
+        <div className='leftContainer'>
+              <div>
+                  <button className="button" style={getColor(noticeMember)}readOnly>{getPrcsYn(noticeMember)}</button>
+              </div>
+        </div>
+        <p><strong>사유</strong></p>
+        <textarea className={styleReport.textarea} value={noticeMember.notiCn} readOnly></textarea>
       </div>
-      <p><strong>사유</strong></p>
-      <textarea className={styleReport.textarea} value={noticeMember.notiCn} readOnly></textarea>
     </div>
   );
 }
