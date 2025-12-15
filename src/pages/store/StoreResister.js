@@ -1,4 +1,3 @@
-import styleGlobal from "../../css/Global.module.css"
 import styleStore from "../../css/StoreResister.module.css"
 import { useState, useRef } from "react";
 

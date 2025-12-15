@@ -18,6 +18,7 @@ import NoticeMemberDetail from "./pages/main/NoticeMemberDetail";
 import NoticeWrite from "./pages/main/NoticeWrite";
 
 import MembershipLogin from "./pages/member/MembershipLogin";
+import StoreResister from "./pages/store/StoreResister";
 
 
 function TheWayYouTaste() {
@@ -72,10 +73,11 @@ function TheWayYouTaste() {
             <Route path="/admin/register/list" element={<RegisterListCheck />} />
             <Route path="/search/store" element={<SearchStore />} />
             <Route path="/search/storeDetail" element={<StoreDetail />} />
+            <Route path="/store/register" element={<StoreResister />} />
             <Route path="/store/report/:userSn" element={<ReportRequest />} />
             <Route path="/store/reportDetail" element={<ReportDetail setMemberNotices={setMemberNotices} />} />
-            <Route path="/*" element={<Error404Page />} />
             <Route path="/member/membership/login" element={<MembershipLogin />}/>
+            <Route path="/*" element={<Error404Page />} />
 
 
           </Routes>

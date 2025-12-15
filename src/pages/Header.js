@@ -89,7 +89,7 @@ function Header(){
                                 <Link to = "/search/store" onClick={() => setOpenMobMenu(false)}>지도 찾기</Link>
                             </li>
                             <li>
-                                <Link to = "#" onClick={() => setOpenMobMenu(false)}>가게 등록</Link>
+                                <Link to = "/store/register" onClick={() => setOpenMobMenu(false)}>가게 등록</Link>
                             </li>
                             <li>
                                 <Link to = "/notice/list" onClick={() => setOpenMobMenu(false)}> 공지사항 </Link> 
