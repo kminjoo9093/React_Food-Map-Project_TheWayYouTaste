@@ -1,0 +1,310 @@
+
+.bigContainer{
+  height: 100vh;
+  background-image: url("../resources/img/system/main.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* 스크롤해도 고정 */
+  position: relative; /* ::before 위치 기준 */
+  overflow: hidden;
+}
+.bigContainer::before {
+  content: "";
+  position: absolute; /* fixed -> absolute */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255,255,255,0.6);
+  backdrop-filter: blur(5px);
+  /* -webkit-backdrop-filter: blur(5px); 사파리 지원 */
+  z-index: 1; /* 내용보다 위로 */
+}
+
+
+/* .mainPageContainer{
+  border: 1px solid transparent; 
+  }*/
+
+.bigContainer > * {
+  position: relative; /* 내용이 overlay 위에 나오도록 */
+  z-index: 2;
+
+}
+
+.mainFont {
+  padding: 60px 0px;
+  margin: 0;
+  font-size: 50px;
+  font-weight: 900;
+  text-align: center;
+  color: black;
+  text-shadow:
+    0 0 8px rgba(247, 169, 106, 0.8),
+    0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+h1{
+  margin : 50px 0px;
+}
+
+h4{
+  margin-bottom: 0px;
+}
+
+/* a {
+  text-decoration: none;
+} */
+
+.mainContainer{
+  position: relative;
+  z-index: 1;
+  margin: 0 auto;
+  padding : 50px;
+  width: 50%;
+  height: 500px;
+  /* background-color:bisque; */
+  justify-items: center;
+  /* background-color: #ffce75; */
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.13) 0%, #b6c5c4  100%);
+  /* background: linear-gradient(180deg, #f5f5f5 0%, #ffe0b2 100%); */
+  box-shadow: 0px 6px 18px rgba(0,0,0,0.08);
+  text-align: center;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: bold;
+}
+.mainContainer p{
+  margin : 0px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 20px;
+}
+
+.iconGrid {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: repeat(7, 60px);
+  gap: 40px;
+  font-size: 30px;
+  margin: 20px 0px;
+}
+
+.iconRight {
+  justify-items: right;
+  font-size: 25px;
+  margin: 40px 0px;
+}
+
+.iconBtn {
+  position: relative;
+  text-align: center;
+  cursor: pointer;
+  padding: 10px;
+  background-color: f5f5f5;
+  border-radius: 12px;
+  transition: 0.2s;
+}
+
+/* 호버 시 아이콘 스타일 */
+.iconBtn.active,
+.iconBtn:hover {
+  background: #ffab15;
+  color: #fff;
+}
+
+/* 툴팁 스타일 */
+.iconBtn .tooltip {
+  position: absolute;
+  bottom: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.2s;
+}
+
+/* 툴팁 화살표 */
+.iconBtn .tooltip::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #333;
+}
+
+/* 마우스를 올렸을 때 툴팁 표시 */
+.iconBtn:hover .tooltip {
+  opacity: 1;
+  bottom: -45px;
+}
+.iconSearch{
+  /* background-color: #FF8F00; */
+  background-color: #ffab15;
+  border: none;
+  color: white;
+  padding: 15px 40px;
+  font-size: 18px;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 0 5px 10px #FFB74D;
+  transition: background-color 0.3s ease;
+}
+
+.iconSearch a{
+  color : black;
+  text-decoration: none;
+}
+
+.titleBox{
+  width : 660px;
+  text-align: left;
+  margin: 0px;
+}
+
+
+/* 지역 선택 필터 버튼 */
+.filterBox {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 10px 0;
+}
+
+.filterBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  background: #ffffff;
+  padding: 14px 22px;
+  border-radius: 30px;
+  font-size: 17px;
+
+  border: 1.8px solid #ff9800;
+  color: #444;
+  cursor: pointer;
+
+  box-shadow: 0 4px 10px rgba(255, 153, 0, 0.25);
+  transition: all 0.25s ease;
+}
+
+.filterBtn:hover {
+  background: #ffe0b2;
+  box-shadow: 0 6px 14px rgba(255, 153, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+.filterBtn:active {
+  transform: scale(0.98);
+}
+
+/* 아이콘 */
+.filterIcon {
+  font-size: 20px;
+}
+
+/* 선택된 텍스트 */
+.filterText {
+  flex-grow: 1;
+  text-align: left;
+  font-weight: 500;
+}
+
+/* ▼ 화살표 */
+.arrowIcon {
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+/* 화면 전체 어둡게 */
+.regionDimmed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 500;
+}
+
+.regionDimmedMiddle {
+  background: white;
+  width: 600px;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+/* 도 / 시 / 동 3컬럼 */
+.regionContainer {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.regionColumn {
+  width: 30%;
+  max-height: 300px;
+  overflow-y: auto;
+  border-right: 1px solid #ddd;
+}
+
+.regionColumn:last-child {
+  border-right: none;
+}
+
+/* 리스트 아이템 */
+.regionItem {
+  padding: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: 0.2s;
+}
+
+.regionItem:hover {
+  background: #ffe0b2;
+}
+
+.activeItem {
+  background: #ffb74d;
+  color: white;
+}
+
+/* 확인 버튼 */
+.regionConfirm {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #ff8f00;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.regionConfirm:hover {
+  background: #e67c00;
+}
+
+.regionColumn p{
+  font-size: 15px;
+}
