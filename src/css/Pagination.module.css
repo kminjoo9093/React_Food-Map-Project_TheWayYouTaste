@@ -7,7 +7,7 @@
     
 }
 
-button {
+.button {
     padding: 5px 10px;
     border: 0px solid #ddd;
     background-color: white;
@@ -22,16 +22,16 @@ button {
     border-color: #ffb92e;
 }
 
-button:hover:not(.active) {
+.button:hover:not(.active) {
     background-color: #ffe0a0;
 }
 
-button:disabled {
+.button:disabled {
     cursor: not-allowed;
     opacity: 0.5;
 }
 
-button:hover {
+.button:hover {
     background-color: #ffb92e;
     color:white;
     transition: background-color 0.5s, color 0.5s;

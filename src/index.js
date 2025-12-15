@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import './css/Global.css';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import TheWayYouTaste from './TheWayYouTaste';

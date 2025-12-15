@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
-import styleGlobal from "../../css/Global.module.css";
+// import styleGlobal from "../../css/Global.module.css";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../Pagination";
 
@@ -86,58 +86,60 @@ function Notice({ notices, isAdmin }) {
   };
 
   return (
-    <div className={styleMember.middleContainer}>
-      <h1>공지사항</h1>
+    <div className="contentTopPosition">
+      <div className={styleMember.middleContainer}>
+        <h1>공지사항</h1>
 
-      {/* 관리자만 보이는 작성 버튼 */}
-      {isAdmin && (
-        <div style={{ width: "85%", textAlign: "right", paddingBottom: "20px" }}>
-          <button
-            className={stylePagination.button}
-            onClick={() => navigate("/notice/write")}
-          >
-            공지 작성
-          </button>
-        </div>
-      )}
+        {/* 관리자만 보이는 작성 버튼 */}
+        {isAdmin && (
+          <div style={{ width: "85%", textAlign: "right", paddingBottom: "20px" }}>
+            <button
+              className="button"
+              onClick={() => navigate("/notice/write")}
+            >
+              공지 작성
+            </button>
+          </div>
+        )}
 
-      <table className={styleGlobal.container}>
-        <thead>
-          <tr>
-            <th onClick={() => handleSort("category")}>
-              카테고리 {sortConfig.key === "category" ? (sortConfig.direction === "up" ? "🔼" : "🔽") : ""}
-            </th>
-            <th onClick={() => handleSort("type")}>
-              구분 {sortConfig.key === "type" ? (sortConfig.direction === "up" ? "🔼" : "🔽") : ""}
-            </th>
-            <th onClick={() => handleSort("title")}>
-              제목 {sortConfig.key === "title" ? (sortConfig.direction === "up" ? "🔼" : "🔽") : ""}
-            </th>
-            <th onClick={() => handleSort("date")}>
-              작성일 {sortConfig.key === "date" ? (sortConfig.direction === "up" ? "🔼" : "🔽") : ""}
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {nowNotice.map((notice) => (
-            <tr key={notice.notiSn} onClick={() => handleClick(notice)}>
-              <td>{getDclrCatName(notice.dclrCatNo)}</td>
-              <td>{getPrcsYn(notice.prcsYn)}</td>
-              <td>{notice.notiTtl}</td>
-              <td>{getDate(notice.prcsRegYmd)}</td>
+        <table className='container'>
+          <thead>
+            <tr>
+              <th onClick={() => handleSort("category")}>
+                카테고리 {sortConfig.key === "category" ? (sortConfig.direction === "up" ? "🔼" : "🔽") : ""}
+              </th>
+              <th onClick={() => handleSort("type")}>
+                구분 {sortConfig.key === "type" ? (sortConfig.direction === "up" ? "🔼" : "🔽") : ""}
+              </th>
+              <th onClick={() => handleSort("title")}>
+                제목 {sortConfig.key === "title" ? (sortConfig.direction === "up" ? "🔼" : "🔽") : ""}
+              </th>
+              <th onClick={() => handleSort("date")}>
+                작성일 {sortConfig.key === "date" ? (sortConfig.direction === "up" ? "🔼" : "🔽") : ""}
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
 
-      <Pagination
-        nowPage={nowPage}
-        totalItems={sortedData.length}
-        itemsPerPage={viewPeople}
-        limitBlock={5}
-        onPageChange={setNowPage}
-      />
+          <tbody>
+            {nowNotice.map((notice) => (
+              <tr key={notice.notiSn} onClick={() => handleClick(notice)}>
+                <td>{getDclrCatName(notice.dclrCatNo)}</td>
+                <td>{getPrcsYn(notice.prcsYn)}</td>
+                <td>{notice.notiTtl}</td>
+                <td>{getDate(notice.prcsRegYmd)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <Pagination
+          nowPage={nowPage}
+          totalItems={sortedData.length}
+          itemsPerPage={viewPeople}
+          limitBlock={5}
+          onPageChange={setNowPage}
+        />
+      </div>
     </div>
   );
 }

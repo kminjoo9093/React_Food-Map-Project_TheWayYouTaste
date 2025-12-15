@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styleGlobal from "../../css/Global.module.css";
+// import styleGlobal from "../../css/Global.module.css";
 import styleMember from "../../css/MemberListCheck.module.css";
 import stylePagination from "../../css/Pagination.module.css";
 import { useNavigate } from "react-router-dom";
@@ -25,32 +25,34 @@ function NoticeMemberList({ notices }) {
   };
 
   return (
-    <div className={styleMember.middleContainer}>
-      <h1>내 신고 내역</h1>
-      <table className={styleGlobal.container}>
-        <thead>
-          <tr>
-            <th>승인 / 반려</th>
-            <th>제목</th>
-          </tr>
-        </thead>
-        <tbody>
-          {nowNotices.map((notice) => (
-            <tr key={notice.notiSn} onClick={() => handleClick(notice)}>
-              <td>{getPrcsYn(notice.prcsYn)}</td>
-              <td>{notice.notiTtl}</td>
+    <div className="contentTopPosition">
+      <div className={styleMember.middleContainer}>
+        <h1>내 신고 내역</h1>
+        <table className='container'>
+          <thead>
+            <tr>
+              <th>승인 / 반려</th>
+              <th>제목</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {nowNotices.map((notice) => (
+              <tr key={notice.notiSn} onClick={() => handleClick(notice)}>
+                <td>{getPrcsYn(notice.prcsYn)}</td>
+                <td>{notice.notiTtl}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-      <Pagination
-        nowPage={nowPage}
-        totalItems={nowNotices.length}
-        itemsPerPage={viewPeople}
-        limitBlock={limitBlock}
-        onPageChange={setNowPage}
-      />
+        <Pagination
+          nowPage={nowPage}
+          totalItems={nowNotices.length}
+          itemsPerPage={viewPeople}
+          limitBlock={limitBlock}
+          onPageChange={setNowPage}
+        />
+      </div>
     </div>
   );
 }

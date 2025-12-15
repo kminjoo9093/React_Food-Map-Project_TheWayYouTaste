@@ -1,10 +1,9 @@
-import global from "../../css/Global.module.css";
-import responsive from "../../css/Responsive.module.css";
 import { Link } from "react-router-dom";
 import styleSearchStore from "../../css/SearchStore.module.css";
 import stylePagination from "../../css/Pagination.module.css";
 import { useState } from "react";
 import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
+import Pagination from "../Pagination";
 
 function SearchStore(){
 
@@ -23,7 +22,7 @@ function SearchStore(){
     let storeList = stores.map(record => {
             return {"id" : record.BPLC_SN, ...record}
         });
-    //console.log(storeList);
+    // console.log(storeList);
     
     let categoryList = categories.map(record => {
             return {"id" : record.STORE_CAT_NO, ...record}
@@ -65,35 +64,14 @@ function SearchStore(){
 
     // Pagination
     const viewListItemNum = 10;
-    const limitBlock = 5;
     const [nowPage, setNowPage] = useState(1);
-    const totalPages = Math.ceil(storeList.length / viewListItemNum);
 
-    const paginate = (pageNumber) => setNowPage(pageNumber);
-
-    const goPrev = () => {
-        if (nowPage > 1) setNowPage(nowPage - 1);
-    };
-
-    const goNext = () => {
-        if (nowPage < totalPages) setNowPage(nowPage + 1);
-    };
-
-    const nowBlock = Math.floor((nowPage - 1) / limitBlock); //0 : 1 - 5까지
-    const startPage = nowBlock * limitBlock + 1;
-    const endPage = Math.min(startPage + limitBlock - 1, totalPages);
-
-    const pageNumbers = [];
-    for (let i = startPage; i <= endPage; i++) {
-        pageNumbers.push(i);
-    }
-
-    const indexOfLastItem = (nowPage * viewListItemNum) + 1;
+    const indexOfLastItem = nowPage * viewListItemNum;
     const indexOfStartItem = indexOfLastItem - viewListItemNum;
     const viewStoreItems = storeList.slice(indexOfStartItem, indexOfLastItem);
 
     return(
-        <div className={styleSearchStore.gridMap}>
+        <div className={`${styleSearchStore.gridMap} contentTopPosition`}>
             <div className={`${styleSearchStore.leftArea} ${isOpen ? styleSearchStore.open : ""}`} >
                 <button id="btnViewList" 
                         onClick={coverMapArea}
@@ -145,20 +123,13 @@ function SearchStore(){
                         }
                         
                     </ul>
-                    <div className={`${stylePagination.pagination} ${styleSearchStore.pagination}`}>
-                        <button onClick={goPrev} disabled={nowPage === 1}> 이전 </button>
-                        {pageNumbers.map((number) => (
-                        <button
-                            key={number}
-                            onClick={() => paginate(number)}
-                            className={nowPage === number ? stylePagination.active : ""}
-                        >
-                            {number}
-                        </button>
-                        
-                        ))}
-                        <button onClick={goNext} disabled={nowPage === totalPages}> 다음 </button>
-                    </div>
+                    <Pagination
+                        nowPage={nowPage}
+                        totalItems={storeList.length}
+                        itemsPerPage={viewListItemNum}
+                        limitBlock={5}
+                        onPageChange={setNowPage}
+                    />
                 </div>
             </div>
             <div className={styleSearchStore.mapArea}>지도</div>

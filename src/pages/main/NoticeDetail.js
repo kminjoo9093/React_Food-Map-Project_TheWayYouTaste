@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import styleGlobal from "../../css/Global.module.css";
+// import styleGlobal from "../../css/Global.module.css";
 import styleReport from "../../css/Report.module.css"
 import styleNotice from "../../css/Notice.module.css";
 
@@ -46,11 +46,11 @@ function NoticeDetail() {
   }
 
   return (
-    <div className={styleGlobal.container}>
-      <h1 className={styleGlobal.heading}>공지사항 상세</h1>
+    <div className='container contentTopPosition'>
+      <h1 className='heading'>공지사항 상세</h1>
       <p><strong>제목</strong></p>
       <input  type="text" value={notice.notiTtl} readOnly/>
-      <div className={styleGlobal.doubleContainer}>
+      <div className='doubleContainer'>
         <div>
           <p><strong>카테고리</strong> </p>
           <input  type="text" value={getDclrCatName(notice.dclrCatNo)} readOnly/>
@@ -63,9 +63,10 @@ function NoticeDetail() {
       <p><strong>사유</strong> </p>
       <textarea className={styleReport.textarea} value={notice.notiCn} readOnly></textarea>
 
-      <div className={styleGlobal.rightContainer}>
+      <div className='rightContainer'>
         {isAdmin && (
-          <button 
+          <button
+            className="button" 
             style={{ backgroundColor: "#ff5c5c", color: "white", marginTop: "20px" }}
             onClick={handleDelete}
           >

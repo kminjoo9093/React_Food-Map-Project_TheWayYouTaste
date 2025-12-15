@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import styleGlobal from "../../css/Global.module.css";
+// import styleGlobal from "../../css/Global.module.css";
 import styleReport from "../../css/Report.module.css"
 import styleNotice from "../../css/Notice.module.css";
 
@@ -18,18 +18,20 @@ function NoticeMemberDetail() {
   }
 
   return (
-    <div className={styleGlobal.container}>
-      <h1 className={styleGlobal.heading}>공지사항 상세</h1>
-      <p><strong>제목</strong></p>
-      <input  type="text" value={noticeMember.notiTtl} readOnly/>
-      
-      <div className={styleGlobal.leftContainer}>
-            <div>
-                <button style={getColor(noticeMember)}readOnly>{getPrcsYn(noticeMember)}</button>
-            </div>
+    <div className='contentTopPosition'>
+      <div className="container">
+        <h1>공지사항 상세</h1>
+        <p><strong>제목</strong></p>
+        <input  type="text" value={noticeMember.notiTtl} readOnly/>
+        
+        <div className='leftContainer'>
+              <div>
+                  <button className="button" style={getColor(noticeMember)}readOnly>{getPrcsYn(noticeMember)}</button>
+              </div>
+        </div>
+        <p><strong>사유</strong></p>
+        <textarea className={styleReport.textarea} value={noticeMember.notiCn} readOnly></textarea>
       </div>
-      <p><strong>사유</strong></p>
-      <textarea className={styleReport.textarea} value={noticeMember.notiCn} readOnly></textarea>
     </div>
   );
 }

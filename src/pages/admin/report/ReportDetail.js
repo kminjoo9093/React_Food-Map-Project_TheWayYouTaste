@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import styleReport from "../../../css/Report.module.css";
-import styleGlobal from "../../../css/Global.module.css";
+import styleMember from "../../../css/MemberListCheck.module.css";
 import styleNotice from "../../../css/Notice.module.css";
 
 function ReportDetail({ setMemberNotices }) {
@@ -92,85 +92,87 @@ function ReportDetail({ setMemberNotices }) {
   };
 
   return (
-    <div>
-      <h1 className={styleGlobal.heading}>신고 내역</h1>
+    <div className="contentTopPosition">
+      <div className={styleMember.middleContainer}>
+        <h1>신고 내역</h1>
 
-      <table className={styleGlobal.container}>
-        <thead>
-          <tr>
-            <th>카테고리</th>
-            <th>매장</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>자세히보기</th>
-          </tr>
-        </thead>
+          <table className='container' style={{marginBottom : "100px"}}>
+            <thead>
+              <tr>
+                <th>카테고리</th>
+                <th>매장</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>자세히보기</th>
+              </tr>
+            </thead>
 
-        <tbody>
-          <tr>
-            <td>{getDclrCatName(dclrCatNo)}</td>
-            <td>{storeName || bplcSn}</td>
-            <td>{dclrTtl}</td>
-            <td>{userSn}</td>
-            <td>
-              <button onClick={() => setShowDetail(!showDetail)}>
-                자세히 보기
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            <tbody>
+              <tr>
+                <td>{getDclrCatName(dclrCatNo)}</td>
+                <td>{storeName || bplcSn}</td>
+                <td>{dclrTtl}</td>
+                <td>{userSn}</td>
+                <td>
+                  <button onClick={() => setShowDetail(!showDetail)} className="button"> 
+                    자세히 보기
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
-      {showDetail && (
-        <div className={styleGlobal.container}>
-          <h3>신고 사유</h3>
-          <textarea className={styleReport.textarea} disabled>
-            {dclrCn}
-          </textarea>
+          {showDetail && (
+            <div className='container'>
+              <h3>신고 사유</h3>
+              <textarea className={styleReport.textarea} disabled>
+                {dclrCn}
+              </textarea>
 
-          {isAdmin && (
-            <div className={styleGlobal.rightContainer}>
-              <button onClick={() => openActionBox("수리")}>수리</button>
-              <button onClick={() => openActionBox("반려")}>반려</button>
+              {isAdmin && (
+                <div className='rightContainer'>
+                  <button onClick={() => openActionBox("수리")} className="button">수리</button>
+                  <button onClick={() => openActionBox("반려")} className="button">반려</button>
+                </div>
+              )}
             </div>
           )}
-        </div>
-      )}
 
-      {isActionBoxOpen && (
-        <div className={styleNotice.popupDimmed}>
-          <div className={styleNotice.popupBox}>
-            <h2>{actionType} 처리</h2>
-            <p>제목:</p>
-            <input
-              type="text"
-              className={styleNotice.popupInput}
-              value={noticeTitle}
-              onChange={(e) => setNoticeTitle(e.target.value)}
-              placeholder="제목을 입력하세요"
-            />
-            <p>날짜: {new Date().toLocaleDateString()}</p>
-            <p>카테고리 : {getDclrCatName(dclrCatNo)}</p>
-            <textarea
-              className={styleNotice.popupTextarea}
-              placeholder="사유를 작성하세요"
-              value={actionReason}
-              onChange={(e) => setActionReason(e.target.value)}
-            />
-            <div className={styleNotice.popupButtonGroup}>
-              <button
-                className={styleNotice.confirmBtn}
-                onClick={() => handleSubmit(noticeTitle)}
-              >
-                등록
-              </button>
-              <button className={styleNotice.cancelBtn} onClick={closeActionBox}>
-                취소
-              </button>
+          {isActionBoxOpen && (
+            <div className={styleNotice.popupDimmed}>
+              <div className={styleNotice.popupBox}>
+                <h2>{actionType} 처리</h2>
+                <p>제목:</p>
+                <input
+                  type="text"
+                  className={styleNotice.popupInput}
+                  value={noticeTitle}
+                  onChange={(e) => setNoticeTitle(e.target.value)}
+                  placeholder="제목을 입력하세요"
+                />
+                <p>날짜: {new Date().toLocaleDateString()}</p>
+                <p>카테고리 : {getDclrCatName(dclrCatNo)}</p>
+                <textarea
+                  className={styleNotice.popupTextarea}
+                  placeholder="사유를 작성하세요"
+                  value={actionReason}
+                  onChange={(e) => setActionReason(e.target.value)}
+                />
+                <div className={styleNotice.popupButtonGroup}>
+                  <button
+                    className={styleNotice.confirmBtn}
+                    onClick={() => handleSubmit(noticeTitle)}
+                  >
+                    등록
+                  </button>
+                  <button className={styleNotice.cancelBtn} onClick={closeActionBox}>
+                    취소
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          )}
+      </div>
     </div>
   );
 }
