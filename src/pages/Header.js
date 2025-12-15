@@ -11,8 +11,8 @@ function Header(){
     const [openMyMenu, setOpenMyMenu] = useState(false);
 
     // 임시 login state
-    //const [isLogin, setIsLogin] = useState(true); ////로그인 O => My page 보임
-    const [isLogin, setIsLogin] = useState(false); //로그인 X
+    const [isLogin, setIsLogin] = useState(true); ////로그인 O => My page 보임
+    //const [isLogin, setIsLogin] = useState(false); //로그인 X
 
     //모바일 메뉴 버튼 state
     const [openMobMenu, setOpenMobMenu] = useState(false);
@@ -68,7 +68,7 @@ function Header(){
                         <Link to = "/search/store" >지도 찾기</Link>
                     </li>
                     <li>
-                        <a>가게 등록</a>
+                        <Link to = "/store/register" >가게 등록</Link>
                     </li>
                     <li>
                         <Link to = "/notice/list"> 공지사항 </Link> 

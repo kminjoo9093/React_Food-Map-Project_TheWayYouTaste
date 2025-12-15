@@ -1,7 +1,7 @@
-import styleStore from "../../css/StoreResister.module.css"
+import styleStore from "../../css/StoreRegister.module.css"
 import { useState, useRef } from "react";
 
-function StoreResister() {
+function StoreRegister() {
 
   /* 손님/사업자 선택 */
   const user = () => {}
@@ -298,7 +298,8 @@ function StoreResister() {
               value={openDate}
               onChange={(e) => setOpenDate(e.target.value)}
               id="openDate"
-            /><br />
+            />
+            <br></br><br></br>
 
             <label>매장 명</label>
             <input
@@ -365,7 +366,9 @@ function StoreResister() {
             </div>
 
             {/* 카테고리 */}
+            <br></br>
             <label htmlFor="menuCat">카테고리</label>
+            <br></br><br></br>
             <select
               id="menuCat"
               className={styleStore.inputBox}
@@ -384,6 +387,7 @@ function StoreResister() {
             </select><br />
             
             {/* 편의시설 */}
+            <br></br>
             <p>편의사항</p>
             {convenienceList.map((item) => (
               <label
@@ -466,4 +470,4 @@ function StoreResister() {
   );
 }
 
-export default StoreResister;
+export default StoreRegister;
