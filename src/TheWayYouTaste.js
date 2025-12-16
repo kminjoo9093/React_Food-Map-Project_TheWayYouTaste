@@ -76,7 +76,7 @@ function TheWayYouTaste() {
             <Route path="/admin/report/list" element={<ReportListCheck reports={reports} />} />
             <Route path="/admin/register/list" element={<RegisterListCheck registerAdmin={registerAdmin}/>} />
             <Route path="/store/register" element={<StoreRegister />} />
-            <Route path="/store/registerDetail" element={<RegisterDetail />} />
+            <Route path="/store/registerDetail" element={<RegisterDetail setMemberNotices={setMemberNotices}/>} />
             <Route path="/search/store" element={<SearchStore />} />
             <Route path="/search/storeDetail" element={<StoreDetail />} />
             <Route path="/store/report/:userSn" element={<ReportRequest />} />

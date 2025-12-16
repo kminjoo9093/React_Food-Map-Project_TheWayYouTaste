@@ -47,7 +47,7 @@ function RegisterListCheck({ registerAdmin }) {
                 onClick={() => goDetail(registerAdmin)}       // 클릭 시 이동!
                 style={{ cursor: "pointer" }} 
               >
-                <td>{registerAdmin.usersn}</td>
+                <td>{registerAdmin.rprsvNm}</td>
                 <td>{registerAdmin.usersn}</td>
                 <td>{registerAdmin.bplcNm}</td>
                 <td>{getDate(registerAdmin.prcsRegYmd)}</td>
