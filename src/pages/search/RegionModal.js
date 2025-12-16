@@ -1,11 +1,74 @@
 import styleRegionModal from "../../css/RegionModal.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
 
-function RegionModal({isModalOpen, setIsModalOpen}){
-    const [selectedDo, setSelectedDo] = useState("");
-    const [selectedSi, setSelectedSi] = useState("");
-    const [selectedDong, setSelectedDong] = useState("");
+function RegionModal({isModalOpen, setIsModalOpen, selectedDo, setSelectedDo, selectedSi, setSelectedSi, selectedDong, setSelectedDong, onConfirm
+                        , doName, setDoName, siName, setSiName, dongName, setDongName
+    }){
+    // const [selectedDo, setSelectedDo] = useState();
+    // const [selectedSi, setSelectedSi] = useState(null);
+    // const [selectedDong, setSelectedDong] = useState(null);
+
     // const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(isModalOpen);
+
+    const sidoData = UseSearchStoreFetch("http://localhost:3001/sido");
+    const sigunguData = UseSearchStoreFetch(selectedDo ? `http://localhost:3001/sigungu?sidoCode=${selectedDo}` : null);
+    const dongData = UseSearchStoreFetch(selectedSi ? `http://localhost:3001/dong?sigunguCode=${selectedSi}` : null);
+
+    // console.log("herehere", dongData);
+
+    let sidoList = sidoData.map(record => {
+        return {"id" : record.sidoCode, ...record}
+    });
+    
+    let sigunguList = sigunguData.map(record => {
+        return {"id" : record.sigunguCode, ...record}
+    });
+
+    let dongDataList;
+    try {
+        let dongList = dongData[0].dongList;
+        dongDataList = dongList.map(record => {
+            record =  {id : record.dongCode, ...record};
+            return record;
+        });
+    } catch (error) {
+        dongDataList = [];
+    }
+    // console.log("here:", dongList);
+    //console.log("시도 리스트:", sidoList);
+    useEffect(()=>{
+        console.log("선택된 시도 코드 :" , selectedDo);
+    }, [selectedDo]);
+
+    useEffect(()=>{
+        console.log("선택된 시군구 코드 :" , selectedSi);
+    }, [selectedSi]);
+
+    useEffect(()=>{
+        console.log("선택된 동 코드 :" , selectedDong);
+    }, [selectedDong]);
+
+    function handleSelectDo(sidoCode, sidoName){
+        setSelectedDo(sidoCode);
+        setDoName(sidoName);
+        setSelectedSi(null);
+        setSiName("");
+        setSelectedDong(null);
+        setDongName("");
+    }
+
+    function handleSelectSi(sigunguCode, siName){
+        setSelectedSi(sigunguCode);
+        setSiName(siName);
+        setSelectedDong(null);
+        setDongName("");
+    }
+
+    function handleSelectDong(dongCode, dongName){
+        setSelectedDong(dongCode);
+        setDongName(dongName);
+    }
 
     return (
         <>
@@ -21,107 +84,88 @@ function RegionModal({isModalOpen, setIsModalOpen}){
                         <div className={styleRegionModal.regionColumn}>
                                 <h3 className={styleRegionModal.title}>광역시/도</h3>
                                 <ul className={styleRegionModal.regionList} >
-                                    <li id="경남" className={styleRegionModal.regionItem}>경남</li>
-                                    <li id="경북" className={styleRegionModal.regionItem}>경북</li>
-                                    <li id="경기" className={styleRegionModal.regionItem}>경기</li>
+                                    <li className={`${styleRegionModal.regionItem} 
+                                                    ${selectedDo === null ? styleRegionModal.activeItem : ""}`} 
+                                        onClick={()=>handleSelectDo(null)}>전체</li>
+                                    {
+                                        sidoList.map(record => (
+                                            <li key={record.id} 
+                                                className={`${styleRegionModal.regionItem}
+                                                            ${selectedDo === record.sidoCode 
+                                                                ? styleRegionModal.activeItem : ""}
+                                                `}
+                                                onClick={()=> handleSelectDo(record.sidoCode, record.sidoName)}
+                                                >
+                                                {record.sidoName}
+                                            </li>
+                                        ))
+                                        
+                                    }
                                 </ul>
-                                {/* {Object.keys(regionData).map((d) => (
-                                <div
-                                        key={d}
-                                        className={`${styleMain.regionItem} ${
-                                        selectedDo === d ? styleMain.activeItem : ""
-                                        }`}
-                                        onClick={() => {
-                                        setSelectedDo(d);
-                                        setSelectedSi("");
-                                        setSelectedDong("");
-                                        }}
-                                    >
-                                        {d}
-                                </div>
-                                ))} */}
                         </div>
 
                         {/* 시 리스트 */}
                         <div className={styleRegionModal.regionColumn}>
                             <h3 className={styleRegionModal.title}>시/군/구</h3>
-                            <ul className={styleRegionModal.regionList} >
-                                <li id="진주시" className={styleRegionModal.regionItem}>진주시</li>
-                                <li id="사천시" className={styleRegionModal.regionItem}>사천시</li>
-                                <li id="통영시" className={styleRegionModal.regionItem}>통영시</li>
-                                <li id="통영시" className={styleRegionModal.regionItem}>통영시</li>
-                                <li id="통영시" className={styleRegionModal.regionItem}>통영시</li>
-                                <li id="통영시" className={styleRegionModal.regionItem}>통영시</li>
-                                <li id="통영시" className={styleRegionModal.regionItem}>통영시</li>
-                                <li id="통영시" className={styleRegionModal.regionItem}>통영시</li>
-                                <li id="통영시" className={styleRegionModal.regionItem}>통영시</li>
-                                <li id="통영시" className={styleRegionModal.regionItem}>통영시</li>
-                                <li id="통영시" className={styleRegionModal.regionItem}>통영시</li>
-                                <li id="통영시" className={styleRegionModal.regionItem}>통영시</li>
-                                <li id="통영시" className={styleRegionModal.regionItem}>통영시</li>
-                                <li id="통영시" className={styleRegionModal.regionItem}>통영시</li>
-                                <li id="통영시" className={styleRegionModal.regionItem}>통영시</li>
-                                <li id="통영시" className={styleRegionModal.regionItem}>통영시</li>
-                                <li id="통영시" className={styleRegionModal.regionItem}>통영시</li>
-                            </ul>
-                            {/* {selectedDo &&
-                            Object.keys(regionData[selectedDo]).map((s) => (
-                                <div
-                                key={s}
-                                className={`${styleMain.regionItem} ${
-                                    selectedSi === s ? styleMain.activeItem : ""
-                                }`}
-                                onClick={() => {
-                                    setSelectedSi(s);
-                                    setSelectedDong("");
-                                }}
-                                >
-                                {s}
-                                </div>
-                            ))} */}
+                            {selectedDo && 
+                                <ul className={styleRegionModal.regionList} >
+                                    <li className={`${styleRegionModal.regionItem} 
+                                                    ${selectedSi === null ? styleRegionModal.activeItem : ""}`} 
+                                        onClick={()=>handleSelectSi(null)}>전체</li>
+                                    {
+                                        sigunguList.map(record => (
+                                            <li key={record.id} 
+                                                className={`${styleRegionModal.regionItem}
+                                                                ${selectedSi === record.sigunguCode 
+                                                                    ? styleRegionModal.activeItem : ""}
+                                                    `}
+                                                onClick={()=> handleSelectSi(record.sigunguCode, record.sigunguName)}
+                                                >
+                                                {record.sigunguName}
+                                            </li>
+                                        ))
+                                        
+                                    }
+                                </ul>
+                            }
+                        
                         </div>
 
                         {/* 동 리스트 */}
                         <div className={styleRegionModal.regionColumn}>
                             <h3 className={styleRegionModal.title}>읍/면/동</h3>
-                            <ul className={styleRegionModal.regionList} >
-                                <li id="충무공동" className={styleRegionModal.regionItem}>충무공동</li>
-                                <li id="상대동" className={styleRegionModal.regionItem}>상대동</li>
-                                <li id="가좌동" className={styleRegionModal.regionItem}>가좌동</li>
-                                <li id="가좌동" className={styleRegionModal.regionItem}>가좌동</li>
-                                <li id="가좌동" className={styleRegionModal.regionItem}>가좌동</li>
-                                <li id="가좌동" className={styleRegionModal.regionItem}>가좌동</li>
-                                <li id="가좌동" className={styleRegionModal.regionItem}>가좌동</li>
-                                <li id="가좌동" className={styleRegionModal.regionItem}>가좌동</li>
-                                <li id="가좌동" className={styleRegionModal.regionItem}>가좌동</li>
-                                <li id="가좌동" className={styleRegionModal.regionItem}>가좌동</li>
-                                <li id="가좌동" className={styleRegionModal.regionItem}>가좌동</li>
-                                <li id="가좌동" className={styleRegionModal.regionItem}>가좌동</li>
-                            </ul>
-                            {/* {selectedSi &&
-                            regionData[selectedDo][selectedSi].map((dong) => (
-                                <div
-                                key={dong}
-                                className={`${styleMain.regionItem} ${
-                                    selectedDong === dong ? styleMain.activeItem : ""
-                                }`}
-                                onClick={() => setSelectedDong(dong)}
-                                >
-                                {dong}
-                                </div>
-                            ))} */}
+                            {selectedSi && 
+                                <ul className={styleRegionModal.regionList} >
+                                    <li className={`${styleRegionModal.regionItem} 
+                                                    ${selectedDong === null ? styleRegionModal.activeItem : ""}`} 
+                                        onClick={()=>handleSelectDong(null)}>전체</li>
+                                    {
+                                        dongDataList.map(record => (
+                                        <li key={record.id} 
+                                            className={`${styleRegionModal.regionItem}
+                                                        ${selectedDong === record.dongCode 
+                                                            ? styleRegionModal.activeItem : ""}
+                                                        `}
+                                            onClick={()=> handleSelectDong(record.dongCode, record.dongName)}
+                                            >
+                                            {record.dongName}
+                                        </li>
+                                        ))
+                                    }
+                                </ul>
+                            }
                         </div>
                     </div>
 
                     <div className={styleRegionModal.bottomWrap}>
                         <button
                         className={styleRegionModal.regionConfirm}
-                        onClick={() => setIsModalOpen(false)}
+                        onClick={onConfirm}
                         >
                         확인
                         </button>
                     </div>
-                    <button className={styleRegionModal.btnClose} onClick={() => setIsModalOpen(false)}></button>
+                    <button className={styleRegionModal.btnClose} onClick={()=>setIsModalOpen(false)}></button>
                 </div>
             </div>
         )}

@@ -6,6 +6,7 @@ export default function UseSearchStoreFetch(url){
     useEffect(
         ()=>{
             const fetchData = async() => {
+                if(!url) return;
                 try{
                     // const url = "http://localhost:3001/store";
                     const res = await fetch(url);
@@ -17,7 +18,7 @@ export default function UseSearchStoreFetch(url){
                     //console.log(data);
                     setData(data);
                 } catch(err){
-                    console.error("when getting data, has error - " + err);
+                    console.error("when getting data, has error : " + err);
                 }
             }
             fetchData();
