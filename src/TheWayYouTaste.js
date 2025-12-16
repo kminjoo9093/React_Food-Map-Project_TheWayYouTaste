@@ -17,6 +17,8 @@ import NoticeMemberList from "./pages/main/NoticeMemberList";
 import NoticeMemberDetail from "./pages/main/NoticeMemberDetail";
 import NoticeWrite from "./pages/main/NoticeWrite";
 
+import MembershipLogin from "./pages/member/MembershipLogin";
+
 
 function TheWayYouTaste() {
   const location = useLocation();
@@ -28,7 +30,7 @@ function TheWayYouTaste() {
   const [reports, setReports] = useState([]);
   const [notices, setNotices] = useState([]);
   const [memberNotices, setMemberNotices] = useState([]);
-  const userSn = 1001; // 예시, 실제 로그인 정보로 가져오기
+  const userSn = 1000; // 예시, 실제 로그인 정보로 가져오기
 
   useEffect(() => {
   const fetchData = async () => {
@@ -73,6 +75,9 @@ function TheWayYouTaste() {
             <Route path="/store/report/:userSn" element={<ReportRequest />} />
             <Route path="/store/reportDetail" element={<ReportDetail setMemberNotices={setMemberNotices} />} />
             <Route path="/*" element={<Error404Page />} />
+            <Route path="/member/membership/login" element={<MembershipLogin />}/>
+
+
           </Routes>
           { !hideFooter && <Footer /> }
       </div>

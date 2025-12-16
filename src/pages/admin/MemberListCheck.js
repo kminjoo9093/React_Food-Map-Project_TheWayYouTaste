@@ -9,7 +9,6 @@ function MemberListCheck() {
   const [members, setMembers] = useState(memberData.members); 
   const [nowPage, setNowPage] = useState(1);
   const viewPeople = 5;
-  const limitBlock = 5;            
 
   const deleteMember = (id) => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
@@ -56,7 +55,7 @@ function MemberListCheck() {
         nowPage={nowPage}
         totalItems={members.length}
         itemsPerPage={viewPeople}
-        limitBlock={limitBlock}
+        limitBlock={5}
         onPageChange={setNowPage}
       />
     </div>

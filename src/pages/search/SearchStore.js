@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
 import styleRegionModal from "../../css/RegionModal.module.css";
 import RegionModal from "./RegionModal";
+import Pagination from "../Pagination";
+
 
 function SearchStore(){
 
@@ -253,7 +255,6 @@ function SearchStore(){
 
     // Pagination
     const viewListItemNum = 10;
-    const limitBlock = 5;
     const [nowPage, setNowPage] = useState(1);
     const totalPages = Math.ceil(newFilteredStoreList.length / viewListItemNum);
 
@@ -345,20 +346,13 @@ function SearchStore(){
                         }
                         
                     </ul>
-                    <div className={`${stylePagination.pagination}`}>
-                        <button onClick={goPrev} disabled={nowPage === 1} className={stylePagination.button}> 이전 </button>
-                        {pageNumbers.map((number) => (
-                        <button
-                            key={number}
-                            onClick={() => paginate(number)}
-                            className={`${nowPage === number ? stylePagination.active : ""} ${stylePagination.button}`}
-                        >
-                            {number}
-                        </button>
-                        
-                        ))}
-                        <button  className={stylePagination.button} onClick={goNext} disabled={nowPage === totalPages}> 다음 </button>
-                    </div>
+                    <Pagination
+                        nowPage={nowPage}
+                        totalItems={storeList.length}
+                        itemsPerPage={viewListItemNum}
+                        limitBlock={5}
+                        onPageChange={setNowPage}
+                    />
                 </div>
             </div>
             <div className={styleSearchStore.mapArea}>지도</div>

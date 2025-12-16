@@ -11,8 +11,8 @@ function Header(){
     const [openMyMenu, setOpenMyMenu] = useState(false);
 
     // 임시 login state
-    const [isLogin, setIsLogin] = useState(true); ////로그인 O => My page 보임
-    //const [isLogin, setIsLogin] = useState(false); //로그인 X
+    //const [isLogin, setIsLogin] = useState(true); ////로그인 O => My page 보임
+    const [isLogin, setIsLogin] = useState(false); //로그인 X
 
     //모바일 메뉴 버튼 state
     const [openMobMenu, setOpenMobMenu] = useState(false);
@@ -77,7 +77,7 @@ function Header(){
 
                 {/* mobile menu sidebar */}
                 {/* dimmed */}
-                {(openMobMenu || openMyMenu) && (<div className={styleSidebar.dimmed} onClick={() => setOpenMobMenu(false)}></div>)}
+                {(openMobMenu || openMyMenu) && (<div className={styleSidebar.dimmed} onClick={closeAllSideMenu}></div>)}
                 <div className={`${styleSidebar.sideWrapper} ${openMobMenu ? styleSidebar.open : ""}`}>
                     <div className={`${styleSidebar.sideBox} ${styleSidebar.mobMenuBar}`}>
                         {handleLoginState()}

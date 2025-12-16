@@ -94,7 +94,7 @@ function StoreDetail(){
                         </ul>
                         <div className={styleStoreDetail.linkWrap}>
                             <Link to="#" className={styleStoreDetail.linkWriteReview}>리뷰 작성</Link>
-                            <Link to="#" className={styleStoreDetail.linkReportStore}>신고</Link>
+                            <Link to="/store/report/:userSn" className={styleStoreDetail.linkReportStore}>신고</Link>
                         </div>
                     </div>
                     <div className={`${styleStoreDetail.storeImageWrap} contentBox`}>

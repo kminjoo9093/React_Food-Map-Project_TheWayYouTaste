@@ -90,6 +90,7 @@ header{
     font-weight: 500;
     cursor: pointer;
     color: var(--primary-color);
+    border: none;
 }
 
 /* Menubar */

@@ -11,7 +11,7 @@ function Notice({ notices, isAdmin }) {
 
   const navigate = useNavigate();
   
-  const viewPeople = 1;
+  const viewPeople = 5;
   const lastIndex = nowPage * viewPeople;
   const firstIndex = lastIndex - viewPeople;
 
@@ -94,7 +94,7 @@ function Notice({ notices, isAdmin }) {
         {isAdmin && (
           <div style={{ width: "85%", textAlign: "right", paddingBottom: "20px" }}>
             <button
-              className={stylePagination.button}
+              className="button"
               onClick={() => navigate("/notice/write")}
             >
               공지 작성

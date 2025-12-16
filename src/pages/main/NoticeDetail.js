@@ -65,7 +65,8 @@ function NoticeDetail() {
 
       <div className='rightContainer'>
         {isAdmin && (
-          <button 
+          <button
+            className="button" 
             style={{ backgroundColor: "#ff5c5c", color: "white", marginTop: "20px" }}
             onClick={handleDelete}
           >
