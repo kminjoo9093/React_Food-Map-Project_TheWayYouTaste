@@ -32,7 +32,7 @@ function TheWayYouTaste() {
   const [notices, setNotices] = useState([]);
   const [registerAdmin, setRegisterAdmin] = useState([]);
   const [memberNotices, setMemberNotices] = useState([]);
-  const userSn = 1000; // 예시, 실제 로그인 정보로 가져오기
+  const userSn = 1002; // 예시, 실제 로그인 정보로 가져오기
 
   useEffect(() => {
   const fetchData = async () => {

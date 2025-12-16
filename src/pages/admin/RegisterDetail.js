@@ -517,7 +517,7 @@ const handleAddressSearch = async () => {
                   placeholder="제목을 입력하세요"
                 />
                 <p>날짜: {new Date().toLocaleDateString()}</p>
-                <p>카테고리 : {getDclrCatName(category)}</p>
+                <p>카테고리 : {getDclrCatName(6)}</p>
                 <textarea
                   className={styleNotice.popupTextarea}
                   placeholder="사유를 작성하세요"
