@@ -6,9 +6,7 @@ import starFill from "../../resources/img/search/iconStarFill.svg";
 import starHalf from "../../resources/img/search/iconStarHalf.svg";
 import ReviewRegister from "../../pages/review/ReviewRegister";
 
-function StoreDetail(){
-
-    const [isOpen, setIsOpen] = useState(false);
+function StoreDetail({storeList, storeId}){
 
     const menuData = [
         {   
