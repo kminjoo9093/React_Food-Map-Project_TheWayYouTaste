@@ -4,7 +4,7 @@ import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
 import starFill from "../../resources/img/search/iconStarFill.svg";
 import starHalf from "../../resources/img/search/iconStarHalf.svg";
 
-function StoreDetail(){
+function StoreDetail({storeList, storeId}){
     const menuData = [
         {   
             "MENU_SN": 1111
