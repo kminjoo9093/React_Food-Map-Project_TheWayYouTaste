@@ -12,6 +12,10 @@
     height: inherit;
     box-shadow: 1rem 0 3rem rgba(0, 0, 0, 0.1);
 }
+.mapArea{
+    border: 1px solid red;
+    /* background-color: #000; */
+}
 .btnViewList{
     display: none;
 }
@@ -47,7 +51,7 @@
     border-radius: 4.8rem;
     color: #fff;
     background-color: var(--secondary-color);
-    /* border: none; */
+    border: none;
 }
 
 /* 음식 카테고리 */
@@ -68,7 +72,8 @@
     vertical-align: middle;
     padding-inline: 0.3em;
     border-radius: 3.2rem;
-    /* border: 2px solid transparent; */
+    border: 2px solid var(--yellow-ffe);
+    background-color: #fff;
 }
 .categoryList button:hover{
     color: inherit;
@@ -109,6 +114,7 @@
     font-weight: 500;
     background-color: var(--primary-color);
     border-radius: 5px;
+    border: none;
 }
 
 /* 초기화 버튼 */
@@ -124,6 +130,7 @@
     align-items: center;
     justify-content: center; */
     margin-right: 1rem;
+    background-color: #fff;
     transition: all 0.4s;
 }
 .btnResetFilter::before{
