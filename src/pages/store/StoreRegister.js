@@ -17,7 +17,7 @@ function StoreResister() {
   const checkBusiness = async () => {
     setBrError(null);
     setBrResult(null);
-
+    //2025 12 17 10시 30분 commit
     if (!brNo) {
       setBrError("사업자등록번호를 입력해주세요.");
       return;
