@@ -1,10 +1,15 @@
 import styleStoreDetail from "../../css/StoreDetail.module.css";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
 import starFill from "../../resources/img/search/iconStarFill.svg";
 import starHalf from "../../resources/img/search/iconStarHalf.svg";
+import ReviewRegister from "../../pages/review/ReviewRegister";
 
 function StoreDetail(){
+
+    const [isOpen, setIsOpen] = useState(false);
+
     const menuData = [
         {   
             "MENU_SN": 1111
@@ -93,7 +98,7 @@ function StoreDetail(){
                             </li>
                         </ul>
                         <div className={styleStoreDetail.linkWrap}>
-                            <Link to="#" className={styleStoreDetail.linkWriteReview}>리뷰 작성</Link>
+                            <button className={styleStoreDetail.linkWriteReview} onClick={() => setIsOpen(true)}>리뷰 작성</button>
                             <Link to="/store/report/:userSn" className={styleStoreDetail.linkReportStore}>신고</Link>
                         </div>
                     </div>
@@ -114,6 +119,7 @@ function StoreDetail(){
                 <section className={`${styleStoreDetail.storeReviewArea}`}>
                     <h3 className="contentHeading">리뷰</h3>
                 </section>
+                <ReviewRegister isOpen={isOpen} onClose={() => setIsOpen(false)} />
             </div>
         </div>
     )
