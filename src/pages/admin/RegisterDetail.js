@@ -400,7 +400,7 @@ const handleAddressSearch = async () => {
               <input
                 type="text"
                 placeholder="도로명 주소"
-                value={roadAddress}
+                value={detailAddress}
                 onChange={(e) => setRoadAddress(e.target.value)}
                 readOnly
               />
