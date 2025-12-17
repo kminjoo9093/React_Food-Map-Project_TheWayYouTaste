@@ -326,6 +326,7 @@ const isFormValid =
                     value={brNo}
                     onChange={(e) => setBrNo(e.target.value)}
                     placeholder='"-" 제외 10자리 숫자 입력'
+                    readOnly={brResult?.status === "인증되었습니다" ? true : false}
                   />
                   <button
                     className={`${styleStore.brNoBtn} ${styleStore.button}`}
