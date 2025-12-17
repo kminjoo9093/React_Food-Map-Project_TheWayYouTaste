@@ -10,10 +10,10 @@
     flex-direction: column;
     min-width: 30rem;
     height: inherit;
-    box-shadow: 1rem 0 3rem rgba(0, 0, 0, 0.1);
+    box-shadow: 1rem 0 3rem rgba(0, 0, 0, 0.3);
 }
 .mapArea{
-    border: 1px solid red;
+    /* border: 1px solid red; */
     height: 100%;
     /* background-color: #000; */
 }
@@ -68,21 +68,21 @@
 }
 .categoryList button{
     width: 70%;
-    height: 3.2rem;
+    height: 3.5rem;
     font-size: 1.5rem;
     vertical-align: middle;
-    padding-inline: 0.3em;
+    padding: 0 0.3em;
     border-radius: 3.2rem;
     border: 2px solid var(--yellow-ffe);
     background-color: #fff;
 }
 .categoryList button:hover{
     color: inherit;
+    border-color: var(--yellow-ffe);
 }
+.categoryList button:hover,
 .categoryList button.active{
     background-color: var(--yellow-ffe);
-    /* background-color: var(--base-color);
-    border-color: var(--secondary-color); */
 }
 .categoryEmoji{
     font-style: normal;
