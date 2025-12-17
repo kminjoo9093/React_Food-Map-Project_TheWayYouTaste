@@ -1,4 +1,4 @@
-import styleStore from "../../css/storeresister.module.css";
+import styleStore from "../../css/StoreRegister.module.css"
 import { useState, useRef } from "react";
 
 function StoreResister() {

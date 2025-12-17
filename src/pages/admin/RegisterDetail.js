@@ -68,6 +68,9 @@ function RegisterDetail({ setMemberNotices }) {
   const [roadAddress, setRoadAddress] = useState("");
   const [detailAddress, setDetailAddress] = useState("");
 
+  const [lat, setLat] = useState(""); // 위도
+  const [lot, setLot] = useState(""); // 경도
+
 const handleAddressSearch = async () => {
   if (!roadAddress) {
     alert("주소를 입력해주세요.");
@@ -88,10 +91,10 @@ const handleAddressSearch = async () => {
 
     if (data.documents && data.documents.length > 0) {
       const doc = data.documents[0];
-      const lat = doc.y; // 위도
-      const lng = doc.x; // 경도
+      setLat(doc.y); // 위도
+      setLot(doc.x); // 경도
 
-      setDetailAddress(`위도: ${lat}, 경도: ${lng}`);
+      setDetailAddress(`위도: ${doc.y}, 경도: ${doc.x}`);
     } else {
       setDetailAddress("주소를 찾을 수 없습니다.");
     }
@@ -107,6 +110,7 @@ const handleAddressSearch = async () => {
   const [closeTime, setCloseTime] = useState("");
   const [storeName, setStoreName] = useState("");
   const [category, setCategory] = useState("");
+
 
   /* 편의 사항 */
   const convenienceList = [
@@ -232,7 +236,9 @@ const handleAddressSearch = async () => {
   const updateData = {
     prcsYn: prcsYnValue,
     notiTtl: title,
-    notiCn: actionReason
+    notiCn: actionReason,
+    lat: lat, 
+    lot: lot
   };
 
   try {

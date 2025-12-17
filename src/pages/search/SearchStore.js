@@ -3,6 +3,7 @@ import styleSearchStore from "../../css/SearchStore.module.css";
 import { useEffect, useState } from "react";
 import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
 import Pagination from "../Pagination";
+import RegionModal from "./RegionModal";
 import MapComponent from "./MapComponent";
 
 function SearchStore(){
