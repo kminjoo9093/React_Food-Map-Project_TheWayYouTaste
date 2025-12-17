@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
 import Pagination from "../Pagination";
 import MapComponent from "./MapComponent";
+import RegionModal from "./RegionModal";
 
 function SearchStore(){
 
