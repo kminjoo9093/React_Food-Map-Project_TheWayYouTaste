@@ -1,13 +1,9 @@
 import { Link } from "react-router-dom";
-import stylePagination from "../../css/Pagination.module.css";
 import styleSearchStore from "../../css/SearchStore.module.css";
 import { useEffect, useState } from "react";
 import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
-import styleRegionModal from "../../css/RegionModal.module.css";
-import RegionModal from "./RegionModal";
 import Pagination from "../Pagination";
 import MapComponent from "./MapComponent";
-
 
 function SearchStore(){
 
@@ -69,7 +65,6 @@ function SearchStore(){
                             const currentSigunguCode = currentDongCode.slice(0, 5);
                             const currerntSidoCode = currentSigunguCode.slice(0, 2);
                             console.log("시군구 코드 -> ", currentSigunguCode);
-
                             //사용자 위치 기반 시군구 전체 리스트
                             let list = await getStoreList(`http://localhost:3001/store?SGG_CD=${currentSigunguCode}`);
                             setStoreListByRegion(list);
@@ -148,6 +143,7 @@ function SearchStore(){
     let categoryList = categoryData.map(record => {
             return {"id" : record.STORE_CAT_NO, ...record}
         });
+
     //console.log("카테고리 리스트: ", categoryList);
 
     const foodIcons = {
@@ -162,6 +158,7 @@ function SearchStore(){
     function renderCategoryEmoji(category){
         return <i className={styleSearchStore.categoryEmoji}>{foodIcons[category]}</i>
     }
+
 
     function onSelectCategory(category){
         //이미 선택된 카테고리면 빼고, 아니면 넣기
@@ -297,10 +294,10 @@ function SearchStore(){
                     {/* <img src={arrow} alt="목록 펼쳐보기"/> */}
                 </button>
                 <div className={styleSearchStore.filterArea}>
-                    {/* <div className={styleSearchStore.filterTopWrap}> */}
-                        {/* <button className={styleSearchStore.btnResetFilter} onClick={resetFilter}>초기화</button> */}
-                        <button className={styleSearchStore.btnRegion} onClick={() => setIsDimmedMiddleOpen(true)}>지역 설정</button>
-                    {/* </div> */}
+                    <div className={styleSearchStore.filterTopWrap}>
+                        <button className={styleSearchStore.btnResetFilter} onClick={resetFilter}>초기화</button>
+                        <button className={styleSearchStore.btnRegion}>지역 설정</button>
+                    </div>
                     <div className={styleSearchStore.filterBottomWrap}>
                         <ul className={styleSearchStore.categoryList}>
                             {
@@ -328,6 +325,7 @@ function SearchStore(){
                             <button className={styleSearchStore.btnResetFilter} onClick={resetFilter}>초기화</button>
                             <button className={styleSearchStore.btnSearch} onClick={()=>onClickSearchBtn()}>검색</button>
                         </div>
+
                     </div>
                 </div>
                 <div className={styleSearchStore.storeListArea}>
