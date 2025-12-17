@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-// import styleGlobal from "../../../css/Global.module.css";
+import { useState } from "react";
 import styleMember from "../../../css/MemberListCheck.module.css";
-import stylePagination from "../../../css/Pagination.module.css";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../../Pagination";
 

@@ -1,3 +1,35 @@
+input[type=button] {
+  padding: 0.8rem 1.6rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+} 
+button {
+  padding: 0.8rem 1.6rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background-color: #80002050;
+  border-color: #ccc;
+  color: white;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+
 .storeContainer{
     width: 60%;
     margin: 0 auto;
@@ -106,6 +138,7 @@
     margin-left: 1rem;
     width: 6rem;
     height: 4rem;
+    padding: 0px;
 }
 
 .addBox{
