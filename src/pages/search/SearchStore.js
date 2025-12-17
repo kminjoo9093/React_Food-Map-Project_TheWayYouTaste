@@ -296,8 +296,7 @@ function SearchStore(){
                 </button>
                 <div className={styleSearchStore.filterArea}>
                     <div className={styleSearchStore.filterTopWrap}>
-                        <button className={styleSearchStore.btnResetFilter} onClick={resetFilter}>초기화</button>
-                        <button className={styleSearchStore.btnRegion}>지역 설정</button>
+                        <button className={styleSearchStore.btnRegion} onClick={() => setIsDimmedMiddleOpen(true)}>지역 설정</button>
                     </div>
                     <div className={styleSearchStore.filterBottomWrap}>
                         <ul className={styleSearchStore.categoryList}>
@@ -334,7 +333,9 @@ function SearchStore(){
                         {
                             viewStoreItems.map(record => {
                                 return (<li key={record.BPLC_SN} className={styleSearchStore.storeListItem}>
-                                        <Link to="/search/storeDetail" className={styleSearchStore.storeListLink}>
+                                        <Link to="/search/storeDetail" className={styleSearchStore.storeListLink}
+                                              storeList={newFilteredStoreList} storeId={record.BPLC_SN}
+                                        >
                                             <img className={styleSearchStore.storeImg} src="#" />
                                             <div className={styleSearchStore.storeInfo}>
                                                 <h2 className={styleSearchStore.storeName}>{record.BPLC_NM}</h2>

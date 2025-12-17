@@ -84,7 +84,7 @@ function TheWayYouTaste() {
             <Route path="/store/reportDetail" element={<ReportDetail setMemberNotices={setMemberNotices} />} />
             <Route path="/member/membership/login" element={<MembershipLogin />}/>
             <Route path="/*" element={<Error404Page />} />
-
+            
 
           </Routes>
           { !hideFooter && <Footer /> }

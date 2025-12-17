@@ -1,15 +1,12 @@
 import styleStoreDetail from "../../css/StoreDetail.module.css";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
 import starFill from "../../resources/img/search/iconStarFill.svg";
 import starHalf from "../../resources/img/search/iconStarHalf.svg";
 import ReviewRegister from "../../pages/review/ReviewRegister";
 
-function StoreDetail(){
-
+function StoreDetail({storeList, storeId}){
     const [isOpen, setIsOpen] = useState(false);
-
     const menuData = [
         {   
             "MENU_SN": 1111
