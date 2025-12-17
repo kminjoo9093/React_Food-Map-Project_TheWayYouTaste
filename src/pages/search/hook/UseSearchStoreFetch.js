@@ -8,7 +8,6 @@ export default function UseSearchStoreFetch(url){
             const fetchData = async() => {
                 if(!url) return;
                 try{
-                    // const url = "http://localhost:3001/store";
                     const res = await fetch(url);
                     if(!res.ok){
                         throw new Error(`Http error! status : ${res.status}`);

@@ -1,7 +1,8 @@
+
 import styleStore from "../../css/StoreRegister.module.css";
 import { useState, useRef } from "react";
 
-function StoreResister() {
+function StoreRegister() {
   /* 손님/사업자 선택 */
   const [registerType, setRegisterType] = useState(null);
   const user = () => setRegisterType("USER");
@@ -570,4 +571,4 @@ const isFormValid =
   );
 }
 
-export default StoreResister;
+export default StoreRegister;
