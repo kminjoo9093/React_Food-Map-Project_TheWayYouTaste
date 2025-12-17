@@ -6,6 +6,7 @@ import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
 import styleRegionModal from "../../css/RegionModal.module.css";
 import RegionModal from "./RegionModal";
 import Pagination from "../Pagination";
+import MapComponent from "./MapComponent";
 
 
 function SearchStore(){
@@ -29,6 +30,8 @@ function SearchStore(){
     const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
     //test
     const [storeListByRegion, setStoreListByRegion] = useState([]);//맨처음 받아오는 사용자 위치 기반 시군구 전체 맛집리스트
+    const [lat, setLat] = useState(); //위도, Y
+    const [lng, setLng] = useState(); //경도, X
 
     //test - 현재 위치 기반 시도, 시군구 코드
     const LOCAL_API_KEY = "bd23a565a07fd608d593c2c99d192e8f";
@@ -38,6 +41,8 @@ function SearchStore(){
                 navigator.geolocation.getCurrentPosition(async(position)=>{
                     const {latitude, longitude} = position.coords;
                     //console.log(position);
+                    setLat(latitude);
+                    setLng(longitude);
                     console.log(latitude, longitude);
                     let localUrl = `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${longitude}&y=${latitude}`;
                     //let localUrl = `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=127.0098&y=37.2734`; //수원시 팔달구
@@ -255,6 +260,7 @@ function SearchStore(){
 
     // Pagination
     const viewListItemNum = 10;
+    const limitBlock = 5;
     const [nowPage, setNowPage] = useState(1);
     const totalPages = Math.ceil(newFilteredStoreList.length / viewListItemNum);
 
@@ -348,14 +354,16 @@ function SearchStore(){
                     </ul>
                     <Pagination
                         nowPage={nowPage}
-                        totalItems={storeList.length}
+                        totalItems={newFilteredStoreList.length}
                         itemsPerPage={viewListItemNum}
-                        limitBlock={5}
+                        limitBlock={limitBlock}
                         onPageChange={setNowPage}
                     />
                 </div>
             </div>
-            <div className={styleSearchStore.mapArea}>지도</div>
+            <div className={styleSearchStore.mapArea}>
+                <MapComponent storeList={newFilteredStoreList} lat={lat} lng={lng}/>
+            </div>
 
             {/* 지역 선택 모달 */}
             {isDimmedMiddleOpen && 
