@@ -1,14 +1,4 @@
-input[type=button] {
-  padding: 0.8rem 1.6rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background-color: #fff;
-  color: #333;
-  font-size: 1.4rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-} 
-button {
+.button {
   padding: 0.8rem 1.6rem;
   border: 1px solid #ddd;
   border-radius: 6px;
@@ -19,14 +9,20 @@ button {
   transition: all 0.2s ease;
 }
 
-button:hover {
+.button:hover {
   background-color: #80002050;
   border-color: #ccc;
   color: white;
 }
 
-button:active {
+.button:active {
   transform: translateY(1px);
+}
+
+.selectBtnL.completed {
+    background-color: #80002050;
+    border-color: #ccc;
+    color: white;
 }
 
 
@@ -42,10 +38,26 @@ button:active {
     margin-right: 5%;
 }
 
+.selectBtnL.completed {
+    background-color: #80002050;
+    border-color: #ccc;
+    color: white;
+}
+
 .selectBtnR{
     width: 45%;
     height: 6rem;
     margin-left: 5%;
+}
+
+.selectBtnR.completed {
+    background-color: #80002050;
+    border-color: #ccc;
+    color: white;
+}
+
+.text{
+    text-align: center;
 }
 
 .menuBtn{
@@ -62,6 +74,7 @@ button:active {
     height: 4rem;
     padding-left: 2rem;
     padding-right: 2rem;
+    border: solid 1px rgb(221, 221, 221);
 }
 
 .timeinput{
@@ -71,6 +84,8 @@ button:active {
     padding-left: 2rem;
     padding-right: 2rem;
     margin-left: 1%;
+    border: solid 1px rgb(221, 221, 221);
+    
 }
 
 .flexBox{
@@ -92,6 +107,7 @@ button:active {
     width: 40%;
     height: 4rem;
     padding-left: 2rem;
+    border: solid 1px rgb(221, 221, 221);
 }
 
 .menu[type=text]{
@@ -103,13 +119,13 @@ button:active {
 .menuBtnL{
     width: 7%;
     height: 4rem;
-    margin-right: 2%;
     margin-left: 2%;
 }
 
 .menuBtnR{
     width: 7%;
     height: 4rem;
+    margin-left: 2%;
 }
 
 .submit{
@@ -154,23 +170,58 @@ button:active {
 }
 
 .checkbox {
-  display: inline-block;
-  width: 30%;
-  height: 5rem;
-  background-color: white;
-  border-radius: 3px;
-  text-align: center;
-  cursor: pointer;
-  margin: 1rem 1.5%;
-  position: relative;
+    display: inline-block;
+    width: 30%;
+    height: 5rem;
+    background-color: white;
+    border-radius: 3px;
+    text-align: center;
+    cursor: pointer;
+    margin: 1rem 1.5%;
+    position: relative;
+    border: solid 1px rgb(221, 221, 221);
 }
 
 .hiddenCheckbox {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .active {
     background-color: lightgray;
+}
+
+
+
+.hiddenFileInput {
+    display: none; /* 실제 input은 숨기기 */
+}
+
+.customFileLabel {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    border: solid 1px rgb(221, 221, 221);
+    margin-left: 2rem;
+}
+
+.customFileLabel:hover {
+    background-color: #80002050;
+    border-color: #ccc;
+    color: white;
+}
+
+.customFileLabel.completed {
+    background-color: #80002050;
+    border-color: #ccc;
+    color: white;
+}
+
+.imgBox{
+    display: flex;
+    align-items: center;
 }

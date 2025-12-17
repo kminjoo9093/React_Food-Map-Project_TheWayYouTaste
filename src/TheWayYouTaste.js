@@ -16,9 +16,10 @@ import StoreDetail from "./pages/search/StoreDetail";
 import NoticeMemberList from "./pages/main/NoticeMemberList";
 import NoticeMemberDetail from "./pages/main/NoticeMemberDetail";
 import NoticeWrite from "./pages/main/NoticeWrite";
-import MembershipLogin from "./pages/member/MembershipLogin";
 import StoreRegister from "./pages/store/StoreRegister";
+import MembershipLogin from "./pages/member/MembershipLogin";
 import RegisterDetail from "./pages/admin/RegisterDetail";
+
 
 
 function TheWayYouTaste() {
