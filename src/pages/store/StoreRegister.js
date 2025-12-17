@@ -1,9 +1,10 @@
-import styleStore from "../../css/StoreRegister.module.css"
+
+import styleStore from "../../css/StoreRegister.module.css";
 import { useState, useRef } from "react";
 
 function StoreRegister() {
   /* 손님/사업자 선택 */
-  const [registerType, setRegisterType] = useState(null); // USER / BUSINESS
+  const [registerType, setRegisterType] = useState(null);
   const user = () => setRegisterType("USER");
   const br = () => setRegisterType("BUSINESS");
 
@@ -11,13 +12,13 @@ function StoreRegister() {
   const [brNo, setBrNo] = useState("");
   const [brResult, setBrResult] = useState(null);
   const [brError, setBrError] = useState(null);
-  const [owner, setOwner] = useState(""); // 대표자명
-  const [openDate, setOpenDate] = useState(""); // 개업일
+  const [owner, setOwner] = useState("");
+  const [openDate, setOpenDate] = useState("");
 
   const checkBusiness = async () => {
     setBrError(null);
     setBrResult(null);
-    //2025 12 17 10시 30분 commit
+
     if (!brNo) {
       setBrError("사업자등록번호를 입력해주세요.");
       return;
@@ -42,18 +43,16 @@ function StoreRegister() {
       let body = null;
 
       if (registerType === "USER") {
-        // 손님: 사업자등록번호만 확인 (/status)
         url = `https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=${serviceKey}`;
         body = { b_no: [brNo] };
       } else {
-        // 사업자: 사업자등록번호, 대표자명, 개업일 확인 (/validate)
         url = `https://api.odcloud.kr/api/nts-businessman/v1/validate?serviceKey=${serviceKey}`;
         body = {
           businesses: [
             {
-              b_no: brNo, // 문자열
-              start_dt: openDate.replaceAll("-", ""), // YYYYMMDD
-              p_nm: owner, // 문자열
+              b_no: brNo, 
+              start_dt: openDate.replaceAll("-", ""),
+              p_nm: owner,
             },
           ],
         };
@@ -88,9 +87,7 @@ function StoreRegister() {
           setBrError("유효하지 않은 사업자등록번호입니다.");
         }
       } else {
-        if (
-          result.valid === "01"
-        ) {
+        if (result.valid === "01") {
           setBrResult({ status: "인증되었습니다" });
         } else {
           setBrError("사업자정보가 일치하지 않습니다.");
@@ -152,11 +149,11 @@ function StoreRegister() {
       wrapRef.current.style.border = `${borderWidth}px solid #ccc`;
       wrapRef.current.style.position = "fixed";
       wrapRef.current.style.left =
-        ((window.innerWidth || document.documentElement.clientWidth) - width) / 2 -
+        ((window.innerWidth || document.documentElement.clientWidth) - width) / 2 - 
         borderWidth +
         "px";
       wrapRef.current.style.top =
-        ((window.innerHeight || document.documentElement.clientHeight) - height) / 2 -
+        ((window.innerHeight || document.documentElement.clientHeight) - height) / 2 - 
         borderWidth +
         "px";
       wrapRef.current.style.zIndex = 1000;
@@ -218,6 +215,7 @@ function StoreRegister() {
   };
 
   /* 서버 전송 */
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -225,7 +223,13 @@ function StoreRegister() {
     formData.append("brNo", brNo);
     if (registerType === "BUSINESS") {
       formData.append("owner", owner);
+      formData.append("business", 1);
     }
+
+    if (registerType === "USER") {
+      formData.append("user", 1);
+    }
+
     formData.append("storeName", storeName);
 
     formData.append("roadAddress", roadAddress);
@@ -247,11 +251,10 @@ function StoreRegister() {
     if (storeImage) formData.append("storeImage", storeImage);
     if (verifyImage) formData.append("VerifyImage", verifyImage);
 
-     // 전송값 확인 - 지우기
+    // 전송값 확인 - 지우기
     for (let pair of formData.entries()) {
       console.log(pair[0] + ": ", pair[1]);
     }
-
 
     try {
       const response = await fetch("/api/store/register", {
@@ -267,6 +270,18 @@ function StoreRegister() {
       alert("오류 발생: 등록 실패");
     }
   };
+
+  // 등록 버튼 활성화 조건
+const isFormValid =
+  brResult?.status === "인증되었습니다" &&
+  storeName &&
+  roadAddress &&
+  detailAddress &&
+  openTime &&
+  closeTime &&
+  category &&
+  items.length > 0 && 
+  verifyImage !== null;
 
   return (
     <div className="contentTopPosition">
@@ -284,6 +299,7 @@ function StoreRegister() {
                 <br />
                 (손님 등록)
               </button>
+
               <button
                 className={`${styleStore.selectBtnR} ${styleStore.button} ${registerType === "BUSINESS" ? styleStore.completed : ""}`}
                 type="button"
@@ -311,9 +327,10 @@ function StoreRegister() {
                     value={brNo}
                     onChange={(e) => setBrNo(e.target.value)}
                     placeholder='"-" 제외 10자리 숫자 입력'
+                    
                   />
                   <button
-                    className= {`${styleStore.brNoBtn} ${styleStore.button}`}
+                    className={`${styleStore.brNoBtn} ${styleStore.button}`}
                     type="button"
                     onClick={checkBusiness}
                   >
@@ -339,7 +356,7 @@ function StoreRegister() {
                 )}
               </div>
 
-              {/* 사업주일 경우 대표자명 + 개업일 */}
+              {/* 사업자 등록 */}
               {registerType === "BUSINESS" && (
                 <>
                   <label htmlFor="owner">대표자</label>
@@ -363,24 +380,24 @@ function StoreRegister() {
                 </>
               )}
 
-              {/* 사업자 관련 나머지 폼 */}
-                
-                <div className={styleStore.imgBox}>
-                  {registerType === "BUSINESS" ? 
+              {/* 사업자등록번호 인증 사진 */}
+              <div className={styleStore.imgBox}>
+                {registerType === "BUSINESS" ? 
                   <label>사업자 등록증</label> : <label>영수증</label>}
-                  <label htmlFor="VerifyImage" className={`${styleStore.customFileLabel} ${verifyImage ? styleStore.completed : ""}`}>
-                    {verifyImage ? "등록완료" : "파일 선택"}
-                  </label>
-                  <input
-                    type="file"
-                    id="VerifyImage"
-                    accept="image/*"
-                    onChange={VerifyImageChange}
-                    className={styleStore.hiddenFileInput}
-                  />
-                </div>
-                {verifyPreview && <div style={{ marginTop: "10px" }}><img src={verifyPreview} alt="미리보기" width="200" /></div>}
+                <label htmlFor="VerifyImage" className={`${styleStore.customFileLabel} ${verifyImage ? styleStore.completed : ""}`}>
+                  {verifyImage ? "등록완료" : "파일 선택"}
+                </label>
+                <input
+                  type="file"
+                  id="VerifyImage"
+                  accept="image/*"
+                  onChange={VerifyImageChange}
+                  className={styleStore.hiddenFileInput}
+                />
+              </div>
+              {verifyPreview && <div style={{ marginTop: "10px" }}><img src={verifyPreview} alt="미리보기" width="200" /></div>}
 
+              {/* 매장이름 */}
               <label>매장 명</label>
               <input
                 type="text"
@@ -388,6 +405,7 @@ function StoreRegister() {
                 onChange={(e) => setStoreName(e.target.value)}
               />
 
+              {/* 주소API */}
               <label>주소</label>
               <div>
                 <div ref={wrapRef} style={{ display: "none", position: "relative" }}>
@@ -419,6 +437,7 @@ function StoreRegister() {
                 <input type="text" style={{ display: "none" }} value={bcode} readOnly />
               </div>
 
+              {/* 운영시간 */}
               <label>운영시간</label>
               <br />
               <div className={styleStore.flexBox}>
@@ -440,6 +459,7 @@ function StoreRegister() {
                 />
               </div>
 
+              {/* 카테고리 */}
               <label htmlFor="menuCat">카테고리</label>
               <select
                 id="menuCat"
@@ -461,6 +481,7 @@ function StoreRegister() {
               </select>
               <br />
 
+              {/* 편의사항 */}
               <p>편의사항</p>
               {convenienceList.map((item) => (
                 <label
@@ -481,7 +502,8 @@ function StoreRegister() {
                   />
                 </label>
               ))}
-              
+
+              {/* 메뉴추가 */}
               <label>메뉴</label>
               {items.map((item, index) => (
                 <div key={index}>
@@ -507,8 +529,7 @@ function StoreRegister() {
                   </button>
                 </div>
               ))}
-
-              
+              {/* 가게대표이미지 */}
               <div className={styleStore.imgBox}>
                 <label htmlFor="storeImage">가게 대표 이미지</label><br />
                 <label htmlFor="storeImage" className={`${styleStore.customFileLabel} ${storeImage ? styleStore.completed : ""}`}>
@@ -524,16 +545,24 @@ function StoreRegister() {
               </div>
               {storePreview && <div style={{ marginTop: "10px" }}><img src={storePreview} alt="미리보기" width="200" /></div>}
 
-              {/* <label htmlFor="storeImg">가게 대표 이미지</label>
-              <br />
-              {preview && (
-                <div style={{ marginTop: "10px" }}>
-                  <img src={preview} alt="미리보기" width="200" />
-                </div>
+              {/* 등록버튼 */}
+              {isFormValid ? (
+                <button
+                  className={`${styleStore.submit} ${styleStore.button}`}
+                  type="submit"
+                >
+                  등록
+                </button>
+              ) : (
+                <button
+                  className={`${styleStore.submit} ${styleStore.button}`}
+                  type="button"
+                  onClick={() => alert("입력하신 값을 다시 한번 확인해주세요")}
+                >
+                  등록
+                </button>
               )}
-              <input type="file" accept="image/*" onChange={handleImageChange} id="storeImg" /> */}
 
-              <button className={`${styleStore.submit} ${styleStore.button}`} type="submit">등록</button>
             </div>
           </form>
         </div>
