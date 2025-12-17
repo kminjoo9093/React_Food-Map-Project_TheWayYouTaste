@@ -296,8 +296,7 @@ function SearchStore(){
                 </button>
                 <div className={styleSearchStore.filterArea}>
                     <div className={styleSearchStore.filterTopWrap}>
-                        <button className={styleSearchStore.btnResetFilter} onClick={resetFilter}>초기화</button>
-                        <button className={styleSearchStore.btnRegion}>지역 설정</button>
+                        <button className={styleSearchStore.btnRegion} onClick={() => setIsDimmedMiddleOpen(true)}>지역 설정</button>
                     </div>
                     <div className={styleSearchStore.filterBottomWrap}>
                         <ul className={styleSearchStore.categoryList}>
