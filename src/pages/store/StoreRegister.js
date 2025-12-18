@@ -1,7 +1,8 @@
-import styleStore from "../../css/StoreRegister.module.css";
+
+import styleStore from "../../css/StoreRegister.module.css"
 import { useState, useRef } from "react";
 
-function StoreResister() {
+function StoreRegister() {
   /* 손님/사업자 선택 */
   const [registerType, setRegisterType] = useState(null);
   const user = () => setRegisterType("USER");
@@ -326,7 +327,7 @@ const isFormValid =
                     value={brNo}
                     onChange={(e) => setBrNo(e.target.value)}
                     placeholder='"-" 제외 10자리 숫자 입력'
-                    
+                    readOnly={brResult?.status === "인증되었습니다" ? true : false}
                   />
                   <button
                     className={`${styleStore.brNoBtn} ${styleStore.button}`}
@@ -364,6 +365,7 @@ const isFormValid =
                     type="text"
                     value={owner}
                     onChange={(e) => setOwner(e.target.value)}
+                    placeholder="사업자 등록증과 일치하게 작성해 주세요"
                   />
 
                   <label htmlFor="openDate">개업일</label>
@@ -570,4 +572,4 @@ const isFormValid =
   );
 }
 
-export default StoreResister;
+export default StoreRegister;

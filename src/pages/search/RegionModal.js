@@ -51,7 +51,7 @@ function RegionModal({isModalOpen, setIsModalOpen, selectedDo, setSelectedDo, se
 
     function handleSelectDo(sidoCode, sidoName){
         setSelectedDo(sidoCode);
-        setDoName(sidoName);
+        setDoName(sidoName || "");
         setSelectedSi(null);
         setSiName("");
         setSelectedDong(null);
@@ -59,15 +59,15 @@ function RegionModal({isModalOpen, setIsModalOpen, selectedDo, setSelectedDo, se
     }
 
     function handleSelectSi(sigunguCode, siName){
-        setSelectedSi(sigunguCode);
-        setSiName(siName);
-        setSelectedDong(null);
-        setDongName("");
+    setSelectedSi(sigunguCode);
+    setSiName(siName || "");
+    setSelectedDong(null);
+    setDongName("");
     }
 
     function handleSelectDong(dongCode, dongName){
         setSelectedDong(dongCode);
-        setDongName(dongName);
+        setDongName(dongName || "");
     }
 
     return (
