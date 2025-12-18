@@ -5,6 +5,7 @@
     text-align: center;
     display: flex;
     gap: 15px;
+    color: #800020;
 }
 
 .leftBox {
@@ -71,22 +72,23 @@
 
 .wrapBox {
     display: flex;
-    margin-top: 12px;
+    margin-top: 17px;
     justify-content: space-between;
 }
 
 .mainBtn {
     border-radius: 8px;
+    margin-top: 380px;
     border: none;
     text-align: center;
     cursor: pointer;
     font-size: 23px;
-    color: black;
+    color: #800020;
     font-weight: 700;
     width: 120px;
     height: 35px;
     background: transparent;
-    border: 2px solid black;
+    border: 2px solid #800020;
     box-shadow: none;
 }
 
@@ -97,13 +99,38 @@
     text-align: center;
     cursor: pointer;
     font-size: 16px;
-    color: black;
+    color: #800020;
     font-weight: 750;
     width: 100px;
     height: 30px;
     background: transparent;
-    border: 2px solid black;
+    border: 2px solid #800020;
     box-shadow: none;
+}
+
+.btn1 {
+    border-radius: 9px;
+    border: none;
+    margin-right: 22px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: #ffb92e;
+    font-weight: 750;
+    width: 100px;
+    height: 30px;
+    background: transparent;
+    box-shadow: none;
+    
+    padding: 5px 10px;
+    border: 2px solid #800020;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.85em; /* 크기 조정 */
+    background: #800020;
+
+
 }
 
 .subTitle1 {
@@ -115,5 +142,5 @@
 .subTitle2 {
     font-size: 17px;
     margin-left: 25px;
-    margin-top: 7px;
+    margin-top: 12px;
 }
