@@ -3,8 +3,9 @@ import styleSearchStore from "../../css/SearchStore.module.css";
 import { useEffect, useState } from "react";
 import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
 import Pagination from "../Pagination";
-import MapComponent from "./MapComponent";
 import RegionModal from "./RegionModal";
+import MapComponent from "./MapComponent";
+import {GetStoreList} from "./GetStoreList";
 
 function SearchStore(){
 
@@ -18,6 +19,7 @@ function SearchStore(){
     const [isOpen, setIsOpen] = useState(false);
 
     //test - 지역 필터 설정
+    const [isChangedRegion, setIsChangedRegion] = useState(false);
     const [selectedDo, setSelectedDo] = useState(null);
     const [doName, setDoName] = useState("");
     const [selectedSi, setSelectedSi] = useState(null);
@@ -29,6 +31,25 @@ function SearchStore(){
     const [storeListByRegion, setStoreListByRegion] = useState([]);//맨처음 받아오는 사용자 위치 기반 시군구 전체 맛집리스트
     const [lat, setLat] = useState(); //위도, Y
     const [lng, setLng] = useState(); //경도, X
+    //지도 동작 상태
+    const [isMoved, setIsMoved] = useState(false);
+
+    //const [viewport, setViewport] = useState(null);
+
+    const [positionArea, setPositionArea] = useState({
+        swMinLat: 0,
+        swMinLng: 0,
+        neMaxLat: 0,
+        neMaxLng: 0
+    })
+
+    //범위 내 재검색을 눌렀는지
+    const [isSearchArea, setIsSearchArea] = useState(false);
+
+    //지도 동작 후 저장된 리스트
+    const [
+        , setFilteredList] = useState([]);
+
 
     //test - 현재 위치 기반 시도, 시군구 코드
     const LOCAL_API_KEY = "bd23a565a07fd608d593c2c99d192e8f";
@@ -67,7 +88,7 @@ function SearchStore(){
                             const currerntSidoCode = currentSigunguCode.slice(0, 2);
                             console.log("시군구 코드 -> ", currentSigunguCode);
                             //사용자 위치 기반 시군구 전체 리스트
-                            let list = await getStoreList(`http://localhost:3001/store?SGG_CD=${currentSigunguCode}`);
+                            let list = await GetStoreList(`http://localhost:3001/store?SGG_CD=${currentSigunguCode}`);
                             setStoreListByRegion(list);
                             //console.log("여기여기 ", storeListByRegion);
 
@@ -97,39 +118,42 @@ function SearchStore(){
         let list = [];
         
         if(selectedDong){ //읍면동 선택
-            list = await getStoreList(`http://localhost:3001/store?STDG_CD=${selectedDong}`);
+            list = await GetStoreList(`http://localhost:3001/store?STDG_CD=${selectedDong}`);
         } else if (selectedSi){ //시군구 전체 선택(읍면동 null)
-            list = await getStoreList(`http://localhost:3001/store?SGG_CD=${selectedSi}`);
+            list = await GetStoreList(`http://localhost:3001/store?SGG_CD=${selectedSi}`);
         } else if (selectedDo) { //시도 전체 선택(읍면동, 시군구 null)
             //시도 전체 - 코드로 받을지 문자열로 받을지
-            list = await getStoreList(`http://localhost:3001/store?DO_CD=${selectedDo}`);
+            list = await GetStoreList(`http://localhost:3001/store?DO_CD=${selectedDo}`);
         } else {
             //모두 null (전국)
             console.log("모두 null 인지 확인");
-            list = await getStoreList(`http://localhost:3001/store`);
+            list = await GetStoreList(`http://localhost:3001/store`);
         }
         //console.log(storeListFilteredRegion);
         setIsDimmedMiddleOpen(false);
         setStoreListByRegion(list); //지역 기준 원본 리스트
-        setFilteredStoreList(list); //화면에 보여줄 리스트
+
+        //test
+        setIsChangedRegion(true);
+        // setFilteredStoreList(list); //화면에 보여줄 리스트
     }
 
 
-    async function getStoreList(url){
-        try{
-            //const url = "http://localhost:3001/store";
-            const res = await fetch(url);
-            if(!res.ok){
-                throw new Error(`Http error! status : ${res.status}`);
-            }
-            //ok인 경우
-            return await res.json();
-            //console.log(data);
-        } catch(err){
-            console.error("when getting data, has error : " + err);
-            return [];
-        }
-    }
+    // async function getStoreList(url){
+    //     try{
+    //         //const url = "http://localhost:3001/store";
+    //         const res = await fetch(url);
+    //         if(!res.ok){
+    //             throw new Error(`Http error! status : ${res.status}`);
+    //         }
+    //         //ok인 경우
+    //         return await res.json();
+    //         //console.log(data);
+    //     } catch(err){
+    //         console.error("when getting data, has error : " + err);
+    //         return [];
+    //     }
+    // }
     
     let newFilteredStoreList = filteredStoreList;
     useEffect(()=>{
@@ -176,6 +200,34 @@ function SearchStore(){
         })
     }
 
+    async function displayViewPortMarkers(positionArea){
+    
+        const { swMinLat, swMinLng, neMaxLat, neMaxLng } = positionArea;
+
+        //db에서 조회해서 리스트 가져오기
+        //const storeListByPosition = await GetStoreList(`http://localhost:3001/store?swMinLat=${swMinLat}&neMaxLat=${neMaxLat}&swMinLng=${swMinLng}&neMaxLng=${neMaxLng}`);
+        const storeListByPosition = await GetStoreList(`http://localhost:3001/store`);
+
+        // 이 부분 위도 경도 범위 검증은 백엔드에서. 지금은 테스트니까 여기서 함
+        let listByMovedPos = storeListByPosition.filter((record) => {
+            return (
+                record.LAT >= swMinLat &&
+                record.LAT <= neMaxLat &&
+                record.LOT >= swMinLng &&
+                record.LOT <= neMaxLng
+            );
+        });
+        setFilteredList(listByMovedPos);
+
+        if(selectedCategories.length > 0){
+            listByMovedPos = listByMovedPos.filter(record => selectedCategories.includes(record.MENU_CAT));
+        }
+
+        setFilteredStoreList(listByMovedPos); //실제 지도에 표시될 맛집 리스트
+        console.log("뷰포트 좌표 범위 내 맛집 리스트 : ", listByMovedPos);
+        
+    }
+
     //검색버튼 눌렀을 때 
     async function onClickSearchBtn(){
         console.log("selectedCategories : ", selectedCategories);
@@ -211,21 +263,15 @@ function SearchStore(){
         // setFilteredStoreList(list);
     }
 
+    function showSelectedRegion(){
+        let regionDepth = "지역 선택";
 
-
-    function renderSelectedRegion(){
-        let regionDepth = "";
-        if (doName) { 
-            regionDepth += doName; 
-        }
+        if (doName) regionDepth = doName; 
+        if (siName) regionDepth += ` ${siName}`; 
+        if (dongName) regionDepth += ` ${dongName}`;
         
-        if (siName) { 
-            regionDepth += ` > ${siName}`; 
-        }
-        
-        if (dongName) { 
-            regionDepth += ` > ${dongName}`; 
-        }
+        //지역내 재검색 눌렀을 경우
+        if(isSearchArea) regionDepth = "지역 선택"; 
 
         return regionDepth;
     }
@@ -296,7 +342,9 @@ function SearchStore(){
                 </button>
                 <div className={styleSearchStore.filterArea}>
                     <div className={styleSearchStore.filterTopWrap}>
-                        <button className={styleSearchStore.btnRegion} onClick={() => setIsDimmedMiddleOpen(true)}>지역 설정</button>
+                        <button className={styleSearchStore.btnRegion} onClick={() => setIsDimmedMiddleOpen(true)}>
+                            {showSelectedRegion()}
+                        </button>
                     </div>
                     <div className={styleSearchStore.filterBottomWrap}>
                         <ul className={styleSearchStore.categoryList}>
@@ -304,8 +352,6 @@ function SearchStore(){
                                 categoryList.map(record => (
                                     <li key={record.id}>
                                         <button id={record.STORE_CAT_NO} 
-                                                //className={selectedCategories.includes(record.STORE_CAT_NO) ? styleSearchStore.active : null} 
-                                                //onClick={() => onSelectCategory(record.STORE_CAT_NO)}
                                                 className={selectedCategories.includes(record.STORE_CAT) ? styleSearchStore.active : null} 
                                                 onClick={() => onSelectCategory(record.STORE_CAT)}
                                         >
@@ -318,9 +364,9 @@ function SearchStore(){
                         </ul>
                     </div>
                     <div className={styleSearchStore.filterBottomArea}>
-                        <span className={styleSearchStore.conditions}>
+                        {/* <span className={styleSearchStore.conditions}>
                             { renderSelectedRegion() }
-                        </span>
+                        </span> */}
                         <div className={styleSearchStore.btnWrap}>
                             <button className={styleSearchStore.btnResetFilter} onClick={resetFilter}>초기화</button>
                             <button className={styleSearchStore.btnSearch} onClick={()=>onClickSearchBtn()}>검색</button>
@@ -333,8 +379,7 @@ function SearchStore(){
                         {
                             viewStoreItems.map(record => {
                                 return (<li key={record.BPLC_SN} className={styleSearchStore.storeListItem}>
-                                        <Link to="/search/storeDetail" className={styleSearchStore.storeListLink}
-                                              storeList={newFilteredStoreList} storeId={record.BPLC_SN}
+                                        <Link to={`/search/storeDetail?storeId=${record.BPLC_SN}`} className={styleSearchStore.storeListLink}
                                         >
                                             <img className={styleSearchStore.storeImg} src="#" />
                                             <div className={styleSearchStore.storeInfo}>
@@ -362,7 +407,20 @@ function SearchStore(){
                 </div>
             </div>
             <div className={styleSearchStore.mapArea}>
-                <MapComponent storeList={newFilteredStoreList} lat={lat} lng={lng}/>
+                <button className={`${styleSearchStore.btnSearchArea} ${isMoved ? styleSearchStore.active : ""}`} 
+                        //onClick={()=>{setIsMoved(false)}}
+                        onClick={async () => {
+                           // if (!viewport) return;
+                            setIsSearchArea(true);
+                            await displayViewPortMarkers(positionArea);
+                            // setFilteredStoreList(list);
+                            //setIsMoved(false);
+                        }}
+                        >범위 내 재검색</button>
+                <MapComponent storeList={newFilteredStoreList} setFilteredStoreList = {setFilteredStoreList} 
+                                selectedCategories={selectedCategories} lat={lat} lng={lng} isMoved={isMoved} setIsMoved={setIsMoved}
+                                isChangedRegion={isChangedRegion} setPositionArea={setPositionArea}
+                                />
             </div>
 
             {/* 지역 선택 모달 */}

@@ -84,7 +84,7 @@ a{
   cursor: pointer;
 } */
 
-.button {
+button {
   padding: 0.8rem 1.6rem;
   border: 1px solid #ddd;
   border-radius: 6px;
@@ -95,13 +95,13 @@ a{
   transition: all 0.2s ease;
 }
 
-.button:hover {
+button:hover {
   background-color: #80002050;
   border-color: #ccc;
   color: white;
 }
 
-.button:active {
+button:active {
   transform: translateY(1px);
 }
 

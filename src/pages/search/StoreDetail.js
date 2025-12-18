@@ -1,51 +1,40 @@
 import styleStoreDetail from "../../css/StoreDetail.module.css";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
 import starFill from "../../resources/img/search/iconStarFill.svg";
 import starHalf from "../../resources/img/search/iconStarHalf.svg";
+import ReviewRegister from "../../pages/review/ReviewRegister";
+import { useSearchParams } from "react-router-dom";
+import { GetStoreList } from "./GetStoreList";
 
-function StoreDetail({storeId}){
-    const menuData = [
-        {   
-            "MENU_SN": 1111
-            ,"BPLC_SN": 1
-            ,"MENU_NM": "메뉴1"
-            ,"MENU_PRC": 11000
-        }
-        ,{   
-            "MENU_SN": 2222
-            ,"BPLC_SN": 1
-            ,"MENU_NM": "메뉴2"
-            ,"MENU_PRC": 12000
-        }
-        ,{   
-            "MENU_SN": 3333
-            ,"BPLC_SN": 1
-            ,"MENU_NM": "메뉴3"
-            ,"MENU_PRC": 13000
-        }
-        ,{   
-            "MENU_SN": 4444
-            ,"BPLC_SN": 1
-            ,"MENU_NM": "메뉴4"
-            ,"MENU_PRC": 14000
-        }
-        ,{   
-            "MENU_SN": 5555
-            ,"BPLC_SN": 1
-            ,"MENU_NM": "메뉴5"
-            ,"MENU_PRC": 15000
-        }
-        ,{   
-            "MENU_SN": 6666
-            ,"BPLC_SN": 1
-            ,"MENU_NM": "메뉴6"
-            ,"MENU_PRC": 16000
-        }
-    ]
 
-    // const menuData = UseSearchStoreFetch(`http://localhost:3001/search/storeDetail?BPLC_SN=${BPLCSN}`);
-    console.log(menuData);
+function StoreDetail(){
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    const [searchParams] = useSearchParams();
+  	const storeId = searchParams.get("storeId");
+    const [storeData, setStoreData] = useState([]);
+    console.log("스토어 아이디 --> ", storeId);
+    const [menuData, setMenuData] = useState([]);
+
+    useEffect(()=>{
+        async function getStoreData(){
+            //음식점 데이터
+            let store = await GetStoreList(`http://localhost:3001/store?BPLC_SN=${storeId}`);
+            setStoreData(store);
+            console.log("상세정보데이터 : ", store);
+            //메뉴 데이터
+            let menu = await GetStoreList(`http://localhost:3001/menu?BPLC_SN=${storeId}`);
+            setMenuData(menu);
+            console.log(menu);
+        }
+
+        if(storeId) getStoreData();
+    }, [storeId])
+
+    let storeInfoObj = storeData[0]; 
+    console.log("가게정보 : ", storeInfoObj);
 
     let menuList = menuData.map(record => {
             return {"id" : record.MENU_SN, ...record}
@@ -56,65 +45,99 @@ function StoreDetail({storeId}){
         return parsedPrice;
     }
 
+    function showStoreImage(image){
+        //null일 경우 대체 이미지 또는 안내글 결정하기
+        return null;
+    }
+
+    function showAmtyServices(services){
+        let serviceType = "";
+
+        return services.map(item => {
+            switch (item) {
+                case "parking" :
+                    serviceType = "주차 가능"
+                    break;
+                case "pet" :
+                    serviceType = "애완동물 동반"
+                    break;
+                case "takeout" :
+                    serviceType = "포장 가능"
+                    break;
+                default : 
+                    serviceType = ""
+                    break;
+            }
+            return <span className={styleStoreDetail[item]}>
+                        <i className={styleStoreDetail.serviceIcon}></i>
+                        {serviceType}
+                    </span>
+        })
+    }
+
     return (
         <div className='contentTopPosition'>
-            <div className={`container ${styleStoreDetail.container}`}>
-                <section className={styleStoreDetail.storeInfoArea}>
-                    <div className={`${styleStoreDetail.storeInfoWrap} contentBox`}>
-                        <div className={styleStoreDetail.storeNameWrap}>
-                            <h2 className={styleStoreDetail.storeName}>천황식당</h2>
-                            <span>한식</span>
+            {storeInfoObj && (
+                <div className={`container ${styleStoreDetail.container}`}>
+                    <section className={styleStoreDetail.storeInfoArea}>
+                        <div className={`${styleStoreDetail.storeInfoWrap} contentBox`}>
+                            <div className={styleStoreDetail.storeNameWrap}>
+                                <h2 className={styleStoreDetail.storeName}>{storeInfoObj.BPLC_NM}</h2>
+                                <span>{storeInfoObj.MENU_CAT}</span>
+                            </div>
+                            <ul className={styleStoreDetail.detailInfoList}>
+                                <li className={styleStoreDetail.ratingAvgWrap}>
+                                    <img src={starFill} className={styleStoreDetail.ratingStarImg}/>
+                                    <img src={starFill} className={styleStoreDetail.ratingStarImg}/>
+                                    <img src={starFill} className={styleStoreDetail.ratingStarImg}/>
+                                    <img src={starFill} className={styleStoreDetail.ratingStarImg}/>
+                                    <img src={starHalf} className={styleStoreDetail.ratingStarImg}/>
+                                    <em className={styleStoreDetail.ratingAvg}>{storeInfoObj.AVG}</em>
+                                </li>
+                                <li className={styleStoreDetail.time}>
+                                    <em className={styleStoreDetail.detailTitle}>영업시간</em>
+                                    {storeInfoObj.BGNG_TM} - {storeInfoObj.DDLN_TM}
+                                </li>
+                                <li className={styleStoreDetail.tel}>
+                                    <em className={styleStoreDetail.detailTitle}>전화번호</em>
+                                    <a href="tel:+01011111001" className={styleStoreDetail.telNumber}>{storeInfoObj.BPLC_TELNO}</a>
+                                </li>
+                                <li className={styleStoreDetail.address}>
+                                    <em className={styleStoreDetail.detailTitle}>주소</em>
+                                    {storeInfoObj.DADDR}
+                                </li>
+                                <li className={styleStoreDetail.serviceTypes}>
+                                    {showAmtyServices(storeInfoObj.AMTY_SRVC)}
+                                </li>
+                            </ul>
+                            <div className={styleStoreDetail.linkWrap}>
+                                <button className={styleStoreDetail.linkWriteReview} onClick={() => setIsOpen(true)}>리뷰 작성</button>
+                                <Link to="/store/report/:userSn" className={styleStoreDetail.linkReportStore}>신고</Link>
+                            </div>
                         </div>
-                        <ul className={styleStoreDetail.detailInfoList}>
-                            <li className={styleStoreDetail.ratingAvgWrap}>
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg}/>
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg}/>
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg}/>
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg}/>
-                                <img src={starHalf} className={styleStoreDetail.ratingStarImg}/>
-                                <em className={styleStoreDetail.ratingAvg}>4.5</em>
-                            </li>
-                            <li className={styleStoreDetail.time}>
-                                <em className={styleStoreDetail.detailTitle}>영업시간</em>
-                                09:00 - 21:00
-                            </li>
-                            <li className={styleStoreDetail.tel}>
-                                <em className={styleStoreDetail.detailTitle}>전화번호</em>
-                                <a href="tel:+01011111001" className={styleStoreDetail.telNumber}>010-1111-1001</a>
-                            </li>
-                            <li className={styleStoreDetail.address}>
-                                <em className={styleStoreDetail.detailTitle}>주소</em>
-                                경남 진주시 촉석로207번길 3
-                            </li>
-                            <li className={styleStoreDetail.serviceTypes}>
-                                <span className={styleStoreDetail.parking}><i className={styleStoreDetail.serviceIcon}></i>주차 가능</span>
-                                <span className={styleStoreDetail.pet}><i className={styleStoreDetail.serviceIcon}></i>애완동물 동반</span>
-                                <span className={styleStoreDetail.takeOut}><i className={styleStoreDetail.serviceIcon}></i>포장 가능</span>
-                            </li>
-                        </ul>
-                        <div className={styleStoreDetail.linkWrap}>
-                            <Link to="#" className={styleStoreDetail.linkWriteReview}>리뷰 작성</Link>
-                            <Link to="/store/report/:userSn" className={styleStoreDetail.linkReportStore}>신고</Link>
+                        <div className={`${styleStoreDetail.storeImageWrap} contentBox`}>
+                            {showStoreImage(storeInfoObj.BPLC_PHOTO)}
                         </div>
-                    </div>
-                    <div className={`${styleStoreDetail.storeImageWrap} contentBox`}>
-                        이미지
-                    </div>
-                    <div className={`${styleStoreDetail.storeMenuWrap} contentBox`}>
-                        <h3 className={`${styleStoreDetail.menuHeading} contentHeading`}>메뉴</h3>
-                        <ul className={styleStoreDetail.menuList}>
-                            { menuList.map(record => {
-                                return <li key={record.id} className={styleStoreDetail.menuItem}>{record.MENU_NM}
-                                            <span className={styleStoreDetail.menuPrice}>{formatNumber(record.MENU_PRC)}</span>
-                                        </li>
-                            }) }
-                        </ul>
-                    </div>
-                </section>
-                <section className={`${styleStoreDetail.storeReviewArea}`}>
-                    <h3 className="contentHeading">리뷰</h3>
-                </section>
-            </div>
+                        <div className={`${styleStoreDetail.storeMenuWrap} contentBox`}>
+                            <h3 className={`${styleStoreDetail.menuHeading} contentHeading`}>메뉴</h3>
+                            <ul className={styleStoreDetail.menuList}>
+                                { menuList.map(record => {
+                                    return <li key={record.id} className={styleStoreDetail.menuItem}>{record.MENU_NM}
+                                                <span className={styleStoreDetail.menuPrice}>{formatNumber(record.MENU_PRC)}</span>
+                                            </li>
+                                }) }
+                            </ul>
+                        </div>
+                    </section>
+                    <section className={`${styleStoreDetail.storeReviewArea}`}>
+                        <h3 className="contentHeading">리뷰</h3>
+                    </section>
+                    <ReviewRegister isOpen={isOpen} onClose={() => setIsOpen(false)} />
+                </div>
+                )
+            
+            }
+            
         </div>
     )
 }

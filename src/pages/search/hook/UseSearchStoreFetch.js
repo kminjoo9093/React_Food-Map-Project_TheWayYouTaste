@@ -1,24 +1,26 @@
 import { useState, useEffect } from "react";
+import { GetStoreList } from "../GetStoreList";
 
 export default function UseSearchStoreFetch(url){
     const [data, setData] = useState([]);
 
     useEffect(
         ()=>{
+            if(!url) return;
             const fetchData = async() => {
-                if(!url) return;
                 try{
                     // const url = "http://localhost:3001/store";
-                    const res = await fetch(url);
-                    if(!res.ok){
-                        throw new Error(`Http error! status : ${res.status}`);
-                    }
+                    const result = await GetStoreList(url);
+                    // if(!res.ok){
+                    //     throw new Error(`Http error! status : ${res.status}`);
+                    // }
                     //ok인 경우
-                    const data = await res.json();
+                    // const data = await res.json();
                     //console.log(data);
-                    setData(data);
+                    setData(result);
                 } catch(err){
                     console.error("when getting data, has error : " + err);
+                    setData([]);
                 }
             }
             fetchData();
