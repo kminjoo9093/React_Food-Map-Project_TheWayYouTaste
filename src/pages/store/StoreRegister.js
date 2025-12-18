@@ -1,5 +1,5 @@
-
 import styleStore from "../../css/StoreRegister.module.css"
+
 import { useState, useRef } from "react";
 
 function StoreRegister() {
