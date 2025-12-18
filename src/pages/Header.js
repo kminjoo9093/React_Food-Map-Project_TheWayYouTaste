@@ -106,7 +106,7 @@ function Header(){
                         <button className={styleSidebar.btnCloseMyMenu} onClick={() => closeAllSideMenu()}></button>
                         <h3 className={styleSidebar.greeting}>○○○ 님 or 관리자님, 안녕하세요</h3>
                         <ul className={styleSidebar.myPageList}>
-                            <li><Link to = "#" onClick={() => setOpenMyMenu(false)}> 내 정보 </Link></li>
+                            <li><Link to = "/member/modify" onClick={() => setOpenMyMenu(false)}> 내 정보 </Link></li>
                             <li><Link to = "/admin/member/list" onClick={() => setOpenMyMenu(false)}> 회원 정보 조회 </Link></li>
                             <li><Link to = "/admin/report/list" onClick={() => setOpenMyMenu(false)}> 신고 내역 조회 </Link></li>
                             <li><Link to = "/admin/register/list" onClick={() => setOpenMyMenu(false)}> 가게 등록 조회 </Link></li>

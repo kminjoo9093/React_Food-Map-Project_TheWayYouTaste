@@ -18,7 +18,8 @@ import NoticeMemberDetail from "./pages/main/NoticeMemberDetail";
 import NoticeWrite from "./pages/main/NoticeWrite";
 
 import MembershipLogin from "./pages/member/MembershipLogin";
-
+import MembershipModify from "./pages/member/MembershipModify";
+import MembershipResign from "./pages/member/MembershipResign";
 
 function TheWayYouTaste() {
   const location = useLocation();
@@ -75,8 +76,9 @@ function TheWayYouTaste() {
             <Route path="/store/report/:userSn" element={<ReportRequest />} />
             <Route path="/store/reportDetail" element={<ReportDetail setMemberNotices={setMemberNotices} />} />
             <Route path="/*" element={<Error404Page />} />
-            <Route path="/member/membership/login" element={<MembershipLogin />}/>
-
+            <Route path="/login" element={<MembershipLogin />}/>
+            <Route path="/member/modify" element={<MembershipModify />}/>
+            <Route path="/member/resign" element={<MembershipResign />}/>
 
           </Routes>
           { !hideFooter && <Footer /> }
