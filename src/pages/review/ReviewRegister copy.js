@@ -163,7 +163,7 @@ const ReviewRegister = ({ isOpen, onClose }) => {
         </div>
         <br />
         <button type="submit">등록</button>
-        <input type="date"  style={{ display: "none" }}/>
+        
       </div>
     </div>
   );
