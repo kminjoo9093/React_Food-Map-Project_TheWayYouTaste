@@ -18,9 +18,9 @@ import NoticeMemberDetail from "./pages/main/NoticeMemberDetail";
 import NoticeWrite from "./pages/main/NoticeWrite";
 import StoreRegister from "./pages/store/StoreRegister";
 import MembershipLogin from "./pages/member/MembershipLogin";
+import MembershipModify from "./pages/member/MembershipModify";
+import MembershipResign from "./pages/member/MembershipResign";
 import RegisterDetail from "./pages/admin/RegisterDetail";
-
-
 
 function TheWayYouTaste() {
   const location = useLocation();
@@ -82,10 +82,10 @@ function TheWayYouTaste() {
             <Route path="/search/storeDetail" element={<StoreDetail />} />
             <Route path="/store/report/:userSn" element={<ReportRequest />} />
             <Route path="/store/reportDetail" element={<ReportDetail setMemberNotices={setMemberNotices} />} />
-            <Route path="/member/membership/login" element={<MembershipLogin />}/>
+            <Route path="/login" element={<MembershipLogin />}/>
+            <Route path="/member/modify" element={<MembershipModify />}/>
+            <Route path="/member/resign" element={<MembershipResign />}/>
             <Route path="/*" element={<Error404Page />} />
-            
-
           </Routes>
           { !hideFooter && <Footer /> }
       </div>
