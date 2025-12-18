@@ -2,7 +2,7 @@
 import styleStore from "../../css/StoreRegister.module.css";
 import { useState, useRef } from "react";
 
-function StoreRegister() {
+function StoreRegister({ userSn }) {
   /* 손님/사업자 선택 */
   const [registerType, setRegisterType] = useState(null);
   const user = () => setRegisterType("USER");
@@ -221,6 +221,7 @@ function StoreRegister() {
     const formData = new FormData();
 
     formData.append("brNo", brNo);
+    formData.append("userSn", userSn);
     if (registerType === "BUSINESS") {
       formData.append("owner", owner);
       formData.append("business", 1);
@@ -257,12 +258,14 @@ function StoreRegister() {
     }
 
     try {
-      const response = await fetch("/api/store/register", {
+      const response = await fetch("http://localhost:3001/youtaste/store/register", {
         method: "POST",
         body: formData,
       });
       if (!response.ok) throw new Error("등록 실패");
       const result = await response.json();
+      setStorePreview(`http://localhost:3001${result.storeImageUrl}`);
+      setVerifyPreview(`http://localhost:3001${result.verifyImageUrl}`);
       alert("등록 완료!");
       console.log(result);
     } catch (error) {

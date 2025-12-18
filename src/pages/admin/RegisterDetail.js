@@ -142,8 +142,19 @@ const handleAddressSearch = async () => {
       setPreview(URL.createObjectURL(file));
     }
   };
+  const [verifyImage, setVerifyImage] = useState(null);
+  const [verifyPreview, setVerifyPreview] = useState(null);
 
-  /* 기존 데이터 초기화 */
+  const handleVerifyImageChange = (e) => {
+    const file = e.target.files[0];
+    setVerifyImage(file);
+
+    if (file) {
+      setVerifyPreview(URL.createObjectURL(file));
+    }
+  };
+
+  /* 기존 데이터 초기화 */  
   useEffect(() => {
     if (!registerData) return;
 
@@ -172,7 +183,10 @@ const handleAddressSearch = async () => {
     }
 
     if (registerData.bplcPhoto) {
-      setPreview(`/uploads/${registerData.bplcPhoto}`);
+      setPreview(`http://localhost:3001/uploads/${registerData.bplcPhoto}`);
+    }
+    if (registerData.certPhoto) {
+      setVerifyPreview(`http://localhost:3001/uploads/${registerData.certPhoto}`);
     }
   }, [registerData]);
 
@@ -196,9 +210,8 @@ const handleAddressSearch = async () => {
 
     formData.append("convenience", JSON.stringify(conveniencePayload));
 
-    if (image) {
-      formData.append("image", image);
-    }
+    if (image) formData.append("storeImage", image);
+    if (verifyImage) formData.append("VerifyImage", verifyImage);
 
     try {
       const response = await fetch("/api/store/register", {
@@ -503,6 +516,14 @@ const handleAddressSearch = async () => {
               </div>
             )}
             <input type="file" accept="image/*" onChange={handleImageChange} />
+            <label htmlFor="verifyImg">사업자 인증 이미지(영수증)</label>
+              <br />
+              {verifyPreview && (
+                <div style={{ marginTop: "10px" }}>
+                  <img src={verifyPreview} alt="인증 미리보기" width="200" />
+                </div>
+              )}
+            <input type="file" accept="image/*" onChange={handleVerifyImageChange} />
 
             <div className="rightContainer">
               <button type="button" onClick={() => openActionBox("승인")} > 승인 </button> 
