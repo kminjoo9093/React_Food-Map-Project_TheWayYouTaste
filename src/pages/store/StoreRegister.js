@@ -14,90 +14,103 @@ function StoreRegister({ userSn }) {
   const [brError, setBrError] = useState(null);
   const [owner, setOwner] = useState("");
   const [openDate, setOpenDate] = useState("");
+const checkBusiness = async () => {
+  setBrError(null);
+  setBrResult(null);
 
-  const checkBusiness = async () => {
-    setBrError(null);
-    setBrResult(null);
+  if (!brNo) {
+    setBrError("사업자등록번호를 입력해주세요.");
+    return;
+  }
 
-    if (!brNo) {
-      setBrError("사업자등록번호를 입력해주세요.");
+  if (registerType === "BUSINESS") {
+    if (!owner || !openDate) {
+      setBrError("대표자명과 개업일을 모두 입력해주세요.");
       return;
     }
+  }
 
-    if (registerType === "BUSINESS") {
-      if (!owner || !openDate) {
-        setBrError("대표자명과 개업일을 모두 입력해주세요.");
-        return;
-      }
+  if (brNo.length !== 10) {
+    setBrError("사업자등록번호 10자리를 입력해주세요.");
+    return;
+  }
+
+  try {
+    const serviceKey =
+      "nYrvOHdHDUUOV%2Fb8t4ddcrtVY02lgsfE%2BNmWpM%2F88LynhtxTOqBYkJZWbBCccrjZGcvSysLZVipV0g069cKT2A%3D%3D";
+    let url = "";
+    let body = null;
+
+    if (registerType === "USER") {
+      url = `https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=${serviceKey}`;
+      body = { b_no: [brNo] };
+    } else {
+      url = `https://api.odcloud.kr/api/nts-businessman/v1/validate?serviceKey=${serviceKey}`;
+      body = {
+        businesses: [
+          {
+            b_no: brNo,
+            start_dt: openDate.replaceAll("-", ""),
+            p_nm: owner,
+          },
+        ],
+      };
     }
 
-    if (brNo.length !== 10) {
-      setBrError("사업자등록번호 10자리를 입력해주세요.");
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    const data = await res.json();
+    // console.log("Raw API response:", data);
+
+    let result = data.businesses?.[0] || data.data?.[0];
+    if (!result || (registerType === "USER" && result.b_stt !== "계속사업자") || 
+        (registerType === "BUSINESS" && result.valid !== "01")) {
+      setBrError("유효하지 않은 사업자 정보입니다.");
       return;
     }
+    // 3. 백엔드 DB 중복 체크 (/check-brno)
+    const dupRes = await fetch(`http://localhost:3001/youtaste/store/check-brno?brno=${brNo}`);
+    const dupData = await dupRes.json();
 
-    try {
-      const serviceKey =
-        "nYrvOHdHDUUOV%2Fb8t4ddcrtVY02lgsfE%2BNmWpM%2F88LynhtxTOqBYkJZWbBCccrjZGcvSysLZVipV0g069cKT2A%3D%3D";
-      let url = "";
-      let body = null;
-
+    /* ================= 요청하신 중복 프로세스 적용 ================= */
+    
+    // CASE 1: DB에 존재하지 않을 경우 -> 정상 등록 가능
+    if (!dupData.exists) {
+      setBrResult({ status: "인증되었습니다." });
+      return;
+    }
+    // CASE 2: DB에 존재할 경우
+    if (dupData.exists) {
+      // (1) 손님(USER)으로 등록하려는 경우
       if (registerType === "USER") {
-        url = `https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=${serviceKey}`;
-        body = { b_no: [brNo] };
-      } else {
-        url = `https://api.odcloud.kr/api/nts-businessman/v1/validate?serviceKey=${serviceKey}`;
-        body = {
-          businesses: [
-            {
-              b_no: brNo, 
-              start_dt: openDate.replaceAll("-", ""),
-              p_nm: owner,
-            },
-          ],
-        };
-      }
-
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-
-      const data = await res.json();
-      console.log("Raw API response:", data);
-
-      let result = null;
-      if (registerType === "USER") {
-        result = data.businesses?.[0] || data.data?.[0];
-      } else {
-        result = data.businesses?.[0] || data.data?.[0];
-      }
-
-      if (!result) {
-        setBrError("조회 결과가 없습니다.");
+        // 이미 누가 등록했다면 무조건 거절 (중복 등록 불가)
+        setBrError("이미 등록된 사업자번호입니다."); 
         return;
       }
 
-      // 결과 검증
-      if (registerType === "USER") {
-        if (result.b_stt === "계속사업자") {
-          setBrResult({ status: "인증되었습니다" });
-        } else {
-          setBrError("유효하지 않은 사업자등록번호입니다.");
+      // (2) 사장님(BUSINESS)으로 등록하려는 경우
+      if (registerType === "BUSINESS") {
+        // 기존에 손님(USER)이 등록한 정보(userReg:1, bzmnReg:0)만 있는 경우
+        if (dupData.userReg === 1 && dupData.bzmnReg === 0) {
+          setBrResult({ status: "사용자 등록정보를 업데이트했습니다." }); // 이 문구가 handleSubmit 활성화 조건
+          return;
         }
-      } else {
-        if (result.valid === "01") {
-          setBrResult({ status: "인증되었습니다" });
-        } else {
-          setBrError("사업자정보가 일치하지 않습니다.");
+        if (dupData.bzmnReg === 1) {
+          setBrError("이미 사업자 등록이 완료된 가게입니다.");
+          return;
         }
       }
-    } catch (err) {
-      console.error("API 호출 실패:", err);
-      setBrError("API 호출 중 오류가 발생했습니다.");
+    
     }
-  };
+  }catch (err) {
+    setBrError("인증 중 오류가 발생했습니다.");
+  }
+};
+        
 
   /* 주소 API */
   const [roadAddress, setRoadAddress] = useState("");
@@ -224,11 +237,13 @@ function StoreRegister({ userSn }) {
     formData.append("userSn", userSn);
     if (registerType === "BUSINESS") {
       formData.append("owner", owner);
-      formData.append("business", 1);
+      formData.append("userReg", 0);
+      formData.append("bzmnReg", 1);
     }
 
     if (registerType === "USER") {
-      formData.append("user", 1);
+      formData.append("userReg", 1);
+      formData.append("bzmnReg", 0);
     }
 
     formData.append("storeName", storeName);
@@ -262,12 +277,29 @@ function StoreRegister({ userSn }) {
         method: "POST",
         body: formData,
       });
-      if (!response.ok) throw new Error("등록 실패");
-      const result = await response.json();
-      setStorePreview(`http://localhost:3001${result.storeImageUrl}`);
-      setVerifyPreview(`http://localhost:3001${result.verifyImageUrl}`);
+      let result = null;
+        try {
+          result = await response.json();
+        } catch (e) {
+          result = {};
+      }
+      if (!response.ok) {
+        if (response.status === 409) {
+          alert("이미 등록된 사업자번호입니다.");
+          return;
+        }
+        throw new Error("이미 등록된 사업자번호입니다." || "등록 실패");
+      }
+      if (result.storeImageUrl) {
+        setStorePreview(`http://localhost:3001${result.storeImageUrl}`);
+      }
+      if (result.verifyImageUrl) {
+        setVerifyPreview(`http://localhost:3001${result.verifyImageUrl}`);
+      }
+
       alert("등록 완료!");
       console.log(result);
+
     } catch (error) {
       console.error(error);
       alert("오류 발생: 등록 실패");
@@ -276,14 +308,15 @@ function StoreRegister({ userSn }) {
 
   // 등록 버튼 활성화 조건
 const isFormValid =
-  brResult?.status === "인증되었습니다" &&
+  brResult?.status === "인증되었습니다." ||
+  brResult?.status === "사용자 등록정보를 업데이트했습니다." &&
   storeName &&
   roadAddress &&
   detailAddress &&
   openTime &&
   closeTime &&
   category &&
-  items.length > 0 && 
+  items.length > 0 &&
   verifyImage !== null;
 
   return (
@@ -330,7 +363,7 @@ const isFormValid =
                     value={brNo}
                     onChange={(e) => setBrNo(e.target.value)}
                     placeholder='"-" 제외 10자리 숫자 입력'
-                    readOnly={brResult?.status === "인증되었습니다" ? true : false}
+                    readOnly={brResult?.status === "인증되었습니다." ? true : false}
                   />
                   <button
                     className={`${styleStore.brNoBtn} ${styleStore.button}`}

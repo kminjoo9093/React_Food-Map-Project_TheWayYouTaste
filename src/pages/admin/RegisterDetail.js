@@ -15,10 +15,6 @@ function RegisterDetail({ setMemberNotices }) {
   const [actionReason, setActionReason] = useState("");
   const [noticeTitle, setNoticeTitle] = useState("");
   
-  /* 손님/사업자 선택 */
-  const user = () => {};
-  const br = () => {};
-
   /* 사업자번호 API */
   const [brNo, setBrNo] = useState("");
   const [brResult, setBrResult] = useState(null);
@@ -208,7 +204,7 @@ const handleAddressSearch = async () => {
     formData.append("detailAddress", detailAddress);
     formData.append("openTime", openTime);
     formData.append("closeTime", closeTime);
-    formData.append("category", category);
+    formData.append("category", Number(category));
 
     formData.append("convenience", JSON.stringify(conveniencePayload));
   
@@ -322,29 +318,6 @@ const handleAddressSearch = async () => {
       <div className="container">
         <div className={styleStore.storeContainer}>
           <form onSubmit={handleSubmit}>
-            {/* 손님/사업자 선택 버튼 */}
-            <div>
-              <button
-                className={styleStore.selectBtnL}
-                type="button"
-                onClick={user}
-              >
-                내 맛집 등록
-                <br />
-                (손님 등록)
-              </button>
-              <button
-                className={styleStore.selectBtnR}
-                type="button"
-                onClick={br}
-              >
-                내 가게 등록
-                <br />
-                (사업자 등록)
-              </button>
-              <br />
-              <br />
-            </div>
 
             {/* 사업자등록번호 */}
             <div>
