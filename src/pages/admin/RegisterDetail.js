@@ -15,10 +15,6 @@ function RegisterDetail({ setMemberNotices }) {
   const [actionReason, setActionReason] = useState("");
   const [noticeTitle, setNoticeTitle] = useState("");
   
-  /* 손님/사업자 선택 */
-  const user = () => {};
-  const br = () => {};
-
   /* 사업자번호 API */
   const [brNo, setBrNo] = useState("");
   const [brResult, setBrResult] = useState(null);
@@ -142,8 +138,19 @@ const handleAddressSearch = async () => {
       setPreview(URL.createObjectURL(file));
     }
   };
+  const [verifyImage, setVerifyImage] = useState(null);
+  const [verifyPreview, setVerifyPreview] = useState(null);
 
-  /* 기존 데이터 초기화 */
+  const handleVerifyImageChange = (e) => {
+    const file = e.target.files[0];
+    setVerifyImage(file);
+
+    if (file) {
+      setVerifyPreview(URL.createObjectURL(file));
+    }
+  };
+
+  /* 기존 데이터 초기화 */  
   useEffect(() => {
     if (!registerData) return;
 
@@ -166,13 +173,18 @@ const handleAddressSearch = async () => {
     }
 
     setCategory(registerData.storeCatNo);
-
-    if (registerData.petYn === 1) {
-      setConveniences(["pet"]);
-    }
+    
+    const initConveniences = registerData.amtySrvc
+    ? JSON.parse(registerData.amtySrvc)
+    : [];
+    setConveniences(initConveniences);
+   
 
     if (registerData.bplcPhoto) {
-      setPreview(`/uploads/${registerData.bplcPhoto}`);
+      setPreview(`http://localhost:3001/uploads/${registerData.bplcPhoto}`);
+    }
+    if (registerData.certPhoto) {
+      setVerifyPreview(`http://localhost:3001/uploads/${registerData.certPhoto}`);
     }
   }, [registerData]);
 
@@ -192,13 +204,12 @@ const handleAddressSearch = async () => {
     formData.append("detailAddress", detailAddress);
     formData.append("openTime", openTime);
     formData.append("closeTime", closeTime);
-    formData.append("category", category);
+    formData.append("category", Number(category));
 
     formData.append("convenience", JSON.stringify(conveniencePayload));
-
-    if (image) {
-      formData.append("image", image);
-    }
+  
+    if (image) formData.append("storeImage", image);
+    if (verifyImage) formData.append("VerifyImage", verifyImage);
 
     try {
       const response = await fetch("/api/store/register", {
@@ -299,34 +310,14 @@ const handleAddressSearch = async () => {
       default: return "디저트";
     }
   } 
+  function showCategory(type){
+    return type === "승인" ? "가게 등록 승인" : "가게 등록 반려";
+  }
   return (
     <div className="contentTopPosition">
       <div className="container">
         <div className={styleStore.storeContainer}>
           <form onSubmit={handleSubmit}>
-            {/* 손님/사업자 선택 버튼 */}
-            <div>
-              <button
-                className={styleStore.selectBtnL}
-                type="button"
-                onClick={user}
-              >
-                내 맛집 등록
-                <br />
-                (손님 등록)
-              </button>
-              <button
-                className={styleStore.selectBtnR}
-                type="button"
-                onClick={br}
-              >
-                내 가게 등록
-                <br />
-                (사업자 등록)
-              </button>
-              <br />
-              <br />
-            </div>
 
             {/* 사업자등록번호 */}
             <div>
@@ -405,7 +396,7 @@ const handleAddressSearch = async () => {
                 readOnly
               />
               <input
-                className={styleStore.addBtn}
+                className={styleStore.brNoBtn}
                 type="button"
                 value="조회"
                 onClick={handleAddressSearch}
@@ -493,7 +484,7 @@ const handleAddressSearch = async () => {
                 />
               </label>
             ))}
-
+            
             {/* 이미지 업로드 */}
             <label htmlFor="storeImg">가게 대표 이미지</label>
             <br />
@@ -503,6 +494,14 @@ const handleAddressSearch = async () => {
               </div>
             )}
             <input type="file" accept="image/*" onChange={handleImageChange} />
+            <label htmlFor="verifyImg">사업자 인증 이미지(영수증)</label>
+              <br />
+              {verifyPreview && (
+                <div style={{ marginTop: "10px" }}>
+                  <img src={verifyPreview} alt="인증 미리보기" width="200" />
+                </div>
+              )}
+            <input type="file" accept="image/*" onChange={handleVerifyImageChange} />
 
             <div className="rightContainer">
               <button type="button" onClick={() => openActionBox("승인")} > 승인 </button> 
@@ -523,7 +522,8 @@ const handleAddressSearch = async () => {
                   placeholder="제목을 입력하세요"
                 />
                 <p>날짜: {new Date().toLocaleDateString()}</p>
-                <p>카테고리 : {getDclrCatName(6)}</p>
+                <p>카테고리 : {showCategory(actionType)}</p>
+                <p hidden>카테고리 : {getDclrCatName(6)}</p>
                 <textarea
                   className={styleNotice.popupTextarea}
                   placeholder="사유를 작성하세요"
