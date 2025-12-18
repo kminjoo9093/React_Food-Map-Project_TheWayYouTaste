@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import "../../css/Modal.css";
+import styleReview from "../../css/ReviewRgister.module.css";
+
+// 리뷰 별 이미지
+import starImage from '../../resources/img/system/review.png';
 
 const ReviewRegister = ({ isOpen, onClose }) => {
   const [imagePreview1, setImagePreview1] = useState(null);
@@ -48,24 +51,88 @@ const ReviewRegister = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="modalOverlay" onClick={onClose}>
-      <div className="modalContent" onClick={(e) => e.stopPropagation()}>
-        <h2>리뷰 등록</h2>
+    
+    <div className={styleReview.modalOverlay} onClick={onClose}>
+      <div className={styleReview.modalContent} onClick={(e) => e.stopPropagation()}>
+
+          <button className={styleReview.button} onClick={onClose}>닫기</button>
+
+          <h2>리뷰 등록</h2>
+
+        <h3>별점</h3>
+              {/* 이미지로 별을 표시 */}]
+              <div>
+                <img
+                  src={starImage}
+                  alt="star"
+                  style={{
+                    width: '30px', 
+                    height: '30px',
+                    objectFit: 'cover',
+                    // opacity: index < rating ? 1 : 0.2, // 별점이 낮으면 불투명도 조정
+                    transition: 'opacity 0.3s ease',
+                  }}
+                />
+                <img
+                  src={starImage}
+                  alt="star"
+                  style={{
+                    width: '30px', 
+                    height: '30px',
+                    objectFit: 'cover',
+                    // opacity: index < rating ? 1 : 0.2, // 별점이 낮으면 불투명도 조정
+                    transition: 'opacity 0.3s ease',
+                  }}
+                />
+                <img
+                  src={starImage}
+                  alt="star"
+                  style={{
+                    width: '30px', 
+                    height: '30px',
+                    objectFit: 'cover',
+                    // opacity: index < rating ? 1 : 0.2, // 별점이 낮으면 불투명도 조정
+                    transition: 'opacity 0.3s ease',
+                  }}
+                />
+                <img
+                  src={starImage}
+                  alt="star"
+                  style={{
+                    width: '30px', 
+                    height: '30px',
+                    objectFit: 'cover',
+                    // opacity: index < rating ? 1 : 0.2, // 별점이 낮으면 불투명도 조정
+                    transition: 'opacity 0.3s ease',
+                  }}
+                />
+                <img
+                  src={starImage}
+                  alt="star"
+                  style={{
+                    width: '30px', 
+                    height: '30px',
+                    objectFit: 'cover',
+                    // opacity: index < rating ? 1 : 0.2, // 별점이 낮으면 불투명도 조정
+                    transition: 'opacity 0.3s ease',
+                  }}
+                />
+              </div>
 
         <h3>이미지</h3>
-        <div className="imgBox">
+        <div className={styleReview.imgBox}>
           {/* 첫 번째 이미지 파일 버튼 */}
-          <div className="customFileBox">
+          <div className={styleReview.customFileBox}>
             <label
               htmlFor="reviewImage1"
-              className={`customFileLabel ${imagePreview1 ? "completed" : ""}`}
+              className={`${styleReview.customFileLabel} ${imagePreview3 ? "completed" : ""}`}
             >
               {imagePreview1 ? (
-                <div className="imagePreview">
-                  <img src={imagePreview1} alt="미리보기1" className="previewImage" />
+                <div className={styleReview.imagePreview}>
+                  <img src={imagePreview1} alt="미리보기1" className={styleReview.previewImage} />
                 </div>
               ) : (
-                <span className="imgText">+</span>
+                <span className={styleReview.imgText}>+</span>
               )}
             </label>
             <input
@@ -73,22 +140,22 @@ const ReviewRegister = ({ isOpen, onClose }) => {
               id="reviewImage1"
               accept="image/*"
               onChange={handleFileChange1}
-              className="hiddenFileInput"
+              className={styleReview.hiddenFileInput}
             />
           </div>
 
           {/* 두 번째 이미지 파일 버튼 */}
-          <div className="customFileBox">
+          <div className={styleReview.customFileBox}>
             <label
               htmlFor="reviewImage2"
-              className={`customFileLabel ${imagePreview2 ? "completed" : ""}`}
+              className={`${styleReview.customFileLabel} ${imagePreview3 ? "completed" : ""}`}
             >
               {imagePreview2 ? (
-                <div className="imagePreview">
-                  <img src={imagePreview2} alt="미리보기2" className="previewImage" />
+                <div className={styleReview.imagePreview}>
+                  <img src={imagePreview2} alt="미리보기2" className={styleReview.previewImage} />
                 </div>
               ) : (
-                <span className="imgText">+</span>
+                <span className={styleReview.imgText}>+</span>
               )}
             </label>
             <input
@@ -96,22 +163,22 @@ const ReviewRegister = ({ isOpen, onClose }) => {
               id="reviewImage2"
               accept="image/*"
               onChange={handleFileChange2}
-              className="hiddenFileInput"
+              className={styleReview.hiddenFileInput}
             />
           </div>
 
           {/* 세 번째 이미지 파일 버튼 */}
-          <div className="customFileBox">
+          <div className={styleReview.customFileBox}>
             <label
               htmlFor="reviewImage3"
-              className={`customFileLabel ${imagePreview3 ? "completed" : ""}`}
+              className={`${styleReview.customFileLabel} ${imagePreview3 ? "completed" : ""}`}
             >
               {imagePreview3 ? (
                 <div className="imagePreview">
-                  <img src={imagePreview3} alt="미리보기3" className="previewImage" />
+                  <img src={imagePreview3} alt="미리보기3" className={styleReview.previewImage} />
                 </div>
               ) : (
-                <span className="imgText">+</span>
+                <span className={styleReview.imgText}>+</span>
               )}
             </label>
             <input
@@ -119,7 +186,7 @@ const ReviewRegister = ({ isOpen, onClose }) => {
               id="reviewImage3"
               accept="image/*"
               onChange={handleFileChange3}
-              className="hiddenFileInput"
+              className={styleReview.hiddenFileInput}
             />
           </div>
         </div>
@@ -128,14 +195,14 @@ const ReviewRegister = ({ isOpen, onClose }) => {
         <h3>내용</h3>
         {/* 리뷰 내용 입력 */}
         <input
-          className="reviewBox"
+          className={styleReview.reviewBox}
           type="text"
-          maxLength={50}
+          maxLength={500}
           value={reviewText}
           onChange={handleTextChange}
         />
         <br />
-        <button className="button" onClick={onClose}>닫기</button>
+        <button type="submit">등록</button>
       </div>
     </div>
   );
