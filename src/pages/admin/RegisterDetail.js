@@ -177,10 +177,12 @@ const handleAddressSearch = async () => {
     }
 
     setCategory(registerData.storeCatNo);
-
-    if (registerData.petYn === 1) {
-      setConveniences(["pet"]);
-    }
+    
+    const initConveniences = registerData.amtySrvc
+    ? JSON.parse(registerData.amtySrvc)
+    : [];
+    setConveniences(initConveniences);
+   
 
     if (registerData.bplcPhoto) {
       setPreview(`http://localhost:3001/uploads/${registerData.bplcPhoto}`);
@@ -209,7 +211,7 @@ const handleAddressSearch = async () => {
     formData.append("category", category);
 
     formData.append("convenience", JSON.stringify(conveniencePayload));
-
+  
     if (image) formData.append("storeImage", image);
     if (verifyImage) formData.append("VerifyImage", verifyImage);
 
@@ -312,6 +314,9 @@ const handleAddressSearch = async () => {
       default: return "디저트";
     }
   } 
+  function showCategory(type){
+    return type === "승인" ? "가게 등록 승인" : "가게 등록 반려";
+  }
   return (
     <div className="contentTopPosition">
       <div className="container">
@@ -418,7 +423,7 @@ const handleAddressSearch = async () => {
                 readOnly
               />
               <input
-                className={styleStore.addBtn}
+                className={styleStore.brNoBtn}
                 type="button"
                 value="조회"
                 onClick={handleAddressSearch}
@@ -506,7 +511,7 @@ const handleAddressSearch = async () => {
                 />
               </label>
             ))}
-
+            
             {/* 이미지 업로드 */}
             <label htmlFor="storeImg">가게 대표 이미지</label>
             <br />
@@ -544,7 +549,8 @@ const handleAddressSearch = async () => {
                   placeholder="제목을 입력하세요"
                 />
                 <p>날짜: {new Date().toLocaleDateString()}</p>
-                <p>카테고리 : {getDclrCatName(6)}</p>
+                <p>카테고리 : {showCategory(actionType)}</p>
+                <p hidden>카테고리 : {getDclrCatName(6)}</p>
                 <textarea
                   className={styleNotice.popupTextarea}
                   placeholder="사유를 작성하세요"
