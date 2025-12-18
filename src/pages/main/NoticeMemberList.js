@@ -27,7 +27,7 @@ function NoticeMemberList({ notices }) {
   return (
     <div className="contentTopPosition">
       <div className={styleMember.middleContainer}>
-        <h1>내 신고 내역</h1>
+        <h1>내 문의 내역</h1>
         <table className='container'>
           <thead>
             <tr>

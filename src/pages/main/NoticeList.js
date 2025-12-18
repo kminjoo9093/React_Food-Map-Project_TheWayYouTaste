@@ -23,6 +23,7 @@ function Notice({ notices, isAdmin }) {
       case 3: return "리뷰 신고";
       case 4: return "기타 신고";
       case 5: return "서버 점검";
+      case 6: return "가게 등록";
       default: return "대표 공지";
     }
   }

@@ -1,0 +1,227 @@
+.button {
+  padding: 0.8rem 1.6rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  background-color: #80002050;
+  border-color: #ccc;
+  color: white;
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+.selectBtnL.completed {
+    background-color: #80002050;
+    border-color: #ccc;
+    color: white;
+}
+
+
+.storeContainer{
+    width: 60%;
+    margin: 0 auto;
+    /* background-color: white; */
+}
+
+.selectBtnL{
+    width: 45%;
+    height: 6rem;
+    margin-right: 5%;
+}
+
+.selectBtnL.completed {
+    background-color: #80002050;
+    border-color: #ccc;
+    color: white;
+}
+
+.selectBtnR{
+    width: 45%;
+    height: 6rem;
+    margin-left: 5%;
+}
+
+.selectBtnR.completed {
+    background-color: #80002050;
+    border-color: #ccc;
+    color: white;
+}
+
+.text{
+    text-align: center;
+}
+
+.menuBtn{
+    margin-left: 10px;
+}
+
+.textBox{
+    width: 100%;
+    height: 4rem;
+}
+
+.inputBox{
+    width: 100%;
+    height: 4rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    border: solid 1px rgb(221, 221, 221);
+}
+
+.timeinput{
+    gap: 2rem;
+    width: 85%;
+    height: 4rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    margin-left: 1%;
+    border: solid 1px rgb(221, 221, 221);
+    
+}
+
+.flexBox{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+
+.price::-webkit-outer-spin-button,
+.price::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.price[type=number] {
+    width: 40%;
+    height: 4rem;
+    padding-left: 2rem;
+    border: solid 1px rgb(221, 221, 221);
+}
+
+.menu[type=text]{
+    width: 40%;
+    height: 4rem;
+    margin-right: 2%;
+}
+
+.menuBtnL{
+    width: 7%;
+    height: 4rem;
+    margin-left: 2%;
+}
+
+.menuBtnR{
+    width: 7%;
+    height: 4rem;
+    margin-left: 2%;
+}
+
+.submit{
+    display: flex;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
+    
+    width: 50%;
+    height: 4rem;
+    margin-top: 5rem;
+}
+
+.facBtn{
+    width: 15rem;
+    height: 5rem;
+}
+
+.brNoBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.brNoBtn{
+    margin-left: 1rem;
+    width: 6rem;
+    height: 4rem;
+    padding: 0px;
+}
+
+.addBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.addBtn{
+    margin-left: 1rem;
+    width: 6rem;
+    height: 4rem;
+}
+
+.checkbox {
+    display: inline-block;
+    width: 30%;
+    height: 5rem;
+    background-color: white;
+    border-radius: 3px;
+    text-align: center;
+    cursor: pointer;
+    margin: 1rem 1.5%;
+    position: relative;
+    border: solid 1px rgb(221, 221, 221);
+}
+
+.hiddenCheckbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.active {
+    background-color: lightgray;
+}
+
+
+
+.hiddenFileInput {
+    display: none; /* 실제 input은 숨기기 */
+}
+
+.customFileLabel {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    border: solid 1px rgb(221, 221, 221);
+    margin-left: 2rem;
+}
+
+.customFileLabel:hover {
+    background-color: #80002050;
+    border-color: #ccc;
+    color: white;
+}
+
+.customFileLabel.completed {
+    background-color: #80002050;
+    border-color: #ccc;
+    color: white;
+}
+
+.imgBox{
+    display: flex;
+    align-items: center;
+}
