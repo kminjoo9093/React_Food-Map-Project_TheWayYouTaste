@@ -34,6 +34,10 @@ function TheWayYouTaste() {
   const [registerAdmin, setRegisterAdmin] = useState([]);
   const [memberNotices, setMemberNotices] = useState([]);
   const userSn = 1002; // 예시, 실제 로그인 정보로 가져오기
+  const [storeCategories, setStoreCategories] = useState([]);
+  const [sidoList, setSidoList] = useState([]);
+  const [sggList, setSggList] = useState([]);
+  const [dongList, setDongList] = useState([]);
 
   useEffect(() => {
   const fetchData = async () => {
@@ -42,16 +46,30 @@ function TheWayYouTaste() {
       const registerAdminRes = await fetch("http://localhost:3001/youtaste/register-admin")
       const noticesRes = await fetch("http://localhost:3001/youtaste/notice");
       const memberNoticesRes = await fetch(`http://localhost:3001/youtaste/member-notices?userSn=${userSn}`);
+      const storeCategoriesRes = await fetch("http://localhost:3001/youtaste/search");
+      const sidoListRes = await fetch("http://localhost:3001/youtaste/search/sido");
+      const sggListRes = await fetch("http://localhost:3001/youtaste/search/sgg");
+      const dongListRes = await fetch("http://localhost:3001/youtaste/search/dong");
 
       const reportsData = reportsRes.ok ? await reportsRes.json() : [];
       const registerAdminData = registerAdminRes.ok ? await registerAdminRes.json() : [];
       const noticesData = noticesRes.ok ? await noticesRes.json() : [];
       const memberNoticesData = memberNoticesRes.ok ? await memberNoticesRes.json() : [];
+      const storeCategoryData = storeCategoriesRes.ok ? await storeCategoriesRes.json() : [];
+      const sidoListData = sidoListRes.ok ? await sidoListRes.json() : [];
+      const sggListData = sggListRes.ok ? await sggListRes.json() : [];
+      const dongListData = dongListRes.ok ? await dongListRes.json() : [];
 
       setReports(reportsData);
       setRegisterAdmin(registerAdminData);
       setNotices(noticesData);
       setMemberNotices(memberNoticesData);
+
+      //MJ
+      setStoreCategories(storeCategoryData);
+      setSidoList(sidoListData);
+      setSggList(sggListData);
+      setDongList(dongListData);
 
     } catch (err) {
       console.error("데이터 로드 중 오류:", err);
@@ -78,7 +96,7 @@ function TheWayYouTaste() {
             <Route path="/admin/register/list" element={<RegisterListCheck registerAdmin={registerAdmin}/>} />
             <Route path="/store/register" element={<StoreRegister userSn={userSn}/>} />
             <Route path="/store/registerDetail" element={<RegisterDetail setMemberNotices={setMemberNotices}/>} />
-            <Route path="/search/store" element={<SearchStore />} />
+            <Route path="/search/store" element={<SearchStore storeCategories={storeCategories} sidoList={sidoList} />}/>
             <Route path="/search/storeDetail" element={<StoreDetail />} />
             <Route path="/store/report/:userSn" element={<ReportRequest />} />
             <Route path="/store/reportDetail" element={<ReportDetail setMemberNotices={setMemberNotices} />} />

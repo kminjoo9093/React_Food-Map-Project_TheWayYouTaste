@@ -5,53 +5,46 @@ import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
 function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, setSelectedSi, selectedDong, setSelectedDong, onConfirm
                         , setDoName, setSiName, setDongName, sidoList
     }){
+    // const [selectedDo, setSelectedDo] = useState();
+    // const [selectedSi, setSelectedSi] = useState(null);
+    // const [selectedDong, setSelectedDong] = useState(null);
 
-    const [sggList, setSggList] = useState([]);
-    const [dongList, setDongList] = useState([]);
+    // const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(isModalOpen);
 
-    //시도 리스트 받아오기
     const sidoData = sidoList;
+    console.log("찐 시도리스트 --> ", sidoData);
+    //const sidoData = UseSearchStoreFetch("http://localhost:3001/sido");
+    const sigunguData = UseSearchStoreFetch(selectedDo ? `http://localhost:3001/sigungu?sidoCd=${selectedDo}` : null);
+    const dongData = UseSearchStoreFetch(selectedSi ? `http://localhost:3001/dong?sigunguCode=${selectedSi}` : null);
+
+    // console.log("herehere", dongData);
+
     let newSidoList = sidoData.map(record => {
         return {"id" : record.sidoCd, ...record}
     });
-
-    //시군구 리스트 받아오기
-    useEffect(()=>{
-        //console.log("선택된 시도 코드 :" , selectedDo);
-        const fetchData = async () => {
-            try{
-                    const sggListRes = await fetch(selectedDo ? `http://localhost:3001/youtaste/search/sgg?sidoCd=${selectedDo}` : null);
-                    const sggListData = sggListRes.ok ? await sggListRes.json() : [];
-                    console.log("찐 시군구 --> ", sggListData);
-                    
-                    let list = sggListData.map(record => {
-                        return {"id" : record.sggCd, ...record}    
-                    });
-                    setSggList(list);
-            } catch (err) {
-                console.log("데이터 로드 중 오류: ", err);
-            }
-        }
-
-        fetchData();
-    }, [selectedDo]);
     
-    //읍면동 리스트 받아오기
+    let sigunguList = sigunguData.map(record => {
+        return {"id" : record.sigunguCode, ...record}
+    });
+
+    let dongDataList;
+    try {
+        let dongList = dongData[0].dongList;
+        dongDataList = dongList.map(record => {
+            record =  {id : record.dongCode, ...record};
+            return record;
+        });
+    } catch (error) {
+        dongDataList = [];
+    }
+    // console.log("here:", dongList);
+    //console.log("시도 리스트:", sidoList);
     useEffect(()=>{
-        const fetchData = async () => {
-            try{
-                const dongListRes = await fetch(selectedSi ? `http://localhost:3001/youtaste/search/dong?sggCd=${selectedSi}` : null);
-                console.log("찐 읍면동 데이터 : ", dongListRes);
-                const dongListData = dongListRes.ok ? await dongListRes.json() : [];
-                let list = dongListData.map(record => {
-                    return {id : record.dgCd, ...record};
-                })
-                setDongList(list);
-            } catch(err) {
-                console.log("데이터 로드 중 오류: ", err);
-            }
-        }
-        fetchData();
+        console.log("선택된 시도 코드 :" , selectedDo);
+    }, [selectedDo]);
+
+    useEffect(()=>{
+        console.log("선택된 시군구 코드 :" , selectedSi);
     }, [selectedSi]);
 
     useEffect(()=>{
@@ -67,16 +60,16 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
         setDongName("");
     }
 
-    function handleSelectSi(sggCd, siName){
-    setSelectedSi(sggCd);
+    function handleSelectSi(sigunguCode, siName){
+    setSelectedSi(sigunguCode);
     setSiName(siName || "");
     setSelectedDong(null);
     setDongName("");
     }
 
-    function handleSelectDong(dgCd, dgNm){
-        setSelectedDong(dgCd);
-        setDongName(dgNm || "");
+    function handleSelectDong(dongCode, dongName){
+        setSelectedDong(dongCode);
+        setDongName(dongName || "");
     }
 
     return (
@@ -123,15 +116,15 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
                                                     ${selectedSi === null ? styleRegionModal.activeItem : ""}`} 
                                         onClick={()=>handleSelectSi(null)}>전체</li>
                                     {
-                                        sggList.map(record => (
+                                        sigunguList.map(record => (
                                             <li key={record.id} 
                                                 className={`${styleRegionModal.regionItem}
-                                                                ${selectedSi === record.sggCd 
+                                                                ${selectedSi === record.sigunguCode 
                                                                     ? styleRegionModal.activeItem : ""}
                                                     `}
-                                                onClick={()=> handleSelectSi(record.sggCd, record.sggNm)}
+                                                onClick={()=> handleSelectSi(record.sigunguCode, record.sigunguName)}
                                                 >
-                                                {record.sggNm}
+                                                {record.sigunguName}
                                             </li>
                                         ))
                                         
@@ -150,15 +143,15 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
                                                     ${selectedDong === null ? styleRegionModal.activeItem : ""}`} 
                                         onClick={()=>handleSelectDong(null)}>전체</li>
                                     {
-                                        dongList.map(record => (
+                                        dongDataList.map(record => (
                                         <li key={record.id} 
                                             className={`${styleRegionModal.regionItem}
-                                                        ${selectedDong === record.dgCd 
+                                                        ${selectedDong === record.dongCode 
                                                             ? styleRegionModal.activeItem : ""}
                                                         `}
-                                            onClick={()=> handleSelectDong(record.dgCd, record.dgNm)}
+                                            onClick={()=> handleSelectDong(record.dongCode, record.dongName)}
                                             >
-                                            {record.dgNm}
+                                            {record.dongName}
                                         </li>
                                         ))
                                     }

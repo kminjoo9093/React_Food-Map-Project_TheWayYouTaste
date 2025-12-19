@@ -7,11 +7,13 @@ import RegionModal from "./RegionModal";
 import MapComponent from "./MapComponent";
 import {GetStoreList} from "./GetStoreList";
 
-function SearchStore(){
+function SearchStore({storeCategories, sidoList}){
 
     //const stores = UseSearchStoreFetch("http://localhost:3001/store");
-    const categoryData = UseSearchStoreFetch("http://localhost:3001/category");
-    //console.log("전체 카테고리 리스트 : ", categoryData);
+
+    const categoryData = storeCategories;
+    console.log("전체 카테고리 리스트 : ", categoryData); 
+    //const categoryData = UseSearchStoreFetch("http://localhost:3001/category");
 
     let [filteredStoreList, setFilteredStoreList] = useState([]); //필터링된 리스트
     // const [categoryList, setCategoryList] = useState([]);
@@ -166,18 +168,18 @@ function SearchStore(){
 
     
     let categoryList = categoryData.map(record => {
-            return {"id" : record.STORE_CAT_NO, ...record}
+            return {"id" : record.catno, ...record}
         });
 
     //console.log("카테고리 리스트: ", categoryList);
 
     const foodIcons = {
-        c01: "🍚"
-        ,c02: "🍝"
-        ,c03: "🥟"
-        ,c04: "🍣"
-        ,c05: "🍜"
-        ,c06: "🍩"
+        1: "🍚"
+        ,2: "🍝"
+        ,3: "🥟"
+        ,4: "🍣"
+        ,5: "🍜"
+        ,6: "🍩"
     }
 
     function renderCategoryEmoji(category){
@@ -351,12 +353,12 @@ function SearchStore(){
                             {
                                 categoryList.map(record => (
                                     <li key={record.id}>
-                                        <button id={record.STORE_CAT_NO} 
-                                                className={selectedCategories.includes(record.STORE_CAT) ? styleSearchStore.active : null} 
-                                                onClick={() => onSelectCategory(record.STORE_CAT)}
+                                        <button id={record.catno} 
+                                                className={selectedCategories.includes(record.catName) ? styleSearchStore.active : null} 
+                                                onClick={() => onSelectCategory(record.catName)}
                                         >
-                                            {renderCategoryEmoji(record.STORE_CAT_NO)}
-                                            {record.STORE_CAT}
+                                            {renderCategoryEmoji(record.catno)}
+                                            {record.catName}
                                         </button>
                                     </li>
                                 ))
@@ -425,7 +427,7 @@ function SearchStore(){
 
             {/* 지역 선택 모달 */}
             {isDimmedMiddleOpen && 
-                <RegionModal isModalOpen = {isDimmedMiddleOpen} 
+                <RegionModal 
                             setIsModalOpen = {setIsDimmedMiddleOpen}
                             selectedDo = {selectedDo}
                             setSelectedDo = {setSelectedDo}
@@ -434,12 +436,14 @@ function SearchStore(){
                             selectedDong = {selectedDong}
                             setSelectedDong = {setSelectedDong}
                             onConfirm = {handleRegionConfirm}
-                            doName = {doName} 
+                            // doName = {doName} 
                             setDoName = {setDoName}
-                            siName = {siName} 
+                            // siName = {siName} 
                             setSiName = {setSiName}
-                            dongName = {dongName}
+                            // dongName = {dongName}
                             setDongName = {setDongName}
+                            sidoList = {sidoList}
+
                 />
             }
         </div>
