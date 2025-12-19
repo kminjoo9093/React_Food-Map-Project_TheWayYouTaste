@@ -1,6 +1,6 @@
 import { useState } from "react";
 import style from "../../css/MembershipLogin.module.css";
-import { useNavigate } from "react-router-dom"; // BrowserRouter는 여기서 필요 없음
+import { useNavigate } from "react-router-dom"; 
 
 function MembershipLogin({setIsLoggedIn, setUser}) {
     // ----------------- 상태 관리 -----------------
@@ -9,6 +9,7 @@ function MembershipLogin({setIsLoggedIn, setUser}) {
     const [regUser_NM, setRegUser_NM] = useState('');
     const [regUser_EML_ADDR, setRegUser_EML_ADDR] = useState('');
     const [regUser_PSWD, setRegUser_PSWD] = useState('');
+    const [regUser_MBL_TELNO, setRegUser_MBL_TELNO] = useState('');
 
     const navigate = useNavigate();
     const [active, setActive] = useState(false); // 초기값: false (회원가입/Registration 화면)
@@ -61,7 +62,7 @@ function MembershipLogin({setIsLoggedIn, setUser}) {
                 userPswd: regUser_PSWD,
                 userEmlAddr: regUser_EML_ADDR,
                 nickname: regUser_NM,
-                userMblTelno: "01012345678", // 임시
+                userMblTelno: regUser_MBL_TELNO, // 임시
             }),
         });
 
@@ -73,6 +74,7 @@ function MembershipLogin({setIsLoggedIn, setUser}) {
             setRegUser_NM("");
             setRegUser_EML_ADDR("");
             setRegUser_PSWD("");
+            setRegUser_MBL_TELNO("");
 
         } catch (error) {
             alert("회원가입 실패");
@@ -81,13 +83,8 @@ function MembershipLogin({setIsLoggedIn, setUser}) {
 
     return (
         <div className="contentTopPosition" style={{marginTop : "180px"}}>
-            {/* active 상태에 따라 container에 active 클래스 적용 */}
             <div className={`${style.container} ${active ? style.active : ""}`}>
-                
-                {/* 회원가입 폼 (Image: 회원 정보 등록 페이지.jpg) 
-                    - CSS 상으로는 .login 클래스를 사용하여 Registration 폼을 덮어쓰는 것으로 보입니다.
-                    - 토글 버튼의 onClick={() => setActive(false)}가 이쪽으로 연결됩니다.
-                */}
+            
                 <div className={`${style.formBox} ${style.login}`}> 
                     <form onSubmit={handleRegister}>
                         <h1>회원가입</h1>
@@ -98,9 +95,9 @@ function MembershipLogin({setIsLoggedIn, setUser}) {
                                 placeholder="성명" 
                                 value={regUser_NM} 
                                 onChange={(e) => setRegUser_NM(e.target.value)}
+                                style={{"marginBottom" : 0}}
                                 required
                             />
-                            <i className="bx bxs-user"></i>
                         </div>
 
                         <div className={style.inputBox}>
@@ -110,7 +107,6 @@ function MembershipLogin({setIsLoggedIn, setUser}) {
                                 value={regUser_EML_ADDR} 
                                 onChange={(e) => setRegUser_EML_ADDR(e.target.value)}
                             />
-                            <i className="bx bxs-envelope"></i>
                         </div>
 
                         <div className={style.inputBox}>
@@ -121,18 +117,22 @@ function MembershipLogin({setIsLoggedIn, setUser}) {
                                 onChange={(e) => setRegUser_PSWD(e.target.value)}
                                 required
                             />
-                            <i className="bx bxs-lock-alt"></i>
+                        </div>
+                        <div className={style.inputBox}>
+                            <input 
+                                type="tel" // 전화번호 타입
+                                placeholder="전화번호 (예: 01012345678)" 
+                                value={regUser_MBL_TELNO} 
+                                maxLength={11}
+                                onChange={(e) => setRegUser_MBL_TELNO(e.target.value)}
+                                required
+                            />
                         </div>
                         <br></br>
-                        {/* 이 버튼을 클릭 시 handleRegister 실행 */}
                         <button className={style.btn} type="submit">회원가입</button>
                     </form>
                 </div>
-
-                {/* 로그인 폼 (Image: 회원 로그인 페이지.jpg)
-                    - CSS 상으로는 .register 클래스를 사용하여 Login 폼을 덮어쓰는 것으로 보입니다.
-                    - 토글 버튼의 onClick={() => setActive(true)}가 이쪽으로 연결됩니다.
-                */}
+                {/* 로그인 */}
                 <div className={`${style.formBox} ${style.register}`}>
                     <div>
                         <h1>Login</h1>

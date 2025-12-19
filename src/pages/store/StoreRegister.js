@@ -297,8 +297,13 @@ const checkBusiness = async () => {
           alert("이미 등록된 사업자번호입니다.");
           return;
         }
-        throw new Error("이미 등록된 사업자번호입니다." || "등록 실패");
-      }
+        // 500 에러일 경우 서버 콘솔을 확인해야 함
+        if (response.status === 500) {
+          alert("서버 내부 오류가 발생했습니다. (백엔드 콘솔 확인)");
+          return;
+        }
+        throw new Error("등록 실패");
+       }
       if (result.storeImageUrl) {
         setStorePreview(`http://localhost:3001${result.storeImageUrl}`);
       }

@@ -263,33 +263,7 @@ const handleAddressSearch = async () => {
     );
 
     if (!response.ok) throw new Error("처리 실패");
-
-    const result = await response.json();
     
-    // 반려(N)일 경우 MemberNotice 리스트에 바로 추가
-    if (prcsYnValue === "N") {
-      const noticeData = {
-        userSn: registerData.userSn,
-        notiTtl: title,
-        notiCn: actionReason,
-        prcsYn: "N"
-      };
-
-      const noticeRes = await fetch(
-        "http://localhost:3001/youtaste/member-notices",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(noticeData)
-        }
-      );
-
-      if (!noticeRes.ok) throw new Error("공지사항 등록 실패");
-
-      const newNotice = await noticeRes.json();
-      setMemberNotices(prev => [newNotice, ...prev]);
-    }
-
     alert("처리 완료!");
     navigate("/notice/list");
   } catch (error) {

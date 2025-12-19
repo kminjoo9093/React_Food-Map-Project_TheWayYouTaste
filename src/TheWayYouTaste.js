@@ -1,4 +1,4 @@
-import { Routes,Route, useLocation, Navigate, useNavigate } from "react-router-dom";
+import { Routes,Route, useLocation, Navigate } from "react-router-dom";
 import Error404Page from "./Error404Page";
 import MemberListCheck from "./pages/admin/MemberListCheck"
 import MainPage from "./pages/main/MainPage"
@@ -31,7 +31,9 @@ function TheWayYouTaste() {
 
   const [user, setUser] = useState(null); // 로그인 사용자 정보
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
-  
+  const [isInitialized, setIsInitialized] = useState(false); // 초기화
+
+  const [members, setMembers] = useState([]);
   const [reports, setReports] = useState([]);
   const [notices, setNotices] = useState([]);
   const [registerAdmin, setRegisterAdmin] = useState([]);
@@ -45,10 +47,13 @@ function TheWayYouTaste() {
       setUser(JSON.parse(storedUser)); // 사용자 정보가 있다면 상태에 저장
       setIsLoggedIn(true); // 로그인 상태로 설정
     }
+
+    setIsInitialized(true);
   }, []);
 
+
    useEffect(() => {
-   
+    if (!isInitialized) return;
     // 사용자 정보가 있을 때만 fetchData 실행
         const fetchData = async () => {
             try {
@@ -58,14 +63,17 @@ function TheWayYouTaste() {
                 setNotices(noticesData);
               /* 로그인했을때 불러올 정보 */
               if (user) {
+                const membersRes = await fetch("http://localhost:3001/membership/check")
                 const reportsRes = await fetch("http://localhost:3001/youtaste/reports");
                 const registerAdminRes = await fetch("http://localhost:3001/youtaste/register-admin");
                 const memberNoticesRes = await fetch(`http://localhost:3001/youtaste/member-notices?userSn=${user.userSn}`);
 
+                const membersData = membersRes.ok ? await membersRes.json() : []; 
                 const reportsData = reportsRes.ok ? await reportsRes.json() : [];
                 const registerAdminData = registerAdminRes.ok ? await registerAdminRes.json() : [];
                 const memberNoticesData = memberNoticesRes.ok ? await memberNoticesRes.json() : [];
 
+                setMembers(membersData);
                 setReports(reportsData);
                 setRegisterAdmin(registerAdminData);
                 setMemberNotices(memberNoticesData);
@@ -75,10 +83,13 @@ function TheWayYouTaste() {
             }
         };
         fetchData();
-  }, [user]); // user가 있을 때만 fetchData 실행
+  }, [isInitialized, user]); // user가 있을 때만 fetchData 실행
  
+  //f5하였을때 로그인페이지로 넘어가는 상황 방지 
+  if (!isInitialized) {
+    return <div>로딩 중...</div>; 
+  }
   return (
-     
       <div className="App">
           {!hideHeader && <Header />}
           <Routes>
@@ -104,7 +115,7 @@ function TheWayYouTaste() {
             <Route path="/notice/write" element={isLoggedIn && isAdmin ? <NoticeWrite /> : <Navigate to="/login" replace />} />
             <Route path="/store/registerDetail" element={isLoggedIn && isAdmin ? <RegisterDetail setMemberNotices={setMemberNotices}/> : <Navigate to="/login" replace />} />
             <Route path="/store/reportDetail" element={isLoggedIn && isAdmin ? <ReportDetail setMemberNotices={setMemberNotices} /> : <Navigate to="/login" replace />} />
-            <Route path="/admin/member/list" element={isLoggedIn && isAdmin ? <MemberListCheck /> : <Navigate to="/login" replace/>}/>
+            <Route path="/admin/member/list" element={isLoggedIn && isAdmin ? <MemberListCheck members={members} /> : <Navigate to="/login" replace/>}/>
             <Route path="/admin/report/list" element={isLoggedIn && isAdmin ? <ReportListCheck reports={reports} /> : <Navigate to="/login" replace/>}/>
             <Route path="/admin/register/list" element={isLoggedIn && isAdmin ? <RegisterListCheck registerAdmin={registerAdmin} /> : <Navigate to="/login" replace/>}/>
           </Routes>
