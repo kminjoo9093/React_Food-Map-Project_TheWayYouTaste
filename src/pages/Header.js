@@ -1,21 +1,29 @@
 // import styleGlobal from "../css/Global.module.css";
 import styleHeader from "../css/Header.module.css";
 import styleSidebar from "../css/sidebar.module.css"
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import searchIcon from "../resources/img/system/search.png";
 
 function Header(){
 
     const [open, setOpen] = useState(false);
     const [openMyMenu, setOpenMyMenu] = useState(false);
-
-    // 임시 login state
-    const [isLogin, setIsLogin] = useState(true); ////로그인 O => My page 보임
-    //const [isLogin, setIsLogin] = useState(false); //로그인 X
+    const [isLogin, setIsLogin] = useState(false); // 로그인 여부
+    const [user, setUser] = useState(null); // 로그인된 사용자 정보
+    const navigate = useNavigate();
 
     //모바일 메뉴 버튼 state
     const [openMobMenu, setOpenMobMenu] = useState(false);
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+            setIsLogin(true);
+        }
+    }, []);
+
 
     function handleLoginState(){
         if(isLogin){
@@ -23,7 +31,7 @@ function Header(){
                         MY MENU
                     </button>
         } else {
-            return <button className={styleHeader.login}>LOGIN</button>
+            return <Link to ="/login"><button className={styleHeader.login}>LOGIN</button></Link> 
         }
     }
 
@@ -104,14 +112,37 @@ function Header(){
                                 >
                     <div className={styleSidebar.sideBox}>
                         <button className={styleSidebar.btnCloseMyMenu} onClick={() => closeAllSideMenu()}></button>
-                        <h3 className={styleSidebar.greeting}>○○○ 님 or 관리자님, 안녕하세요</h3>
+                         {/* 사용자 이름 또는 관리자 표시 */}
+                        <h3 className={styleSidebar.greeting}>
+                            {isLogin ? (
+                                user?.authrtYn === 'Y' 
+                                    ? `${user.userNm} 관리자님 안녕하세요!`  // 관리자일 때
+                                    : `${user.userNm}님 안녕하세요!`      // 일반 사용자일 때
+                            ) : (
+                                "로그인해주세요"
+                            )}
+                        </h3>
                         <ul className={styleSidebar.myPageList}>
                             <li><Link to = "/member/modify" onClick={() => setOpenMyMenu(false)}> 내 정보 </Link></li>
-                            <li><Link to = "/admin/member/list" onClick={() => setOpenMyMenu(false)}> 회원 정보 조회 </Link></li>
-                            <li><Link to = "/admin/report/list" onClick={() => setOpenMyMenu(false)}> 신고 내역 조회 </Link></li>
-                            <li><Link to = "/admin/register/list" onClick={() => setOpenMyMenu(false)}> 가게 등록 조회 </Link></li>
+                            <li><Link to = "/member/notice/list" onClick={() => setOpenMyMenu(false)}> 내 알림 내역 </Link></li>
+                            {user?.authrtYn === 'Y' && (
+                                <>
+                                    <li><Link to="/admin/member/list" onClick={() => setOpenMyMenu(false)}> 회원 정보 조회 </Link></li>
+                                    <li><Link to="/admin/report/list" onClick={() => setOpenMyMenu(false)}> 신고 내역 조회 </Link></li>
+                                    <li><Link to="/admin/register/list" onClick={() => setOpenMyMenu(false)}> 가게 등록 조회 </Link></li>
+                                </>
+                            )}
                         </ul>
-                        <button className={styleSidebar.logoutBtn}>로그아웃</button>
+                        {isLogin && (
+                            <button
+                                className={styleSidebar.logoutBtn}
+                                onClick={() => {
+                                    localStorage.removeItem("user"); // 로컬 스토리지에서 사용자 정보 삭제
+                                    setIsLogin(false); // 로그인 상태 false로 변경
+                                    setUser(null); // 사용자 정보 초기화
+                                }}
+                            >로그아웃</button>
+                        )}
                     </div>
                 </div>
             </header>

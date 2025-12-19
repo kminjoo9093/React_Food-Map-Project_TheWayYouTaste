@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import styleStore from "../../css/StoreRegister.module.css"
 
 import { useState, useRef } from "react";
 
 function StoreRegister({ userSn }) {
+  const navigate = useNavigate();
   /* 손님/사업자 선택 */
   const [registerType, setRegisterType] = useState(null);
   const user = () => setRegisterType("USER");
@@ -14,6 +16,7 @@ function StoreRegister({ userSn }) {
   const [brError, setBrError] = useState(null);
   const [owner, setOwner] = useState("");
   const [openDate, setOpenDate] = useState("");
+
 const checkBusiness = async () => {
   setBrError(null);
   setBrResult(null);
@@ -73,7 +76,12 @@ const checkBusiness = async () => {
       return;
     }
     // 3. 백엔드 DB 중복 체크 (/check-brno)
-    const dupRes = await fetch(`http://localhost:3001/youtaste/store/check-brno?brno=${brNo}`);
+    const dupRes = await fetch(`http://localhost:3001/youtaste/store/check-brno?brno=${brNo}`,{
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+      }
+    });
     const dupData = await dupRes.json();
 
     /* ================= 요청하신 중복 프로세스 적용 ================= */
@@ -233,8 +241,9 @@ const checkBusiness = async () => {
     e.preventDefault();
     const formData = new FormData();
 
-    formData.append("brNo", brNo);
+    formData.append("brno", brNo);
     formData.append("userSn", userSn);
+    formData.append("registerType", registerType);
     if (registerType === "BUSINESS") {
       formData.append("owner", owner);
       formData.append("userReg", 0);
@@ -306,10 +315,13 @@ const checkBusiness = async () => {
     }
   };
 
+function goMain(){
+  navigate("/main");
+}
+
   // 등록 버튼 활성화 조건
 const isFormValid =
-  brResult?.status === "인증되었습니다." ||
-  brResult?.status === "사용자 등록정보를 업데이트했습니다." &&
+  (brResult?.status === "인증되었습니다." || brResult?.status === "사용자 등록정보를 업데이트했습니다.") &&
   storeName &&
   roadAddress &&
   detailAddress &&
@@ -584,18 +596,11 @@ const isFormValid =
 
               {/* 등록버튼 */}
               {isFormValid ? (
-                <button
-                  className={`${styleStore.submit} ${styleStore.button}`}
-                  type="submit"
-                >
+                <button className={`${styleStore.submit} ${styleStore.button}`} type="submit" onClick={() => goMain()}>
                   등록
                 </button>
               ) : (
-                <button
-                  className={`${styleStore.submit} ${styleStore.button}`}
-                  type="button"
-                  onClick={() => alert("입력하신 값을 다시 한번 확인해주세요")}
-                >
+                <button className={`${styleStore.submit} ${styleStore.button}`} type="button" onClick={() => alert("입력하신 값을 다시 한번 확인해주세요")}>
                   등록
                 </button>
               )}
