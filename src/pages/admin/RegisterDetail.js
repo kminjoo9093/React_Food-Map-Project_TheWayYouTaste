@@ -130,25 +130,8 @@ const handleAddressSearch = async () => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-    }
-  };
   const [verifyImage, setVerifyImage] = useState(null);
   const [verifyPreview, setVerifyPreview] = useState(null);
-
-  const handleVerifyImageChange = (e) => {
-    const file = e.target.files[0];
-    setVerifyImage(file);
-
-    if (file) {
-      setVerifyPreview(URL.createObjectURL(file));
-    }
-  };
 
   /* 기존 데이터 초기화 */  
   useEffect(() => {
@@ -253,7 +236,9 @@ const handleAddressSearch = async () => {
     notiTtl: title,
     notiCn: actionReason,
     lat: lat, 
-    lot: lot
+    lot: lot,
+    menuNm1: registerData.menuNm1, 
+    menuPrc1: registerData.menuPrc1
   };
 
   try {
@@ -373,12 +358,12 @@ const handleAddressSearch = async () => {
                 onChange={(e) => setRoadAddress(e.target.value)}
                 readOnly
               />
-              <input
+              <button
                 className={styleStore.brNoBtn}
                 type="button"
-                value="조회"
                 onClick={handleAddressSearch}
-              />
+              > 조회 
+              </button>
             </div>
             <label>위도, 경도</label>
             <input
@@ -435,9 +420,34 @@ const handleAddressSearch = async () => {
               <option value="7">치킨</option>
               <option value="8">디저트</option>
             </select>
-
-            {/* 편의시설 */}
+            {/* 메뉴 목록 확인 */}
             <br></br><br></br>
+            <label>신청 메뉴 목록</label>
+            <div style={{ marginBottom: "20px" }}>
+              {registerData.menuNm1 && JSON.parse(registerData.menuNm1).map((name, idx) => (
+                <div key={idx} style={{ display: "flex", alignItems: "center", gap: "2px", marginBottom: "5px" }}>
+                  {/* 메뉴 이름 */}
+                  <input 
+                    className={styleStore.menu} 
+                    type="text" 
+                    value={name} 
+                    readOnly 
+                  />
+                  
+                  {/* 메뉴 가격 */}
+                  <input 
+                    className={styleStore.price} 
+                    type="text" 
+                    value={`${JSON.parse(registerData.menuPrc1)[idx]}`} 
+                    readOnly 
+                  />
+
+              
+                </div>
+              ))}
+            </div>
+            {/* 편의시설 */}
+            
             <p>편의사항</p>
             {convenienceList.map((item) => (
               <label
