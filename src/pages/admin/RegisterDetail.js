@@ -160,33 +160,37 @@ const handleAddressSearch = async () => {
     setRoadAddress(registerData.roadNmAddr);
     setDetailAddress(registerData.daddr);
 
-    if (registerData.bgngTm) {
-      setOpenTime(
-        registerData.bgngTm.slice(0, 2) + ":" + registerData.bgngTm.slice(2)
-      );
-    }
+ // 시간 포맷팅
+  if (registerData.bgngTm) {
+    setOpenTime(registerData.bgngTm.slice(0, 2) + ":" + registerData.bgngTm.slice(2));
+  }
+  if (registerData.ddlnTm) {
+    setCloseTime(registerData.ddlnTm.slice(0, 2) + ":" + registerData.ddlnTm.slice(2));
+  }
 
-    if (registerData.ddlnTm) {
-      setCloseTime(
-        registerData.ddlnTm.slice(0, 2) + ":" + registerData.ddlnTm.slice(2)
-      );
-    }
+  setCategory(registerData.storeCatNo);
+  
+  const initConveniences = registerData.amtySrvc ? JSON.parse(registerData.amtySrvc) : [];
+  setConveniences(initConveniences);
 
-    setCategory(registerData.storeCatNo);
-    
-    const initConveniences = registerData.amtySrvc
-    ? JSON.parse(registerData.amtySrvc)
-    : [];
-    setConveniences(initConveniences);
-   
+  // 이미지 경로 수정: registerData.bplcPhoto 안에 이미 "/uploads/store/..."가 들어있음
+  const SERVER_BASE = "http://localhost:3001";
 
-    if (registerData.bplcPhoto) {
-      setPreview(`http://localhost:3001/uploads/${registerData.bplcPhoto}`);
-    }
-    if (registerData.certPhoto) {
-      setVerifyPreview(`http://localhost:3001/uploads/${registerData.certPhoto}`);
-    }
-  }, [registerData]);
+  if (registerData.bplcPhoto) {
+    // 중복 방지를 위해 체크 후 경로 설정
+    const storePath = registerData.bplcPhoto.startsWith("http") 
+                      ? registerData.bplcPhoto 
+                      : `${SERVER_BASE}${registerData.bplcPhoto}`;
+    setPreview(storePath);
+  }
+  
+  if (registerData.certPhoto) {
+    const certPath = registerData.certPhoto.startsWith("http") 
+                     ? registerData.certPhoto 
+                     : `${SERVER_BASE}${registerData.certPhoto}`;
+    setVerifyPreview(certPath);
+  }
+}, [registerData]);
 
   /* 이미지 & 데이터 서버 전송 */
   const handleSubmit = async (e) => {
@@ -214,7 +218,7 @@ const handleAddressSearch = async () => {
     try {
       const response = await fetch("/api/store/register", {
         method: "POST",
-        body: formData, // Content-Type 직접 설정 금지
+        body: formData, 
       });
 
       if (!response.ok) throw new Error("등록 실패");
@@ -467,7 +471,7 @@ const handleAddressSearch = async () => {
                 <img src={preview} alt="미리보기" width="200" />
               </div>
             )}
-            <input type="file" accept="image/*" onChange={handleImageChange} />
+            {/* <input type="file" accept="image/*" onChange={handleImageChange} /> */}
             <label htmlFor="verifyImg">사업자 인증 이미지(영수증)</label>
               <br />
               {verifyPreview && (
@@ -475,7 +479,7 @@ const handleAddressSearch = async () => {
                   <img src={verifyPreview} alt="인증 미리보기" width="200" />
                 </div>
               )}
-            <input type="file" accept="image/*" onChange={handleVerifyImageChange} />
+            {/* <input type="file" accept="image/*" onChange={handleVerifyImageChange} /> */}
 
             <div className="rightContainer">
               <button type="button" onClick={() => openActionBox("승인")} > 승인 </button> 

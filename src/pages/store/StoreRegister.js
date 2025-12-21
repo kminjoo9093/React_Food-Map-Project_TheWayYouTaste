@@ -5,6 +5,7 @@ import { useState, useRef } from "react";
 
 function StoreRegister({ userSn }) {
   const navigate = useNavigate();
+  const SERVER_URL = "http://localhost:3001"; // 사진추가 12-21.
   /* 손님/사업자 선택 */
   const [registerType, setRegisterType] = useState(null);
   const user = () => setRegisterType("USER");
@@ -282,9 +283,9 @@ const checkBusiness = async () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3001/youtaste/store/register", {
+      const response = await fetch(`${SERVER_URL}/youtaste/store/register`, {
         method: "POST",
-        body: formData,
+        body: formData, // FormData 전송 시 Content-Type 헤더는 브라우저가 자동 설정함
       });
       let result = null;
         try {
