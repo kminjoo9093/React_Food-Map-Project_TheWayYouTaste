@@ -18,6 +18,10 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
     //시군구 리스트 받아오기
     useEffect(()=>{
         //console.log("선택된 시도 코드 :" , selectedDo);
+        if (!selectedDo) {
+            setSggList([]);
+            return;
+        }
         const fetchData = async () => {
             try{
                     const sggListRes = await fetch(selectedDo ? `http://localhost:3001/youtaste/search/sgg?sidoCd=${selectedDo}` : null);
@@ -39,6 +43,10 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
     //읍면동 리스트 받아오기
     useEffect(()=>{
         const fetchData = async () => {
+            if (!selectedSi) {
+                setDongList([]);
+                return;
+            }
             try{
                 const dongListRes = await fetch(selectedSi ? `http://localhost:3001/youtaste/search/dong?sggCd=${selectedSi}` : null);
                 console.log("찐 읍면동 데이터 : ", dongListRes);
@@ -68,11 +76,12 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
     }
 
     function handleSelectSi(sggCd, siName){
-    setSelectedSi(sggCd);
-    setSiName(siName || "");
-    setSelectedDong(null);
-    setDongName("");
+        setSelectedSi(sggCd);
+        setSiName(siName || "");
+        setSelectedDong(null);
+        setDongName("");
     }
+    console.log("selectedSi : " + selectedSi);
 
     function handleSelectDong(dgCd, dgNm){
         setSelectedDong(dgCd);

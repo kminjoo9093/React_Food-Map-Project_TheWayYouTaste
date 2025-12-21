@@ -48,8 +48,6 @@ function TheWayYouTaste() {
       const memberNoticesRes = await fetch(`http://localhost:3001/youtaste/member-notices?userSn=${userSn}`);
       const storeCategoriesRes = await fetch("http://localhost:3001/youtaste/search");
       const sidoListRes = await fetch("http://localhost:3001/youtaste/search/sido");
-      const sggListRes = await fetch("http://localhost:3001/youtaste/search/sgg");
-      const dongListRes = await fetch("http://localhost:3001/youtaste/search/dong");
 
       const reportsData = reportsRes.ok ? await reportsRes.json() : [];
       const registerAdminData = registerAdminRes.ok ? await registerAdminRes.json() : [];
@@ -57,19 +55,15 @@ function TheWayYouTaste() {
       const memberNoticesData = memberNoticesRes.ok ? await memberNoticesRes.json() : [];
       const storeCategoryData = storeCategoriesRes.ok ? await storeCategoriesRes.json() : [];
       const sidoListData = sidoListRes.ok ? await sidoListRes.json() : [];
-      const sggListData = sggListRes.ok ? await sggListRes.json() : [];
-      const dongListData = dongListRes.ok ? await dongListRes.json() : [];
 
       setReports(reportsData);
       setRegisterAdmin(registerAdminData);
       setNotices(noticesData);
       setMemberNotices(memberNoticesData);
 
-      //MJ
       setStoreCategories(storeCategoryData);
       setSidoList(sidoListData);
-      setSggList(sggListData);
-      setDongList(dongListData);
+
 
     } catch (err) {
       console.error("데이터 로드 중 오류:", err);
