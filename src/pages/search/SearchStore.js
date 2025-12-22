@@ -176,7 +176,7 @@ function SearchStore({storeCategories, sidoList}){
                 return updatedCategoryList;
             } else {
                 const updatedCategoryList = [...prev, category];
-                //console.log("선택한 카테고리 : ", updatedCategoryList);
+                console.log("선택한 카테고리 : ", updatedCategoryList);
                 return updatedCategoryList;
             }
         })
