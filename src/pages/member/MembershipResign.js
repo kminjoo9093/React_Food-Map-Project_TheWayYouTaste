@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import style from "../../css/MembershipResign.module.css";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // 1. API 통신을 위해 axios만 추가했습니다.
 
 const AGREEMENT_ITEMS = [
     "최종 경고 및 확인",
@@ -16,7 +17,20 @@ function MembershipResign() {
     const navigate = useNavigate();
     const [agreements, setAgreements] = useState(new Array(AGREEMENT_ITEMS.length).fill(false));
     const [isBtnEnabled, setIsBtnEnabled] = useState(false);
+    const [user, setUser] = useState(null); // 로그인 사용자 정보
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
+    const [isInitialized, setIsInitialized] = useState(false); // 초기화
+    
+    useEffect(() => {
+        // 로컬 스토리지에서 사용자 정보 가져오기
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+        setUser(JSON.parse(storedUser)); // 사용자 정보가 있다면 상태에 저장
+        setIsLoggedIn(true); // 로그인 상태로 설정
+        }
 
+        setIsInitialized(true);
+    }, []);
     useEffect(() => {
         const essentialChecked = agreements.filter((_, i) => i !== 3).every(val => val === true);
         setIsBtnEnabled(essentialChecked);
@@ -30,7 +44,7 @@ function MembershipResign() {
     const tdStyle = "border:1px solid #ccc; padding:12px; line-height:1.6; font-size:14px; color:#333;";
     const redSpan = (text) => `<span style="color: #B71C1C; font-weight: bold;">${text}</span>`;
 
-    // --- [1. 최종 경고 및 확인] 테이블 ---
+    // --- [1. 최종 경고 및 확인] 테이블 (기존 코드 유지) ---
     const getFinalWarningTable = () => {
         return `
             <div style="text-align: left;">
@@ -75,7 +89,7 @@ function MembershipResign() {
             </div>`;
     };
 
-    // --- [3. 데이터 처리 및 보관] 테이블 ---
+    // --- [3. 데이터 처리 및 보관] 테이블 (기존 코드 유지) ---
     const getDataRetentionTable = () => {
         return `
             <div style="text-align: left;">
@@ -123,7 +137,7 @@ function MembershipResign() {
             </div>`;
     };
 
-    // --- [5. 완료 및 후속조치] 테이블 (이미지 내용 반영하여 보강) ---
+    // --- [5. 완료 및 후속조치] 테이블 (기존 코드 유지) ---
     const getFollowUpTable = () => {
         return `
             <div style="text-align: left; overflow-y: auto; max-height: 500px;">
@@ -180,7 +194,7 @@ function MembershipResign() {
             </div>`;
     };
 
-    // --- [6. 이용 약관] 테이블 ---
+    // --- [6. 이용 약관] 테이블 (기존 코드 유지) ---
     const getTermsOfServiceTable = () => {
         return `
             <div style="text-align: left; overflow-y: auto; max-height: 500px;">
@@ -384,6 +398,7 @@ function MembershipResign() {
         setAgreements(updated);
     };
 
+    // --- [수정된 최종 탈퇴 제출 함수] ---
     const handleResignSubmit = () => {
         Swal.fire({
             title: '최종 탈퇴 확인',
@@ -392,9 +407,29 @@ function MembershipResign() {
             showCancelButton: true,
             confirmButtonText: '탈퇴하기',
             confirmButtonColor: '#B71C1C'
-        }).then((result) => {
+        }).then(async (result) => { // async 추가
             if (result.isConfirmed) {
-                Swal.fire({ title: '탈퇴 처리 완료', icon: 'success' }).then(() => navigate('/login'));
+                try {
+                    // 세션에 저장된 현재 유저의 USER_SN(고유번호)을 가져옵니다.
+                    const userSn = sessionStorage.getItem("userSn"); 
+
+                    if (!userSn) {
+                        Swal.fire('오류', '로그인 정보가 유효하지 않습니다.', 'error');
+                        return;
+                    }
+
+                    // [추가된 API 연동 로직]
+                    const response = await axios.delete(`/membership/delete/${userSn}`);
+
+                    if (response.status === 200) {
+                        Swal.fire({ title: '탈퇴 처리 완료', icon: 'success' }).then(() => {
+                            sessionStorage.clear(); // 세션 비우기
+                            navigate('/login');
+                        });
+                    }
+                } catch (error) {
+                    Swal.fire('실패', '탈퇴 처리 중 오류가 발생했습니다.', 'error');
+                }
             }
         });
     };
