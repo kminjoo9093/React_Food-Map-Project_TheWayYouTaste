@@ -82,10 +82,10 @@ function SearchStore({storeCategories, sidoList}){
                             }
                             const data = await response.json();
                             
-                            console.log("법정동코드 : ", data.documents[0].code);
+                            //console.log("법정동코드 : ", data.documents[0].code);
                             const currentDongCode = data.documents[0].code;
                             const currentSigunguCode = currentDongCode.slice(0, 5);
-                            console.log("시군구 코드 -> ", currentSigunguCode);
+                            //console.log("시군구 코드 -> ", currentSigunguCode);
 
                             //사용자 위치 기반 시군구 전체 리스트
                             let listBySgg = await GetStoreList(`http://localhost:3001/youtaste/search/store/sgg?sggCd=${currentSigunguCode}`);
@@ -134,10 +134,7 @@ function SearchStore({storeCategories, sidoList}){
         setIsDimmedMiddleOpen(false);
         setIsChangedRegion(true);
 
-        //test
-        //setFilteredStoreList(list); //화면에 보여줄 리스트
         console.log("지금은 시도기반 리스트!! --> ", list);
-        //setNowPage(1);
     }
     
     const finalStoreListWithId = useMemo(()=>{
@@ -145,20 +142,6 @@ function SearchStore({storeCategories, sidoList}){
                     return {"id" : record.bplcSn, ...record}
                 });
     }, [filteredStoreList])
-
-    // let newFilteredStoreList = filteredStoreList;
-    // useEffect(()=>{
-    //     newFilteredStoreList = filteredStoreList.map(record => {
-    //             return {"id" : record.BPLC_SN, ...record}
-    //         });
-    //     console.log("storeList : ", newFilteredStoreList);
-    // }, [filteredStoreList])
-    
-
-    
-
-
-    //console.log("카테고리 리스트: ", categoryList);
 
     const foodIcons = {
         1: "🍚"

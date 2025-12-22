@@ -16,7 +16,6 @@ function StoreDetail(){
   	const storeId = searchParams.get("storeId");
     const [storeData, setStoreData] = useState({});
     console.log("스토어 아이디 --> ", storeId);
-    const [menuList, setMenuList] = useState([]);
 
     useEffect(()=>{
         async function getStoreData(){
@@ -32,13 +31,6 @@ function StoreDetail(){
         }
         getStoreData();
     }, [storeId])
-
-    // let storeInfoObj = storeData; 
-    // console.log("가게정보 : ", storeInfoObj);
-
-    // let menuList = menuData.map(record => {
-    //         return {"id" : record.MENU_SN, ...record}
-    //     });
 
     function formatNumber(number){
         const parsedPrice = number.toLocaleString("ko-KR") + "원"; 
