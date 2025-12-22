@@ -33,6 +33,18 @@ function SearchStore({ storeCategories, sidoList }) {
     const [selectedDong, setSelectedDong] = useState(null);
     const [dongName, setDongName] = useState("");
     const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
+    const [isSelectedAll, setIsSelectedAll] = useState(false);
+
+    const foodIcons = {
+        "한식": "🍚"
+        ,"일식": "🍣"
+        ,"양식": "🍝"
+        ,"중식": "🥟"
+        ,"아시안": "🍜"
+        ,"햄버거": "🍔"
+        ,"치킨": "🍗"
+        ,"디저트": "🍩"
+    }
 
     const LOCAL_API_KEY = "bd23a565a07fd608d593c2c99d192e8f";
 
@@ -117,7 +129,6 @@ function SearchStore({ storeCategories, sidoList }) {
         else list = await GetStoreList(`http://localhost:3001/youtaste/search/store/all`);
 
         setStoreListByRegion(list);
-        setFilteredStoreList(list);
         setIsDimmedMiddleOpen(false);
         setIsChangedRegion(true);
     }
@@ -137,6 +148,14 @@ function SearchStore({ storeCategories, sidoList }) {
             const list = storeListByRegion.filter(record => selectedCategories.includes(record.storeCatName));
             setFilteredStoreList(list);
         }
+
+        //map level 조절
+        if(selectedDo == null || selectedSi == null){
+            setIsSelectedAll(true);
+        } else {
+            setIsSelectedAll(false);
+        }
+
         setNowPage(1);
     };
 
@@ -154,7 +173,6 @@ function SearchStore({ storeCategories, sidoList }) {
     const viewListItemNum = 10;
     const viewStoreItems = finalStoreListWithId.slice((nowPage - 1) * viewListItemNum, nowPage * viewListItemNum);
 
-    const foodIcons = { 1: "🍚", 2: "🍣", 3: "🥟", 4: "🍝", 5: "🍜", 6: "🍔"};
 
     return (
         <div className={`${styleSearchStore.gridMap} contentTopPosition`}>
@@ -174,7 +192,7 @@ function SearchStore({ storeCategories, sidoList }) {
                                         className={selectedCategories.includes(record.storeCatName) ? styleSearchStore.active : ""} 
                                         onClick={() => onSelectCategory(record.storeCatName)}
                                     >
-                                        <i className={styleSearchStore.categoryEmoji}>{foodIcons[record.StoreCatNo]}</i>
+                                        <i className={styleSearchStore.categoryEmoji}>{foodIcons[record.storeCatName]}</i>
                                         {record.storeCatName}
                                     </button>
                                 </li>
@@ -234,6 +252,7 @@ function SearchStore({ storeCategories, sidoList }) {
                     isMoved={isMoved} setIsMoved={setIsMoved}
                     isChangedRegion={isChangedRegion} 
                     setPositionArea={setPositionArea}
+                    isSelectedAll={isSelectedAll}
                 />
             </div>
 
