@@ -110,7 +110,7 @@
 .pet .serviceIcon{
     background-image: url(../resources/img/search/iconPet.svg);
 }
-.takeOut .serviceIcon{
+.takeout .serviceIcon{
     background-image: url(../resources/img/search/iconTakeOut.svg);
 }
 /* link */
@@ -134,6 +134,7 @@
 .linkWriteReview{
     background-color: var(--primary-color);
     color: #fff;
+    padding: 0;
 }
 .linkReportStore{
     border-color: var(--primary-color);

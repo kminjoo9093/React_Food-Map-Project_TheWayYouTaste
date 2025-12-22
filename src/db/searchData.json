@@ -9,9 +9,9 @@
     ],
     "store" : [
         { "BPLC_SN": 1, "BPLC_NM": "천황식당", "DADDR": "경남 진주시 촉석로207번길 3", "LAT": 35.19352, "LOT": 128.08411, "MENU_CAT": "한식", "AVG": 4.5, "STDG_CD": "4817010900", "SGG_CD": 48170, "CTPV_NM": "경남", "DO_CD":48, "SGG_NM": "진주시", "STTY_EMD": "대안동",
-        "BPLC_TELNO": "010-1111-1001", "BGNG_TM": "0900", "DDLN_TM": "2100", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
+        "BPLC_TELNO": "010-1111-1001", "BGNG_TM": "0900", "DDLN_TM": "2100", "AMTY_SRVC": ["parking", "pet", "takeout"], "BPLC_PHOTO" : null}
         ,{ "BPLC_SN": 2, "BPLC_NM": "제일식당", "DADDR": "경남 진주시 중앙시장길 37-8", "LAT": 35.19398, "LOT": 128.08267, "MENU_CAT": "한식", "AVG": 4.2, "STDG_CD": "4817010200", "SGG_CD": 48170, "CTPV_NM": "경남", "DO_CD":48, "SGG_NM": "진주시", "STTY_EMD": "중앙동",
-        "BPLC_TELNO": "010-1111-1002", "BGNG_TM": "0900", "DDLN_TM": "2100", "PK_YN": 0, "TKO_YN": 1, "PET_YN": 0 }
+        "BPLC_TELNO": "010-1111-1002", "BGNG_TM": "0900", "DDLN_TM": "2100", "AMTY_SRVC": ["pet", "takeout"]  }
         ,{ "BPLC_SN": 3, "BPLC_NM": "하연옥 본점", "DADDR": "경남 진주시 진양호로 435", "LAT": 35.16792, "LOT": 128.07813, "MENU_CAT": "한식", "AVG": 4.6, "STDG_CD": "4817011900", "SGG_CD": 48170, "CTPV_NM": "경남", "DO_CD":48, "SGG_NM": "진주시", "STTY_EMD": "상대동",
         "BPLC_TELNO": "010-1111-1003", "BGNG_TM": "0800", "DDLN_TM": "2000", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
         ,{ "BPLC_SN": 4, "BPLC_NM": "용희식당", "DADDR": "경남 진주시 동진로 33", "LAT": 35.19067, "LOT": 128.08754, "MENU_CAT": "한식", "AVG": 4.3, "STDG_CD": "4817011900", "SGG_CD": 48170, "CTPV_NM": "경남", "DO_CD":48, "SGG_NM": "진주시", "STTY_EMD": "상대동",
@@ -68,12 +68,16 @@
         "BPLC_TELNO": "010-1111-1029", "BGNG_TM": "1000", "DDLN_TM": "2100", "PK_YN": 1, "TKO_YN": 1, "PET_YN": 0 }
         ,{ "BPLC_SN": 30, "BPLC_NM": "충남토속촌", "DADDR": "충남 천안시 동남구 만남로 33", "LAT": 36.81523, "LOT": 127.11389, "MENU_CAT": "한식", "AVG": 4.4, "STDG_CD": "4413110100", "SGG_CD": 44131, "CTPV_NM": "충남", "DO_CD":44, "SGG_NM": "천안시 동남구", "STTY_EMD": "신부동",
         "BPLC_TELNO": "010-1111-1030", "BGNG_TM": "1000", "DDLN_TM": "2100", "PK_YN": 0, "TKO_YN": 1, "PET_YN": 0 }
+        ,{"BPLC_SN":101,"BPLC_NM":"사천바다한상","DADDR":"경남 사천시 벌리동 58-3","LAT":34.93452,"LOT":128.08341,"MENU_CAT":"한식","AVG":4.5,"STDG_CD":"4824010200","SGG_CD":48240,"CTPV_NM":"경남","DO_CD":48,"SGG_NM":"사천시","STTY_EMD":"벌리동","BPLC_TELNO":"055-831-1001","BGNG_TM":"0900","DDLN_TM":"2100","PK_YN":1,"TKO_YN":1,"PET_YN":0}
+        ,{"BPLC_SN":102,"BPLC_NM":"사천중화루","DADDR":"경남 사천시 사천읍 수석리 281-1","LAT":34.93498,"LOT":128.09765,"MENU_CAT":"중식","AVG":4.2,"STDG_CD":"4824025000","SGG_CD":48240,"CTPV_NM":"경남","DO_CD":48,"SGG_NM":"사천시","STTY_EMD":"사천읍","BPLC_TELNO":"055-852-2202","BGNG_TM":"1030","DDLN_TM":"2030","PK_YN":1,"TKO_YN":0,"PET_YN":0}
+        ,{"BPLC_SN":103,"BPLC_NM":"라비에또 사천점","DADDR":"경남 사천시 정동면 예수리 415","LAT":34.94632,"LOT":128.06788,"MENU_CAT":"양식","AVG":4.6,"STDG_CD":"4824033000","SGG_CD":48240,"CTPV_NM":"경남","DO_CD":48,"SGG_NM":"사천시","STTY_EMD":"정동면","BPLC_TELNO":"055-835-3303","BGNG_TM":"1100","DDLN_TM":"2200","PK_YN":1,"TKO_YN":1,"PET_YN":0}
+        ,{"BPLC_SN":104,"BPLC_NM":"카페노을사천","DADDR":"경남 사천시 향촌동 108-9","LAT":34.93311,"LOT":128.06347,"MENU_CAT":"카페","AVG":4.7,"STDG_CD":"4824010400","SGG_CD":48240,"CTPV_NM":"경남","DO_CD":48,"SGG_NM":"사천시","STTY_EMD":"향촌동","BPLC_TELNO":"055-832-4404","BGNG_TM":"1000","DDLN_TM":"2300","PK_YN":1,"TKO_YN":1,"PET_YN":1}
     ],
     "menu" : [
         {   
             "MENU_SN": 1111
             ,"BPLC_SN": 1
-            ,"MENU_NM": "메뉴1"
+            ,"MENU_NM": "김치찌개"
             ,"MENU_PRC": 11000
         }
         ,{   
@@ -149,6 +153,11 @@
             "sidoCode": 48,
             "sigunguCode": 48170,
             "sigunguName": "진주시"
+        }
+        ,{
+            "sidoCode": 48,
+            "sigunguCode": 48240,
+            "sigunguName": "사천시"
         }
         ,{
             "sidoCode": 41,

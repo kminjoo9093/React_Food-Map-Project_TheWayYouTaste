@@ -3,7 +3,7 @@
   width: 850px;
   height: 550px;
   margin: 60px auto;
-  background: #fff;
+  background: none;
   border-radius: 30px;
   overflow: hidden;
   box-shadow: 0 0 30px rgba(0,0,0,0.2);
@@ -31,12 +31,12 @@
 /* 회원가입 */
 .register {
   right: 0;
-  transform: translateX(100%);
+  transform: translateX(0%);
 }
 
 /* active 상태 */
 .active .login {
-  transform: translateX(-100%);
+  transform: translateX(0%);
 }
 
 .active .register {
@@ -54,7 +54,7 @@
 .toggleLeft,
 .toggleRight {
   position: absolute;
-  width: 50%;
+  width: 100%;
   height: 100%;
   top: 0;
   background: #ffb92e;
@@ -66,6 +66,8 @@
   transition: transform 0.6s ease-in-out;
 }
 
+
+/**/
 .toggleLeft {
   left: 0;
 }
@@ -76,12 +78,14 @@
 }
 
 .active .toggleLeft {
-  transform: translateX(-100%);
+  transform: translateX(-200%);
 }
 
 .active .toggleRight {
-  transform: translateX(0);
+  transform: translateX(-100%);
 }
+
+
 
 /* 버튼 */
 .btn {
@@ -100,5 +104,36 @@
   padding: 10px 30px;
   background: transparent;
   border: 2px solid #000;
+  border-radius: 7px;
   cursor: pointer;
+}
+
+.inputBox {
+  position: relative;
+  margin: 10px 0;
+}
+
+.inputBox input {
+  width: 100%;
+  padding: 13px 50px 13px 20px;
+  background: #ffb92e;
+  border-radius: 15px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #800020;
+  font-weight: 500;
+}
+
+.inputBox input::placeholder {
+  color: #800020;
+  font-weight: 400;
+}
+
+.inputBox i {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
 }
