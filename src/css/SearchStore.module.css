@@ -10,11 +10,12 @@
     flex-direction: column;
     min-width: 30rem;
     height: inherit;
-    box-shadow: 1rem 0 3rem rgba(0, 0, 0, 0.1);
+    box-shadow: 1rem 0 3rem rgba(0, 0, 0, 0.3);
 }
 .mapArea{
-    border: 1px solid red;
+    /* border: 1px solid red; */
     height: 100%;
+    position: relative;
     /* background-color: #000; */
 }
 .btnViewList{
@@ -68,21 +69,21 @@
 }
 .categoryList button{
     width: 70%;
-    height: 3.2rem;
+    height: 3.5rem;
     font-size: 1.5rem;
     vertical-align: middle;
-    padding-inline: 0.3em;
+    padding: 0 0.3em;
     border-radius: 3.2rem;
     border: 2px solid var(--yellow-ffe);
     background-color: #fff;
 }
 .categoryList button:hover{
     color: inherit;
+    border-color: var(--yellow-ffe);
 }
+.categoryList button:hover,
 .categoryList button.active{
     background-color: var(--yellow-ffe);
-    /* background-color: var(--base-color);
-    border-color: var(--secondary-color); */
 }
 .categoryEmoji{
     font-style: normal;
@@ -92,25 +93,30 @@
 
 /* 적용된 필터, 검색, 초기화 버튼 */
 .filterBottomArea{
-    display: flex;
+    /* display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: baseline; */
     /* margin-top: -1rem; */
+    /* padding-inline: 2rem; */
 }
 .conditions{
     font-size: 1.4rem;
     color: var(--gray-77);
     text-decoration: underline;
 }
-
+.btnWrap{
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
 .btnSearch, .btnResetFilter{
     display: inline-block;
     height: 4rem;
-    /* width: 10rem; */
+    flex: 1;
 }
 .btnSearch{
     font-size: 1.6rem;
-    padding-inline: 2em;
+    /* padding-inline: 2em; */
     color: #fff;
     font-weight: 500;
     background-color: var(--primary-color);
@@ -125,12 +131,8 @@
     font-size: 1.4rem;
     border: 2px solid var(--primary-color);
     border-radius: 5px;
-    align-self: flex-end;
-    /* display: flex; 
-    gap: 0.5rem;
-    align-items: center;
-    justify-content: center; */
-    margin-right: 1rem;
+    /* align-self: flex-end; */
+    /* margin-right: 1rem; */
     background-color: #fff;
     transition: all 0.4s;
 }
@@ -214,6 +216,20 @@
 /* 페이지네이션 */
 .pagination{
     margin-block: 1.5rem 2rem;
+}
+/* 재검색버튼 */
+.btnSearchArea{
+    display: none;
+    position: absolute;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    color: #fff;
+    background-color: var(--primary-color);
+}
+.btnSearchArea.active{
+    display: block;
 }
 
 /* 반응형 */
@@ -359,3 +375,4 @@
         /* margin-block: 1.5rem 2rem; */
     }
 }
+

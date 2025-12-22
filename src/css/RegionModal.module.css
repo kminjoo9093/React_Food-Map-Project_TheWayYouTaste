@@ -20,34 +20,30 @@
   text-align: center;
   position: relative;
 }
-
 .title{
     font-weight: 400;
     font-size: 1.6rem;
 }
-
+.noticeMsg{
+  display: block;
+  font-size: 1.4rem;
+  color: var(--gray-77);
+  margin-top: 1.5rem;
+}
 
 
 /* 도 / 시 / 동 3컬럼 */
 .regionContainer {
   display: flex;
-  /* gap: 10px; */
   margin-block: 3rem;
   justify-content: center;
 
-  /* border: 1px solid #000; */
 }
 
 .regionColumn {
   width: 30%;
-  /* width: 30%;
-  max-height: 300px; */
-  /* height: 27rem; */
   padding-inline: 0.5rem;
-  /* overflow: hidden; */
   border-right: 1px solid #ddd;
-
-  /* border: 1px solid blue; */
 }
 
 .regionColumn:last-child {
@@ -60,16 +56,14 @@
     height: 25rem;
     overflow-y: auto;
     margin-top: 2rem;
-
-    /* border: 1px solid red; */
 }
 
 .regionItem{
     line-height: 2.4em;
     border-radius: 5px;
     text-align: left;
+    text-wrap: nowrap;
     padding-left: 2em;
-    /* border: 1px solid red; */
 }
 
 .regionItem:hover {
@@ -83,7 +77,6 @@
 
 /* 확인 버튼 */
 .regionConfirm {
-  /* margin-top: 20px; */
   padding: 10px 20px;
   background: #ff8f00;
   color: white;

@@ -130,25 +130,8 @@ const handleAddressSearch = async () => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-    }
-  };
   const [verifyImage, setVerifyImage] = useState(null);
   const [verifyPreview, setVerifyPreview] = useState(null);
-
-  const handleVerifyImageChange = (e) => {
-    const file = e.target.files[0];
-    setVerifyImage(file);
-
-    if (file) {
-      setVerifyPreview(URL.createObjectURL(file));
-    }
-  };
 
   /* 기존 데이터 초기화 */  
   useEffect(() => {
@@ -160,33 +143,37 @@ const handleAddressSearch = async () => {
     setRoadAddress(registerData.roadNmAddr);
     setDetailAddress(registerData.daddr);
 
-    if (registerData.bgngTm) {
-      setOpenTime(
-        registerData.bgngTm.slice(0, 2) + ":" + registerData.bgngTm.slice(2)
-      );
-    }
+ // 시간 포맷팅
+  if (registerData.bgngTm) {
+    setOpenTime(registerData.bgngTm.slice(0, 2) + ":" + registerData.bgngTm.slice(2));
+  }
+  if (registerData.ddlnTm) {
+    setCloseTime(registerData.ddlnTm.slice(0, 2) + ":" + registerData.ddlnTm.slice(2));
+  }
 
-    if (registerData.ddlnTm) {
-      setCloseTime(
-        registerData.ddlnTm.slice(0, 2) + ":" + registerData.ddlnTm.slice(2)
-      );
-    }
+  setCategory(registerData.storeCatNo);
+  
+  const initConveniences = registerData.amtySrvc ? JSON.parse(registerData.amtySrvc) : [];
+  setConveniences(initConveniences);
 
-    setCategory(registerData.storeCatNo);
-    
-    const initConveniences = registerData.amtySrvc
-    ? JSON.parse(registerData.amtySrvc)
-    : [];
-    setConveniences(initConveniences);
-   
+  // 이미지 경로 수정: registerData.bplcPhoto 안에 이미 "/uploads/store/..."가 들어있음
+  const SERVER_BASE = "http://localhost:3001";
 
-    if (registerData.bplcPhoto) {
-      setPreview(`http://localhost:3001/uploads/${registerData.bplcPhoto}`);
-    }
-    if (registerData.certPhoto) {
-      setVerifyPreview(`http://localhost:3001/uploads/${registerData.certPhoto}`);
-    }
-  }, [registerData]);
+  if (registerData.bplcPhoto) {
+    // 중복 방지를 위해 체크 후 경로 설정
+    const storePath = registerData.bplcPhoto.startsWith("http") 
+                      ? registerData.bplcPhoto 
+                      : `${SERVER_BASE}${registerData.bplcPhoto}`;
+    setPreview(storePath);
+  }
+  
+  if (registerData.certPhoto) {
+    const certPath = registerData.certPhoto.startsWith("http") 
+                     ? registerData.certPhoto 
+                     : `${SERVER_BASE}${registerData.certPhoto}`;
+    setVerifyPreview(certPath);
+  }
+}, [registerData]);
 
   /* 이미지 & 데이터 서버 전송 */
   const handleSubmit = async (e) => {
@@ -214,7 +201,7 @@ const handleAddressSearch = async () => {
     try {
       const response = await fetch("/api/store/register", {
         method: "POST",
-        body: formData, // Content-Type 직접 설정 금지
+        body: formData, 
       });
 
       if (!response.ok) throw new Error("등록 실패");
@@ -249,7 +236,9 @@ const handleAddressSearch = async () => {
     notiTtl: title,
     notiCn: actionReason,
     lat: lat, 
-    lot: lot
+    lot: lot,
+    menuNm1: registerData.menuNm1, 
+    menuPrc1: registerData.menuPrc1
   };
 
   try {
@@ -263,33 +252,7 @@ const handleAddressSearch = async () => {
     );
 
     if (!response.ok) throw new Error("처리 실패");
-
-    const result = await response.json();
     
-    // 반려(N)일 경우 MemberNotice 리스트에 바로 추가
-    if (prcsYnValue === "N") {
-      const noticeData = {
-        userSn: registerData.userSn,
-        notiTtl: title,
-        notiCn: actionReason,
-        prcsYn: "N"
-      };
-
-      const noticeRes = await fetch(
-        "http://localhost:3001/youtaste/member-notices",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(noticeData)
-        }
-      );
-
-      if (!noticeRes.ok) throw new Error("공지사항 등록 실패");
-
-      const newNotice = await noticeRes.json();
-      setMemberNotices(prev => [newNotice, ...prev]);
-    }
-
     alert("처리 완료!");
     navigate("/notice/list");
   } catch (error) {
@@ -395,12 +358,12 @@ const handleAddressSearch = async () => {
                 onChange={(e) => setRoadAddress(e.target.value)}
                 readOnly
               />
-              <input
+              <button
                 className={styleStore.brNoBtn}
                 type="button"
-                value="조회"
                 onClick={handleAddressSearch}
-              />
+              > 조회 
+              </button>
             </div>
             <label>위도, 경도</label>
             <input
@@ -457,9 +420,34 @@ const handleAddressSearch = async () => {
               <option value="7">치킨</option>
               <option value="8">디저트</option>
             </select>
-
-            {/* 편의시설 */}
+            {/* 메뉴 목록 확인 */}
             <br></br><br></br>
+            <label>신청 메뉴 목록</label>
+            <div style={{ marginBottom: "20px" }}>
+              {registerData.menuNm1 && JSON.parse(registerData.menuNm1).map((name, idx) => (
+                <div key={idx} style={{ display: "flex", alignItems: "center", gap: "2px", marginBottom: "5px" }}>
+                  {/* 메뉴 이름 */}
+                  <input 
+                    className={styleStore.menu} 
+                    type="text" 
+                    value={name} 
+                    readOnly 
+                  />
+                  
+                  {/* 메뉴 가격 */}
+                  <input 
+                    className={styleStore.price} 
+                    type="text" 
+                    value={`${JSON.parse(registerData.menuPrc1)[idx]}`} 
+                    readOnly 
+                  />
+
+              
+                </div>
+              ))}
+            </div>
+            {/* 편의시설 */}
+            
             <p>편의사항</p>
             {convenienceList.map((item) => (
               <label
@@ -493,7 +481,7 @@ const handleAddressSearch = async () => {
                 <img src={preview} alt="미리보기" width="200" />
               </div>
             )}
-            <input type="file" accept="image/*" onChange={handleImageChange} />
+            {/* <input type="file" accept="image/*" onChange={handleImageChange} /> */}
             <label htmlFor="verifyImg">사업자 인증 이미지(영수증)</label>
               <br />
               {verifyPreview && (
@@ -501,7 +489,7 @@ const handleAddressSearch = async () => {
                   <img src={verifyPreview} alt="인증 미리보기" width="200" />
                 </div>
               )}
-            <input type="file" accept="image/*" onChange={handleVerifyImageChange} />
+            {/* <input type="file" accept="image/*" onChange={handleVerifyImageChange} /> */}
 
             <div className="rightContainer">
               <button type="button" onClick={() => openActionBox("승인")} > 승인 </button> 

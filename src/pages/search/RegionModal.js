@@ -78,6 +78,7 @@ function RegionModal({isModalOpen, setIsModalOpen, selectedDo, setSelectedDo, se
               <div className={styleRegionModal.regionDimmedMiddle}>
                     <div className={styleRegionModal.topWrap}>
                         <h2 className={styleRegionModal.heading}>지역 선택</h2>
+                        <span className={styleRegionModal.noticeMsg}>등록된 맛집이 있는 지역만 조회할 수 있습니다.</span>
                     </div>
                     <div className={styleRegionModal.regionContainer}>
                         {/* 도 리스트 */}

@@ -1,4 +1,3 @@
-import styleStoreDetail from "../../css/StoreDetail.module.css";
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import starFill from "../../resources/img/search/iconStarFill.svg";
