@@ -4,8 +4,12 @@ function Error404Page(){
 
     return (
         <>
-            <h2>잘못된 접근입니다. </h2>
-            <Link to="/" >돌아가기</Link>
+            <div className="contentTopPosition">
+                <div className="container">
+                    <h1>잘못된 접근입니다.</h1>
+                    <h1><Link to="/" >돌아가기</Link></h1>
+                </div>
+            </div>
         </>
     )
 }

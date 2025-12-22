@@ -1,0 +1,123 @@
+.regionDimmed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5000;
+}
+
+.regionDimmedMiddle {
+  background: white;
+  max-width: 70rem;
+  width: 70%;
+  padding: 3rem 0rem;
+  border-radius: 12px;
+  text-align: center;
+  position: relative;
+}
+.title{
+    font-weight: 400;
+    font-size: 1.6rem;
+}
+.noticeMsg{
+  display: block;
+  font-size: 1.4rem;
+  color: var(--gray-77);
+  margin-top: 1.5rem;
+}
+
+
+/* 도 / 시 / 동 3컬럼 */
+.regionContainer {
+  display: flex;
+  margin-block: 3rem;
+  justify-content: center;
+
+}
+
+.regionColumn {
+  width: 30%;
+  padding-inline: 0.5rem;
+  border-right: 1px solid #ddd;
+}
+
+.regionColumn:last-child {
+  border-right: none;
+}
+
+/* 리스트 아이템 */
+.regionList{
+    width: 100%;
+    height: 25rem;
+    overflow-y: auto;
+    margin-top: 2rem;
+}
+
+.regionItem{
+    line-height: 2.4em;
+    border-radius: 5px;
+    text-align: left;
+    text-wrap: nowrap;
+    padding-left: 2em;
+}
+
+.regionItem:hover {
+  background: #ffe0b2;
+}
+
+.activeItem {
+  background: #ffb74d;
+  color: white;
+}
+
+/* 확인 버튼 */
+.regionConfirm {
+  padding: 10px 20px;
+  background: #ff8f00;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+.regionConfirm:hover {
+  background: #e67c00;
+}
+
+/* 모달 닫기 버튼 */
+.btnClose{
+    width: 2rem;
+    height: 2rem;
+    background: url(/src/resources/img/search/iconClose.svg) no-repeat center / cover;
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+}
+
+@media (max-width: 480px){
+  .regionDimmedMiddle {
+    max-width: auto;
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .regionContainer{
+    margin: 0;
+  }
+  .regionList{
+    height: auto;
+    max-height: 45rem;
+  }
+  .topWrap, .bottomWrap{
+    padding-block: 2rem;
+  }
+}

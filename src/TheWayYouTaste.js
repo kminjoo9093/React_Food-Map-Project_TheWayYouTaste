@@ -16,10 +16,12 @@ import StoreDetail from "./pages/search/StoreDetail";
 import NoticeMemberList from "./pages/main/NoticeMemberList";
 import NoticeMemberDetail from "./pages/main/NoticeMemberDetail";
 import NoticeWrite from "./pages/main/NoticeWrite";
-
+import StoreRegister from "./pages/store/StoreRegister";
 import MembershipLogin from "./pages/member/MembershipLogin";
+
 import MembershipModify from "./pages/member/MembershipModify";
 import MembershipResign from "./pages/member/MembershipResign";
+import RegisterDetail from "./pages/admin/RegisterDetail";
 
 function TheWayYouTaste() {
   const location = useLocation();
@@ -30,21 +32,25 @@ function TheWayYouTaste() {
   
   const [reports, setReports] = useState([]);
   const [notices, setNotices] = useState([]);
+  const [registerAdmin, setRegisterAdmin] = useState([]);
   const [memberNotices, setMemberNotices] = useState([]);
-  const userSn = 1000; // 예시, 실제 로그인 정보로 가져오기
+  const userSn = 1002; // 예시, 실제 로그인 정보로 가져오기
 
   useEffect(() => {
   const fetchData = async () => {
     try {
       const reportsRes = await fetch("http://localhost:3001/youtaste/reports");
+      const registerAdminRes = await fetch("http://localhost:3001/youtaste/register-admin")
       const noticesRes = await fetch("http://localhost:3001/youtaste/notice");
       const memberNoticesRes = await fetch(`http://localhost:3001/youtaste/member-notices?userSn=${userSn}`);
 
       const reportsData = reportsRes.ok ? await reportsRes.json() : [];
+      const registerAdminData = registerAdminRes.ok ? await registerAdminRes.json() : [];
       const noticesData = noticesRes.ok ? await noticesRes.json() : [];
       const memberNoticesData = memberNoticesRes.ok ? await memberNoticesRes.json() : [];
 
       setReports(reportsData);
+      setRegisterAdmin(registerAdminData);
       setNotices(noticesData);
       setMemberNotices(memberNoticesData);
 
@@ -70,16 +76,20 @@ function TheWayYouTaste() {
             <Route path="/member/notice/noticeDetail" element={<NoticeMemberDetail />} />
             <Route path="/admin/member/list" element={<MemberListCheck />} />
             <Route path="/admin/report/list" element={<ReportListCheck reports={reports} />} />
-            <Route path="/admin/register/list" element={<RegisterListCheck />} />
+            <Route path="/admin/register/list" element={<RegisterListCheck registerAdmin={registerAdmin}/>} />
+            <Route path="/store/register" element={<StoreRegister userSn={userSn}/>} />
+            <Route path="/store/registerDetail" element={<RegisterDetail setMemberNotices={setMemberNotices}/>} />
             <Route path="/search/store" element={<SearchStore />} />
             <Route path="/search/storeDetail" element={<StoreDetail />} />
             <Route path="/store/report/:userSn" element={<ReportRequest />} />
             <Route path="/store/reportDetail" element={<ReportDetail setMemberNotices={setMemberNotices} />} />
+
             <Route path="/*" element={<Error404Page />} />
             <Route path="/login" element={<MembershipLogin />}/>
             <Route path="/member/modify" element={<MembershipModify />}/>
             <Route path="/member/resign" element={<MembershipResign />}/>
-
+            <Route path="/*" element={<Error404Page />} />
+            
           </Routes>
           { !hideFooter && <Footer /> }
       </div>
