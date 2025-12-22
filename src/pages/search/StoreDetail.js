@@ -30,7 +30,6 @@ function StoreDetail({ storeList }) {
     const [searchParams] = useSearchParams();
     const storeId = searchParams.get("storeId");
     const [storeData, setStoreData] = useState({});
-    
     const [isOpen, setIsOpen] = useState(false);
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -56,6 +55,7 @@ function StoreDetail({ storeList }) {
     }
 
     function showAmtyServices(services) {
+
         if (!services || !Array.isArray(services)) {
             return null; 
         }
@@ -101,7 +101,7 @@ function StoreDetail({ storeList }) {
 
     const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
-    const StarRatingView = ({ rating }) => {
+    const StarRatingView = ({ rating, starSize="1.5rem", starBoxSize="2rem", marginRight="-0.3rem", ratingFont="1.5rem"}) => {
         const stars = 5;
         return (
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -110,9 +110,9 @@ function StoreDetail({ storeList }) {
                     return (
                         <div
                             key={index}
-                            style={{ position: "relative", width: "2rem", height: "2rem", marginRight: "-0.3rem" }}
+                            style={{ position: "relative", width: starBoxSize, height: starBoxSize, marginRight: marginRight }}
                         >
-                            <FontAwesomeIcon icon={faStar} style={{ color: "#ccc" }} />
+                            <FontAwesomeIcon icon={faStar} style={{ color: "#ccc", fontSize: starSize, marginTop: "2px" }} />
                             <div
                                 style={{
                                     width: `${fillPercentage}%`,
@@ -122,13 +122,14 @@ function StoreDetail({ storeList }) {
                                     left: 0,
                                 }}
                             >
-                                <FontAwesomeIcon icon={faStar} style={{ color: "#ffc107" }} />
+                                <FontAwesomeIcon icon={faStar} style={{ color: "#ffc107", fontSize: starSize, marginTop: "2px" }} />
                             </div>
                         </div>
                     );
                 })}
+
                 <span style={{ marginLeft: "8px", fontSize: "1.5rem", fontWeight: "bold", color: "#333" }}>
-                    {rating ? rating.toFixed(1) : "0.0"}
+                    {rating ? rating.toFixed(1) : "0.0"} 
                 </span>
             </div>
         );
@@ -240,43 +241,40 @@ function StoreDetail({ storeList }) {
 
     return (
         <div className='contentTopPosition'>
-            <div className={`container ${styleStoreDetail.container}`}>
-                <section className={styleStoreDetail.storeInfoArea}>
-                    <div className={`${styleStoreDetail.storeInfoWrap} contentBox`}>
-                        <div className={styleStoreDetail.storeNameWrap}>
-                            <h2 className={styleStoreDetail.storeName}>{storeData.bplcNm}</h2>
-                            <span>{storeData.storeCatName}</span>
-                        </div>
-                        <ul className={styleStoreDetail.detailInfoList}>
-                            <li className={styleStoreDetail.ratingAvgWrap}>
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <img src={starHalf} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <em className={styleStoreDetail.ratingAvg}>4.5</em>
-                            </li>
-                            <li className={styleStoreDetail.time}>
-                                <em className={styleStoreDetail.detailTitle}>영업시간</em>
-                                {storeData.bgngTm} - {storeData.ddlnTm}
-                            </li>
-                            <li className={styleStoreDetail.tel}>
-                                <em className={styleStoreDetail.detailTitle}>전화번호</em>
-                                <a href={`tel:${storeData.tel}`} className={styleStoreDetail.telNumber}>{storeData.tel}</a>
-                            </li>
-                            <li className={styleStoreDetail.address}>
-                                <em className={styleStoreDetail.detailTitle}>주소</em>
-                                {storeData.address}
-                            </li>
-                            <li className={styleStoreDetail.serviceTypes}>
-                                {showAmtyServices(storeData.amenity)}
-                            </li>
-                        </ul>
-                        <div className={styleStoreDetail.linkWrap}>
-                            <button
-                                className={styleStoreDetail.linkWriteReview}
-                                onClick={() => {
-                                    if (isLoggedIn) {
+            {storeData && (
+                <div className={`container ${styleStoreDetail.container}`}>
+                    <section className={styleStoreDetail.storeInfoArea}>
+                        <div className={`${styleStoreDetail.storeInfoWrap} contentBox`}>
+                            <div className={styleStoreDetail.storeNameWrap}>
+                                <h2 className={styleStoreDetail.storeName}>{storeData.bplcNm}</h2>
+                                <span>{storeData.storeCatName}</span>
+                            </div>
+                            <ul className={styleStoreDetail.detailInfoList}>
+                                <li className={styleStoreDetail.ratingAvgWrap}>
+                                    <StarRatingView rating={storeData.avg} starSize={"3rem"} starBoxSize={"4rem"} marginRight={"0rem"} ratingFont={"2.8rem"}/>
+                                    {/* <em className={styleStoreDetail.ratingAvg}>{storeData.avg}</em> */}
+                                </li>
+                                <li className={styleStoreDetail.time}>
+                                    <em className={styleStoreDetail.detailTitle}>영업시간</em>
+                                    {storeData.bgngTm} - {storeData.ddlnTm}
+                                </li>
+                                <li className={styleStoreDetail.tel}>
+                                    <em className={styleStoreDetail.detailTitle}>전화번호</em>
+                                    <a href={`tel:${storeData.tel}`} className={styleStoreDetail.telNumber}>{storeData.tel}</a>
+                                </li>
+                                <li className={styleStoreDetail.address}>
+                                    <em className={styleStoreDetail.detailTitle}>주소</em>
+                                    {storeData.address}
+                                </li>
+                                <li className={styleStoreDetail.serviceTypes}>
+                                    {showAmtyServices(storeData.amenity)}
+                                </li>
+                            </ul>
+                            <div className={styleStoreDetail.linkWrap}>
+                                <button
+                                    className={styleStoreDetail.linkWriteReview}
+                                    onClick={() => {
+                                        if (isLoggedIn) {
                                         setIsOpen(true);
                                     } else {
                                         navigate("/login", { replace: true });
