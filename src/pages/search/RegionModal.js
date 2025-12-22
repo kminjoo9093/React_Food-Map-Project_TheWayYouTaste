@@ -67,6 +67,11 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
     }, [selectedDong]);
 
     function handleSelectDo(sidoCd, sidoNm){
+        // if(sidoCd == null){
+        //     setIsSelectedAll(true);
+        // } else {
+        //     setIsSelectedAll(false);
+        // }
         setSelectedDo(sidoCd);
         setDoName(sidoNm || "");
         setSelectedSi(null);
@@ -76,6 +81,11 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
     }
 
     function handleSelectSi(sggCd, siName){
+        // if(sggCd == null){
+        //     setIsSelectedAll(true);
+        // } else {
+        //     setIsSelectedAll(false);
+        // }
         setSelectedSi(sggCd);
         setSiName(siName || "");
         setSelectedDong(null);

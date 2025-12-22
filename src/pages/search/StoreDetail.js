@@ -32,7 +32,9 @@ function StoreDetail({ storeList }) {
     const [searchParams] = useSearchParams();
   	const storeId = searchParams.get("storeId");
     const [storeData, setStoreData] = useState({});
-    console.log("스토어 아이디 --> ", storeId);
+
+    //console.log("sssss : ", storeList);
+    //console.log("스토어 아이디 --> ", storeId);
 
     const [isOpen, setIsOpen] = useState(false);
     const [reviews, setReviews] = useState([]);
@@ -43,13 +45,12 @@ function StoreDetail({ storeList }) {
         async function getStoreData(){
             //음식점 데이터
             let storeInfo = await GetStoreList(`http://localhost:3001/youtaste/search/store/detail?storeId=${storeId}`);
-            
+            console.log("store info --> ", storeInfo);
             // 만약 amenity가 문자열 "parking,pet"으로 온다면 배열로 변환
             // if (storeInfo.amenity && typeof storeInfo.amenity === 'string') {
             //     storeInfo.amenity = storeInfo.amenity.split(',').map(s => s.trim());
             // }
             setStoreData(storeInfo);
-            console.log("상세정보데이터 : ", storeInfo);
         }
         getStoreData();
     }, [storeId])
@@ -61,6 +62,7 @@ function StoreDetail({ storeList }) {
 
     function showStoreImage(image){
         //null일 경우 대체 이미지 또는 안내글 결정하기
+
         return null;
     }
 
@@ -70,7 +72,7 @@ function StoreDetail({ storeList }) {
     // }
 
     function showAmtyServices(services){
-        console.log(services);
+        //console.log(services);
         if (!services || !Array.isArray(services)) {
             return null; 
         }
@@ -124,7 +126,7 @@ function StoreDetail({ storeList }) {
 
     const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
-    const StarRatingView = ({ rating }) => {
+    const StarRatingView = ({ rating, starSize="1.5rem", starBoxSize="2rem", marginRight="-0.3rem", ratingFont="1.5rem"}) => {
         const stars = 5;
         return (
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -133,9 +135,9 @@ function StoreDetail({ storeList }) {
                     return (
                         <div
                             key={index}
-                            style={{ position: "relative", width: "2rem", height: "2rem", marginRight: "-0.3rem" }}
+                            style={{ position: "relative", width: starBoxSize, height: starBoxSize, marginRight: marginRight }}
                         >
-                            <FontAwesomeIcon icon={faStar} style={{ color: "#ccc" }} />
+                            <FontAwesomeIcon icon={faStar} style={{ color: "#ccc", fontSize: starSize, marginTop: "2px" }} />
                             <div
                                 style={{
                                     width: `${fillPercentage}%`,
@@ -145,12 +147,12 @@ function StoreDetail({ storeList }) {
                                     left: 0,
                                 }}
                             >
-                                <FontAwesomeIcon icon={faStar} style={{ color: "#ffc107" }} />
+                                <FontAwesomeIcon icon={faStar} style={{ color: "#ffc107", fontSize: starSize, marginTop: "2px" }} />
                             </div>
                         </div>
                     );
                 })}
-                <span style={{ marginLeft: "8px", fontSize: "1.5rem", fontWeight: "bold", color: "#333" }}>
+                <span style={{ marginLeft: "8px", fontSize: ratingFont, fontWeight: "bold", color: "#333" }}>
                     {rating.toFixed(1)}
                 </span>
             </div>
@@ -185,34 +187,39 @@ function StoreDetail({ storeList }) {
 
         return (
             <li style={{ borderBottom: "1px solid #eee", paddingBottom: "20px", marginBottom: "20px", listStyle: "none" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <div>
-                        <StarRatingView rating={evlScr} />
-                        <small>{evlYmd}</small> <br/>
-                        <strong>{nickname}</strong>
+                <div>
+
+                    <strong style={{display: "block"}}>{nickname}</strong>
+
+                    <div className={styleStoreDetail.reviewBox}>
+                        <div style={{display : "flex", alignItems : "center"}}>
+                            <StarRatingView rating={evlScr} />
+                            │ 
+                            <small>{evlYmd}</small>
+                        </div>
+                        {/* 좋아요 버튼 추가 */}
+                        <button 
+                            onClick={toggleLike}
+                            style={{
+                                cursor: "pointer",
+                                border: "1px solid #ddd",
+                                borderRadius: "15px",
+                                padding: "5px 15px",
+                                backgroundColor: isLiked ? "#ff4757" : "#fff",
+                                color: isLiked ? "#fff" : "#333",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "5px"
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faThumbsUp} />
+                            {likes}
+                        </button>
                     </div>
-                    {/* 좋아요 버튼 추가 */}
-                    <button 
-                        onClick={toggleLike}
-                        style={{
-                            cursor: "pointer",
-                            border: "1px solid #ddd",
-                            borderRadius: "15px",
-                            padding: "5px 15px",
-                            backgroundColor: isLiked ? "#ff4757" : "#fff",
-                            color: isLiked ? "#fff" : "#333",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "5px"
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faThumbsUp} />
-                        {likes}
-                    </button>
                 </div>
 
                 <div className={styleStoreDetail.reviewImages}>
-                    {evlPhoto1 && <img src={`http://localhost:3001/uploads/review/${evlPhoto1}`} alt="리뷰 사진 1" />}
+                    {evlPhoto2 && <img src={`http://localhost:3001/uploads/review/${evlPhoto1}`} alt="리뷰 사진 1" />}
                     {evlPhoto2 && <img src={`http://localhost:3001/uploads/review/${evlPhoto2}`} alt="리뷰 사진 2" />}
                     {evlPhoto3 && <img src={`http://localhost:3001/uploads/review/${evlPhoto3}`} alt="리뷰 사진 3" />}
                 </div>
@@ -249,12 +256,8 @@ function StoreDetail({ storeList }) {
                             </div>
                             <ul className={styleStoreDetail.detailInfoList}>
                                 <li className={styleStoreDetail.ratingAvgWrap}>
-                                    <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                    <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                    <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                    <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                    <img src={starHalf} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                    <em className={styleStoreDetail.ratingAvg}>4.5</em>
+                                    <StarRatingView rating={storeData.avg} starSize={"3rem"} starBoxSize={"4rem"} marginRight={"0rem"} ratingFont={"2.8rem"}/>
+                                    {/* <em className={styleStoreDetail.ratingAvg}>{storeData.avg}</em> */}
                                 </li>
                                 <li className={styleStoreDetail.time}>
                                     <em className={styleStoreDetail.detailTitle}>영업시간</em>

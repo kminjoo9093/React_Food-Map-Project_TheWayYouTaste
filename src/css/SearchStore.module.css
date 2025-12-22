@@ -30,7 +30,7 @@
     justify-content: center;
     gap: 2rem;
     /* border: 1px solid black; */
-    padding-inline: 4rem;
+    padding-inline: 3rem;
     box-shadow: -0.5rem 0.3rem 0.7rem rgba(0, 0, 0, 0.05);
     /* border: 1px solid #000; */
 }
@@ -63,12 +63,12 @@
     row-gap: 1rem;
 }
 .categoryList li{
-    width: calc(100%/3);
+    width: calc(100%/4);
     text-align: center;
     /* border: 1px solid #000; */
 }
 .categoryList button{
-    width: 70%;
+    width: 90%;
     height: 3.5rem;
     font-size: 1.5rem;
     vertical-align: middle;
