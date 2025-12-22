@@ -49,7 +49,7 @@ function Header(){
                     </h1>
                     {/* PC */}
                     <div className={styleHeader.searchContainer}>
-                        <input type="text" placeholder="지역, 음식 또는 식당명을 검색하세요"/>
+                        <input type="text" placeholder="지역, 음식 또는 식당명을 검색하세요" style={{ border : "none"}}/>
                         <img src={searchIcon} alt="search"/>
                     </div>
                     <div className={styleHeader.rightMenu}>
