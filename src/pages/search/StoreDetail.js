@@ -168,7 +168,7 @@ function StoreDetail({ storeList }) {
                         <div className={styleStoreDetail.storeNameWrap}>
                             <h2 className={styleStoreDetail.storeName}>천황식당</h2>
                             <span>한식</span>
-                        {/* 스토어 좋아요 */}
+                        {/* 스토어 별점 */}
                         </div>
                         <ul className={styleStoreDetail.detailInfoList}>
                             <li className={styleStoreDetail.ratingAvgWrap}>
