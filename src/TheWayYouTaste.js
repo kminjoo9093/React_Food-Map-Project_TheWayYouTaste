@@ -117,7 +117,6 @@ function TheWayYouTaste() {
             <Route path="/member/notice/list" element={isLoggedIn ? <NoticeMemberList notices={memberNotices} /> : <Navigate to="/login" replace />} />
             <Route path="/member/notice/noticeDetail" element={isLoggedIn ? <NoticeMemberDetail /> : <Navigate to="/login" replace />} />
             <Route path="/store/register" element={isLoggedIn ? <StoreRegister userSn={user ? user.userSn : ''}/> : <Navigate to="/login" replace />} />
-            
             <Route path="/store/report/:userSn" element={isLoggedIn ? <ReportRequest /> : <Navigate to="/login" replace />} />
             <Route path="/member/modify" element={isLoggedIn ? <MembershipModify /> : <Navigate to="/login" replace />} />
             <Route path="/member/resign" element={isLoggedIn ? <MembershipResign /> : <Navigate to="/login" replace />} />
