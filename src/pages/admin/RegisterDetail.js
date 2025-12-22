@@ -130,6 +130,10 @@ const handleAddressSearch = async () => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
 
+  /* 이미지 확대 */
+  const [selectedImg, setSelectedImg] = useState(null);
+  const closeModal = () => setSelectedImg(null);
+
   const [verifyImage, setVerifyImage] = useState(null);
   const [verifyPreview, setVerifyPreview] = useState(null);
 
