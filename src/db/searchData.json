@@ -9,7 +9,7 @@
     ],
     "store" : [
         { "BPLC_SN": 1, "BPLC_NM": "천황식당", "DADDR": "경남 진주시 촉석로207번길 3", "LAT": 35.19352, "LOT": 128.08411, "MENU_CAT": "한식", "AVG": 4.5, "STDG_CD": "4817010900", "SGG_CD": 48170, "CTPV_NM": "경남", "DO_CD":48, "SGG_NM": "진주시", "STTY_EMD": "대안동",
-        "BPLC_TELNO": "010-1111-1001", "BGNG_TM": "0900", "DDLN_TM": "2100", "AMTY_SRVC": ["parking", "pet", "takeout"] }
+        "BPLC_TELNO": "010-1111-1001", "BGNG_TM": "0900", "DDLN_TM": "2100", "AMTY_SRVC": ["parking", "pet", "takeout"], "BPLC_PHOTO" : null}
         ,{ "BPLC_SN": 2, "BPLC_NM": "제일식당", "DADDR": "경남 진주시 중앙시장길 37-8", "LAT": 35.19398, "LOT": 128.08267, "MENU_CAT": "한식", "AVG": 4.2, "STDG_CD": "4817010200", "SGG_CD": 48170, "CTPV_NM": "경남", "DO_CD":48, "SGG_NM": "진주시", "STTY_EMD": "중앙동",
         "BPLC_TELNO": "010-1111-1002", "BGNG_TM": "0900", "DDLN_TM": "2100", "AMTY_SRVC": ["pet", "takeout"]  }
         ,{ "BPLC_SN": 3, "BPLC_NM": "하연옥 본점", "DADDR": "경남 진주시 진양호로 435", "LAT": 35.16792, "LOT": 128.07813, "MENU_CAT": "한식", "AVG": 4.6, "STDG_CD": "4817011900", "SGG_CD": 48170, "CTPV_NM": "경남", "DO_CD":48, "SGG_NM": "진주시", "STTY_EMD": "상대동",

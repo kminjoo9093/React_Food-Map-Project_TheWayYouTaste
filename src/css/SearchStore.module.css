@@ -14,7 +14,7 @@
 }
 .mapArea{
     /* border: 1px solid red; */
-    height: 100%;
+    height: calc(100vh - 14.6rem);
     position: relative;
     /* background-color: #000; */
 }
@@ -200,19 +200,28 @@
     background-position: center left;
     background-size: 1.5rem auto;
 }
+.storeInfo em{
+    font-style: normal;
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
 .storeCategory{
-    background: url(/src/resources/img/search/iconTag.svg);
+    background-image: url(/src/resources/img/search/iconTag.svg);
 }
 .storeRating{
-    background: url(/src/resources/img/search/iconStar.svg);
+    background-image: url(/src/resources/img/search/iconStar.svg);
 }
 .storeTime{
-    background: url(/src/resources/img/search/iconClock.svg);
+    background-image: url(/src/resources/img/search/iconClock.svg);
     background-size: 1.2rem auto;
 }
-.storeInfo .storeAddress{
-    padding-left: 0;
+span.storeAddress{
+    background-image: url(/src/resources/img/search/iconLocation.svg);
+    background-position: top left;
 }
+/* .storeInfo .storeAddress{
+    padding-left: 0;
+} */
 /* 페이지네이션 */
 .pagination{
     margin-block: 1.5rem 2rem;

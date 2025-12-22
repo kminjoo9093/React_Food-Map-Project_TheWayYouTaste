@@ -9,7 +9,7 @@ export async function GetStoreList(url){
             return await res.json();
             //console.log(data);
         } catch(err){
-            console.error("when getting data, has error : " + err);
+            console.log("데이터 로드 중 오류: ", err);
             return [];
         }
     }

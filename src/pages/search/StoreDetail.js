@@ -9,25 +9,69 @@ import { faStar, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 const REVIEWS_PER_PAGE = 5;
 
 function StoreDetail({ storeList }) {
-    const { storeId } = useParams(); 
+    const [searchParams] = useSearchParams();
+  	const storeId = searchParams.get("storeId");
+    const [storeData, setStoreData] = useState({});
+    console.log("스토어 아이디 --> ", storeId);
+
     const [isOpen, setIsOpen] = useState(false);
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
 
-    const menuData = [
-        { "MENU_SN": 1111, "BPLC_SN": 1, "MENU_NM": "메뉴1", "MENU_PRC": 11000 },
-        { "MENU_SN": 2222, "BPLC_SN": 1, "MENU_NM": "메뉴2", "MENU_PRC": 12000 },
-        { "MENU_SN": 3333, "BPLC_SN": 1, "MENU_NM": "메뉴3", "MENU_PRC": 13000 },
-        { "MENU_SN": 4444, "BPLC_SN": 1, "MENU_NM": "메뉴4", "MENU_PRC": 14000 },
-        { "MENU_SN": 5555, "BPLC_SN": 1, "MENU_NM": "메뉴5", "MENU_PRC": 15000 },
-        { "MENU_SN": 6666, "BPLC_SN": 1, "MENU_NM": "메뉴6", "MENU_PRC": 16000 },
-    ];
+    useEffect(()=>{
+        async function getStoreData(){
+            //음식점 데이터
+            let storeInfo = await GetStoreList(`http://localhost:3001/youtaste/search/store/detail?storeId=${storeId}`);
+            
+            // 만약 amenity가 문자열 "parking,pet"으로 온다면 배열로 변환
+            // if (storeInfo.amenity && typeof storeInfo.amenity === 'string') {
+            //     storeInfo.amenity = storeInfo.amenity.split(',').map(s => s.trim());
+            // }
+            setStoreData(storeInfo);
+            console.log("상세정보데이터 : ", storeInfo);
+        }
+        getStoreData();
+    }, [storeId])
 
-    const menuList = menuData.map(record => ({ id: record.MENU_SN, ...record }));
+    function formatNumber(number){
+        const parsedPrice = number.toLocaleString("ko-KR") + "원"; 
+        return parsedPrice;
+    }
 
-    function formatNumber(number) {
-        return number.toLocaleString("ko-KR") + "원";
+    function showStoreImage(image){
+        //null일 경우 대체 이미지 또는 안내글 결정하기
+        return null;
+    }
+
+    function showAmtyServices(services){
+        console.log(services);
+        if (!services || !Array.isArray(services)) {
+            return null; 
+        }
+
+        let serviceType = "";
+
+        return services.map(item => {
+            switch (item) {
+                case "parking" :
+                    serviceType = "주차 가능"
+                    break;
+                case "pet" :
+                    serviceType = "애완동물 동반"
+                    break;
+                case "takeout" :
+                    serviceType = "포장 가능"
+                    break;
+                default : 
+                    serviceType = ""
+                    break;
+            }
+            return <span className={styleStoreDetail[item]}>
+                        <i className={styleStoreDetail.serviceIcon}></i>
+                        {serviceType}
+                    </span>
+        })
     }
 
     useEffect(() => {
@@ -109,6 +153,11 @@ function StoreDetail({ storeList }) {
             .catch(err => console.error("좋아요 통신 에러:", err));
         };
 
+
+        if (!storeData.bplcNm) {
+            return <div className='contentTopPosition'>정보를 불러오는 중입니다...</div>;
+        }
+
         return (
             <li style={{ borderBottom: "1px solid #eee", paddingBottom: "20px", marginBottom: "20px", listStyle: "none" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -159,87 +208,104 @@ function StoreDetail({ storeList }) {
         );
     };
 
+    if (!storeData.bplcNm) {
+        return <div className='contentTopPosition'>정보를 불러오는 중입니다...</div>;
+    }
+
     return (
-        <div className="contentTopPosition">
-            <div className={`container ${styleStoreDetail.container}`}>
-                <section className={styleStoreDetail.storeInfoArea}>
-                    <div className={`${styleStoreDetail.storeInfoWrap} contentBox`}>
-                        <div className={styleStoreDetail.storeNameWrap}>
-                            <h2 className={styleStoreDetail.storeName}>천황식당</h2>
-                            <span>한식</span>
-                        {/* 스토어 좋아요 */}
-                        </div>
-                        <ul className={styleStoreDetail.detailInfoList}>
-                            <li className={styleStoreDetail.ratingAvgWrap}>
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <img src={starHalf} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <em className={styleStoreDetail.ratingAvg}>4.5</em>
-                            </li>
-                            <li className={styleStoreDetail.time}><em className={styleStoreDetail.detailTitle}>영업시간</em> 09:00 - 21:00</li>
-                            <li className={styleStoreDetail.tel}><em className={styleStoreDetail.detailTitle}>전화번호</em> <a href="tel:+01011111001" className={styleStoreDetail.telNumber}>010-1111-1001</a></li>
-                            <li className={styleStoreDetail.address}><em className={styleStoreDetail.detailTitle}>주소</em> 경남 진주시 촉석로207번길 3</li>
-                            <li className={styleStoreDetail.serviceTypes}>
-                                <span className={styleStoreDetail.parking}><i className={styleStoreDetail.serviceIcon}></i>주차 가능</span>
-                                <span className={styleStoreDetail.pet}><i className={styleStoreDetail.serviceIcon}></i>애완동물 동반</span>
-                                <span className={styleStoreDetail.takeOut}><i className={styleStoreDetail.serviceIcon}></i>포장 가능</span>
-                            </li>
-                        </ul>
-                        <div className={styleStoreDetail.linkWrap}>
-                            <button className={styleStoreDetail.linkWriteReview} onClick={() => setIsOpen(true)}>리뷰 작성</button>
-                            <Link to="/store/report/:userSn" className={styleStoreDetail.linkReportStore}>신고</Link>
-                        </div>
-                    </div>
-
-                    <div className={`${styleStoreDetail.storeImageWrap} contentBox`}>이미지</div>
-
-                    <div className={`${styleStoreDetail.storeMenuWrap} contentBox`}>
-                        <h3 className={`${styleStoreDetail.menuHeading} contentHeading`}>메뉴</h3>
-                        <ul className={styleStoreDetail.menuList}>
-                            {menuList.map(record => (
-                                <li key={record.id} className={styleStoreDetail.menuItem}>
-                                    {record.MENU_NM}
-                                    <span className={styleStoreDetail.menuPrice}>{formatNumber(record.MENU_PRC)}</span>
+        <div className='contentTopPosition'>
+            {storeData && (
+                <div className={`container ${styleStoreDetail.container}`}>
+                    <section className={styleStoreDetail.storeInfoArea}>
+                        <div className={`${styleStoreDetail.storeInfoWrap} contentBox`}>
+                            <div className={styleStoreDetail.storeNameWrap}>
+                                <h2 className={styleStoreDetail.storeName}>{storeData.bplcNm}</h2>
+                                <span>{storeData.storeCatName}</span>
+                            </div>
+                            <ul className={styleStoreDetail.detailInfoList}>
+                                <li className={styleStoreDetail.ratingAvgWrap}>
+                                    <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
+                                    <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
+                                    <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
+                                    <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
+                                    <img src={starHalf} className={styleStoreDetail.ratingStarImg} alt="star" />
+                                    <em className={styleStoreDetail.ratingAvg}>4.5</em>
                                 </li>
-                            ))}
-                        </ul>
-                    </div>
-                </section>
-
-                <section>
-                    <div className={`${styleStoreDetail.reviewListWrap} contentBox`}>
-                        <h3 className={`${styleStoreDetail.menuHeading} contentHeading`}>리뷰</h3>
-                        <div className={styleStoreDetail.reviewList}>
-                            <ReviewList reviews={currentReviews} loading={loading} />
-                            <div className="pagination" style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "20px" }}>
-                                {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((page) => (
-                                    <button
-                                        key={page}
-                                        onClick={() => handlePageChange(page)}
-                                        style={{
-                                            padding: "5px 10px",
-                                            backgroundColor: page === currentPage ? "#333" : "#fff",
-                                            color: page === currentPage ? "#fff" : "#333",
-                                            border: "1px solid #ccc",
-                                            cursor: "pointer"
-                                        }}
-                                    >
-                                        {page}
-                                    </button>
-                                ))}
+                                <li className={styleStoreDetail.time}>
+                                    <em className={styleStoreDetail.detailTitle}>영업시간</em>
+                                    {storeData.bgngTm} - {storeData.ddlnTm}
+                                </li>
+                                <li className={styleStoreDetail.tel}>
+                                    <em className={styleStoreDetail.detailTitle}>전화번호</em>
+                                    <a href="tel:+01011111001" className={styleStoreDetail.telNumber}>{storeData.tel}</a>
+                                </li>
+                                <li className={styleStoreDetail.address}>
+                                    <em className={styleStoreDetail.detailTitle}>주소</em>
+                                    {storeData.address}
+                                </li>
+                                <li className={styleStoreDetail.serviceTypes}>
+                                    {showAmtyServices(storeData.amenity)}
+                                </li>
+                            </ul>
+                            <div className={styleStoreDetail.linkWrap}>
+                                <button className={styleStoreDetail.linkWriteReview} onClick={() => setIsOpen(true)}>리뷰 작성</button>
+                                <Link to="/store/report/:userSn" className={styleStoreDetail.linkReportStore}>신고</Link>
                             </div>
                         </div>
-                    </div>
-                </section>
+                        <div className={`${styleStoreDetail.storeImageWrap} contentBox`}>
+                            {showStoreImage(storeData.bplcPhoto)}
+                        </div>
+                        <div className={`${styleStoreDetail.storeMenuWrap} contentBox`}>
+                            <h3 className={`${styleStoreDetail.menuHeading} contentHeading`}>메뉴</h3>
+                            <ul className={styleStoreDetail.menuList}>
+                                {storeData.menuObj && Object.entries(storeData.menuObj).map(([name, price], index) => (
+                                    <li key={index} className={styleStoreDetail.menuItem}>
+                                        {name} {/* 이름 직접 출력 */}
+                                        <span className={styleStoreDetail.menuPrice}>
+                                            {formatNumber(price)} {/* 가격 직접 출력 */}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </section>
 
-                <ReviewRegister 
-                    isOpen={isOpen} 
-                    onClose={() => setIsOpen(false)} 
-                    bplcSn={storeId} 
-                />
-            </div>
+
+                    <section>
+                        <div className={`${styleStoreDetail.reviewListWrap} contentBox`}>
+                            <h3 className={`${styleStoreDetail.menuHeading} contentHeading`}>리뷰</h3>
+                            <div className={styleStoreDetail.reviewList}>
+                                <ReviewList reviews={currentReviews} loading={loading} />
+                                <div className="pagination" style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "20px" }}>
+                                    {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((page) => (
+                                        <button
+                                            key={page}
+                                            onClick={() => handlePageChange(page)}
+                                            style={{
+                                                padding: "5px 10px",
+                                                backgroundColor: page === currentPage ? "#333" : "#fff",
+                                                color: page === currentPage ? "#fff" : "#333",
+                                                border: "1px solid #ccc",
+                                                cursor: "pointer"
+                                            }}
+                                        >
+                                            {page}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <ReviewRegister 
+                        isOpen={isOpen} 
+                        onClose={() => setIsOpen(false)} 
+                        bplcSn={storeId} 
+                    />
+                </div>
+                )
+            
+            }
         </div>
     );
 }
