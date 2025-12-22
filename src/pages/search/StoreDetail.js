@@ -1,14 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import starFill from "../../resources/img/search/iconStarFill.svg";
 import starHalf from "../../resources/img/search/iconStarHalf.svg";
 import ReviewRegister from "../../pages/review/ReviewRegister";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
-
-const REVIEWS_PER_PAGE = 5;
+import styleStoreDetail from "../../css/StoreDetail.module.css";
+import { GetStoreList } from "./GetStoreList";
+import { useNavigate } from "react-router-dom";
 
 function StoreDetail({ storeList }) {
+
+    const REVIEWS_PER_PAGE = 5;
+    const navigate = useNavigate();
+   
+    /* 리뷰작성시 로그인여부 확인 */
+    const [user, setUser] = useState(null); // 로그인 사용자 정보
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
+    const [isInitialized, setIsInitialized] = useState(false); // 초기화
+    useEffect(() => {
+    // 로컬 스토리지에서 사용자 정보 가져오기
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser)); // 사용자 정보가 있다면 상태에 저장
+        setIsLoggedIn(true); // 로그인 상태로 설정
+      }
+
+      setIsInitialized(true);
+    }, []);
+
     const [searchParams] = useSearchParams();
   	const storeId = searchParams.get("storeId");
     const [storeData, setStoreData] = useState({});
@@ -43,6 +63,11 @@ function StoreDetail({ storeList }) {
         //null일 경우 대체 이미지 또는 안내글 결정하기
         return null;
     }
+
+    // function showNickName(userSn) {
+    //     const user = users.find(u => u.user_sn === userSn);
+    //     return user ? user.nickname : "알 수 없음";
+    // }
 
     function showAmtyServices(services){
         console.log(services);
@@ -134,7 +159,7 @@ function StoreDetail({ storeList }) {
 
     // ===== 리뷰 항목 컴포넌트 (좋아요 로직 포함) =====
     const ReviewItem = ({ review }) => {
-        const { evlSn, evlScr, userSn, evlCn, evlYmd, evlPhoto1, evlPhoto2, evlPhoto3, likeSum } = review;
+        const { evlSn, evlScr, userSn, evlCn, evlYmd, evlPhoto1, evlPhoto2, evlPhoto3, likeSum, nickname } = review;
         
         // 각각의 리뷰 아이템이 자신의 좋아요 상태를 가짐
         const [likes, setLikes] = useState(likeSum || 0);
@@ -164,7 +189,7 @@ function StoreDetail({ storeList }) {
                     <div>
                         <StarRatingView rating={evlScr} />
                         <small>{evlYmd}</small> <br/>
-                        <strong>사용자 {userSn}</strong>
+                        <strong>{nickname}</strong>
                     </div>
                     {/* 좋아요 버튼 추가 */}
                     <button 
@@ -248,7 +273,19 @@ function StoreDetail({ storeList }) {
                                 </li>
                             </ul>
                             <div className={styleStoreDetail.linkWrap}>
-                                <button className={styleStoreDetail.linkWriteReview} onClick={() => setIsOpen(true)}>리뷰 작성</button>
+                                <button
+                                    className={styleStoreDetail.linkWriteReview}
+                                    onClick={() => {
+                                        if (isLoggedIn) {
+                                        setIsOpen(true);
+                                        } else {
+                                        navigate("/login", { replace: true });
+                                        }
+                                    }}
+                                    >
+                                    리뷰 작성
+                                    </button>
+
                                 <Link to="/store/report/:userSn" className={styleStoreDetail.linkReportStore}>신고</Link>
                             </div>
                         </div>
@@ -301,6 +338,7 @@ function StoreDetail({ storeList }) {
                         isOpen={isOpen} 
                         onClose={() => setIsOpen(false)} 
                         bplcSn={storeId} 
+                        userSn={user?.userSn} 
                     />
                 </div>
                 )
