@@ -14,6 +14,7 @@ function SearchStore({storeCategories, sidoList}){
 
     let categoryList = useMemo(()=>{
         return storeCategories.map(record => {
+            //console.log(record);
             return {"id" : record.StoreCatNo, ...record};
         })
     }, [storeCategories])
@@ -38,7 +39,8 @@ function SearchStore({storeCategories, sidoList}){
     //지도 동작 상태
     const [isMoved, setIsMoved] = useState(false);
 
-    //const [viewport, setViewport] = useState(null);
+    const [isSelectedAll, setIsSelectedAll] = useState(false);
+
 
     const [positionArea, setPositionArea] = useState({
         swMinLat: 0,
@@ -63,7 +65,7 @@ function SearchStore({storeCategories, sidoList}){
                     const {latitude, longitude} = position.coords;
                     setLat(latitude);
                     setLng(longitude);
-                    console.log(latitude, longitude);
+                    //console.log(latitude, longitude);
                     let localUrl = `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${longitude}&y=${latitude}`;
 
                     const headers = {
@@ -90,7 +92,7 @@ function SearchStore({storeCategories, sidoList}){
                             //사용자 위치 기반 시군구 전체 리스트
                             let listBySgg = await GetStoreList(`http://localhost:3001/youtaste/search/store/sgg?sggCd=${currentSigunguCode}`);
                             setStoreListByRegion(listBySgg);
-                            console.log("위치 기반(시군구) 맛집 리스트 --> ", listBySgg);
+                            //console.log("위치 기반(시군구) 맛집 리스트 --> ", listBySgg);
 
                             // setFilteredStoreList(storeListByRegion);
                             setFilteredStoreList(listBySgg);
@@ -112,8 +114,8 @@ function SearchStore({storeCategories, sidoList}){
     
     
     async function handleRegionConfirm(){
-        const filterdRegionData = [selectedDong, selectedSi, selectedDo];
-        console.log("여기", filterdRegionData);
+        //const filterdRegionData = [selectedDong, selectedSi, selectedDo];
+        //console.log("여기", filterdRegionData);
 
         let list = [];
         
@@ -126,15 +128,21 @@ function SearchStore({storeCategories, sidoList}){
             list = await GetStoreList(`http://localhost:3001/youtaste/search/store/sido?sidoCd=${selectedDo}`);
         } else {
             //모두 null (전국)
-            console.log("모두 null 인지 확인");
+            //console.log("모두 null 인지 확인");
             list = await GetStoreList(`http://localhost:3001/youtaste/search/store/all`);
         }
         //console.log(storeListFilteredRegion);
         setStoreListByRegion(list); //지역 기준 원본 리스트
         setIsDimmedMiddleOpen(false);
         setIsChangedRegion(true);
+        //console.log("지금은 시도기반 리스트!! --> ", list);
 
-        console.log("지금은 시도기반 리스트!! --> ", list);
+        //test map level
+        if(selectedDo == null || selectedSi == null){
+            setIsSelectedAll(true);
+        } else {
+            setIsSelectedAll(false);
+        }
     }
     
     const finalStoreListWithId = useMemo(()=>{
@@ -144,12 +152,14 @@ function SearchStore({storeCategories, sidoList}){
     }, [filteredStoreList])
 
     const foodIcons = {
-        1: "🍚"
-        ,2: "🍝"
-        ,3: "🥟"
-        ,4: "🍣"
-        ,5: "🍜"
-        ,6: "🍩"
+        "한식": "🍚"
+        ,"일식": "🍣"
+        ,"양식": "🍝"
+        ,"중식": "🥟"
+        ,"아시안": "🍜"
+        ,"햄버거": "🍔"
+        ,"치킨": "🍗"
+        ,"카페": "🍩"
     }
 
     function renderCategoryEmoji(category){
@@ -166,7 +176,7 @@ function SearchStore({storeCategories, sidoList}){
                 return updatedCategoryList;
             } else {
                 const updatedCategoryList = [...prev, category];
-                console.log("선택한 카테고리 : ", updatedCategoryList);
+                //console.log("선택한 카테고리 : ", updatedCategoryList);
                 return updatedCategoryList;
             }
         })
@@ -193,7 +203,7 @@ function SearchStore({storeCategories, sidoList}){
 
     //필터 설정 후 검색버튼 눌렀을 때 
     async function onClickSearchBtn(){
-        console.log("selectedCategories : ", selectedCategories);
+        //console.log("selectedCategories : ", selectedCategories);
 
         if(selectedCategories.length === 0){
             //카테고리 선택 X => 선택한 지역 필터 기반 맛집
@@ -208,8 +218,15 @@ function SearchStore({storeCategories, sidoList}){
                 selectedCategories.includes(record.MENU_CAT);
             })
             setFilteredStoreList(storeList);
-            console.log("카테고리 필터 리스트 : ", storeList);
+            //console.log("카테고리 필터 리스트 : ", storeList);
         }
+
+        //test map level
+        // if(selectedDo == null || selectedSi == null){
+        //     setIsSelectedAll(true);
+        // } else {
+        //     setIsSelectedAll(false);
+        // }
 
         setNowPage(1);
     }
@@ -234,7 +251,7 @@ function SearchStore({storeCategories, sidoList}){
         resetRegionFilter();
 
         getCurrentLocation(); //현재위치 기반
-        console.log("필터 초기화");
+        //console.log("필터 초기화");
         
     }
 
@@ -306,7 +323,7 @@ function SearchStore({storeCategories, sidoList}){
                                                 className={selectedCategories.includes(record.storeCatName) ? styleSearchStore.active : null} 
                                                 onClick={() => onSelectCategory(record.storeCatName)}
                                         >
-                                            {renderCategoryEmoji(record.storeCatNo)}
+                                            {renderCategoryEmoji(record.storeCatName)}
                                             {record.storeCatName}
                                         </button>
                                     </li>
@@ -331,10 +348,11 @@ function SearchStore({storeCategories, sidoList}){
                             viewStoreItems.map(record => {
                                 // let imgSrc = record.bplcPhoto
 
-                                return (<li key={record.bplcSn} className={styleSearchStore.storeListItem}>
+
+                                return (<li key={record.bplcSn} className={styleSearchStore.storeListItem} >
                                         <Link to={`/search/storeDetail?storeId=${record.bplcSn}`} className={styleSearchStore.storeListLink}
                                         >
-                                            <img className={styleSearchStore.storeImg} src={imgSushi} />
+                                            <img className={styleSearchStore.storeImg} src={`http://localhost:3001/uploads/store/${record.bplcPhoto}`} />
                                             <div className={styleSearchStore.storeInfo}>
                                                 <h2 className={styleSearchStore.storeName}>{record.bplcNm}</h2>
                                                 <div>
@@ -372,7 +390,7 @@ function SearchStore({storeCategories, sidoList}){
                         >범위 내 재검색</button>
                 <MapComponent storeList={finalStoreListWithId} setFilteredStoreList = {setFilteredStoreList} 
                                 selectedCategories={selectedCategories} lat={lat} lng={lng} isMoved={isMoved} setIsMoved={setIsMoved}
-                                isChangedRegion={isChangedRegion} setPositionArea={setPositionArea}
+                                isChangedRegion={isChangedRegion} setPositionArea={setPositionArea} isSelectedAll={isSelectedAll}
                                 />
             </div>
 
@@ -394,6 +412,7 @@ function SearchStore({storeCategories, sidoList}){
                             // dongName = {dongName}
                             setDongName = {setDongName}
                             sidoList = {sidoList}
+                            setIsSelectedAll = {setIsSelectedAll}
 
                 />
             }

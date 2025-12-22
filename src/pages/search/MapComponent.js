@@ -6,7 +6,7 @@ import { GetStoreList } from "./GetStoreList";
 import markerStar from "../../resources/img/search/markerStar.png";
 import { width } from "@fortawesome/free-solid-svg-icons/fa0";
 
-export default function MapComponent({ storeList, setFilteredStoreList, selectedCategories, lat, lng, isMoved, setIsMoved, isChangedRegion, onViewportChange, setPositionArea }) {
+export default function MapComponent({ storeList, setFilteredStoreList, selectedCategories, lat, lng, isMoved, setIsMoved, isChangedRegion, onViewportChange, setPositionArea, isSelectedAll }) {
     
     // 카카오 로더 설정
     useKakaoLoader({
@@ -20,6 +20,9 @@ export default function MapComponent({ storeList, setFilteredStoreList, selected
         lat: lat || 37.5665,
         lng: lng || 126.9780
     });
+
+    //지도 레벨
+    const [level, setLevel] = useState(7);
 
 	// 인포윈도우 Open 여부를 저장하는 state
     const [openMarkerId, setOpenMarkerId] = useState("");
@@ -40,6 +43,14 @@ export default function MapComponent({ storeList, setFilteredStoreList, selected
             setCenter({ lat, lng });
         }
     }, [lat, lng]);
+
+    useEffect(()=>{ 
+        if(isSelectedAll){
+            setLevel(12);
+        } else {
+            setLevel(7);
+        }
+    }, [isSelectedAll])    
 
     // 2. 지역 변경 시 마커들의 평균 위치로 중심 이동
     useEffect(() => {
@@ -81,6 +92,7 @@ export default function MapComponent({ storeList, setFilteredStoreList, selected
 
 	//인포윈도우 표시
     function showInfoWindow(store) {
+        console.log(store);
         return (
             <div style={{ padding: "5px", minWidth: "150px" }}>
                 <Link to={`/search/storeDetail?storeId=${store.bplcSn}`}> 
@@ -94,7 +106,7 @@ export default function MapComponent({ storeList, setFilteredStoreList, selected
         <Map
             center={center}
             style={{ width: "100%", height: "100%" }}
-            level={7}
+            level={level}
             onIdle={(map) => {
                 const bounds = map.getBounds();
                 const sw = bounds.getSouthWest();
