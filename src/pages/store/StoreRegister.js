@@ -5,6 +5,7 @@ import { useState, useRef } from "react";
 function StoreRegister({ userSn }) {
   const navigate = useNavigate();
   const SERVER_URL = "http://localhost:3001";
+  //const SERVER_URL = "http://192.168.0.11:3001";
 
   /* 손님/사업자 선택 */
   const [registerType, setRegisterType] = useState(null);
@@ -185,6 +186,10 @@ function StoreRegister({ userSn }) {
   /* 이미지 업로드 */
   const [storeImage, setStoreImage] = useState(null);
   const [storePreview, setStorePreview] = useState(null);
+  /* 이미지 확대 & 닫기*/
+  const [selectedImg, setSelectedImg] = useState(null);
+  const closeModal = () => setSelectedImg(null);
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) { setStoreImage(file); setStorePreview(URL.createObjectURL(file)); }
@@ -231,7 +236,7 @@ function StoreRegister({ userSn }) {
     formData.append("menuPrc1", JSON.stringify(menuPrices));
 
     if (storeImage) formData.append("storeImage", storeImage);
-    if (verifyImage) formData.append("VerifyImage", verifyImage);
+    if (verifyImage) formData.append("verifyImage", verifyImage);
 
     try {
       const response = await fetch(`${SERVER_URL}/youtaste/store/register`, {
@@ -295,12 +300,12 @@ function StoreRegister({ userSn }) {
 
               <div className={styleStore.imgBox}>
                 <label>{registerType === "BUSINESS" ? "사업자 등록증" : "영수증"}</label>
-                <label htmlFor="VerifyImage" className={`${styleStore.customFileLabel} ${verifyImage ? styleStore.completed : ""}`}>
+                <label htmlFor="verifyImage" className={`${styleStore.customFileLabel} ${verifyImage ? styleStore.completed : ""}`}>
                   {verifyImage ? "등록완료" : "파일 선택"}
                 </label>
-                <input type="file" id="VerifyImage" accept="image/*" onChange={VerifyImageChange} className={styleStore.hiddenFileInput} />
+                <input type="file" id="verifyImage" accept="image/*" onChange={VerifyImageChange} className={styleStore.hiddenFileInput} />
               </div>
-              {verifyPreview && <div style={{ marginTop: "10px" }}><img src={verifyPreview} alt="미리보기" width="200" /></div>}
+              {verifyPreview && <div style={{ marginTop: "10px" }}><img src={verifyPreview} alt="미리보기" width="200" onClick={() => setSelectedImg(verifyPreview)}/></div>}
 
               <label>매장 명</label>
               <input type="text" value={storeName} onChange={(e) => setStoreName(e.target.value)} />
@@ -359,10 +364,39 @@ function StoreRegister({ userSn }) {
                 </label>
                 <input type="file" id="storeImage" accept="image/*" onChange={handleImageChange} className={styleStore.hiddenFileInput} />
               </div>
-              {storePreview && <div style={{ marginTop: "10px" }}><img src={storePreview} alt="미리보기" width="200" /></div>}
+              {storePreview && <div style={{ marginTop: "10px" }}><img src={storePreview} alt="미리보기" width="200" onClick={() => setSelectedImg(verifyPreview)}/></div>}
 
               <button className={`${styleStore.submit} ${styleStore.button}`} type="submit" disabled={!isFormValid}>등록</button>
             </div>
+              {selectedImg && (
+                <div 
+                  onClick={closeModal} // 배경 클릭 시 닫기
+                  style={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "rgba(0, 0, 0, 0.8)",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    zIndex: 11000, // Daum 주소 API보다 높게 설정
+                    cursor: "zoom-out"
+                  }}
+                >
+                  <img 
+                    src={selectedImg} 
+                    alt="확대보기" 
+                    style={{ 
+                      maxWidth: "90%", 
+                      maxHeight: "90%", 
+                      borderRadius: "10px",
+                      boxShadow: "0 4px 20px rgba(0,0,0,0.5)" 
+                    }} 
+                  />
+                </div>
+              )}
           </form>
         </div>
       </div>

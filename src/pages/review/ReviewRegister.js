@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styleReview from "../../css/ReviewRgister.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const today = new Date().toISOString().split("T")[0];
 
@@ -67,7 +68,8 @@ const StarRating = ({ rating, setRating }) => {
 };
 
 // 리뷰 등록 모달 - props에 bplcSn 추가
-const ReviewRegister = ({ isOpen, onClose, bplcSn }) => {
+const ReviewRegister = ({ isOpen, onClose, bplcSn, userSn }) => {
+  const navigate = useNavigate();
   const [rating, setRating] = useState(0);
   const [images, setImages] = useState([]); // [{file: File, preview: string}]
   const [reviewText, setReviewText] = useState("");
@@ -98,7 +100,7 @@ const ReviewRegister = ({ isOpen, onClose, bplcSn }) => {
       evlCn: reviewText,
       evlYmd: today,
       bplcSn: bplcSn, // <--- 강제로 박혀있던 1000을 넘겨받은 변수로 수정!
-      userSn: 100,  
+      userSn: userSn,  
     };
 
     const formData = new FormData();

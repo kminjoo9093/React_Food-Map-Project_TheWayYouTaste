@@ -3,11 +3,13 @@ import { useState } from "react";
 import styleReport from "../../../css/Report.module.css";
 import styleMember from "../../../css/MemberListCheck.module.css";
 import styleNotice from "../../../css/Notice.module.css";
+import serverUrl from "../../../db/server.json";
 
 function ReportDetail({ setMemberNotices }) {
   const location = useLocation();
   const navigate = useNavigate();
   const report = location.state;
+  //const SERVER_URL = serverUrl.SERVER_URL;
 
   const [showDetail, setShowDetail] = useState(false);
   const [noticeTitle, setNoticeTitle] = useState(report?.dclrTtl || "");

@@ -17,7 +17,6 @@
   height: 100%;
   background-color: rgba(255,255,255,0.6);
   backdrop-filter: blur(5px);
-  /* -webkit-backdrop-filter: blur(5px); 사파리 지원 */
   z-index: 1; /* 내용보다 위로 */
 }
 
@@ -61,8 +60,8 @@ h4{
   z-index: 1;
   margin: 0 auto;
   padding : 50px;
-  width: 50%;
-  height: 500px;
+  width: 60%;
+  height: 70%;
   /* background-color:bisque; */
   justify-items: center;
   /* background-color: #ffce75; */
@@ -91,7 +90,7 @@ h4{
   justify-items: center;
   align-items: center;
   justify-content: center;
-  grid-template-columns: repeat(7, 60px);
+  grid-template-columns: repeat(8, 60px);
   gap: 40px;
   font-size: 30px;
   margin: 20px 0px;
@@ -173,7 +172,7 @@ h4{
 }
 
 .titleBox{
-  width : 660px;
+  width : 90%;
   text-align: left;
   margin: 0px;
 }

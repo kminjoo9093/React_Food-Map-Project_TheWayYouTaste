@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
 
 function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, setSelectedSi, selectedDong, setSelectedDong, onConfirm
-                        , setDoName, setSiName, setDongName, sidoList, setIsSelectedAll
+                        , setDoName, setSiName, setDongName, sidoList
     }){
 
     const [sggList, setSggList] = useState([]);
