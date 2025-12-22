@@ -185,34 +185,39 @@ function StoreDetail({ storeList }) {
 
         return (
             <li style={{ borderBottom: "1px solid #eee", paddingBottom: "20px", marginBottom: "20px", listStyle: "none" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <div>
-                        <StarRatingView rating={evlScr} />
-                        <small>{evlYmd}</small> <br/>
-                        <strong>{nickname}</strong>
+                <div>
+
+                    <strong style={{display: "block"}}>{nickname}</strong>
+
+                    <div className={styleStoreDetail.reviewBox}>
+                        <div style={{display : "flex", alignItems : "center"}}>
+                            <StarRatingView rating={evlScr} />
+                            │ 
+                            <small>{evlYmd}</small>
+                        </div>
+                        {/* 좋아요 버튼 추가 */}
+                        <button 
+                            onClick={toggleLike}
+                            style={{
+                                cursor: "pointer",
+                                border: "1px solid #ddd",
+                                borderRadius: "15px",
+                                padding: "5px 15px",
+                                backgroundColor: isLiked ? "#ff4757" : "#fff",
+                                color: isLiked ? "#fff" : "#333",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "5px"
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faThumbsUp} />
+                            {likes}
+                        </button>
                     </div>
-                    {/* 좋아요 버튼 추가 */}
-                    <button 
-                        onClick={toggleLike}
-                        style={{
-                            cursor: "pointer",
-                            border: "1px solid #ddd",
-                            borderRadius: "15px",
-                            padding: "5px 15px",
-                            backgroundColor: isLiked ? "#ff4757" : "#fff",
-                            color: isLiked ? "#fff" : "#333",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "5px"
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faThumbsUp} />
-                        {likes}
-                    </button>
                 </div>
 
                 <div className={styleStoreDetail.reviewImages}>
-                    {evlPhoto1 && <img src={`http://localhost:3001/uploads/review/${evlPhoto1}`} alt="리뷰 사진 1" />}
+                    {evlPhoto2 && <img src={`http://localhost:3001/uploads/review/${evlPhoto1}`} alt="리뷰 사진 1" />}
                     {evlPhoto2 && <img src={`http://localhost:3001/uploads/review/${evlPhoto2}`} alt="리뷰 사진 2" />}
                     {evlPhoto3 && <img src={`http://localhost:3001/uploads/review/${evlPhoto3}`} alt="리뷰 사진 3" />}
                 </div>
