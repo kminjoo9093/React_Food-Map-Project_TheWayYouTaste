@@ -183,7 +183,7 @@ const handleAddressSearch = async () => {
 
     const formData = new FormData();
 
-    formData.append("brNo", brNo);
+    formData.append("brno", brNo);
     formData.append("owner", owner);
     formData.append("storeName", storeName);
 
@@ -196,10 +196,10 @@ const handleAddressSearch = async () => {
     formData.append("convenience", JSON.stringify(conveniencePayload));
   
     if (image) formData.append("storeImage", image);
-    if (verifyImage) formData.append("VerifyImage", verifyImage);
+    if (verifyImage) formData.append("verifyImage", verifyImage);
 
     try {
-      const response = await fetch("/api/store/register", {
+      const response = await fetch("http://localhost:3001/youtaste/store/register", {
         method: "POST",
         body: formData, 
       });

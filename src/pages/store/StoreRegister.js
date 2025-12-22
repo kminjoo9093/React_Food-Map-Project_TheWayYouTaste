@@ -231,7 +231,7 @@ function StoreRegister({ userSn }) {
     formData.append("menuPrc1", JSON.stringify(menuPrices));
 
     if (storeImage) formData.append("storeImage", storeImage);
-    if (verifyImage) formData.append("VerifyImage", verifyImage);
+    if (verifyImage) formData.append("verifyImage", verifyImage);
 
     try {
       const response = await fetch(`${SERVER_URL}/youtaste/store/register`, {
@@ -295,10 +295,10 @@ function StoreRegister({ userSn }) {
 
               <div className={styleStore.imgBox}>
                 <label>{registerType === "BUSINESS" ? "사업자 등록증" : "영수증"}</label>
-                <label htmlFor="VerifyImage" className={`${styleStore.customFileLabel} ${verifyImage ? styleStore.completed : ""}`}>
+                <label htmlFor="verifyImage" className={`${styleStore.customFileLabel} ${verifyImage ? styleStore.completed : ""}`}>
                   {verifyImage ? "등록완료" : "파일 선택"}
                 </label>
-                <input type="file" id="VerifyImage" accept="image/*" onChange={VerifyImageChange} className={styleStore.hiddenFileInput} />
+                <input type="file" id="verifyImage" accept="image/*" onChange={VerifyImageChange} className={styleStore.hiddenFileInput} />
               </div>
               {verifyPreview && <div style={{ marginTop: "10px" }}><img src={verifyPreview} alt="미리보기" width="200" /></div>}
 
