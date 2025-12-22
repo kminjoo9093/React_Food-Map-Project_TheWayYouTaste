@@ -107,13 +107,14 @@ function TheWayYouTaste() {
             <Route path="/" element={<Navigate to="/main" replace />} />
             <Route path="/main" element={<MainPage />} />
             <Route path="/notice/list" element={<NoticeList notices={notices} isAdmin={isAdmin}/>} />
+            <Route path="/notice/noticeDetail" element={<NoticeDetail isAdmin={isAdmin} /> } />
             <Route path="/search/store" element={<SearchStore storeCategories={storeCategories} sidoList={sidoList} />} />
             <Route path="/search/storeDetail" element={ <StoreDetail /> } />
             <Route path="/login" element={<MembershipLogin setUser={setUser} setIsLoggedIn={setIsLoggedIn} />}/>
             <Route path="/*" element={<Error404Page />} />
 
             {/* 로그인한 일반 사용자만 접근 가능한 페이지*/}
-            <Route path="/notice/noticeDetail" element={isLoggedIn ? <NoticeDetail /> : <Navigate to="/login" replace />} />
+            <Route path="/notice/write" element={isLoggedIn ? <NoticeWrite /> : <Navigate to="/login" replace />} />
             <Route path="/member/notice/list" element={isLoggedIn ? <NoticeMemberList notices={memberNotices} /> : <Navigate to="/login" replace />} />
             <Route path="/member/notice/noticeDetail" element={isLoggedIn ? <NoticeMemberDetail /> : <Navigate to="/login" replace />} />
             <Route path="/store/register" element={isLoggedIn ? <StoreRegister userSn={user ? user.userSn : ''}/> : <Navigate to="/login" replace />} />
