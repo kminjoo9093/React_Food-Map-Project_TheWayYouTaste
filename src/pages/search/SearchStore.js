@@ -295,66 +295,73 @@ function SearchStore({storeCategories, sidoList}){
     const indexOfStartItem = indexOfLastItem - viewListItemNum;
     const viewStoreItems = finalStoreListWithId.slice(indexOfStartItem, indexOfLastItem);
 
-    return (
+    return(
         <div className={`${styleSearchStore.gridMap} contentTopPosition`}>
-            <div className={`${styleSearchStore.leftArea} ${isOpen ? styleSearchStore.open : ""}`}>
-                <button id="btnViewList" onClick={() => setIsOpen(!isOpen)} className={styleSearchStore.btnViewList}></button>
-                
+            <div className={`${styleSearchStore.leftArea} ${isOpen ? styleSearchStore.open : ""}`} >
+                <button id="btnViewList" 
+                        onClick={coverMapArea}
+                        className={styleSearchStore.btnViewList}
+                >
+                    {/* <img src={arrow} alt="목록 펼쳐보기"/> */}
+                </button>
                 <div className={styleSearchStore.filterArea}>
                     <div className={styleSearchStore.filterTopWrap}>
                         <button className={styleSearchStore.btnRegion} onClick={() => setIsDimmedMiddleOpen(true)}>
-                            {doName ? `${doName} ${siName} ${dongName}`.trim() : "지역 선택"}
+                            {showSelectedRegion()}
                         </button>
                     </div>
                     <div className={styleSearchStore.filterBottomWrap}>
                         <ul className={styleSearchStore.categoryList}>
-                            {categoryList.map(record => (
-                                <li key={record.id}>
-                                    <button 
-                                        className={selectedCategories.includes(record.storeCatName) ? styleSearchStore.active : ""} 
-                                        onClick={() => setSelectedCategories(prev => 
-                                            prev.includes(record.storeCatName) ? prev.filter(c => c !== record.storeCatName) : [...prev, record.storeCatName]
-                                        )}
-                                    >
-                                        <i className={styleSearchStore.categoryEmoji}>{foodIcons[record.storeCatNo]}</i>
-                                        {record.storeCatName}
-                                    </button>
-                                </li>
-                            ))}
+                            {
+                                categoryList.map(record => (
+                                    <li key={record.id}>
+                                        <button id={record.storeCatNo} 
+                                                className={selectedCategories.includes(record.storeCatName) ? styleSearchStore.active : null} 
+                                                onClick={() => onSelectCategory(record.storeCatName)}
+                                        >
+                                            {renderCategoryEmoji(record.storeCatNo)}
+                                            {record.storeCatName}
+                                        </button>
+                                    </li>
+                                ))
+                            }
                         </ul>
                     </div>
                     <div className={styleSearchStore.filterBottomArea}>
+                        {/* <span className={styleSearchStore.conditions}>
+                            { renderSelectedRegion() }
+                        </span> */}
                         <div className={styleSearchStore.btnWrap}>
                             <button className={styleSearchStore.btnResetFilter} onClick={resetFilter}>초기화</button>
-                            <button className={styleSearchStore.btnSearch} onClick={onClickSearchBtn}>검색</button>
+                            <button className={styleSearchStore.btnSearch} onClick={()=>onClickSearchBtn()}>검색</button>
                         </div>
+
                     </div>
                 </div>
-
                 <div className={styleSearchStore.storeListArea}>
                     <ul className={styleSearchStore.storeList}>
-                        {viewStoreItems.length > 0 ? (
-                            viewStoreItems.map(record => (
-                                <li key={record.bplcSn} className={styleSearchStore.storeListItem}>
-                                    <Link to={`/search/storeDetail?storeId=${record.bplcSn}`} className={styleSearchStore.storeListLink}>
-                                        <img className={styleSearchStore.storeImg} src={imgSushi} alt="store" />
-                                        <div className={styleSearchStore.storeInfo}>
-                                            <h2 className={styleSearchStore.storeName}>{record.bplcNm}</h2>
-                                            <div>
-                                                <span className={styleSearchStore.storeRating}>{record.avg}</span>
-                                                <span className={styleSearchStore.storeCategory}>{record.storeCatName}</span>
+                        {
+                            viewStoreItems.map(record => {
+                                // let imgSrc = record.bplcPhoto
+
+                                return (<li key={record.bplcSn} className={styleSearchStore.storeListItem}>
+                                        <Link to={`/search/storeDetail?storeId=${record.bplcSn}`} className={styleSearchStore.storeListLink}
+                                        >
+                                            <img className={styleSearchStore.storeImg} src={imgSushi} />
+                                            <div className={styleSearchStore.storeInfo}>
+                                                <h2 className={styleSearchStore.storeName}>{record.bplcNm}</h2>
+                                                <div>
+                                                    <span className={styleSearchStore.storeRating}>{record.avg}</span>
+                                                    <span className={styleSearchStore.storeCategory}>{record.storeCatName}</span>
+                                                </div>
+                                                <span className={styleSearchStore.storeTime}><em>영업시간</em>{record.bgngTm}-{record.ddlnTm}</span>
+                                                <span className={styleSearchStore.storeAddress}><em>주소</em>{record.address}</span>
                                             </div>
-                                            <span className={styleSearchStore.storeTime}><em>영업시간</em>{record.bgngTm}-{record.ddlnTm}</span>
-                                            <span className={styleSearchStore.storeAddress}><em>주소</em>{record.address}</span>
-                                        </div>
-                                    </Link>
-                                </li>
-                            ))
-                        ) : (
-                            <li style={{textAlign: 'center', padding: '50px 0'}}>
-                                <p>{keyword ? `'${keyword}' 에 대한 검색 결과가 없습니다.` : "데이터가 없습니다."}</p>
-                            </li>
-                        )}
+                                        </Link>
+                                    </li>);
+                            })
+                        }
+                        
                     </ul>
                     <Pagination
                         nowPage={nowPage}
@@ -365,40 +372,46 @@ function SearchStore({storeCategories, sidoList}){
                     />
                 </div>
             </div>
-
             <div className={styleSearchStore.mapArea}>
                 <button className={`${styleSearchStore.btnSearchArea} ${isMoved ? styleSearchStore.active : ""}`} 
+                        //onClick={()=>{setIsMoved(false)}}
                         onClick={async () => {
+                           // if (!viewport) return;
                             setIsSearchArea(true);
-                            const list = await GetStoreList(`http://localhost:3001/youtaste/search/store/position?swMinLat=${positionArea.swMinLat}&neMaxLat=${positionArea.neMaxLat}&swMinLng=${positionArea.swMinLng}&neMaxLng=${positionArea.neMaxLng}`);
-                            setFilteredStoreList(list);
-                        }}>
-                    범위 내 재검색
-                </button>
-                <MapComponent 
-                    storeList={finalStoreListWithId} 
-                    setFilteredStoreList={setFilteredStoreList} 
-                    selectedCategories={selectedCategories} 
-                    lat={lat} lng={lng} 
-                    isMoved={isMoved} setIsMoved={setIsMoved}
-                    isChangedRegion={isChangedRegion} 
-                    setPositionArea={setPositionArea}
-                />
+                            await displayViewPortMarkers(positionArea);
+                            // setFilteredStoreList(list);
+                            //setIsMoved(false);
+                        }}
+                        >범위 내 재검색</button>
+                <MapComponent storeList={finalStoreListWithId} setFilteredStoreList = {setFilteredStoreList} 
+                                selectedCategories={selectedCategories} lat={lat} lng={lng} isMoved={isMoved} setIsMoved={setIsMoved}
+                                isChangedRegion={isChangedRegion} setPositionArea={setPositionArea}
+                                />
             </div>
 
-            {isDimmedMiddleOpen && (
+            {/* 지역 선택 모달 */}
+            {isDimmedMiddleOpen && 
                 <RegionModal 
-                    setIsModalOpen={setIsDimmedMiddleOpen}
-                    selectedDo={selectedDo} setSelectedDo={setSelectedDo}
-                    selectedSi={selectedSi} setSelectedSi={setSelectedSi}
-                    selectedDong={selectedDong} setSelectedDong={setSelectedDong}
-                    onConfirm={handleRegionConfirm}
-                    setDoName={setDoName} setSiName={setSiName} setDongName={setDongName}
-                    sidoList={sidoList}
+                            setIsModalOpen = {setIsDimmedMiddleOpen}
+                            selectedDo = {selectedDo}
+                            setSelectedDo = {setSelectedDo}
+                            selectedSi = {selectedSi}
+                            setSelectedSi = {setSelectedSi}
+                            selectedDong = {selectedDong}
+                            setSelectedDong = {setSelectedDong}
+                            onConfirm = {handleRegionConfirm}
+                            // doName = {doName} 
+                            setDoName = {setDoName}
+                            // siName = {siName} 
+                            setSiName = {setSiName}
+                            // dongName = {dongName}
+                            setDongName = {setDongName}
+                            sidoList = {sidoList}
+
                 />
-            )}
+            }
         </div>
-    );
+    )
 }
 
 export default SearchStore;
