@@ -14,7 +14,7 @@ function StoreRegister({ userSn }) {
   const [brError, setBrError] = useState(null);
   const [owner, setOwner] = useState("");
   const [openDate, setOpenDate] = useState("");
-const checkBusiness = async () => {
+  const checkBusiness = async () => {
   setBrError(null);
   setBrResult(null);
 

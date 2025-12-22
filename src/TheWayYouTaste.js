@@ -79,7 +79,8 @@ function TheWayYouTaste() {
             <Route path="/store/register" element={<StoreRegister userSn={userSn}/>} />
             <Route path="/store/registerDetail" element={<RegisterDetail setMemberNotices={setMemberNotices}/>} />
             <Route path="/search/store" element={<SearchStore />} />
-            <Route path="/search/storeDetail" element={<StoreDetail />} />
+            {/* <Route path="/search/storeDetail" element={<StoreDetail />} /> - 기존 코드*/}
+            <Route path="/search/storeDetail/:storeId" element={<StoreDetail />} />
             <Route path="/store/report/:userSn" element={<ReportRequest />} />
             <Route path="/store/reportDetail" element={<ReportDetail setMemberNotices={setMemberNotices} />} />
             <Route path="/member/membership/login" element={<MembershipLogin />}/>

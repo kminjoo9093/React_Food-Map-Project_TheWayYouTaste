@@ -180,8 +180,34 @@
     padding: 2rem 4rem;
 }
 .reviewHeading{
-    
+    text-align: center;
 }
+.reviewImages {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.reviewImages img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.reviewList{
+    width: 0, auto;
+}
+
+.reviewListWrap{
+    grid-column: 1 / -1;
+    /* background-color: var(--gray-f5); */
+    border-radius: 2rem;
+    padding: 2rem 10rem;
+}
+
+
+
 
 @media (max-width: 1024px){
     .storeInfoArea{
