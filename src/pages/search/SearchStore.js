@@ -18,7 +18,7 @@ function SearchStore({ storeCategories, sidoList }) {
     const [isOpen, setIsOpen] = useState(false);
 
     // 지역 및 위치 상태
-    const [lat, setLat] = useState(37.5665);
+    const [lat, setLat] = useState(37.5665); //서울로 바꾸기
     const [lng, setLng] = useState(126.9780);
     const [isMoved, setIsMoved] = useState(false);
     const [isChangedRegion, setIsChangedRegion] = useState(false);
@@ -26,14 +26,16 @@ function SearchStore({ storeCategories, sidoList }) {
         swMinLat: 0, swMinLng: 0, neMaxLat: 0, neMaxLng: 0
     });
 
-    const [selectedDo, setSelectedDo] = useState(null);
+    const [selectedDo, setSelectedDo] = useState(null); //code
     const [doName, setDoName] = useState("");
-    const [selectedSi, setSelectedSi] = useState(null);
+    const [selectedSi, setSelectedSi] = useState(null); //code
     const [siName, setSiName] = useState("");
-    const [selectedDong, setSelectedDong] = useState(null);
+    const [selectedDong, setSelectedDong] = useState(null); //code
     const [dongName, setDongName] = useState("");
     const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
     const [isSelectedAll, setIsSelectedAll] = useState(false);
+
+    const [isResetFilter, setIsResetFilter] = useState(false);
 
     const foodIcons = {
         "한식": "🍚"
@@ -62,11 +64,14 @@ function SearchStore({ storeCategories, sidoList }) {
                 try {
                     const response = await fetch(localUrl, { headers });
                     const data = await response.json();
-                    const currentSigunguCode = data.documents[0].code.slice(0, 5);
+                    const currentSggCode = data.documents[0].code.slice(0, 5);
+                    const currentSidoCode = currentSggCode.slice(0, 2);
 
-                    const listBySgg = await GetStoreList(`http://localhost:3001/youtaste/search/store/sgg?sggCd=${currentSigunguCode}`);
+                    const listBySgg = await GetStoreList(`http://localhost:3001/youtaste/search/store/sgg?sggCd=${currentSggCode}`);
                     setStoreListByRegion(listBySgg);
                     setFilteredStoreList(listBySgg);
+                    setSelectedDo(currentSidoCode);
+                    setSelectedSi(currentSggCode);
                 } catch (error) {
                     console.error('위치 정보 로드 실패: ', error);
                 }
@@ -94,12 +99,12 @@ function SearchStore({ storeCategories, sidoList }) {
         initLoad();
     }, [keyword, getCurrentLocation]);
 
-    // 카테고리 필터링 적용 Logic
+    // 필터링, 지도범위 적용 최종 맛집 리스트
     const finalStoreListWithId = useMemo(() => {
         return filteredStoreList.map(record => ({ "id": record.bplcSn, ...record }));
     }, [filteredStoreList]);
 
-    // [핵심] 범위 내 재검색 함수 수정
+    // 범위 내 재검색 함수
     const displayViewPortMarkers = async (area) => {
         const { swMinLat, swMinLng, neMaxLat, neMaxLng } = area;
         if (swMinLat === 0) return; // 좌표가 0인 초기상태 방지
@@ -131,10 +136,13 @@ function SearchStore({ storeCategories, sidoList }) {
         setStoreListByRegion(list);
         setIsDimmedMiddleOpen(false);
         setIsChangedRegion(true);
+
+        setIsResetFilter(false);
     }
 
     // 카테고리 클릭 핸들러
     const onSelectCategory = (categoryName) => {
+        setIsResetFilter(false);
         setSelectedCategories(prev => 
             prev.includes(categoryName) ? prev.filter(c => c !== categoryName) : [...prev, categoryName]
         );
@@ -150,13 +158,15 @@ function SearchStore({ storeCategories, sidoList }) {
         }
 
         //map level 조절
-        if(selectedDo == null || selectedSi == null){
-            setIsSelectedAll(true);
+        if((selectedDo == null || selectedSi == null) && !isResetFilter){
+            setIsSelectedAll(true); //level 12
         } else {
-            setIsSelectedAll(false);
+            setIsSelectedAll(false); //level 7
         }
 
         setNowPage(1);
+
+        setIsResetFilter(false);
     };
 
     const resetFilter = () => {
@@ -164,8 +174,12 @@ function SearchStore({ storeCategories, sidoList }) {
         setSelectedDo(null);
         setSelectedSi(null);
         setSelectedDong(null);
-        setDoName(""); setSiName(""); setDongName("");
+        setDoName(""); 
+        setSiName(""); 
+        setDongName("");
         getCurrentLocation();
+
+        setIsResetFilter(true);
     };
 
     // 페이지네이션

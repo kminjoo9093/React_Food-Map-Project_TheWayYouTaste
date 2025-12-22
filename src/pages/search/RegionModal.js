@@ -66,12 +66,12 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
         console.log("선택된 동 코드 :" , selectedDong);
     }, [selectedDong]);
 
+
+    //초기 사용자 위치 시도, 시군구 미리 선택, 중앙 위치
+    
+
+
     function handleSelectDo(sidoCd, sidoNm){
-        // if(sidoCd == null){
-        //     setIsSelectedAll(true);
-        // } else {
-        //     setIsSelectedAll(false);
-        // }
         setSelectedDo(sidoCd);
         setDoName(sidoNm || "");
         setSelectedSi(null);
@@ -81,11 +81,6 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
     }
 
     function handleSelectSi(sggCd, siName){
-        // if(sggCd == null){
-        //     setIsSelectedAll(true);
-        // } else {
-        //     setIsSelectedAll(false);
-        // }
         setSelectedSi(sggCd);
         setSiName(siName || "");
         setSelectedDong(null);
