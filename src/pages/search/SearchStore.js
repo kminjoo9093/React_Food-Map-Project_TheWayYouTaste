@@ -154,7 +154,7 @@ function SearchStore({ storeCategories, sidoList }) {
     const viewListItemNum = 10;
     const viewStoreItems = finalStoreListWithId.slice((nowPage - 1) * viewListItemNum, nowPage * viewListItemNum);
 
-    const foodIcons = { 1: "🍚", 2: "🍝", 3: "🥟", 4: "🍣", 5: "🍜", 6: "🍩" };
+    const foodIcons = { 1: "🍚", 2: "🍣", 3: "🥟", 4: "🍝", 5: "🍜", 6: "🍔"};
 
     return (
         <div className={`${styleSearchStore.gridMap} contentTopPosition`}>
