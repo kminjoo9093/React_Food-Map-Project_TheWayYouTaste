@@ -103,6 +103,20 @@ function StoreRegister({ userSn }) {
     }
   };
 
+  //전화번호
+
+  const phoneRegex = /^\d{2,4}-\d{3,4}-\d{4}$/;
+
+  const handleStoreTelChange = (e) => {
+  const value = e.target.value;
+
+  // 숫자와 - 만 허용
+  if (!/^[0-9-]*$/.test(value)) return;
+    setStoreTel(value);
+  };
+  
+  
+
   /* 주소 API */
   const [roadAddress, setRoadAddress] = useState("");
   const [detailAddress, setDetailAddress] = useState("");
@@ -169,6 +183,7 @@ function StoreRegister({ userSn }) {
 
   /* 기본 정보 및 편의사항 */
   const [storeName, setStoreName] = useState("");
+  const [storeTel, setStoreTel] = useState("");
   const [category, setCategory] = useState("");
   const [openTime, setOpenTime] = useState("");
   const [closeTime, setCloseTime] = useState("");
@@ -202,9 +217,14 @@ function StoreRegister({ userSn }) {
     if (file) { setVerifyImage(file); setVerifyPreview(URL.createObjectURL(file)); }
   };
 
+  const isTelValid = phoneRegex.test(storeTel);
+  
   /* 서버 전송 */
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+
+
     const formData = new FormData();
 
     // 메뉴 데이터 추출
@@ -218,6 +238,7 @@ function StoreRegister({ userSn }) {
     formData.append("userReg", registerType === "USER" ? 1 : 0);
     formData.append("bzmnReg", registerType === "BUSINESS" ? 1 : 0);
     formData.append("storeName", storeName);
+    formData.append("storeTel", storeTel);
     formData.append("roadAddress", roadAddress);
     formData.append("detailAddress", detailAddress);
     formData.append("sido", sido);
@@ -228,7 +249,7 @@ function StoreRegister({ userSn }) {
     formData.append("bcode", bcode);
     formData.append("openTime", openTime);
     formData.append("closeTime", closeTime);
-    formData.append("category", category);
+    formData.append("storeCatNo", category);
     formData.append("convenience", JSON.stringify(conveniences));
     
     // 메뉴 정보 전송
@@ -237,6 +258,18 @@ function StoreRegister({ userSn }) {
 
     if (storeImage) formData.append("storeImage", storeImage);
     if (verifyImage) formData.append("verifyImage", verifyImage);
+
+    //전송 데이터 확인
+    console.log("--- 🚀 서버 전송 데이터 목록 ---");
+    for (let [key, value] of formData.entries()) {
+        if (value instanceof File) {
+            console.log(`${key}: [파일] ${value.name} (${(value.size / 1024).toFixed(1)} KB)`);
+        } else {
+            console.log(`${key}: ${value}`);
+        }
+    }
+    console.log("------------------------------");
+
 
     try {
       const response = await fetch(`${SERVER_URL}/youtaste/store/register`, {
@@ -260,7 +293,7 @@ function StoreRegister({ userSn }) {
 
   const isFormValid =
     (brResult?.status === "인증되었습니다." || brResult?.status === "사용자 등록정보를 업데이트했습니다.") &&
-    storeName && roadAddress && detailAddress && openTime && closeTime && category &&
+    storeName && roadAddress && detailAddress && openTime && closeTime && category && phoneRegex.test(storeTel) &&
     items[0].menu !== "" && verifyImage !== null;
 
   return (
@@ -282,7 +315,7 @@ function StoreRegister({ userSn }) {
             <div style={registerType === null ? { display: "none" } : {}}>
               <label htmlFor="brno">사업자 등록번호</label>
               <div className={styleStore.brNoBox}>
-                <input id="brno" type="text" maxLength={10} value={brNo} onChange={(e) => setBrNo(e.target.value)} placeholder='"-" 제외 10자리 숫자 입력' readOnly={brResult?.status === "인증되었습니다."} />
+                <input className={styleStore.brno} id="brno" type="number" maxLength={10} value={brNo} onChange={(e) => setBrNo(e.target.value)} placeholder='"-" 제외 숫자 10자리를 입력해 주세요' readOnly={brResult?.status === "인증되었습니다."} />
                 <button className={`${styleStore.brNoBtn} ${styleStore.button}`} type="button" onClick={checkBusiness}>인증</button>
               </div>
 
@@ -309,6 +342,17 @@ function StoreRegister({ userSn }) {
 
               <label>매장 명</label>
               <input type="text" value={storeName} onChange={(e) => setStoreName(e.target.value)} />
+
+              <div>
+                <label>전화번호</label>
+                <input type="text" value={storeTel} onChange={handleStoreTelChange} placeholder='"-"을 포함하여 전화번호를 입력해 주세요' />
+                {/* 입력이 있는데 유효하지 않을 때만 경고 문구 출력 */}
+                {storeTel.length > 0 && !isTelValid && (
+                  <p style={{ color: 'red', fontSize: '12px' }}>
+                    올바른 전화번호 형식(하이픈 포함)으로 입력해주세요.
+                  </p>
+                )}
+              </div>
 
               <label>주소</label>
               <div>
@@ -366,7 +410,24 @@ function StoreRegister({ userSn }) {
               </div>
               {storePreview && <div style={{ marginTop: "10px" }}><img src={storePreview} alt="미리보기" width="200" onClick={() => setSelectedImg(verifyPreview)}/></div>}
 
-              <button className={`${styleStore.submit} ${styleStore.button}`} type="submit" disabled={!isFormValid}>등록</button>
+              {/* 등록버튼 */}
+              {isFormValid ? (
+                <button
+                  className={`${styleStore.submit} ${styleStore.button}`}
+                  type="submit"
+                >
+                  등록
+                </button>
+              ) : (
+                <button
+                  className={`${styleStore.submit} ${styleStore.button}`}
+                  type="button"
+                  onClick={() => alert("입력하신 값을 다시 한번 확인해주세요")}
+                >
+                  등록
+                </button>
+              )}
+              
             </div>
               {selectedImg && (
                 <div 

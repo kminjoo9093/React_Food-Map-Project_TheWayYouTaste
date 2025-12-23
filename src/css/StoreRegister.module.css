@@ -225,3 +225,23 @@
     display: flex;
     align-items: center;
 }
+
+.brno::-webkit-outer-spin-button,
+.brno::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.brno[type=number] {
+    width: 100%;
+    height: 4rem;
+    padding-left: 2rem;
+    border: solid 1px rgb(221, 221, 221);
+}
+
+.storeTel[type=text] {
+    width: 100%;
+    height: 4rem;
+    padding-left: 2rem;
+    border: solid 1px rgb(221, 221, 221);
+}

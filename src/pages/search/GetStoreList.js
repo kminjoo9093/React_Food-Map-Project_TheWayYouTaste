@@ -2,6 +2,7 @@ export async function GetStoreList(url){
         try{
             //const url = "http://localhost:3001/store";
             const res = await fetch(url);
+            console.log("res --> ", res.ok);
             if(!res.ok){
                 throw new Error(`Http error! status : ${res.status}`);
             }
