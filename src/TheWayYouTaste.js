@@ -21,7 +21,8 @@
   import MembershipModify from "./pages/member/MembershipModify";
   import MembershipResign from "./pages/member/MembershipResign";
   import RegisterDetail from "./pages/admin/RegisterDetail";
-import StoreRegion from "./pages/search/StoreRegion";
+  import StoreRegion from "./pages/search/StoreRegion";
+  import serverUrl from "./db/server.json";
 
   function TheWayYouTaste() {
     const location = useLocation();
@@ -29,6 +30,7 @@ import StoreRegion from "./pages/search/StoreRegion";
     const hideFooterRoutes = ["/search/store","/login"];
     const hideFooter = hideFooterRoutes.includes(location.pathname);
     const hideHeader = hideHeaderRoutes.includes(location.pathname);
+    const SERVER_URL = serverUrl.SERVER_URL;
 
     const [user, setUser] = useState(null); // 로그인 사용자 정보
     const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
@@ -61,9 +63,9 @@ import StoreRegion from "./pages/search/StoreRegion";
           const fetchData = async () => {
               try {
                 /* 공통 정보 */
-                  const noticesRes = await fetch("http://localhost:3001/youtaste/notice");
-                  const storeCategoriesRes = await fetch("http://localhost:3001/youtaste/search");
-                  const sidoListRes = await fetch("http://localhost:3001/youtaste/search/sido");
+                  const noticesRes = await fetch(`${SERVER_URL}/youtaste/notice`);
+                  const storeCategoriesRes = await fetch(`${SERVER_URL}/youtaste/search`);
+                  const sidoListRes = await fetch(`${SERVER_URL}/youtaste/search/sido`);
                   const noticesData = noticesRes.ok ? await noticesRes.json() : [];
                   const storeCategoryData = storeCategoriesRes.ok ? await storeCategoriesRes.json() : [];
                   const sidoListData = sidoListRes.ok ? await sidoListRes.json() : [];
@@ -74,10 +76,10 @@ import StoreRegion from "./pages/search/StoreRegion";
 
                 /* 로그인했을때 불러올 정보 */
                 if (user) {
-                  const membersRes = await fetch("http://localhost:3001/membership/check")
-                  const reportsRes = await fetch("http://localhost:3001/youtaste/reports");
-                  const registerAdminRes = await fetch("http://localhost:3001/youtaste/register-admin");
-                  const memberNoticesRes = await fetch(`http://localhost:3001/youtaste/member-notices?userSn=${user.userSn}`);
+                  const membersRes = await fetch(`${SERVER_URL}/membership/check`);
+                  const reportsRes = await fetch(`${SERVER_URL}/youtaste/reports`);
+                  const registerAdminRes = await fetch(`${SERVER_URL}/youtaste/register-admin`);
+                  const memberNoticesRes = await fetch(`${SERVER_URL}/youtaste/member-notices?userSn=${user.userSn}`);
 
                   const membersData = membersRes.ok ? await membersRes.json() : []; 
                   const reportsData = reportsRes.ok ? await reportsRes.json() : [];

@@ -158,7 +158,6 @@ h4{
   background-color: #ffab15;
   border: none;
   color: white;
-  padding: 15px 40px;
   font-size: 18px;
   border-radius: 25px;
   cursor: pointer;
@@ -168,6 +167,10 @@ h4{
 
 .iconSearch a{
   color : black;
+  display: block;
+  width: 14rem;
+  height: 5.6rem;
+  line-height: 5.6rem;
   text-decoration: none;
 }
 

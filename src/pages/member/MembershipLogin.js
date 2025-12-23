@@ -1,6 +1,7 @@
 import { useState } from "react";
 import style from "../../css/MembershipLogin.module.css";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+import serverUrl from "../../db/server.json"; 
 
 function MembershipLogin({setIsLoggedIn, setUser}) {
     // ----------------- 상태 관리 -----------------
@@ -10,6 +11,7 @@ function MembershipLogin({setIsLoggedIn, setUser}) {
     const [regUser_EML_ADDR, setRegUser_EML_ADDR] = useState('');
     const [regUser_PSWD, setRegUser_PSWD] = useState('');
     const [regUser_MBL_TELNO, setRegUser_MBL_TELNO] = useState('');
+    const SERVER_URL = serverUrl.SERVER_URL;
 
     const navigate = useNavigate();
     const [active, setActive] = useState(false); // 초기값: false (회원가입/Registration 화면)
@@ -19,7 +21,7 @@ function MembershipLogin({setIsLoggedIn, setUser}) {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://localhost:3001/membership/login", {
+            const res = await fetch(`${SERVER_URL}/membership/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -52,7 +54,7 @@ function MembershipLogin({setIsLoggedIn, setUser}) {
         if (!isConfirmed) return;
 
         try {
-            const res = await fetch("http://localhost:3001/membership/register", {
+            const res = await fetch(`${SERVER_URL}/membership/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import mainbody from "../../resources/img/system/main.png";
 import useRegionSetting from '../search/hook/useRegionSetting';
 import RegionModal from "../search/RegionModal"; 
-import RegionFilter from '../search/RegionFilter';
+import CategoryFilter from '../search/CategoryFilter';
 
 
 const icons = [
@@ -81,7 +81,7 @@ function MainPage({storeCategories, sidoList}) {
           <div className={styleMain.titleBox}>
             <h4 className={styleMain.sectionTitle}>업종</h4>
           </div>
-          <RegionFilter 
+          <CategoryFilter 
               storeCategories={storeCategories}
               selectedCategories={selectedCategories}
               setSelectedCategories={setSelectedCategories}

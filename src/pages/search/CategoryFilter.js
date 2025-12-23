@@ -1,6 +1,6 @@
 import styleSearchStore from "../../css/SearchStore.module.css";
 
-export default function Regionfilter({storeCategories, selectedCategories, setSelectedCategories, setIsResetFilter}){
+export default function CategoryFilter({storeCategories, selectedCategories, setSelectedCategories, setIsResetFilter}){
 
     const foodIcons = {
         "한식": "🍚"

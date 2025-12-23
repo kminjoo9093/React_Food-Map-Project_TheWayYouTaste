@@ -7,7 +7,8 @@ import MapComponent from "./MapComponent";
 import { GetStoreList } from "./GetStoreList";
 import styleMain from "../../css/MainPage.module.css";
 import useRegionSetting from "./hook/useRegionSetting";
-import RegionFilter from "./RegionFilter";
+import CategoryFilter from "./CategoryFilter";
+import serverUrl from "../../db/server.json";
 
 function SearchStore({ storeCategories, sidoList }) {
 
@@ -17,14 +18,12 @@ function SearchStore({ storeCategories, sidoList }) {
     const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
     const keyword = queryParams.get("keyword");
-
+    
     // 커스텀 훅 도입 
     const { regionState, regionSetters, getCurrentLocation } = useRegionSetting();
     const { selectedDo, doName, selectedSi, siName, selectedDong, dongName, lat, lng, storeList } = regionState;
     const { setSelectedDo, setDoName, setSelectedSi, setSiName, setSelectedDong, setDongName, setLat, setLng } = regionSetters;
-
-    //console.log("----------->", selectedDo, selectedSi, selectedDong);
-    //console.log("----------->", doName, siName, dongName);
+    const SERVER_URL = serverUrl.SERVER_URL;
 
     const [filteredStoreList, setFilteredStoreList] = useState([]); // 화면에 표시될 최종 리스트
     const [storeListByRegion, setStoreListByRegion] = useState([]); // 지역/키워드 기준 원본 리스트
@@ -41,16 +40,6 @@ function SearchStore({ storeCategories, sidoList }) {
     const [isSelectedAll, setIsSelectedAll] = useState(false);
     const [isResetFilter, setIsResetFilter] = useState(false);
 
-    // const foodIcons = {
-    //     "한식": "🍚"
-    //     ,"일식": "🍣"
-    //     ,"양식": "🍝"
-    //     ,"중식": "🥟"
-    //     ,"아시안": "🍜"
-    //     ,"햄버거": "🍔"
-    //     ,"치킨": "🍗"
-    //     ,"디저트": "🍩"
-    // }
 
     // 현재 위치 기반 초기 로드
     // 훅 내부의 storeList가 변경될 때마다 반영
@@ -75,13 +64,6 @@ function SearchStore({ storeCategories, sidoList }) {
 
             const paramCategories = queryParams.get("categories");
 
-            // 2. 카테고리 배열 생성 (상태 업데이트와 별개로 변수에 담기)
-            let categoryArray = [];
-            if (paramCategories) {
-                categoryArray = paramCategories.split(",");
-                setSelectedCategories(categoryArray); // UI 체크 표시용
-            }
-
             if(paramDongName){
                 setDongName(paramDongName);
             }
@@ -92,57 +74,82 @@ function SearchStore({ storeCategories, sidoList }) {
                 setDoName(paramDoName);
             }
 
+            // 2. 카테고리 배열 생성 (상태 업데이트와 별개로 변수에 담기)
+            let categoryArray = [];
+            if (paramCategories) {
+                categoryArray = paramCategories.split(",");
+                setSelectedCategories(categoryArray); // UI 체크 표시용
+            }
+
             let list = [];
 
             //키워드 검색
             if (keyword) { 
-                list = await GetStoreList(`http://localhost:3001/youtaste/search/store/keyword?name=${keyword}`);
+                list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/keyword?name=${keyword}`);
             } 
             //메인페이지 필터 설정 
             else if (dong || sgg || sido) { 
                 if (dong) {
-                    list = await GetStoreList(`http://localhost:3001/youtaste/search/store/dong?dongCd=${dong}`);
+                    list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/dong?dongCd=${dong}`);
                     setSelectedDong(dong); 
                     setSelectedSi(sgg);
                     setSelectedDo(sido);
                     console.log("여기", dong);
                 } else if (sgg) {
-                    list = await GetStoreList(`http://localhost:3001/youtaste/search/store/sgg?sggCd=${sgg}`);
+                    list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sgg?sggCd=${sgg}`);
                     setSelectedSi(sgg);
                     setSelectedDo(sido);
                 } else if (sido) {
-                    list = await GetStoreList(`http://localhost:3001/youtaste/search/store/sido?sidoCd=${sido}`);
+                    list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sido?sidoCd=${sido}`);
                     setSelectedDo(sido);
                 } 
             } 
-            else {
-                //이미 선택된 지역명(doName)이나 리스트가 있다면 현재 위치로 초기화하지 않음
-                if (doName !== "") {
-                    return; 
+            if(list.length > 0){
+                // 4. 원본 데이터 저장 (검색이나 초기화 시 사용될 기준 데이터)
+                setStoreListByRegion(list);
+
+                // 5. 필터링 로직 (list 변수 그대로 사용)
+                let filteredResult = list; // 새 변수에 할당하여 명확하게 처리
+                if (categoryArray.length > 0) {
+                    console.log("필터링 적용 전 개수:", list.length);
+                    filteredResult = list.filter(record => categoryArray.includes(record.storeCatName));
+                    console.log("필터링 적용 후 개수:", filteredResult.length);
                 }
-                //이름X, 파라미터X
+
+                
+                // 6. 최종 결과 반영
+                setFilteredStoreList(filteredResult);
+                setIsChangedRegion(true);
+                setNowPage(1); // 검색 시 페이지 번호 초기화
+            }else {
                 getCurrentLocation(); 
+                //이미 선택된 지역명(doName)이나 리스트가 있다면 현재 위치로 초기화하지 않음
+                // if (doName !== "" || (storeListByRegion?.length > 0) ) {
+                //     //이름X, 파라미터X
+                //     return; 
+                // }
                 return;
             } 
 
-            // 4. 원본 데이터 저장 (검색이나 초기화 시 사용될 기준 데이터)
-            setStoreListByRegion(list);
+            // // 4. 원본 데이터 저장 (검색이나 초기화 시 사용될 기준 데이터)
+            // setStoreListByRegion(list);
 
-            // 5. 필터링 로직 (list 변수 그대로 사용)
-            let filteredResult = list; // 새 변수에 할당하여 명확하게 처리
-            if (categoryArray.length > 0) {
-                console.log("필터링 적용 전 개수:", list.length);
-                filteredResult = list.filter(record => categoryArray.includes(record.storeCatName));
-                console.log("필터링 적용 후 개수:", filteredResult.length);
-            }
+            // // 5. 필터링 로직 (list 변수 그대로 사용)
+            // let filteredResult = list; // 새 변수에 할당하여 명확하게 처리
+            // if (categoryArray.length > 0) {
+            //     console.log("필터링 적용 전 개수:", list.length);
+            //     filteredResult = list.filter(record => categoryArray.includes(record.storeCatName));
+            //     console.log("필터링 적용 후 개수:", filteredResult.length);
+            // }
 
-            // 6. 최종 결과 반영
-            setFilteredStoreList(filteredResult);
-            setIsChangedRegion(true);
-            setNowPage(1); // 검색 시 페이지 번호 초기화
+            
+            // // 6. 최종 결과 반영
+            // setFilteredStoreList(filteredResult);
+            // setIsChangedRegion(true);
+            // setNowPage(1); // 검색 시 페이지 번호 초기화
         };
         initLoad();
-    }, [location.search, keyword]); 
+    }, [location.search, keyword, getCurrentLocation]); 
 
     // 필터링, 지도범위 적용 최종 맛집 리스트
     const finalStoreListWithId = useMemo(() => {
@@ -159,7 +166,7 @@ function SearchStore({ storeCategories, sidoList }) {
         if (swMinLat === 0) return; // 좌표가 0인 초기상태 방지
 
         try {
-            const url = `http://localhost:3001/youtaste/search/store/position?swMinLat=${swMinLat}&neMaxLat=${neMaxLat}&swMinLng=${swMinLng}&neMaxLng=${neMaxLng}`;
+            const url = `${SERVER_URL}/youtaste/search/store/position?swMinLat=${swMinLat}&neMaxLat=${neMaxLat}&swMinLng=${swMinLng}&neMaxLng=${neMaxLng}`;
             let list = await GetStoreList(url);
 
             // 원본 리스트와 필터 리스트를 동시에 업데이트
@@ -181,10 +188,10 @@ function SearchStore({ storeCategories, sidoList }) {
     // 지역 선택 확정
     async function handleRegionConfirm() {
         let list = [];
-        if (selectedDong) list = await GetStoreList(`http://localhost:3001/youtaste/search/store/dong?dongCd=${selectedDong}`);
-        else if (selectedSi) list = await GetStoreList(`http://localhost:3001/youtaste/search/store/sgg?sggCd=${selectedSi}`);
-        else if (selectedDo) list = await GetStoreList(`http://localhost:3001/youtaste/search/store/sido?sidoCd=${selectedDo}`);
-        else list = await GetStoreList(`http://localhost:3001/youtaste/search/store/all`);
+        if (selectedDong) list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/dong?dongCd=${selectedDong}`);
+        else if (selectedSi) list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sgg?sggCd=${selectedSi}`);
+        else if (selectedDo) list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sido?sidoCd=${selectedDo}`);
+        else list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/all`);
 
         setStoreListByRegion(list);
         setIsDimmedMiddleOpen(false);
@@ -269,7 +276,7 @@ function SearchStore({ storeCategories, sidoList }) {
                         </button>
                     </div>
                     <div className={styleSearchStore.filterBottomWrap}>
-                        <RegionFilter 
+                        <CategoryFilter 
                             storeCategories={storeCategories}
                             selectedCategories={selectedCategories}
                             setSelectedCategories={setSelectedCategories}
@@ -302,7 +309,7 @@ function SearchStore({ storeCategories, sidoList }) {
                         {viewStoreItems.map(record => (
                             <li key={record.bplcSn} className={styleSearchStore.storeListItem}>
                                 <Link to={`/search/storeDetail?storeId=${record.bplcSn}`} className={styleSearchStore.storeListLink}>
-                                    <img className={styleSearchStore.storeImg} src={`http://localhost:3001/uploads/store/${record.bplcPhoto}`} alt="store" />
+                                    <img className={styleSearchStore.storeImg} src={`${SERVER_URL}/uploads/store/${record.bplcPhoto}`} alt="store" />
                                     <div className={styleSearchStore.storeInfo}>
                                         <h2 className={styleSearchStore.storeName}>{record.bplcNm}</h2>
                                         <div>

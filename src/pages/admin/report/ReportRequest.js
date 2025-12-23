@@ -1,18 +1,26 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 // import styleGlobal from "../../../css/Global.module.css";
 import styleReport from "../../../css/Report.module.css";
+import serverUrl from "../../../db/server.json";
 
 function ReportRequest() {
-  const [writer, setWriter] = useState(""); // 작성자명
-  const [storeName, setStoreName] = useState(""); // 매장 상호 명
-  const [address, setAddress] = useState(""); // 주소
-  const [title, setTitle] = useState(""); // 신고 제목
-  const [reason, setReason] = useState(""); // 신고 사유
-  const [category, setCategory] = useState(""); //카테고리
-
   const navigate = useNavigate();
   const { userSn } = useParams();
+  const location = useLocation();
+  const SERVER_URL = serverUrl.SERVER_URL;
+  
+  const incomingData = location.state || {};
+
+  // 초기값을 incomingData에서 가져옵니다.
+  const [writer, setWriter] = useState(incomingData.userName || ""); 
+  const [storeName, setStoreName] = useState(incomingData.storeName || ""); 
+  const [address, setAddress] = useState(incomingData.address || ""); 
+  const [title, setTitle] = useState(""); 
+  const [reason, setReason] = useState(""); 
+  const [category, setCategory] = useState("");
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -35,15 +43,16 @@ function ReportRequest() {
     };
 
     const reportData = {
-      userSn: userSn, // 예시:(추후변경예정:실제로는 로그인 정보로 가져오기)
-      bplcSn: 2001, // 예시:(추후변경예정: 매장 선택 UI에서 가져오기)
+      userSn: userSn, 
+      bplcSn: incomingData.bplcSn, 
+      address: incomingData.address,
       dclrTtl: title,
       dclrCn: reason,
       dclrCatNo: categoryMap[category]
     };
 
     try {
-      const res = await fetch("http://localhost:3001/youtaste/reports", {
+      const res = await fetch(`${SERVER_URL}/youtaste/reports`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

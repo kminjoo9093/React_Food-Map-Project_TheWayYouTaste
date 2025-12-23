@@ -11,7 +11,7 @@
 .leftBox {
     border-radius: 20px;
     width: 250px;
-    height: 780px;
+    height: 786px;
     text-align: center;
     background: #ffb92e;
     border-radius: 18px;
@@ -27,8 +27,9 @@
     align-items: stretch;
     font-size: 20px;
     font-weight: 550;
-    text-decoration-line: underline;
+    /* text-decoration-line: underline; */
     text-decoration-color: rgba(0, 0, 0, 0.2);
+    text-align: center;
 }
 
 .profileBox {
@@ -41,7 +42,7 @@
     font-size: 20px;
     font-weight: 550;
     text-align: center;
-    font-style: italic;
+    /* font-style: italic; */
 }
 
 .securityBox {
@@ -50,11 +51,11 @@
     border-radius: 18px;
     background: #ffb92e;
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    margin-top: 15px;
+    margin-top: 4px;
     font-size: 20px;
     font-weight: 550;
     text-align: center;
-    font-style: italic;
+    /* font-style: italic; */
 }
 
 .historyBox {
@@ -63,17 +64,18 @@
     background: #ffb92e;
     border-radius: 18px;
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    margin-top: 15px;
+    margin-top: 4px;
     font-size: 20px;
     font-weight: 550;
     text-align: center;
-    font-style: italic;
+    /* font-style: italic; */
 }
 
 .wrapBox {
     display: flex;
-    margin-top: 17px;
+    margin-top: 25px;
     justify-content: space-between;
+    text-align: center;
 }
 
 .mainBtn {
@@ -90,6 +92,7 @@
     background: transparent;
     border: 2px solid #800020;
     box-shadow: none;
+    padding: 0;
 }
 
 .btn {
@@ -106,10 +109,11 @@
     background: transparent;
     border: 2px solid #800020;
     box-shadow: none;
+    padding: 0;
 }
 
 .btn1 {
-    border-radius: 9px;
+    border-radius: 8px;
     border: none;
     margin-right: 22px;
     text-align: center;
@@ -122,7 +126,7 @@
     background: transparent;
     box-shadow: none;
     
-    padding: 5px 10px;
+    padding: 0;
     border: 2px solid #800020;
     background-color: #f0f0f0;
     cursor: pointer;
@@ -136,11 +140,22 @@
 .subTitle1 {
     font-size: 18px;
     border-top: 15%;
-    font-style: italic;
+    /* font-style: italic; */
+    text-align: left;
+    margin-left: 35px;
 }
 
 .subTitle2 {
     font-size: 17px;
     margin-left: 25px;
     margin-top: 12px;
+
+}
+
+.editInput {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 200px;
 }
