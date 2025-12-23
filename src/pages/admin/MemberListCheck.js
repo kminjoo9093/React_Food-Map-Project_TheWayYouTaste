@@ -1,12 +1,13 @@
 import { useState } from "react";
 import Pagination from "../Pagination";
 import { useNavigate } from "react-router-dom";
-
+import serverUrl from "../../db/server.json";
 
 function MemberListCheck({ members }) {
   const navigate = useNavigate();
   const [nowPage, setNowPage] = useState(1);
   const viewPeople = 5;
+  const SERVER_URL = serverUrl.SERVER_URL;
 
   const handleDelete = async (userSn) => {
       const confirmDelete = window.confirm("정말 이 멤버를 삭제하시겠습니까?");
@@ -14,7 +15,7 @@ function MemberListCheck({ members }) {
 
       try {
         const res = await fetch(
-          `http://localhost:3001/membership/delete/${userSn}`,
+          `${SERVER_URL}/membership/delete/${userSn}`,
           { method: "DELETE" }
         );
 

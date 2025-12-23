@@ -2,11 +2,13 @@ import { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 // import styleGlobal from "../../../css/Global.module.css";
 import styleReport from "../../../css/Report.module.css";
+import serverUrl from "../../../db/server.json";
 
 function ReportRequest() {
   const navigate = useNavigate();
   const { userSn } = useParams();
   const location = useLocation();
+  const SERVER_URL = serverUrl.SERVER_URL;
   
   const incomingData = location.state || {};
 
@@ -50,7 +52,7 @@ function ReportRequest() {
     };
 
     try {
-      const res = await fetch("http://localhost:3001/youtaste/reports", {
+      const res = await fetch(`${SERVER_URL}/youtaste/reports`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

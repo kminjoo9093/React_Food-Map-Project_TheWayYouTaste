@@ -3,9 +3,10 @@ import styleReview from "../../css/ReviewRgister.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import serverUrl from "../../db/server.json"; 
 
 const today = new Date().toISOString().split("T")[0];
-
+const SERVER_URL = serverUrl.SERVER_URL;
 // 별점 컴포넌트
 const StarRating = ({ rating, setRating }) => {
   const stars = 5;
@@ -114,7 +115,7 @@ const ReviewRegister = ({ isOpen, onClose, bplcSn, userSn }) => {
     });
 
     try {
-      const response = await fetch("http://localhost:3001/api/review", {
+      const response = await fetch(`${SERVER_URL}/api/review`, {
         method: "POST",
         body: formData,
       });

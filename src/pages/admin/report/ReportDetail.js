@@ -9,7 +9,7 @@ function ReportDetail({ setMemberNotices }) {
   const location = useLocation();
   const navigate = useNavigate();
   const report = location.state;
-  //const SERVER_URL = serverUrl.SERVER_URL;
+  const SERVER_URL = serverUrl.SERVER_URL;
 
   const [showDetail, setShowDetail] = useState(false);
   const [noticeTitle, setNoticeTitle] = useState(report?.dclrTtl || "");
@@ -50,7 +50,7 @@ function ReportDetail({ setMemberNotices }) {
     try {
       // 신고 상태 업데이트
       const updateRes = await fetch(
-        `http://localhost:3001/youtaste/reports/${report.dclrSn}`,
+        `${SERVER_URL}/youtaste/reports/${report.dclrSn}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -70,7 +70,7 @@ function ReportDetail({ setMemberNotices }) {
         };
 
         const noticeRes = await fetch(
-          "http://localhost:3001/youtaste/member-notices",
+          `${SERVER_URL}/youtaste/member-notices`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

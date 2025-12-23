@@ -7,18 +7,19 @@ import MapComponent from "./MapComponent";
 import { GetStoreList } from "./GetStoreList";
 import styleMain from "../../css/MainPage.module.css";
 import useRegionSetting from "./hook/useRegionSetting";
+import serverUrl from "../../db/server.json";
 
 function SearchStore({ storeCategories, sidoList }) {
     const location = useLocation();
     const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
     const keyword = queryParams.get("keyword");
-
+    
     // 커스텀 훅 도입 
     const { regionState, regionSetters, getCurrentLocation } = useRegionSetting();
     const { selectedDo, doName, selectedSi, siName, selectedDong, dongName, lat, lng, storeList } = regionState;
     const { setSelectedDo, setDoName, setSelectedSi, setSiName, setSelectedDong, setDongName, setLat, setLng } = regionSetters;
-
+    const SERVER_URL = serverUrl.SERVER_URL;
 
     const [filteredStoreList, setFilteredStoreList] = useState([]); // 화면에 표시될 최종 리스트
     const [storeListByRegion, setStoreListByRegion] = useState([]); // 지역/키워드 기준 원본 리스트
@@ -70,18 +71,18 @@ function SearchStore({ storeCategories, sidoList }) {
 
             //키워드 검색
             if (keyword) { 
-                    const list = await GetStoreList(`http://localhost:3001/youtaste/search/store/keyword?name=${keyword}`);
+                    const list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/keyword?name=${keyword}`);
             } 
             //메인페이지 필터 설정 
             else if (dong || sgg || sido) { 
                 if (dong) {
-                    list = await GetStoreList(`http://localhost:3001/youtaste/search/store/dong?dongCd=${dong}`);
+                    list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/dong?dongCd=${dong}`);
                     setSelectedDong(dong); 
                 } else if (sgg) {
-                    list = await GetStoreList(`http://localhost:3001/youtaste/search/store/sgg?sggCd=${sgg}`);
+                    list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sgg?sggCd=${sgg}`);
                     setSelectedSi(sgg);
                 } else if (sido) {
-                    list = await GetStoreList(`http://localhost:3001/youtaste/search/store/sido?sidoCd=${sido}`);
+                    list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sido?sidoCd=${sido}`);
                     setSelectedDo(sido);
                 } 
             } 
@@ -114,7 +115,7 @@ function SearchStore({ storeCategories, sidoList }) {
         if (swMinLat === 0) return; // 좌표가 0인 초기상태 방지
 
         try {
-            const url = `http://localhost:3001/youtaste/search/store/position?swMinLat=${swMinLat}&neMaxLat=${neMaxLat}&swMinLng=${swMinLng}&neMaxLng=${neMaxLng}`;
+            const url = `${SERVER_URL}/youtaste/search/store/position?swMinLat=${swMinLat}&neMaxLat=${neMaxLat}&swMinLng=${swMinLng}&neMaxLng=${neMaxLng}`;
             let list = await GetStoreList(url);
 
             // 원본 리스트와 필터 리스트를 동시에 업데이트
@@ -136,10 +137,10 @@ function SearchStore({ storeCategories, sidoList }) {
     // 지역 선택 확정
     async function handleRegionConfirm() {
         let list = [];
-        if (selectedDong) list = await GetStoreList(`http://localhost:3001/youtaste/search/store/dong?dongCd=${selectedDong}`);
-        else if (selectedSi) list = await GetStoreList(`http://localhost:3001/youtaste/search/store/sgg?sggCd=${selectedSi}`);
-        else if (selectedDo) list = await GetStoreList(`http://localhost:3001/youtaste/search/store/sido?sidoCd=${selectedDo}`);
-        else list = await GetStoreList(`http://localhost:3001/youtaste/search/store/all`);
+        if (selectedDong) list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/dong?dongCd=${selectedDong}`);
+        else if (selectedSi) list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sgg?sggCd=${selectedSi}`);
+        else if (selectedDo) list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sido?sidoCd=${selectedDo}`);
+        else list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/all`);
 
         setStoreListByRegion(list);
         setIsDimmedMiddleOpen(false);
@@ -249,7 +250,7 @@ function SearchStore({ storeCategories, sidoList }) {
                         {viewStoreItems.map(record => (
                             <li key={record.bplcSn} className={styleSearchStore.storeListItem}>
                                 <Link to={`/search/storeDetail?storeId=${record.bplcSn}`} className={styleSearchStore.storeListLink}>
-                                    <img className={styleSearchStore.storeImg} src={`http://localhost:3001/uploads/store/${record.bplcPhoto}`} alt="store" />
+                                    <img className={styleSearchStore.storeImg} src={`${SERVER_URL}/uploads/store/${record.bplcPhoto}`} alt="store" />
                                     <div className={styleSearchStore.storeInfo}>
                                         <h2 className={styleSearchStore.storeName}>{record.bplcNm}</h2>
                                         <div>

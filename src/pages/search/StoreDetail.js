@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import styleStoreDetail from "../../css/StoreDetail.module.css";
 import { GetStoreList } from "./GetStoreList";
+import serverUrl from "../../db/server.json";
 
 function StoreDetail({ storeList }) {
     const REVIEWS_PER_PAGE = 5;
@@ -30,7 +31,8 @@ function StoreDetail({ storeList }) {
     const [searchParams] = useSearchParams();
     const storeId = searchParams.get("storeId");
     const [storeData, setStoreData] = useState({});
-    
+    const SERVER_URL = serverUrl.SERVER_URL;
+
     const [isOpen, setIsOpen] = useState(false);
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -39,7 +41,7 @@ function StoreDetail({ storeList }) {
     useEffect(() => {
         async function getStoreData() {
             // 음식점 데이터 (3001 포트)
-            let storeInfo = await GetStoreList(`http://localhost:3001/youtaste/search/store/detail?storeId=${storeId}`);
+            let storeInfo = await GetStoreList(`${SERVER_URL}/youtaste/search/store/detail?storeId=${storeId}`);
             setStoreData(storeInfo);
         }
         getStoreData();
@@ -79,7 +81,7 @@ function StoreDetail({ storeList }) {
 
     useEffect(() => {
         if (!storeId) return;
-        fetch(`http://localhost:3001/api/reviews/${storeId}`)
+        fetch(`${SERVER_URL}/api/reviews/${storeId}`)
             .then(res => {
                 if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
                 return res.json();
@@ -144,14 +146,14 @@ function StoreDetail({ storeList }) {
         // 추가된 부분: 페이지 로드 시 좋아요 상태 및 최신 개수 가져오기
         useEffect(() => {
             // 1. 최신 좋아요 개수 가져오기
-            fetch(`http://localhost:3001/api/review/${evlSn}/likes/count`)
+            fetch(`${SERVER_URL}/api/review/${evlSn}/likes/count`)
                 .then(res => res.json())
                 .then(data => setLikes(data))
                 .catch(err => console.error("좋아요 개수 조회 실패:", err));
 
             // 2. 내가 좋아요를 눌렀는지 상태 확인 (로그인 시에만)
             if (user && user.userSn) {
-                fetch(`http://localhost:3001/api/review/${evlSn}/likes/${user.userSn}/status`)
+                fetch(`${SERVER_URL}/api/review/${evlSn}/likes/${user.userSn}/status`)
                     .then(res => res.json())
                     .then(data => setIsLiked(data))
                     .catch(err => console.error("좋아요 상태 조회 실패:", err));
@@ -167,7 +169,7 @@ function StoreDetail({ storeList }) {
 
             const nextStatus = !isLiked;
             
-            fetch(`http://localhost:3001/api/review/${evlSn}/likes/${user.userSn}/toggle`, {
+            fetch(`${SERVER_URL}/api/review/${evlSn}/likes/${user.userSn}/toggle`, {
                 method: 'POST'
             })
             .then(res => {
@@ -213,9 +215,9 @@ function StoreDetail({ storeList }) {
                 </div>
 
                 <div className={styleStoreDetail.reviewImages}>
-                    {evlPhoto1 && <img src={`http://localhost:3001/uploads/review/${evlPhoto1}`} alt="사진 1" />}
-                    {evlPhoto2 && <img src={`http://localhost:3001/uploads/review/${evlPhoto2}`} alt="사진 2" />}
-                    {evlPhoto3 && <img src={`http://localhost:3001/uploads/review/${evlPhoto3}`} alt="사진 3" />}
+                    {evlPhoto1 && <img src={`${SERVER_URL}/uploads/review/${evlPhoto1}`} alt="사진 1" />}
+                    {evlPhoto2 && <img src={`${SERVER_URL}/uploads/review/${evlPhoto2}`} alt="사진 2" />}
+                    {evlPhoto3 && <img src={`${SERVER_URL}/uploads/review/${evlPhoto3}`} alt="사진 3" />}
                 </div>
                 <p>{evlCn}</p>
             </li>

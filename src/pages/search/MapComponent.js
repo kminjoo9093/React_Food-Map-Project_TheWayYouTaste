@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import iconStar from "../../resources/img/search/iconStar.svg";
 import iconCategory from "../../resources/img/search/iconTag.svg";
 import styleMap from "../../css/Map.module.css";
+import serverUrl from "../../db/server.json"; 
 
 export default function MapComponent({ storeList, lat, lng, setIsMoved, isChangedRegion, setPositionArea, isSelectedAll }) {
     
@@ -19,7 +20,7 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
         lat: lat || 37.5665,
         lng: lng || 126.9780
     });
-
+    const SERVER_URL = serverUrl.SERVER_URL;
     //지도 레벨
     const [level, setLevel] = useState(7);
 
@@ -140,7 +141,7 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                                         {store.storeCatName && <span><img src={iconCategory} />{store.storeCatName}</span>}
                                     </p>
                                 </div>
-                                <img src={`http://localhost:3001/uploads/store/${store.bplcPhoto}`}
+                                <img src={`${SERVER_URL}/uploads/store/${store.bplcPhoto}`}
                                     className={styleMap.infoImg} 
                                 />
                             </Link>

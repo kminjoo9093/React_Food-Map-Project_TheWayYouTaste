@@ -3,6 +3,7 @@ import style from "../../css/MembershipResign.module.css";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import serverUrl from "../../db/server.json"; 
 
 // 1. "본인 인증"을 리스트에서 완전히 제거
 const AGREEMENT_ITEMS = [
@@ -19,6 +20,7 @@ function MembershipResign() {
     const [isBtnEnabled, setIsBtnEnabled] = useState(false);
     const [user, setUser] = useState(null);
     const [isInitialized, setIsInitialized] = useState(false);
+    const SERVER_URL = serverUrl.SERVER_URL;
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -289,7 +291,7 @@ function MembershipResign() {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const response = await axios.delete(`http://localhost:3001/membership/delete/${userSn}`);
+                    const response = await axios.delete(`${SERVER_URL}/membership/delete/${userSn}`);
                     if (response.status === 200) {
                         Swal.fire({ title: '탈퇴 처리 완료', icon: 'success' }).then(() => {
                             localStorage.removeItem("user");

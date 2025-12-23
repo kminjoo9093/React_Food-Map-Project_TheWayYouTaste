@@ -1,6 +1,7 @@
 import styleRegionModal from "../../css/RegionModal.module.css";
 import { useEffect, useState } from "react";
 import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
+import serverUrl from "../../db/server.json";
 
 function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, setSelectedSi, selectedDong, setSelectedDong, onConfirm
                         , setDoName, setSiName, setDongName, sidoList
@@ -8,7 +9,7 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
 
     const [sggList, setSggList] = useState([]);
     const [dongList, setDongList] = useState([]);
-
+    const SERVER_URL = serverUrl.SERVER_URL;
     //시도 리스트 받아오기
     const sidoData = sidoList || [];
     let newSidoList = sidoData.map(record => {
@@ -24,7 +25,7 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
         }
         const fetchData = async () => {
             try{
-                    const sggListRes = await fetch(selectedDo ? `http://localhost:3001/youtaste/search/sgg?sidoCd=${selectedDo}` : null);
+                    const sggListRes = await fetch(selectedDo ? `${SERVER_URL}/youtaste/search/sgg?sidoCd=${selectedDo}` : null);
                     const sggListData = sggListRes.ok ? await sggListRes.json() : [];
                     console.log("찐 시군구 --> ", sggListData);
                     
@@ -48,7 +49,7 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
                 return;
             }
             try{
-                const dongListRes = await fetch(selectedSi ? `http://localhost:3001/youtaste/search/dong?sggCd=${selectedSi}` : null);
+                const dongListRes = await fetch(selectedSi ? `${SERVER_URL}/youtaste/search/dong?sggCd=${selectedSi}` : null);
                 console.log("찐 읍면동 데이터 : ", dongListRes);
                 const dongListData = dongListRes.ok ? await dongListRes.json() : [];
                 let list = dongListData.map(record => {
