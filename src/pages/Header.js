@@ -88,7 +88,7 @@ function Header(){
                 
                 <ul className={styleHeader.menubarPC}>
                     <li>
-                        <a>지역 맛집</a>
+                        <Link to = "/store/region" >지역 맛집</Link>
                     </li>
                     <li>
                         <Link to = "/search/store" >지도 찾기</Link>

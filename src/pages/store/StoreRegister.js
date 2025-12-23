@@ -249,7 +249,7 @@ function StoreRegister({ userSn }) {
     formData.append("bcode", bcode);
     formData.append("openTime", openTime);
     formData.append("closeTime", closeTime);
-    formData.append("category", category);
+    formData.append("storeCatNo", category);
     formData.append("convenience", JSON.stringify(conveniences));
     
     // 메뉴 정보 전송
