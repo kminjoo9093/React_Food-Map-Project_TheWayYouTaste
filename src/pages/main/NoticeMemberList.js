@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-// import styleGlobal from "../../css/Global.module.css";
 import styleMember from "../../css/MemberListCheck.module.css";
-import stylePagination from "../../css/Pagination.module.css";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../Pagination";
 
@@ -27,7 +25,7 @@ function NoticeMemberList({ notices }) {
   return (
     <div className="contentTopPosition">
       <div className={styleMember.middleContainer}>
-        <h1>내 신고 내역</h1>
+        <h1>내 알림 내역</h1>
         <table className='container'>
           <thead>
             <tr>

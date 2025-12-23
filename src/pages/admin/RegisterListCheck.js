@@ -3,12 +3,14 @@ import styleMember from "../../css/MemberListCheck.module.css";
 import Pagination from "../Pagination";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import serverUrl from "../../db/server.json";
 
 
 function RegisterListCheck({ registerAdmin }) {
   const [nowPage, setNowPage] = useState(1);
   const [members, setMembers] = useState([]);
   const navigate = useNavigate();
+  const SERVER_URL = serverUrl.SERVER_URL;
 
   const viewPeople = 5;
   const limitBlock = 5;            
@@ -19,7 +21,7 @@ function RegisterListCheck({ registerAdmin }) {
   const nowRegister = registerAdmin.slice(firstMember, lastMember);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/membership/check")
+    axios.get(`${SERVER_URL}/membership/check`)
       .then(res => setMembers(res.data))
       .catch(err => console.error("회원 목록 로드 실패", err));
   }, []);
