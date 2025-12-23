@@ -6,7 +6,7 @@ import RegionModal from "./RegionModal";
 import MapComponent from "./MapComponent";
 import { GetStoreList } from "./GetStoreList";
 import styleMain from "../../css/MainPage.module.css";
-import useRegionFilter from "./hook/useRegionFilter";
+import imgSushi from "../../resources/img/search/imgSushi.jpg";
 
 function SearchStore({ storeCategories, sidoList }) {
     const location = useLocation();
@@ -14,35 +14,26 @@ function SearchStore({ storeCategories, sidoList }) {
     const queryParams = new URLSearchParams(location.search);
     const keyword = queryParams.get("keyword");
 
-
-    // 1. 커스텀 훅 도입 (기존에 직접 선언했던 지역 관련 useState들을 모두 대체합니다)
-    const { regionState, regionSetters, getCurrentLocation } = useRegionFilter();
-    const { selectedDo, doName, selectedSi, siName, selectedDong, dongName, lat, lng, storeList } = regionState;
-    const { setSelectedDo, setDoName, setSelectedSi, setSiName, setSelectedDong, setDongName, setLat, setLng } = regionSetters;
-
-
     const [filteredStoreList, setFilteredStoreList] = useState([]); // 화면에 표시될 최종 리스트
     const [storeListByRegion, setStoreListByRegion] = useState([]); // 지역/키워드 기준 원본 리스트
     const [selectedCategories, setSelectedCategories] = useState([]); 
     const [isOpen, setIsOpen] = useState(false); //모달 오픈 상태
 
+    // 지역 및 위치 상태
+    const [lat, setLat] = useState(37.5665); //서울로 바꾸기
+    const [lng, setLng] = useState(126.9780);
     const [isMoved, setIsMoved] = useState(false);
     const [isChangedRegion, setIsChangedRegion] = useState(false);
     const [positionArea, setPositionArea] = useState({
         swMinLat: 0, swMinLng: 0, neMaxLat: 0, neMaxLng: 0
     });
 
-    // 지역 및 위치 상태
-    //const [lat, setLat] = useState(37.5665); //서울로 바꾸기
-    //const [lng, setLng] = useState(126.9780);
-
-
-    //const [selectedDo, setSelectedDo] = useState(null); //code
-    //const [doName, setDoName] = useState("");
-    //const [selectedSi, setSelectedSi] = useState(null); //code
-    //const [siName, setSiName] = useState("");
-    //const [selectedDong, setSelectedDong] = useState(null); //code
-    //const [dongName, setDongName] = useState("");
+    const [selectedDo, setSelectedDo] = useState(null); //code
+    const [doName, setDoName] = useState("");
+    const [selectedSi, setSelectedSi] = useState(null); //code
+    const [siName, setSiName] = useState("");
+    const [selectedDong, setSelectedDong] = useState(null); //code
+    const [dongName, setDongName] = useState("");
     const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
     const [isSelectedAll, setIsSelectedAll] = useState(false);
 
@@ -59,52 +50,36 @@ function SearchStore({ storeCategories, sidoList }) {
         ,"디저트": "🍩"
     }
 
-    // useEffect(() => { 
-    //     const list = getCurrentLocation(); 
-
-    //     setStoreListByRegion(list);
-    //     setFilteredStoreList(list);
-    //     //setSelectedDo(currentSidoCode);
-    //     //setSelectedSi(currentSggCode);
-    // }, [getCurrentLocation]);
-
-    useEffect(() => {
-    if (storeList && storeList.length > 0) {
-        setStoreListByRegion(storeList);
-        setFilteredStoreList(storeList);
-    }
-    }, [storeList]); // 훅 내부의 storeList가 변경될 때마다 반영
-
     const LOCAL_API_KEY = "bd23a565a07fd608d593c2c99d192e8f";
 
     // 현재 위치 기반 초기 로드
-    // const getCurrentLocation = useCallback(async () => {
-    //     if (navigator.geolocation) {
-    //         navigator.geolocation.getCurrentPosition(async (position) => {
-    //             const { latitude, longitude } = position.coords;
-    //             setLat(latitude);
-    //             setLng(longitude);
+    const getCurrentLocation = useCallback(async () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                const { latitude, longitude } = position.coords;
+                setLat(latitude);
+                setLng(longitude);
 
-    //             let localUrl = `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${longitude}&y=${latitude}`;
-    //             const headers = { Authorization: `KakaoAK ${LOCAL_API_KEY}` };
+                let localUrl = `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${longitude}&y=${latitude}`;
+                const headers = { Authorization: `KakaoAK ${LOCAL_API_KEY}` };
 
-    //             try {
-    //                 const response = await fetch(localUrl, { headers });
-    //                 const data = await response.json();
-    //                 const currentSggCode = data.documents[0].code.slice(0, 5);
-    //                 const currentSidoCode = currentSggCode.slice(0, 2);
+                try {
+                    const response = await fetch(localUrl, { headers });
+                    const data = await response.json();
+                    const currentSggCode = data.documents[0].code.slice(0, 5);
+                    const currentSidoCode = currentSggCode.slice(0, 2);
 
-    //                 const listBySgg = await GetStoreList(`http://localhost:3001/youtaste/search/store/sgg?sggCd=${currentSggCode}`);
-    //                 setStoreListByRegion(listBySgg);
-    //                 setFilteredStoreList(listBySgg);
-    //                 setSelectedDo(currentSidoCode);
-    //                 setSelectedSi(currentSggCode);
-    //             } catch (error) {
-    //                 console.error('위치 정보 로드 실패: ', error);
-    //             }
-    //         });
-    //     }
-    // }, []);
+                    const listBySgg = await GetStoreList(`http://localhost:3001/youtaste/search/store/sgg?sggCd=${currentSggCode}`);
+                    setStoreListByRegion(listBySgg);
+                    setFilteredStoreList(listBySgg);
+                    setSelectedDo(currentSidoCode);
+                    setSelectedSi(currentSggCode);
+                } catch (error) {
+                    console.error('위치 정보 로드 실패: ', error);
+                }
+            });
+        }
+    }, []);
 
     // 초기 진입 및 검색어 처리
     useEffect(() => {
@@ -150,7 +125,6 @@ function SearchStore({ storeCategories, sidoList }) {
 
     // 필터링, 지도범위 적용 최종 맛집 리스트
     const finalStoreListWithId = useMemo(() => {
-        if (!Array.isArray(filteredStoreList)) return [];
         return filteredStoreList.map(record => ({ "id": record.bplcSn, ...record }));
     }, [filteredStoreList]);
 

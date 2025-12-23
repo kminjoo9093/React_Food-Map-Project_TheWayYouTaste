@@ -14,7 +14,6 @@ export default function useRegionFilter() {
 
     const [lat, setLat] = useState(37.5665); //서울로 바꾸기
     const [lng, setLng] = useState(126.9780);
-    const [storeList, setStoreList] = useState([]); // 훅 내부에서 데이터 관리
 
     const LOCAL_API_KEY = "bd23a565a07fd608d593c2c99d192e8f";
     
@@ -36,17 +35,10 @@ export default function useRegionFilter() {
                     const currentSidoCode = currentSggCode.slice(0, 2);
 
                     const listBySgg = await GetStoreList(`http://localhost:3001/youtaste/search/store/sgg?sggCd=${currentSggCode}`);
-
-                    //test
-                    setSelectedDo(currentSidoCode);
-                    setSelectedSi(currentSggCode);
-                    setStoreList(listBySgg);
-                    //return listBySgg;
-
                     // setStoreListByRegion(listBySgg);
                     // setFilteredStoreList(listBySgg);
-                    //  setSelectedDo(currentSidoCode);
-                    //  setSelectedSi(currentSggCode);
+                    // setSelectedDo(currentSidoCode);
+                    // setSelectedSi(currentSggCode);
                 } catch (error) {
                     console.error('위치 정보 로드 실패: ', error);
                 }
@@ -54,19 +46,9 @@ export default function useRegionFilter() {
         }
     }, []);
 
-    // 필터 초기화 함수 추가 - test
-    const resetRegion = useCallback(() => {
-        setSelectedDo(null); 
-        setDoName("");
-        setSelectedSi(null); 
-        setSiName("");
-        setSelectedDong(null); 
-        setDongName("");
-    }, []);
-
     return {
-        regionState: { selectedDo, doName, selectedSi, siName, selectedDong, dongName, lat, lng, storeList },
-        regionSetters: { setSelectedDo, setDoName, setSelectedSi, setSiName, setSelectedDong, setDongName, setLat, setLng},
-        getCurrentLocation
+    regionState: { selectedDo, doName, selectedSi, siName, selectedDong, dongName },
+    regionSetters: { setSelectedDo, setDoName, setSelectedSi, setSiName, setSelectedDong, setDongName },
+    getCurrentLocation
   };
 }

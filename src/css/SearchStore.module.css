@@ -13,10 +13,8 @@
     box-shadow: 1rem 0 3rem rgba(0, 0, 0, 0.3);
 }
 .mapArea{
-    /* border: 1px solid red; */
     height: calc(100vh - 14.6rem);
     position: relative;
-    /* background-color: #000; */
 }
 .btnViewList{
     display: none;
@@ -29,16 +27,8 @@
     flex-direction: column;
     justify-content: center;
     gap: 2rem;
-    /* border: 1px solid black; */
     padding-inline: 3rem;
     box-shadow: -0.5rem 0.3rem 0.7rem rgba(0, 0, 0, 0.05);
-    /* border: 1px solid #000; */
-}
-.filterTopWrap{
-    /* border: 1px solid red; */
-    /* display: flex;
-    flex-direction: column;
-    gap: 1.5rem; */
 }
 .filterArea button{
     transition: 0.4s;
@@ -65,7 +55,6 @@
 .categoryList li{
     width: calc(100%/4);
     text-align: center;
-    /* border: 1px solid #000; */
 }
 .categoryList button{
     width: 90%;
@@ -92,13 +81,6 @@
 }
 
 /* 적용된 필터, 검색, 초기화 버튼 */
-.filterBottomArea{
-    /* display: flex;
-    justify-content: space-between;
-    align-items: baseline; */
-    /* margin-top: -1rem; */
-    /* padding-inline: 2rem; */
-}
 .conditions{
     font-size: 1.4rem;
     color: var(--gray-77);
@@ -116,7 +98,6 @@
 }
 .btnSearch{
     font-size: 1.6rem;
-    /* padding-inline: 2em; */
     color: #fff;
     font-weight: 500;
     background-color: var(--primary-color);
@@ -126,13 +107,10 @@
 
 /* 초기화 버튼 */
 .btnResetFilter{
-    /* width: 10rem; */
     padding: 0.5em;
     font-size: 1.4rem;
     border: 2px solid var(--primary-color);
     border-radius: 5px;
-    /* align-self: flex-end; */
-    /* margin-right: 1rem; */
     background-color: #fff;
     transition: all 0.4s;
 }
@@ -149,7 +127,6 @@
 
 /* 맛집 목록 */
 .storeListArea{
-    /* height: calc(100% - 25rem); */
     flex: 1;
     min-height: 0;
     overflow-y: scroll;

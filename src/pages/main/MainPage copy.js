@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import mainbody from "../../resources/img/system/main.png";
 import useRegionFilter from '../search/hook/useRegionFilter';
 import RegionModal from "../search/RegionModal"; 
-import styleSearchStore from "../../css/SearchStore.module.css";
 
 
 const foodIcons = [
@@ -25,6 +24,17 @@ const icons = [
   { emoji: "🥡", label: "포장" },
 ];
 
+// const regionData = {
+//   "서울": {
+//     "강남구": ["삼성동", "역삼동", "청담동"],
+//     "마포구": ["합정동", "서교동", "상수동"],
+//   },
+//   "경기도": {
+//     "성남시": ["분당동", "정자동"],
+//     "수원시": ["영통구", "장안구"],
+//   },
+// };
+
 function MainPage({sidoList}) {
   const navigate = useNavigate(); // 4. navigate 정의
   const {regionState, regionSetters, getCurrentLocation} = useRegionFilter();
@@ -33,18 +43,17 @@ function MainPage({sidoList}) {
 
   useEffect(() => { getCurrentLocation(); }, [getCurrentLocation]);
 
-  const getSearchPath = () => {
-    //const { selectedDo, selectedSi, selectedDong } = regionState;
+  const handleSearchClick = () => {
+    const { selectedDo, selectedSi, selectedDong } = regionState;
     
     // 1. 주소창에 붙일 파라미터 생성
     const params = new URLSearchParams();
-    if (selectedDo) params.append("sido", String(selectedDo).trim());
-    if (selectedSi) params.append("sgg", String(selectedSi).trim());
-    if (selectedDong) params.append("dong", String(selectedDong).trim());
+    if (selectedDo) params.append("sido", selectedDo);
+    if (selectedSi) params.append("sgg", selectedSi);
+    if (selectedDong) params.append("dong", selectedDong);
 
     // 2. 검색 페이지로 이동 (예: /search?sido=11&sgg=11060)
-    return `/search/store?${params.toString()}`;
-    //navigate(`/search/store?${params.toString()}`);
+    navigate(`/search?${params.toString()}`);
   };
 
   return (
@@ -59,10 +68,15 @@ function MainPage({sidoList}) {
 
           {/* 필터 버튼 */}
           <div className={styleMain.filterBox}>
-            <button className={styleMain.filterBtn} onClick={() => setIsModalOpen(true)}>
+            <button
+              className={styleMain.filterBtn}
+              onClick={() => setIsModalOpen(true)}
+            >
               <span className={styleMain.filterIcon}>📍</span>
               <span className={styleMain.filterText}>
-                {doName ? `${doName} ${siName} ${dongName}`.trim() : "지역 선택"}
+                {selectedDong
+                  ? `${selectedDo} ${selectedSi} ${selectedDong}`
+                  : "지역을 선택하세요"}
               </span>
               <span className={styleMain.arrowIcon}>▼</span>
             </button>
@@ -74,8 +88,8 @@ function MainPage({sidoList}) {
                     setIsModalOpen={setIsModalOpen}
                     {...regionState}
                     {...regionSetters}
-                    //onclick={onConfirm}
-                    onConfirm={() => setIsModalOpen(false)}
+                    onclick={onConfirm}
+                    //onClick={() => setIsModalOpen(false)}
                     sidoList={sidoList}
                 />
             )}
@@ -110,7 +124,7 @@ function MainPage({sidoList}) {
           {/* 검색 버튼 */}
           <div className={styleMain.iconRight}>
             <div className={styleMain.iconSearch}>
-              <Link to={getSearchPath()}>🔍검색</Link>
+              <Link to="/search/store" onClick={handleSearchClick}>🔍검색</Link>
             </div>
           </div>
         </div>

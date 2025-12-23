@@ -105,7 +105,7 @@ function TheWayYouTaste() {
           <Routes>
             {/* 누구나 접근 가능한 페이지*/}
             <Route path="/" element={<Navigate to="/main" replace />} />
-            <Route path="/main" element={<MainPage />} />
+            <Route path="/main" element={<MainPage sidoList={sidoList} />} />
             <Route path="/notice/list" element={<NoticeList notices={notices} isAdmin={isAdmin}/>} />
             <Route path="/search/store" element={<SearchStore storeCategories={storeCategories} sidoList={sidoList} />} />
             <Route path="/search/storeDetail" element={ <StoreDetail /> } />
@@ -120,7 +120,7 @@ function TheWayYouTaste() {
             <Route path="/store/report/:userSn" element={isLoggedIn ? <ReportRequest /> : <Navigate to="/login" replace />} />
             <Route path="/member/modify" element={isLoggedIn ? <MembershipModify /> : <Navigate to="/login" replace />} />
             <Route path="/member/resign" element={isLoggedIn ? <MembershipResign /> : <Navigate to="/login" replace />} />
-            
+
             {/* 로그인 + 관리자 권한(isAdmin)이 있어야 접근 가능한 페이지 */}
             <Route path="/notice/write" element={isLoggedIn && isAdmin ? <NoticeWrite /> : <Navigate to="/login" replace />} />
             <Route path="/store/registerDetail" element={isLoggedIn && isAdmin ? <RegisterDetail setMemberNotices={setMemberNotices}/> : <Navigate to="/login" replace />} />
