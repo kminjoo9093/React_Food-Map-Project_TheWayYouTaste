@@ -65,24 +65,24 @@ function MembershipModify() {
                         <br /><br />
                         <h1>회원 정보 수정</h1>
                         <br />
-                        <div className={style.subTitle1}>■ My profile</div>
+                        <div className={style.subTitle1}>■ 내 프로필 수정</div>
                         <br />
-                        <div className={style.subTitle1}>■ Security setting</div>
+                        <div className={style.subTitle1}>■ 비밀/보안 설정</div>
                         <br />
-                        <div className={style.subTitle1}>■ History management</div>
+                        <div className={style.subTitle1}>■ 이력 관리</div>
                         <br />
                         <button className={style.mainBtn} type="button" onClick={() => {
                             alert("로그아웃 하시겠습니까?");
                             localStorage.removeItem("user");
                             navigate('/main');
-                        }}>Log-out</button>
+                        }}>로그 아웃</button>
                     </div>
 
                     {/* 오른쪽 영역 */}
                     <div className={style.rightBox}>
                         {/* 1. My Profile 박스 */}
                         <div className={style.profileBox}>
-                            <h3>My profile~!</h3>
+                            <h3>내 프로필 수정</h3>
                             <div className={style.wrapBox}>
                                 <span className={style.subTitle2}>■ 닉네임 </span>
                                 {editingField === 'nickname' ? (
@@ -106,7 +106,7 @@ function MembershipModify() {
                                 </button>
                             </div>
                             <div className={style.wrapBox}>
-                                <span className={style.subTitle2}>■ E-mail</span>
+                                <span className={style.subTitle2}>■ 전자 메일</span>
                                 {editingField === 'userEmlAddr' ? (
                                     <input type="text" name="userEmlAddr" value={modifyData.userEmlAddr} onChange={handleInputChange} />
                                 ) : (
@@ -121,8 +121,8 @@ function MembershipModify() {
                         <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.3)', margin: '7px 0', width: '100%' }}></div>
 
                         {/* 2. Security setting 박스 */}
-                        <div className={style.profileBox}>
-                            <h3>Security setting~!</h3>
+                        <div className={style.securityBox}>
+                            <h3>비밀/보안 설정</h3>
                             {/* <div className={style.wrapBox}>
                                 <span className={style.subTitle2}>■ 비밀번호</span>
                                 <span>{user?.userPswd ? "*".repeat(user.userPswd.length) : ""}</span>
@@ -130,19 +130,19 @@ function MembershipModify() {
                             </div> */}
                             <div className={style.wrapBox}>
                                 <span className={style.subTitle2}>■ 회원 탈퇴</span>
-                                <button className={style.btn} type="button" onClick={() => navigate('/member/resign')}>/resign</button>
+                                <button className={style.btn} type="button" onClick={() => navigate('/member/resign')}>탈퇴 하기</button>
                             </div>
                         </div>
 
                         <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.3)', margin: '7px 0', width: '100%' }}></div>
 
                         {/* 3. History management 박스 (복구 완료) */}
-                        <div className={style.profileBox}>
-                            <h3>History management~!</h3>
+                        <div className={style.historyBox}>
+                            <h3>이력 관리</h3>
                             <div className={style.wrapBox}>
                                 <span className={style.subTitle2}>■ 최초 가입일</span>
                                 <span>{user?.frstRegDt || "2025-12-22"}</span>
-                                <button className={style.btn}></button>
+                                <button className={style.btn} style={{border : "1px solid #ffb92e"}}></button>
                             </div>
                         </div>
                     </div>
