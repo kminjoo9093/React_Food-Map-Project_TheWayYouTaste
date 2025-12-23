@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import styleRanking from "../../css/StoreRegion.module.css"; 
-import styleSearchStore from "../../css/SearchStore.module.css"; 
+import styleMain from "../../css/MainPage.module.css";
 import { GetStoreList } from "./GetStoreList";
 import RegionModal from "./RegionModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -72,9 +72,13 @@ function StoreRegion({ storeCategories, sidoList }) {
                 </h2>
                 
                 <div className={styleRanking.filterBar}>
-                    {/* 지역 선택 버튼 - 이제 regionName이 실시간 반영됩니다 */}
-                    <button className={styleSearchStore.btnRegion} onClick={() => setIsDimmedMiddleOpen(true)}>
+                    {/* 지역 선택 버튼 */}
+                    <button className={styleMain.filterBtn} onClick={() => setIsDimmedMiddleOpen(true)} style={{textAlign : "center"}}>
+                        <span className={styleMain.filterIcon}>📍</span>
+                        <span className={styleMain.filterText}>
                         {regionName}
+                        </span>
+                        <span className={styleMain.arrowIcon}>▼</span>
                     </button>
 
                     <div className={styleRanking.sortTabs}>

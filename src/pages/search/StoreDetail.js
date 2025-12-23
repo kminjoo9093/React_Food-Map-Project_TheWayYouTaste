@@ -185,7 +185,12 @@ function StoreDetail() {
                         </ul>
                         <div className={styleStoreDetail.linkWrap}>
                             <button className={styleStoreDetail.linkWriteReview} onClick={() => isLoggedIn ? setIsOpen(true) : navigate("/login")}>리뷰 작성</button>
-                            <Link to={`/store/report/${user?.userSn || ''}`} className={styleStoreDetail.linkReportStore}>신고</Link>
+                            <Link to={`/store/report/${user?.userSn || ''}`} state={{ 
+                                                                                        bplcSn: storeId, 
+                                                                                        storeName: storeData.bplcNm, 
+                                                                                        address: storeData.address,
+                                                                                        userName: user?.nickname // 
+                                                                                    }}className={styleStoreDetail.linkReportStore}>신고</Link>
                         </div>
                     </div>
                     <div className={`${styleStoreDetail.storeImageWrap} contentBox`}>
