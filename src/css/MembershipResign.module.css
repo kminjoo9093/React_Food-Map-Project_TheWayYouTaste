@@ -53,6 +53,7 @@
     background: transparent;
     border: 2px solid #800020;
     box-shadow: none;
+    padding: 0;
 }
 
 .btn {
@@ -69,6 +70,7 @@
     background: transparent;
     border: 2px solid #800020;
     box-shadow: none;
+    padding: 0;
 }
 
 .subTitle1 {
@@ -124,12 +126,11 @@
 .btn1 {
     padding: 5px 10px;
     border: 1px solid #800020;
-    background-color: #f0f0f0;
     cursor: pointer;
     border-radius: 4px;
     font-size: 0.85em; /* 크기 조정 */
     background: #ffb92e;
-}
+} 
 
 /* 5. '탈퇴하기' 버튼 비활성화 상태 */
 .disabledBtn {
