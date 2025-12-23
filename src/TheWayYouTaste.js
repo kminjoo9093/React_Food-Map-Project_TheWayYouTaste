@@ -39,16 +39,18 @@ function TheWayYouTaste() {
   const [registerAdmin, setRegisterAdmin] = useState([]);
   const [memberNotices, setMemberNotices] = useState([]);
   const isAdmin = user?.authrtYn === 'Y';
+  const [storeCategories, setStoreCategories] = useState([]);
+  const [sidoList, setSidoList] = useState([]);
 
-   useEffect(() => {
+  useEffect(() => {
     // 로컬 스토리지에서 사용자 정보 가져오기
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser)); // 사용자 정보가 있다면 상태에 저장
-      setIsLoggedIn(true); // 로그인 상태로 설정
-    }
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser)); // 사용자 정보가 있다면 상태에 저장
+        setIsLoggedIn(true); // 로그인 상태로 설정
+      }
 
-    setIsInitialized(true);
+      setIsInitialized(true);
   }, []);
 
 
@@ -59,8 +61,16 @@ function TheWayYouTaste() {
             try {
               /* 공통 정보 */
                 const noticesRes = await fetch("http://localhost:3001/youtaste/notice");
+                const storeCategoriesRes = await fetch("http://localhost:3001/youtaste/search");
+                const sidoListRes = await fetch("http://localhost:3001/youtaste/search/sido");
                 const noticesData = noticesRes.ok ? await noticesRes.json() : [];
+                const storeCategoryData = storeCategoriesRes.ok ? await storeCategoriesRes.json() : [];
+                const sidoListData = sidoListRes.ok ? await sidoListRes.json() : [];
                 setNotices(noticesData);
+                setStoreCategories(storeCategoryData);
+                setSidoList(sidoListData);
+
+
               /* 로그인했을때 불러올 정보 */
               if (user) {
                 const membersRes = await fetch("http://localhost:3001/membership/check")
@@ -97,7 +107,8 @@ function TheWayYouTaste() {
             <Route path="/" element={<Navigate to="/main" replace />} />
             <Route path="/main" element={<MainPage />} />
             <Route path="/notice/list" element={<NoticeList notices={notices} isAdmin={isAdmin}/>} />
-            <Route path="/search/store" element={<SearchStore />} />
+            <Route path="/search/store" element={<SearchStore storeCategories={storeCategories} sidoList={sidoList} />} />
+            <Route path="/search/storeDetail" element={ <StoreDetail /> } />
             <Route path="/login" element={<MembershipLogin setUser={setUser} setIsLoggedIn={setIsLoggedIn} />}/>
             <Route path="/*" element={<Error404Page />} />
 
@@ -106,11 +117,9 @@ function TheWayYouTaste() {
             <Route path="/member/notice/list" element={isLoggedIn ? <NoticeMemberList notices={memberNotices} /> : <Navigate to="/login" replace />} />
             <Route path="/member/notice/noticeDetail" element={isLoggedIn ? <NoticeMemberDetail /> : <Navigate to="/login" replace />} />
             <Route path="/store/register" element={isLoggedIn ? <StoreRegister userSn={user ? user.userSn : ''}/> : <Navigate to="/login" replace />} />
-            <Route path="/search/storeDetail" element={isLoggedIn ? <StoreDetail /> : <Navigate to="/login" replace />} />
             <Route path="/store/report/:userSn" element={isLoggedIn ? <ReportRequest /> : <Navigate to="/login" replace />} />
             <Route path="/member/modify" element={isLoggedIn ? <MembershipModify /> : <Navigate to="/login" replace />} />
             <Route path="/member/resign" element={isLoggedIn ? <MembershipResign /> : <Navigate to="/login" replace />} />
-
             {/* 로그인 + 관리자 권한(isAdmin)이 있어야 접근 가능한 페이지 */}
             <Route path="/notice/write" element={isLoggedIn && isAdmin ? <NoticeWrite /> : <Navigate to="/login" replace />} />
             <Route path="/store/registerDetail" element={isLoggedIn && isAdmin ? <RegisterDetail setMemberNotices={setMemberNotices}/> : <Navigate to="/login" replace />} />

@@ -9,8 +9,10 @@ const foodIcons = [
   { emoji: "🍣", label: "일식" },
   { emoji: "🥟", label: "중식" },
   { emoji: "🍝", label: "양식" },
+  { emoji: "🍜", label:"아시안"},
   { emoji: "🍔", label: "햄버거" },
   { emoji: "🍗", label: "치킨" },
+  { emoji: "🍰", label: "디저트"}
 ];
 
 const icons = [
@@ -150,6 +152,7 @@ function MainPage() {
           </div>
 
           {/* 편의 */}
+          <br></br><br></br><br></br>
           <div className={styleMain.titleBox}>
             <h4 className={styleMain.sectionTitle}>편의</h4>
           </div>

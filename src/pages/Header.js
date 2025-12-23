@@ -11,6 +11,7 @@ function Header(){
     const [openMyMenu, setOpenMyMenu] = useState(false);
     const [isLogin, setIsLogin] = useState(false); // 로그인 여부
     const [user, setUser] = useState(null); // 로그인된 사용자 정보
+    const [searchTerm, setSearchTerm] = useState(""); // 검색어
     const navigate = useNavigate();
 
     //모바일 메뉴 버튼 state
@@ -24,6 +25,15 @@ function Header(){
         }
     }, []);
 
+
+    const handleSearch = (e) => {
+        if (e.key === "Enter" || e.type === "click") {
+            if (!searchTerm.trim()) return;
+            // 검색어를 포함하여 SearchStore 페이지로 이동
+            navigate(`/search/store?keyword=${encodeURIComponent(searchTerm)}`);
+            setSearchTerm(""); // 입력창 초기화
+        }
+    };
 
     function handleLoginState(){
         if(isLogin){
@@ -49,8 +59,16 @@ function Header(){
                     </h1>
                     {/* PC */}
                     <div className={styleHeader.searchContainer}>
-                        <input type="text" placeholder="지역, 음식 또는 식당명을 검색하세요"/>
-                        <img src={searchIcon} alt="search"/>
+                        <input type="text" placeholder="지역, 음식 또는 식당명을 검색하세요" style={{ border : "none"}} 
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)} // 값 변경 감지
+                        onKeyDown={handleSearch} // 엔터키 
+                        /> 
+                        <img src={searchIcon} 
+                        alt="search" 
+                        onClick={handleSearch} // 돋보기 클릭 감지
+                        style={{ cursor: "pointer" }}
+                    />
                     </div>
                     <div className={styleHeader.rightMenu}>
                         {handleLoginState()}

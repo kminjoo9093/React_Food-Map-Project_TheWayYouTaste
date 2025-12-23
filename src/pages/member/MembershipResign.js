@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import style from "../../css/MembershipResign.module.css";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // 1. API 통신을 위해 axios만 추가했습니다.
+import axios from 'axios';
 
+// 1. "본인 인증"을 리스트에서 완전히 제거
 const AGREEMENT_ITEMS = [
     "최종 경고 및 확인",
-    "본인 인증",
     "데이터 처리 및 보관",
     "탈퇴 사유 수집(선택)",
     "완료 및 후속조치",
@@ -17,22 +17,20 @@ function MembershipResign() {
     const navigate = useNavigate();
     const [agreements, setAgreements] = useState(new Array(AGREEMENT_ITEMS.length).fill(false));
     const [isBtnEnabled, setIsBtnEnabled] = useState(false);
-    const [user, setUser] = useState(null); // 로그인 사용자 정보
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
-    const [isInitialized, setIsInitialized] = useState(false); // 초기화
-    
+    const [user, setUser] = useState(null);
+    const [isInitialized, setIsInitialized] = useState(false);
+
     useEffect(() => {
-        // 로컬 스토리지에서 사용자 정보 가져오기
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
-        setUser(JSON.parse(storedUser)); // 사용자 정보가 있다면 상태에 저장
-        setIsLoggedIn(true); // 로그인 상태로 설정
+            setUser(JSON.parse(storedUser));
         }
-
         setIsInitialized(true);
     }, []);
+
     useEffect(() => {
-        const essentialChecked = agreements.filter((_, i) => i !== 3).every(val => val === true);
+        // [수정] index 2(탈퇴 사유 수집) 항목만 제외하고 나머지가 모두 true일 때 버튼 활성화
+        const essentialChecked = agreements.filter((_, i) => i !== 2).every(val => val === true);
         setIsBtnEnabled(essentialChecked);
     }, [agreements]);
 
@@ -44,7 +42,7 @@ function MembershipResign() {
     const tdStyle = "border:1px solid #ccc; padding:12px; line-height:1.6; font-size:14px; color:#333;";
     const redSpan = (text) => `<span style="color: #B71C1C; font-weight: bold;">${text}</span>`;
 
-    // --- [1. 최종 경고 및 확인] 테이블 (기존 코드 유지) ---
+    // --- [원본 법령 테이블 내용 100% 유지] ---
     const getFinalWarningTable = () => {
         return `
             <div style="text-align: left;">
@@ -89,7 +87,6 @@ function MembershipResign() {
             </div>`;
     };
 
-    // --- [3. 데이터 처리 및 보관] 테이블 (기존 코드 유지) ---
     const getDataRetentionTable = () => {
         return `
             <div style="text-align: left;">
@@ -137,7 +134,6 @@ function MembershipResign() {
             </div>`;
     };
 
-    // --- [5. 완료 및 후속조치] 테이블 (기존 코드 유지) ---
     const getFollowUpTable = () => {
         return `
             <div style="text-align: left; overflow-y: auto; max-height: 500px;">
@@ -194,7 +190,6 @@ function MembershipResign() {
             </div>`;
     };
 
-    // --- [6. 이용 약관] 테이블 (기존 코드 유지) ---
     const getTermsOfServiceTable = () => {
         return `
             <div style="text-align: left; overflow-y: auto; max-height: 500px;">
@@ -226,170 +221,53 @@ function MembershipResign() {
     };
 
     const handleGoToDetails = (itemTitle, index) => {
-        if (index === 0) {
-            Swal.fire({
-                title: `<div style="font-size: 20px; font-weight: bold;">${itemTitle}</div>`,
-                html: getFinalWarningTable(),
-                width: '1000px',
-                showCancelButton: true,
-                confirmButtonText: '내용을 확인했으며 동의합니다',
-                cancelButtonText: '닫기',
-                confirmButtonColor: '#B71C1C'
-            }).then((result) => result.isConfirmed && updateAgreement(index));
-            return;
-        }
-
-        if (index === 1) {
-            Swal.fire({
-                title: `<div style="font-size: 20px; font-weight: bold;">“당신은 정말로 이 계정의 탈퇴를 원하시나요?”</div>`,
-                html: `
-                    <div style="text-align: center; font-size: 14px; line-height: 1.8;">
-                        “행동으로 옮기시기 전, 본 항목을 제외한 나머지 항목들을 한번만 더 읽어주십시오.”<br/>
-                        “그럼에도 탈퇴를 원하신다면, 일단 회원 가입 때 작성하신 E-mail로 본인 인증 번호를 보내 드리겠습니다.”
-                        <br/><br/>
-                        <div style="display: flex; justify-content: center; align-items: center; gap: 5px;">
-                            당신의 계정은 무엇 입니까?
-                            <input type="text" id="userEmail" style="width: 120px; border: none; border-bottom: 1px solid #000; outline: none;">
-                            @
-                            <select id="emailDomain" style="border: 1px solid #000; padding: 2px;">
-                                <option value="nate.com">@nate.com</option>
-                                <option value="naver.com">@naver.com</option>
-                                <option value="gmail.com">@gmail.com</option>
-                                <option value="daum.net">@daum.net</option>
-                            </select>
-                            <button id="sendAuthBtn" style="border: 1px solid #000; background: #fff; padding: 2px 8px; cursor: pointer;">인증하기</button>
-                        </div>
-                    </div>
-                `,
-                width: '850px',
-                showConfirmButton: false,
-                showCancelButton: true,
-                cancelButtonText: '취소',
-                didOpen: () => {
-                    document.getElementById('sendAuthBtn').addEventListener('click', () => {
-                        const emailPrefix = document.getElementById('userEmail').value;
-                        if (!emailPrefix) {
-                            Swal.showValidationMessage('이메일을 입력해주세요.');
-                            return;
-                        }
-                        Swal.fire({
-                            icon: 'info', title: '인증번호 발송', text: '이메일로 인증번호가 발송되었습니다.', timer: 2000, showConfirmButton: false
-                        }).then(() => {
-                            Swal.fire({
-                                title: '인증 번호 입력',
-                                input: 'text',
-                                inputAttributes: { maxlength: 4, style: 'text-align: center; font-size: 24px;' },
-                                showCancelButton: true,
-                                confirmButtonText: '인증 완료 확인',
-                                preConfirm: (value) => {
-                                    if (value === "1234") return true; 
-                                    Swal.showValidationMessage('번호가 일치하지 않습니다.');
-                                }
-                            }).then((res) => {
-                                if (res.isConfirmed) {
-                                    Swal.fire({
-                                        html: `<div style="border: 1px solid #000; padding: 40px;"><h2 style="margin:0;">인증 되었습니다.</h2><p style="color:#888; margin-top:10px;">(돌아가기)</p></div>`,
-                                        showConfirmButton: false, timer: 1500
-                                    }).then(() => updateAgreement(index));
-                                }
-                            });
-                        });
-                    });
-                }
-            });
-            return;
-        }
-
-        if (index === 2) {
-            Swal.fire({
-                title: `<div style="font-size: 20px; font-weight: bold;">${itemTitle}</div>`,
-                html: getDataRetentionTable(),
-                width: '1000px',
-                showCancelButton: true,
-                confirmButtonText: '내용을 확인했으며 동의합니다',
-                cancelButtonText: '닫기',
-                confirmButtonColor: '#B71C1C'
-            }).then((result) => result.isConfirmed && updateAgreement(index));
-            return;
-        }
-
-        if (index === 3) {
+        let contentHtml = '';
+        if (index === 0) contentHtml = getFinalWarningTable();
+        else if (index === 1) contentHtml = getDataRetentionTable();
+        else if (index === 3) contentHtml = getFollowUpTable();
+        else if (index === 4) contentHtml = getTermsOfServiceTable();
+        else if (index === 2) {
             Swal.fire({
                 title: `<div style="font-size: 18px; font-weight: bold;">탈퇴를 하려는 이유는 무엇인가요?</div>`,
                 html: `
                     <div style="text-align: left; font-size: 14px;">
-                        <p style="margin-bottom: 10px; color: #666;">* 사유를 선택해 주시면 서비스 개선에 큰 도움이 됩니다.</p>
                         <select id="reasonSelect" style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ccc;">
                             <option value="">사유를 선택해 주세요 (선택)</option>
                             <option value="1">이용 빈도가 낮음</option>
                             <option value="2">기능 및 서비스 불편</option>
-                            <option value="3">개인정보 유출 우려</option>
-                            <option value="4">혜택 및 이벤트 부족</option>
-                            <option value="5">새 계정 생성 목적</option>
-                            <option value="6">타 서비스 이용</option>
                             <option value="7">기타</option>
                         </select>
-                        <textarea id="opinionText" style="width: 100%; height: 100px; padding: 10px; border: 1px solid #ccc; resize: none;" placeholder="불편하셨던 점을 자유롭게 적어주세요."></textarea>
-                        
-                        <div style="margin-top: 20px; padding: 15px; background: #fff5f5; border: 1px solid #ffe3e3; border-radius: 5px;">
-                            <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
-                                <input type="checkbox" id="dormantCheck" style="margin-top: 4px;">
-                                <span style="font-size: 13px; color: #c62828;">회원 탈퇴 대신 <b>'휴면 계정'</b>으로 전환하시겠습니까? (개인정보는 안전하게 별도 보관되며, 언제든 다시 로그인하여 서비스를 이용할 수 있습니다.)</span>
-                            </label>
-                        </div>
-
-                        <div style="margin-top: 15px;">
+                        <textarea id="opinionText" style="width: 100%; height: 200px; padding: 12px; border: 1px solid #ccc; resize: none;"></textarea>
+                        <div style="margin-top: 20px;">
                             <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: bold;">
                                 <input type="checkbox" id="finalCheck">
                                 <span>위의 유의사항을 모두 확인하였으며, 탈퇴 진행에 동의합니다.</span>
                             </label>
                         </div>
-                    </div>
-                `,
+                    </div>`,
                 width: '600px',
                 showCancelButton: true,
-                confirmButtonText: '탈퇴 프로세스 계속',
-                cancelButtonText: '취소 (메인으로)',
+                confirmButtonText: '확인',
                 confirmButtonColor: '#B71C1C',
                 preConfirm: () => {
                     if (!document.getElementById('finalCheck').checked) {
-                        Swal.showValidationMessage('탈퇴 유의사항 확인 및 동의 체크박스에 체크해 주세요.');
+                        Swal.showValidationMessage('탈퇴 진행 동의 체크박스에 체크해 주세요.');
                         return false;
                     }
                     return true;
                 }
-            }).then((result) => {
-                if (result.isConfirmed) updateAgreement(index);
-                else if (result.dismiss === Swal.DismissReason.cancel) navigate('/'); 
-            });
-            return;
-        }
-
-        if (index === 4) {
-            Swal.fire({
-                title: `<div style="font-size: 20px; font-weight: bold;">${itemTitle}</div>`,
-                html: getFollowUpTable(),
-                width: '1000px',
-                showCancelButton: true,
-                confirmButtonText: '내용을 확인했으며 동의합니다',
-                cancelButtonText: '닫기',
-                confirmButtonColor: '#B71C1C'
             }).then((result) => result.isConfirmed && updateAgreement(index));
             return;
         }
 
-        if (index === 5) {
-            Swal.fire({
-                title: `<div style="font-size: 20px; font-weight: bold;">${itemTitle} 상세 내용</div>`,
-                html: getTermsOfServiceTable(),
-                width: '1000px',
-                showCancelButton: true,
-                confirmButtonText: '모든 약관 내용을 확인했으며 동의합니다',
-                cancelButtonText: '닫기',
-                confirmButtonColor: '#B71C1C'
-            }).then((result) => result.isConfirmed && updateAgreement(index));
-            return;
-        }
+        Swal.fire({
+            title: `<div style="font-size: 20px; font-weight: bold;">${itemTitle}</div>`,
+            html: contentHtml,
+            width: '1000px',
+            showCancelButton: true,
+            confirmButtonText: '확인 및 동의',
+            confirmButtonColor: '#B71C1C'
+        }).then((result) => result.isConfirmed && updateAgreement(index));
     };
 
     const updateAgreement = (index) => {
@@ -398,8 +276,9 @@ function MembershipResign() {
         setAgreements(updated);
     };
 
-    // --- [수정된 최종 탈퇴 제출 함수] ---
     const handleResignSubmit = () => {
+        const userSn = (user && user.userSn) ? user.userSn : 28;
+
         Swal.fire({
             title: '최종 탈퇴 확인',
             text: "정말로 모든 정보를 파기하고 탈퇴하시겠습니까?",
@@ -407,28 +286,19 @@ function MembershipResign() {
             showCancelButton: true,
             confirmButtonText: '탈퇴하기',
             confirmButtonColor: '#B71C1C'
-        }).then(async (result) => { // async 추가
+        }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    // 세션에 저장된 현재 유저의 USER_SN(고유번호)을 가져옵니다.
-                    const userSn = sessionStorage.getItem("userSn"); 
-
-                    if (!userSn) {
-                        Swal.fire('오류', '로그인 정보가 유효하지 않습니다.', 'error');
-                        return;
-                    }
-
-                    // [추가된 API 연동 로직]
-                    const response = await axios.delete(`/membership/delete/${userSn}`);
-
+                    const response = await axios.delete(`http://localhost:3001/membership/delete/${userSn}`);
                     if (response.status === 200) {
                         Swal.fire({ title: '탈퇴 처리 완료', icon: 'success' }).then(() => {
-                            sessionStorage.clear(); // 세션 비우기
-                            navigate('/login');
+                            localStorage.removeItem("user");
+                            // 2. 자동 새로고침 및 메인 이동
+                            window.location.href = '/'; 
                         });
                     }
                 } catch (error) {
-                    Swal.fire('실패', '탈퇴 처리 중 오류가 발생했습니다.', 'error');
+                    Swal.fire('실패', `탈퇴 중 오류가 발생했습니다.`, 'error');
                 }
             }
         });

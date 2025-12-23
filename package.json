@@ -2,6 +2,7 @@
   "name": "thewayyoutaste",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3000",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.1.0",
     "@fortawesome/free-regular-svg-icons": "^7.1.0",
@@ -17,7 +18,7 @@
     "react-kakao-maps-sdk": "^1.2.0",
     "react-router-dom": "^7.10.0",
     "react-scripts": "5.0.1",
-    "sweetalert2": "^11.26.10",
+    "sweetalert2": "^11.26.16",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
@@ -49,3 +50,4 @@
     "json-server": "^1.0.0-beta.3"
   }
 }
+

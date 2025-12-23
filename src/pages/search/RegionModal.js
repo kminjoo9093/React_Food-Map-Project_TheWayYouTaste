@@ -2,72 +2,90 @@ import styleRegionModal from "../../css/RegionModal.module.css";
 import { useEffect, useState } from "react";
 import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
 
-function RegionModal({isModalOpen, setIsModalOpen, selectedDo, setSelectedDo, selectedSi, setSelectedSi, selectedDong, setSelectedDong, onConfirm
-                        , doName, setDoName, siName, setSiName, dongName, setDongName
+function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, setSelectedSi, selectedDong, setSelectedDong, onConfirm
+                        , setDoName, setSiName, setDongName, sidoList
     }){
-    // const [selectedDo, setSelectedDo] = useState();
-    // const [selectedSi, setSelectedSi] = useState(null);
-    // const [selectedDong, setSelectedDong] = useState(null);
 
-    // const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(isModalOpen);
+    const [sggList, setSggList] = useState([]);
+    const [dongList, setDongList] = useState([]);
 
-    const sidoData = UseSearchStoreFetch("http://localhost:3001/sido");
-    const sigunguData = UseSearchStoreFetch(selectedDo ? `http://localhost:3001/sigungu?sidoCode=${selectedDo}` : null);
-    const dongData = UseSearchStoreFetch(selectedSi ? `http://localhost:3001/dong?sigunguCode=${selectedSi}` : null);
-
-    // console.log("herehere", dongData);
-
-    let sidoList = sidoData.map(record => {
-        return {"id" : record.sidoCode, ...record}
-    });
-    
-    let sigunguList = sigunguData.map(record => {
-        return {"id" : record.sigunguCode, ...record}
+    //시도 리스트 받아오기
+    const sidoData = sidoList;
+    let newSidoList = sidoData.map(record => {
+        return {"id" : record.sidoCd, ...record}
     });
 
-    let dongDataList;
-    try {
-        let dongList = dongData[0].dongList;
-        dongDataList = dongList.map(record => {
-            record =  {id : record.dongCode, ...record};
-            return record;
-        });
-    } catch (error) {
-        dongDataList = [];
-    }
-    // console.log("here:", dongList);
-    //console.log("시도 리스트:", sidoList);
+    //시군구 리스트 받아오기
     useEffect(()=>{
-        console.log("선택된 시도 코드 :" , selectedDo);
+        //console.log("선택된 시도 코드 :" , selectedDo);
+        if (!selectedDo) {
+            setSggList([]);
+            return;
+        }
+        const fetchData = async () => {
+            try{
+                    const sggListRes = await fetch(selectedDo ? `http://localhost:3001/youtaste/search/sgg?sidoCd=${selectedDo}` : null);
+                    const sggListData = sggListRes.ok ? await sggListRes.json() : [];
+                    console.log("찐 시군구 --> ", sggListData);
+                    
+                    let list = sggListData.map(record => {
+                        return {"id" : record.sggCd, ...record}    
+                    });
+                    setSggList(list);
+            } catch (err) {
+                console.log("데이터 로드 중 오류: ", err);
+            }
+        }
+
+        fetchData();
     }, [selectedDo]);
-
+    
+    //읍면동 리스트 받아오기
     useEffect(()=>{
-        console.log("선택된 시군구 코드 :" , selectedSi);
+        const fetchData = async () => {
+            if (!selectedSi) {
+                setDongList([]);
+                return;
+            }
+            try{
+                const dongListRes = await fetch(selectedSi ? `http://localhost:3001/youtaste/search/dong?sggCd=${selectedSi}` : null);
+                console.log("찐 읍면동 데이터 : ", dongListRes);
+                const dongListData = dongListRes.ok ? await dongListRes.json() : [];
+                let list = dongListData.map(record => {
+                    return {id : record.dgCd, ...record};
+                })
+                setDongList(list);
+            } catch(err) {
+                console.log("데이터 로드 중 오류: ", err);
+            }
+        }
+        fetchData();
     }, [selectedSi]);
 
     useEffect(()=>{
         console.log("선택된 동 코드 :" , selectedDong);
     }, [selectedDong]);
 
-    function handleSelectDo(sidoCode, sidoName){
-        setSelectedDo(sidoCode);
-        setDoName(sidoName || "");
+    function handleSelectDo(sidoCd, sidoNm){
+        setSelectedDo(sidoCd);
+        setDoName(sidoNm || "");
         setSelectedSi(null);
         setSiName("");
         setSelectedDong(null);
         setDongName("");
     }
 
-    function handleSelectSi(sigunguCode, siName){
-    setSelectedSi(sigunguCode);
-    setSiName(siName || "");
-    setSelectedDong(null);
-    setDongName("");
+    function handleSelectSi(sggCd, siName){
+        setSelectedSi(sggCd);
+        setSiName(siName || "");
+        setSelectedDong(null);
+        setDongName("");
     }
+    console.log("selectedSi : " + selectedSi);
 
-    function handleSelectDong(dongCode, dongName){
-        setSelectedDong(dongCode);
-        setDongName(dongName || "");
+    function handleSelectDong(dgCd, dgNm){
+        setSelectedDong(dgCd);
+        setDongName(dgNm || "");
     }
 
     return (
@@ -89,15 +107,15 @@ function RegionModal({isModalOpen, setIsModalOpen, selectedDo, setSelectedDo, se
                                                     ${selectedDo === null ? styleRegionModal.activeItem : ""}`} 
                                         onClick={()=>handleSelectDo(null)}>전체</li>
                                     {
-                                        sidoList.map(record => (
+                                        newSidoList.map(record => (
                                             <li key={record.id} 
                                                 className={`${styleRegionModal.regionItem}
-                                                            ${selectedDo === record.sidoCode 
+                                                            ${selectedDo === record.sidoCd 
                                                                 ? styleRegionModal.activeItem : ""}
                                                 `}
-                                                onClick={()=> handleSelectDo(record.sidoCode, record.sidoName)}
+                                                onClick={()=> handleSelectDo(record.sidoCd, record.sidoNm)}
                                                 >
-                                                {record.sidoName}
+                                                {record.sidoNm}
                                             </li>
                                         ))
                                         
@@ -114,15 +132,15 @@ function RegionModal({isModalOpen, setIsModalOpen, selectedDo, setSelectedDo, se
                                                     ${selectedSi === null ? styleRegionModal.activeItem : ""}`} 
                                         onClick={()=>handleSelectSi(null)}>전체</li>
                                     {
-                                        sigunguList.map(record => (
+                                        sggList.map(record => (
                                             <li key={record.id} 
                                                 className={`${styleRegionModal.regionItem}
-                                                                ${selectedSi === record.sigunguCode 
+                                                                ${selectedSi === record.sggCd 
                                                                     ? styleRegionModal.activeItem : ""}
                                                     `}
-                                                onClick={()=> handleSelectSi(record.sigunguCode, record.sigunguName)}
+                                                onClick={()=> handleSelectSi(record.sggCd, record.sggNm)}
                                                 >
-                                                {record.sigunguName}
+                                                {record.sggNm}
                                             </li>
                                         ))
                                         
@@ -141,15 +159,15 @@ function RegionModal({isModalOpen, setIsModalOpen, selectedDo, setSelectedDo, se
                                                     ${selectedDong === null ? styleRegionModal.activeItem : ""}`} 
                                         onClick={()=>handleSelectDong(null)}>전체</li>
                                     {
-                                        dongDataList.map(record => (
+                                        dongList.map(record => (
                                         <li key={record.id} 
                                             className={`${styleRegionModal.regionItem}
-                                                        ${selectedDong === record.dongCode 
+                                                        ${selectedDong === record.dgCd 
                                                             ? styleRegionModal.activeItem : ""}
                                                         `}
-                                            onClick={()=> handleSelectDong(record.dongCode, record.dongName)}
+                                            onClick={()=> handleSelectDong(record.dgCd, record.dgNm)}
                                             >
-                                            {record.dongName}
+                                            {record.dgNm}
                                         </li>
                                         ))
                                     }
