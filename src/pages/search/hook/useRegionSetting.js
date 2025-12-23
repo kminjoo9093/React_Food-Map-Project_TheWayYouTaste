@@ -25,16 +25,24 @@ export default function useRegionSetting() {
         setIsLoading(true); // 시작할 때 true
 
         if (!navigator.geolocation) {
-            setIsLoading(true); 
+            setIsLoading(false); 
             console.log("2. Geolocation 미지원");
             return;
         }
+
+        // 옵션 추가: 정확도 높이고, 캐시된 위치 정보 사용 안함
+        const geoOptions = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+        };
 
         navigator.geolocation.getCurrentPosition(async (position) => {
             console.log("3. 위치 정보를 받아옴", position.coords);
             setIsLoading(false);
             
             const { latitude, longitude } = position.coords;
+            console.log("위도:", latitude, "경도:", longitude);
             setLat(latitude);
             setLng(longitude);
 
@@ -65,7 +73,7 @@ export default function useRegionSetting() {
                 }
             }, (err) => {
                 console.error("6. 위치 권한/획득 에러", err);
-            });
+            }, geoOptions);
     }, []);
 
     // 필터 초기화 함수 추가 

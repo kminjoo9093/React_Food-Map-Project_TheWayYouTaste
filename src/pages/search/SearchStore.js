@@ -44,6 +44,7 @@ function SearchStore({ storeCategories, sidoList }) {
     const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
     const [isSelectedAll, setIsSelectedAll] = useState(false);
     const [isResetFilter, setIsResetFilter] = useState(false);
+    const [isSearchArea, setIsSearchArea] = useState(false);
 
 
     // 현재 위치 기반 초기 로드
@@ -156,7 +157,12 @@ function SearchStore({ storeCategories, sidoList }) {
     }, [filteredStoreList]);
 
     // 범위 내 재검색 함수
-    const displayViewPortMarkers = async (area) => {
+    const displayViewPortMarkers = useCallback( async (area) => {
+        
+        //setIsResetFilter(true);
+        //resetFilter();
+        setIsSearchArea(true);
+
         // area가 비어있는지 확인
         if (!area || area.swMinLat === 0) return;
         
@@ -166,6 +172,9 @@ function SearchStore({ storeCategories, sidoList }) {
         try {
             const url = `${SERVER_URL}/youtaste/search/store/position?swMinLat=${swMinLat}&neMaxLat=${neMaxLat}&swMinLng=${swMinLng}&neMaxLng=${neMaxLng}`;
             let list = await GetStoreList(url);
+
+            // 데이터가 없을 경우 처리
+            if (!list) return;
 
             // 원본 리스트와 필터 리스트를 동시에 업데이트
             setStoreListByRegion(list);
@@ -182,7 +191,7 @@ function SearchStore({ storeCategories, sidoList }) {
         } catch (error) {
             console.error("범위 재검색 오류:", error);
         }
-    };
+    }, [selectedCategories, SERVER_URL]);
 
     // 지역 선택 확정
     async function handleRegionConfirm() {
@@ -197,6 +206,7 @@ function SearchStore({ storeCategories, sidoList }) {
         setIsChangedRegion(true);
 
         setIsResetFilter(false);
+        setIsSearchArea(false);
     }
 
     // 검색 버튼 클릭 (카테고리 필터 적용)
@@ -236,6 +246,7 @@ function SearchStore({ storeCategories, sidoList }) {
         // URL 파라미터 제거
         navigate("/search/store", { replace: true });
 
+        setIsSearchArea(false);
         getCurrentLocation();
         
         setIsMoved(false);
@@ -261,7 +272,7 @@ function SearchStore({ storeCategories, sidoList }) {
                         <button className={`${styleSearchStore.btnRegion} ${styleMain.filterBtn}`} onClick={() => setIsDimmedMiddleOpen(true)}>
                             <span className={styleMain.filterIcon}>📍</span>
                             <span className={styleMain.filterText}>
-                                {(doName || siName || dongName) ? `${doName} ${siName} ${dongName}` : "지역 선택"}
+                                {isSearchArea ? "범위 내" : (doName || siName || dongName) ? `${doName} ${siName} ${dongName}` : "지역 선택"}
                             </span>
                             <span className={styleMain.arrowIcon}>▼</span>
                         </button>

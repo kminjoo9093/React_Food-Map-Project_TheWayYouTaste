@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Map, MapMarker, MarkerClusterer, CustomOverlayMap } from "react-kakao-maps-sdk";
 import { useKakaoLoader } from "react-kakao-maps-sdk";
 import { Link } from "react-router-dom";
@@ -10,6 +10,8 @@ import serverUrl from "../../db/server.json";
 
 export default function MapComponent({ storeList, lat, lng, setIsMoved, isChangedRegion, setPositionArea, positionAreaRef, isSelectedAll }) {
     
+    const isInitialCenterSetRef = useRef(false);
+
     // 카카오 로더 설정
     useKakaoLoader({
         appkey: "5794d8a0c2862c16e4c69ad303abfb4b",
@@ -17,8 +19,8 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
     });
 
     const [center, setCenter] = useState({
-        lat: lat || 37.5665, 
-        lng: lng || 126.9780
+        lat: lat, //|| 37.5665, 
+        lng: lng //|| 126.9780
     });
     const SERVER_URL = serverUrl.SERVER_URL;
     //지도 레벨
@@ -31,6 +33,7 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
     useEffect(() => {
         if (lat && lng) {
             setCenter({ lat, lng });
+            isInitialCenterSetRef.current = true;
         }
     }, [lat, lng]);
 
@@ -46,7 +49,10 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
     useEffect(() => {
         if (!storeList || storeList.length === 0) return;
         if (!isChangedRegion) return;
-        if (lat && lng) return;
+
+        if (!isInitialCenterSetRef.current) return; //초기 위치 세팅 전이면 평균 이동 금지
+
+        //if (lat && lng) return; //현재 위치가 있으면 평균 이동 X
 
 		// 1. 유효한 좌표를 가진 데이터만 필터링
 		const validStores = storeList.filter(
@@ -81,12 +87,15 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                 const sw = bounds.getSouthWest();
                 const ne = bounds.getNorthEast();
 
-                positionAreaRef.current = {
+                const newPos = {
                     swMinLat: sw.getLat(),
                     swMinLng: sw.getLng(),
                     neMaxLat: ne.getLat(),
                     neMaxLng: ne.getLng()
                 };
+
+                // Ref 업데이트 (비동기 처리 없이 즉시 반영됨)
+                positionAreaRef.current = newPos;
 
                 // 부모의 state를 업데이트할 때 이전 값과 비교하여 불필요한 리렌더링 방지
                 // setPositionArea(prev => {
@@ -98,7 +107,9 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                 //         neMaxLng: ne.getLng()
                 //     };
                 // });
-                setIsMoved(true);
+                if (isInitialCenterSetRef.current) {
+                    setIsMoved(true); 
+                }
             }}
         >
             {/* 현재 위치 마커 */}

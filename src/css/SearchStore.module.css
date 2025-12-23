@@ -132,9 +132,6 @@
     overflow-y: scroll;
     padding-bottom: 2rem;
 }
-.storeListArea ul{
-    height: 100%;
-}
 .storeListItem{
     margin-inline: 1rem;
 }
