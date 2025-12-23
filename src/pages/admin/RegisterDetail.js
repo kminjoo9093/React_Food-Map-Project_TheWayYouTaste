@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styleStore from "../../css/StoreRegister.module.css";
 import styleNotice from "../../css/Notice.module.css";
+import serverUrl from "../../db/server.json";
 
 function RegisterDetail() {
   const location = useLocation();
   const navigate = useNavigate();
   const registerData = location.state;
+  const SERVER_URL = serverUrl.SERVER_URL;
 
   /* 승인/반려박스 관련 */
   const [isActionBoxOpen, setIsActionBoxOpen] = useState(false);
@@ -55,12 +57,12 @@ function RegisterDetail() {
     const initConveniences = registerData.amtySrvc ? JSON.parse(registerData.amtySrvc) : [];
     setConveniences(initConveniences);
 
-    const SERVER_BASE = "http://localhost:3001";
+
     if (registerData.bplcPhoto) {
-      setPreview(registerData.bplcPhoto.startsWith("http") ? registerData.bplcPhoto : `${SERVER_BASE}${registerData.bplcPhoto}`);
+      setPreview(registerData.bplcPhoto.startsWith("http") ? registerData.bplcPhoto : `${SERVER_URL}${registerData.bplcPhoto}`);
     }
     if (registerData.certPhoto) {
-      setVerifyPreview(registerData.certPhoto.startsWith("http") ? registerData.certPhoto : `${SERVER_BASE}${registerData.certPhoto}`);
+      setVerifyPreview(registerData.certPhoto.startsWith("http") ? registerData.certPhoto : `${SERVER_URL}${registerData.certPhoto}`);
     }
   }, [registerData]);
 
@@ -122,7 +124,7 @@ function RegisterDetail() {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/youtaste/register/${registerData.bplcSn}`,
+        `${SERVER_URL}/youtaste/register/${registerData.bplcSn}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

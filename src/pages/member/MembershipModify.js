@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import style from "../../css/MembershipModify.module.css"; 
+import serverUrl from "../../db/server.json"; 
 
 function MembershipModify() {
     const navigate = useNavigate();
-    
+    const SERVER_URL = serverUrl.SERVER_URL;
+
     // 1. 데이터 로드 (localStorage "user" 키 사용)
     const [user, setUser] = useState(() => {
         const saved = localStorage.getItem("user");
@@ -38,7 +40,7 @@ function MembershipModify() {
         if (!user || !user.userSn) return alert("로그인 정보가 없습니다.");
 
         try {
-            const res = await axios.put(`http://localhost:3001/membership/modify/${user.userSn}`, {
+            const res = await axios.put(`${SERVER_URL}/membership/modify/${user.userSn}`, {
                 ...user,
                 [field]: modifyData[field]
             });

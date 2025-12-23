@@ -158,6 +158,7 @@ function Header(){
                                     localStorage.removeItem("user"); // 로컬 스토리지에서 사용자 정보 삭제
                                     setIsLogin(false); // 로그인 상태 false로 변경
                                     setUser(null); // 사용자 정보 초기화
+                                    window.location.href = "/main";
                                 }}
                             >로그아웃</button>
                         )}

@@ -1,11 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import styleStore from "../../css/StoreRegister.module.css";
 import { useState, useRef } from "react";
-
+import serverURL from "../../db/server.json"
 function StoreRegister({ userSn }) {
   const navigate = useNavigate();
-  const SERVER_URL = "http://localhost:3001";
-  //const SERVER_URL = "http://192.168.0.11:3001";
+  const SERVER_URL = serverURL.SERVER_URL;
 
   /* 손님/사업자 선택 */
   const [registerType, setRegisterType] = useState(null);

@@ -6,31 +6,41 @@ import { GetStoreList } from "./GetStoreList";
 import RegionModal from "./RegionModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faCommentDots, faTrophy } from "@fortawesome/free-solid-svg-icons";
+import Pagination from "../Pagination";
+import serverUrl from "../../db/server.json";
 
 function StoreRegion({ storeCategories, sidoList }) {
+    const SERVER_URL = serverUrl.SERVER_URL;
+    const [nowPage, setNowPage] = useState(1);
+    const viewPeople = 5;
+    const lastMember = nowPage * viewPeople;
+    const firstMember = lastMember - viewPeople;
+  // const pendingMembers = members.filter(r => !r.prcsYn); 
+    const nowMembers = sidoList.slice(firstMember, lastMember);
+
     const [storeList, setStoreList] = useState([]);
     const [sortType, setSortType] = useState("avg"); 
     const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
     
-    // 지역 선택 코드 상태 (API 호출용)
+    // 지역 선택 코드 상태 
     const [selectedDo, setSelectedDo] = useState(null);
     const [selectedSi, setSelectedSi] = useState(null);
     const [selectedDong, setSelectedDong] = useState(null);
 
-    // 지역 선택 이름 상태 (UI 표시용)
+    // 지역 선택 이름 상태
     const [doName, setDoName] = useState("");
     const [siName, setSiName] = useState("");
     const [dongName, setDongName] = useState("");
 
     const [regionName, setRegionName] = useState("전체 지역");
 
-    // 1. 데이터 가져오기 (지역 코드가 바뀔 때마다 실행)
+    // 데이터 가져오기
     const fetchRankedData = useCallback(async () => {
-        let url = `http://localhost:3001/youtaste/search/store/all`;
+        let url = `${SERVER_URL}/youtaste/search/store/all`;
         
-        if (selectedDong) url = `http://localhost:3001/youtaste/search/store/dong?dongCd=${selectedDong}`;
-        else if (selectedSi) url = `http://localhost:3001/youtaste/search/store/sgg?sggCd=${selectedSi}`;
-        else if (selectedDo) url = `http://localhost:3001/youtaste/search/store/sido?sidoCd=${selectedDo}`;
+        if (selectedDong) url = `${SERVER_URL}/youtaste/search/store/dong?dongCd=${selectedDong}`;
+        else if (selectedSi) url = `${SERVER_URL}/youtaste/search/store/sgg?sggCd=${selectedSi}`;
+        else if (selectedDo) url = `${SERVER_URL}/youtaste/search/store/sido?sidoCd=${selectedDo}`;
 
         try {
             const list = await GetStoreList(url);
@@ -44,7 +54,7 @@ function StoreRegion({ storeCategories, sidoList }) {
         fetchRankedData();
     }, [fetchRankedData]);
 
-    // 2. 정렬 로직 (별점/리뷰순 + null 방어 코드)
+    // 정렬 로직 
     const sortedList = useMemo(() => {
         const list = [...storeList];
         if (sortType === "avg") {
@@ -55,9 +65,8 @@ function StoreRegion({ storeCategories, sidoList }) {
         return list;
     }, [storeList, sortType]);
 
-    // 3. 지역 확정 핸들러 (모달의 확인 버튼 클릭 시)
+    // 지역 확정 핸들러 
     const handleRegionConfirm = () => {
-        // 현재 저장된 doName, siName, dongName을 조합하여 버튼 텍스트 변경
         const combinedName = `${doName} ${siName} ${dongName}`.trim();
         setRegionName(combinedName || "전체 지역");
         setIsDimmedMiddleOpen(false);
@@ -147,6 +156,13 @@ function StoreRegion({ storeCategories, sidoList }) {
                     sidoList={sidoList}
                 />
             )}
+            <Pagination
+                nowPage={nowPage}
+                totalItems={sidoList.length}
+                itemsPerPage={viewPeople}
+                limitBlock={5}
+                onPageChange={setNowPage}
+            />
         </div>
     );
 }

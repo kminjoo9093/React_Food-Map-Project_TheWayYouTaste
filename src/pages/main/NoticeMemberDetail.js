@@ -1,7 +1,5 @@
 import { useLocation } from "react-router-dom";
-// import styleGlobal from "../../css/Global.module.css";
 import styleReport from "../../css/Report.module.css"
-import styleNotice from "../../css/Notice.module.css";
 
 function NoticeMemberDetail() {
   const location = useLocation();

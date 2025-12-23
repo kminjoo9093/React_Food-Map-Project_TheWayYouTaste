@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import styleGlobal from "../../css/Global.module.css";
 import styleReport from "../../css/Report.module.css";
+import serverUrl from "../../db/server.json";
 
 function NoticeWrite() {
   const navigate = useNavigate();
+  const SERVER_URL = serverUrl.SERVER_URL;
 
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
@@ -32,7 +33,7 @@ function NoticeWrite() {
     };
 
     try {
-      const res = await fetch("http://localhost:3001/youtaste/notice", {
+      const res = await fetch(`${SERVER_URL}/youtaste/notice`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
