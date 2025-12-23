@@ -15,6 +15,11 @@ function RegisterDetail({ setMemberNotices }) {
   const [actionReason, setActionReason] = useState("");
   const [noticeTitle, setNoticeTitle] = useState("");
   
+  /* 손님, 사업자 구분 */
+  const [registerType, setRegisterType] = useState(null);
+  const user = () => setRegisterType("USER");
+  const br = () => setRegisterType("BUSINESS");
+
   /* 사업자번호 API */
   const [brNo, setBrNo] = useState("");
   const [brResult, setBrResult] = useState(null);
@@ -102,6 +107,7 @@ const handleAddressSearch = async () => {
 
   /* 기본 정보 */
   const [owner, setOwner] = useState("");
+  const [openDate, setOpenDate] = useState("");
   const [openTime, setOpenTime] = useState("");
   const [closeTime, setCloseTime] = useState("");
   const [storeName, setStoreName] = useState("");
@@ -196,6 +202,7 @@ const handleAddressSearch = async () => {
     formData.append("openTime", openTime);
     formData.append("closeTime", closeTime);
     formData.append("category", Number(category));
+    formData.append("opdeDate",openDate);
 
     formData.append("convenience", JSON.stringify(conveniencePayload));
   
@@ -351,6 +358,12 @@ const handleAddressSearch = async () => {
                 />
               </div>
             </div>
+            {registerType === "BUSINESS" && (
+                <>
+                  <label htmlFor="openDate">개업일</label>
+                  <input className={styleStore.inputBox} type="date" value={openDate} onChange={(e) => setOpenDate(e.target.value)} id="openDate" />
+                </>
+              )}
 
             {/* 주소 */}
             <label>주소</label>
