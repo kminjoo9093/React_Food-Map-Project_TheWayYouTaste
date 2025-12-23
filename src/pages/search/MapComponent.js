@@ -8,7 +8,7 @@ import iconCategory from "../../resources/img/search/iconTag.svg";
 import styleMap from "../../css/Map.module.css";
 import serverUrl from "../../db/server.json"; 
 
-export default function MapComponent({ storeList, lat, lng, setIsMoved, isChangedRegion, setPositionArea, isSelectedAll }) {
+export default function MapComponent({ storeList, lat, lng, setIsMoved, isChangedRegion, setPositionArea, positionAreaRef, isSelectedAll }) {
     
     // 카카오 로더 설정
     useKakaoLoader({
@@ -17,7 +17,7 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
     });
 
     const [center, setCenter] = useState({
-        lat: lat || 37.5665,
+        lat: lat || 37.5665, 
         lng: lng || 126.9780
     });
     const SERVER_URL = serverUrl.SERVER_URL;
@@ -46,6 +46,7 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
     useEffect(() => {
         if (!storeList || storeList.length === 0) return;
         if (!isChangedRegion) return;
+        if (lat && lng) return;
 
 		// 1. 유효한 좌표를 가진 데이터만 필터링
 		const validStores = storeList.filter(
@@ -59,11 +60,16 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
         const avgLng = storeList.reduce((sum, s) => sum + (parseFloat(s.lot) || 0), 0) / storeList.length;
 
 		// avgLat이 0이거나 NaN이면 setCenter X
-		if (avgLat && avgLng && avgLat !== 0) {
-			setCenter({ lat: avgLat, lng: avgLng });
-		}
+		// if (avgLat && avgLng && avgLat !== 0) {
+		// 	setCenter({ lat: avgLat, lng: avgLng });
+		// }
 
-    }, [storeList, isChangedRegion, lat, lng]);
+        setCenter({ lat: avgLat, lng: avgLng });
+
+    }, [storeList, isChangedRegion]);
+
+    // ... return 문 안에서 조건부 렌더링
+    // if (center.lat === null) return <div>위치 정보를 불러오는 중입니다...</div>;
 
     return (
         <Map
@@ -75,16 +81,23 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                 const sw = bounds.getSouthWest();
                 const ne = bounds.getNorthEast();
 
+                positionAreaRef.current = {
+                    swMinLat: sw.getLat(),
+                    swMinLng: sw.getLng(),
+                    neMaxLat: ne.getLat(),
+                    neMaxLng: ne.getLng()
+                };
+
                 // 부모의 state를 업데이트할 때 이전 값과 비교하여 불필요한 리렌더링 방지
-                setPositionArea(prev => {
-                    if (prev.swMinLat === sw.getLat() && prev.neMaxLat === ne.getLat()) return prev;
-                    return {
-                        swMinLat: sw.getLat(),
-                        swMinLng: sw.getLng(),
-                        neMaxLat: ne.getLat(),
-                        neMaxLng: ne.getLng()
-                    };
-                });
+                // setPositionArea(prev => {
+                //     if (prev.swMinLat === sw.getLat() && prev.neMaxLat === ne.getLat()) return prev;
+                //     return {
+                //         swMinLat: sw.getLat(),
+                //         swMinLng: sw.getLng(),
+                //         neMaxLat: ne.getLat(),
+                //         neMaxLng: ne.getLng()
+                //     };
+                // });
                 setIsMoved(true);
             }}
         >

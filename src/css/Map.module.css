@@ -28,7 +28,7 @@
     height: 100%;
 }
 .infoImg{
-    min-width: 13rem;
+    max-width: 13rem;
     background-color: #ddd;
     object-fit: cover;
 }

@@ -17,7 +17,7 @@ const icons = [
 function MainPage({storeCategories, sidoList}) {
 
   const {regionState, regionSetters, getCurrentLocation} = useRegionSetting();
-  const { selectedDo, doName, selectedSi, siName, selectedDong, dongName } = regionState;
+  const { selectedDo, doName, selectedSi, siName, selectedDong, dongName, lat, lng, isLoading } = regionState;
   const [isModalOpen, setIsModalOpen] = useState(false); //지역 모달 오픈 상태
 
   const [selectedCategories, setSelectedCategories] = useState([]);//test
@@ -35,6 +35,8 @@ function MainPage({storeCategories, sidoList}) {
     if (doName) params.append("doName", String(doName).trim());
     if (siName) params.append("siName", String(siName).trim());
     if (dongName) params.append("dongName", String(dongName).trim());
+    if (lat) params.append("lat", lat); // 위도 추가
+    if (lng) params.append("lng", lng); // 경도 추가
 
     // 2. 선택된 카테고리들을 파라미터에 추가 (배열을 쉼표로 연결)
     if (selectedCategories.length > 0) {

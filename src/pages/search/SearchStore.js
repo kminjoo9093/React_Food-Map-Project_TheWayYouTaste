@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styleSearchStore from "../../css/SearchStore.module.css";
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import Pagination from "../Pagination";
 import RegionModal from "./RegionModal";
 import MapComponent from "./MapComponent";
@@ -12,7 +12,12 @@ import serverUrl from "../../db/server.json";
 
 function SearchStore({ storeCategories, sidoList }) {
 
-    console.log(sidoList);
+    const positionAreaRef = useRef({
+        swMinLat: 0,
+        swMinLng: 0,
+        neMaxLat: 0,
+        neMaxLng: 0
+    });
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -52,8 +57,17 @@ function SearchStore({ storeCategories, sidoList }) {
 
     useEffect(() => {
         const initLoad = async () => {
-
             const queryParams = new URLSearchParams(location.search);
+            //현재 위치
+            const paramLat = queryParams.get("lat");
+            const paramLng = queryParams.get("lng");
+
+            if (paramLat && paramLng) {
+                setLat(parseFloat(paramLat));
+                setLng(parseFloat(paramLng));
+            }
+
+            //지역 필터
             const sido = queryParams.get("sido");
             const sgg = queryParams.get("sgg");
             const dong = queryParams.get("dong");
@@ -61,8 +75,6 @@ function SearchStore({ storeCategories, sidoList }) {
             const paramDoName = queryParams.get("doName");
             const paramSiName = queryParams.get("siName");
             const paramDongName = queryParams.get("dongName");
-
-            const paramCategories = queryParams.get("categories");
 
             if(paramDongName){
                 setDongName(paramDongName);
@@ -74,14 +86,16 @@ function SearchStore({ storeCategories, sidoList }) {
                 setDoName(paramDoName);
             }
 
-            // 2. 카테고리 배열 생성 (상태 업데이트와 별개로 변수에 담기)
+            //카테고리
+            const paramCategories = queryParams.get("categories");
+
             let categoryArray = [];
             if (paramCategories) {
                 categoryArray = paramCategories.split(",");
                 setSelectedCategories(categoryArray); // UI 체크 표시용
             }
 
-            let list = [];
+            let list = []; //맛집 목록
 
             //키워드 검색
             if (keyword) { 
@@ -103,7 +117,16 @@ function SearchStore({ storeCategories, sidoList }) {
                     list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sido?sidoCd=${sido}`);
                     setSelectedDo(sido);
                 } 
+            } else {
+                getCurrentLocation(); 
+                //이미 선택된 지역명(doName)이나 리스트가 있다면 현재 위치로 초기화하지 않음
+                // if (doName !== "" || (storeListByRegion?.length > 0) ) {
+                //     //이름X, 파라미터X
+                //     return; 
+                // }
+                return;
             } 
+
             if(list.length > 0){
                 // 4. 원본 데이터 저장 (검색이나 초기화 시 사용될 기준 데이터)
                 setStoreListByRegion(list);
@@ -121,32 +144,7 @@ function SearchStore({ storeCategories, sidoList }) {
                 setFilteredStoreList(filteredResult);
                 setIsChangedRegion(true);
                 setNowPage(1); // 검색 시 페이지 번호 초기화
-            }else {
-                getCurrentLocation(); 
-                //이미 선택된 지역명(doName)이나 리스트가 있다면 현재 위치로 초기화하지 않음
-                // if (doName !== "" || (storeListByRegion?.length > 0) ) {
-                //     //이름X, 파라미터X
-                //     return; 
-                // }
-                return;
-            } 
-
-            // // 4. 원본 데이터 저장 (검색이나 초기화 시 사용될 기준 데이터)
-            // setStoreListByRegion(list);
-
-            // // 5. 필터링 로직 (list 변수 그대로 사용)
-            // let filteredResult = list; // 새 변수에 할당하여 명확하게 처리
-            // if (categoryArray.length > 0) {
-            //     console.log("필터링 적용 전 개수:", list.length);
-            //     filteredResult = list.filter(record => categoryArray.includes(record.storeCatName));
-            //     console.log("필터링 적용 후 개수:", filteredResult.length);
-            // }
-
-            
-            // // 6. 최종 결과 반영
-            // setFilteredStoreList(filteredResult);
-            // setIsChangedRegion(true);
-            // setNowPage(1); // 검색 시 페이지 번호 초기화
+            }
         };
         initLoad();
     }, [location.search, keyword, getCurrentLocation]); 
@@ -160,7 +158,7 @@ function SearchStore({ storeCategories, sidoList }) {
     // 범위 내 재검색 함수
     const displayViewPortMarkers = async (area) => {
         // area가 비어있는지 확인
-        if (!area.swMinLat || area.swMinLat === 0) return;
+        if (!area || area.swMinLat === 0) return;
         
         const { swMinLat, swMinLng, neMaxLat, neMaxLng } = area;
         if (swMinLat === 0) return; // 좌표가 0인 초기상태 방지
@@ -173,11 +171,12 @@ function SearchStore({ storeCategories, sidoList }) {
             setStoreListByRegion(list);
 
             // 카테고리 필터가 있는 경우 적용 
-            if (selectedCategories.length > 0) {
-                list = list.filter(record => selectedCategories.includes(record.storeCatName));
+            let filteredResult = list;
+            if (selectedCategories && selectedCategories.length > 0) {
+                filteredResult = list.filter(record => selectedCategories.includes(record.storeCatName));
             }
 
-            setFilteredStoreList(list);
+            setFilteredStoreList(filteredResult);
             setIsMoved(false); // 재검색 후 버튼 비활성화
             setNowPage(1);
         } catch (error) {
@@ -199,14 +198,6 @@ function SearchStore({ storeCategories, sidoList }) {
 
         setIsResetFilter(false);
     }
-
-    // // 카테고리 클릭 핸들러
-    // const onSelectCategory = (categoryName) => {
-    //     setIsResetFilter(false);
-    //     setSelectedCategories(prev => 
-    //         prev.includes(categoryName) ? prev.filter(c => c !== categoryName) : [...prev, categoryName]
-    //     );
-    // };
 
     // 검색 버튼 클릭 (카테고리 필터 적용)
     const onClickSearchBtn = () => {
@@ -282,19 +273,6 @@ function SearchStore({ storeCategories, sidoList }) {
                             setSelectedCategories={setSelectedCategories}
                             setIsResetFilter={setIsResetFilter}
                         />
-                        {/* <ul className={styleSearchStore.categoryList}>
-                            {storeCategories.map(record => (
-                                <li key={record.StoreCatNo}>
-                                    <button 
-                                        className={selectedCategories.includes(record.storeCatName) ? styleSearchStore.active : ""} 
-                                        onClick={() => onSelectCategory(record.storeCatName)}
-                                    >
-                                        <i className={styleSearchStore.categoryEmoji}>{foodIcons[record.storeCatName]}</i>
-                                        {record.storeCatName}
-                                    </button>
-                                </li>
-                            ))}
-                        </ul> */}
                     </div>
                     <div className={styleSearchStore.filterBottomArea}>
                         <div className={styleSearchStore.btnWrap}>
@@ -305,31 +283,42 @@ function SearchStore({ storeCategories, sidoList }) {
                 </div>
 
                 <div className={styleSearchStore.storeListArea}>
-                    <ul className={styleSearchStore.storeList}>
-                        {viewStoreItems.map(record => (
-                            <li key={record.bplcSn} className={styleSearchStore.storeListItem}>
-                                <Link to={`/search/storeDetail?storeId=${record.bplcSn}`} className={styleSearchStore.storeListLink}>
-                                    <img className={styleSearchStore.storeImg} src={`${SERVER_URL}/uploads/store/${record.bplcPhoto}`} alt="store" />
-                                    <div className={styleSearchStore.storeInfo}>
-                                        <h2 className={styleSearchStore.storeName}>{record.bplcNm}</h2>
-                                        <div>
-                                            <span className={styleSearchStore.storeRating}>{record.avg}</span>
-                                            <span className={styleSearchStore.storeCategory}>{record.storeCatName}</span>
-                                        </div>
-                                        <span className={styleSearchStore.storeTime}><em>영업시간</em>{record.bgngTm}-{record.ddlnTm}</span>
-                                        <span className={styleSearchStore.storeAddress}><em>주소</em>{record.address}</span>
-                                    </div>
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                    <Pagination
-                        nowPage={nowPage}
-                        totalItems={finalStoreListWithId.length}
-                        itemsPerPage={viewListItemNum}
-                        limitBlock={5}
-                        onPageChange={setNowPage}
-                    />
+                    {viewStoreItems.length > 0 ? (
+                        <>
+                            <ul className={styleSearchStore.storeList}>
+                                {
+                                    viewStoreItems.map(record => (
+                                    <li key={record.bplcSn} className={styleSearchStore.storeListItem}>
+                                        <Link to={`/search/storeDetail?storeId=${record.bplcSn}`} className={styleSearchStore.storeListLink}>
+                                            <img className={styleSearchStore.storeImg} src={`${SERVER_URL}/uploads/store/${record.bplcPhoto}`} alt="store" />
+                                            <div className={styleSearchStore.storeInfo}>
+                                                <h2 className={styleSearchStore.storeName}>{record.bplcNm}</h2>
+                                                <div>
+                                                    <span className={styleSearchStore.storeRating}>{record.avg}</span>
+                                                    <span className={styleSearchStore.storeCategory}>{record.storeCatName}</span>
+                                                </div>
+                                                <span className={styleSearchStore.storeTime}><em>영업시간</em>{record.bgngTm}-{record.ddlnTm}</span>
+                                                <span className={styleSearchStore.storeAddress}><em>주소</em>{record.address}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                    ))
+                                }
+                            </ul>
+                            <Pagination
+                                nowPage={nowPage}
+                                totalItems={finalStoreListWithId.length}
+                                itemsPerPage={viewListItemNum}
+                                limitBlock={5}
+                                onPageChange={setNowPage}
+                            />
+                        </>
+                        ) : (
+                            <div className={styleSearchStore.noData}>
+                                조회된 맛집이 없습니다.
+                            </div>
+                    )}
+                    
                 </div>
             </div>
 
@@ -337,7 +326,7 @@ function SearchStore({ storeCategories, sidoList }) {
                 {/* 버튼 클릭 시 displayViewPortMarkers 호출 */}
                 <button 
                     className={`${styleSearchStore.btnSearchArea} ${isMoved ? styleSearchStore.active : ""}`} 
-                    onClick={() => displayViewPortMarkers(positionArea)}
+                    onClick={() => displayViewPortMarkers(positionAreaRef.current)}
                 >
                     범위 내 재검색
                 </button>
@@ -347,6 +336,7 @@ function SearchStore({ storeCategories, sidoList }) {
                     setIsMoved={setIsMoved}
                     isChangedRegion={isChangedRegion} 
                     setPositionArea={setPositionArea}
+                    positionAreaRef={positionAreaRef} 
                     isSelectedAll={isSelectedAll}
                 />
             </div>
