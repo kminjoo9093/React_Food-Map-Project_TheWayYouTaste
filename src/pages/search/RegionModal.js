@@ -10,7 +10,7 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
     const [dongList, setDongList] = useState([]);
 
     //시도 리스트 받아오기
-    const sidoData = sidoList;
+    const sidoData = sidoList || [];
     let newSidoList = sidoData.map(record => {
         return {"id" : record.sidoCd, ...record}
     });
@@ -66,12 +66,12 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
         console.log("선택된 동 코드 :" , selectedDong);
     }, [selectedDong]);
 
+
+    //초기 사용자 위치 시도, 시군구 미리 선택, 중앙 위치
+
+
+
     function handleSelectDo(sidoCd, sidoNm){
-        // if(sidoCd == null){
-        //     setIsSelectedAll(true);
-        // } else {
-        //     setIsSelectedAll(false);
-        // }
         setSelectedDo(sidoCd);
         setDoName(sidoNm || "");
         setSelectedSi(null);
@@ -81,11 +81,6 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
     }
 
     function handleSelectSi(sggCd, siName){
-        // if(sggCd == null){
-        //     setIsSelectedAll(true);
-        // } else {
-        //     setIsSelectedAll(false);
-        // }
         setSelectedSi(sggCd);
         setSiName(siName || "");
         setSelectedDong(null);
@@ -116,7 +111,7 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
                                     <li className={`${styleRegionModal.regionItem} 
                                                     ${selectedDo === null ? styleRegionModal.activeItem : ""}`} 
                                         onClick={()=>handleSelectDo(null)}>전체</li>
-                                    {
+                                    {newSidoList && 
                                         newSidoList.map(record => (
                                             <li key={record.id} 
                                                 className={`${styleRegionModal.regionItem}
@@ -141,7 +136,7 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
                                     <li className={`${styleRegionModal.regionItem} 
                                                     ${selectedSi === null ? styleRegionModal.activeItem : ""}`} 
                                         onClick={()=>handleSelectSi(null)}>전체</li>
-                                    {
+                                    {sggList &&
                                         sggList.map(record => (
                                             <li key={record.id} 
                                                 className={`${styleRegionModal.regionItem}
@@ -168,7 +163,7 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
                                     <li className={`${styleRegionModal.regionItem} 
                                                     ${selectedDong === null ? styleRegionModal.activeItem : ""}`} 
                                         onClick={()=>handleSelectDong(null)}>전체</li>
-                                    {
+                                    {dongList &&
                                         dongList.map(record => (
                                         <li key={record.id} 
                                             className={`${styleRegionModal.regionItem}
