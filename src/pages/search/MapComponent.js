@@ -6,10 +6,6 @@ import { Link } from "react-router-dom";
 import iconStar from "../../resources/img/search/iconStar.svg";
 import iconCategory from "../../resources/img/search/iconTag.svg";
 import styleMap from "../../css/Map.module.css";
-import styleSearchStore from "../../css/SearchStore.module.css";
-import { GetStoreList } from "./GetStoreList";
-import markerStar from "../../resources/img/search/markerStar.png";
-import { width } from "@fortawesome/free-solid-svg-icons/fa0";
 
 export default function MapComponent({ storeList, lat, lng, setIsMoved, isChangedRegion, setPositionArea, isSelectedAll }) {
     
@@ -56,7 +52,6 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
 		);
 
 		if (validStores.length === 0) return;
-		//============================================
 
         // API 데이터의 키값 확인: lat, lot (로그 기준)
         const avgLat = storeList.reduce((sum, s) => sum + (parseFloat(s.lat) || 0), 0) / storeList.length;

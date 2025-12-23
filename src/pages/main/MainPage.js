@@ -1,11 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styleMain from "../../css/MainPage.module.css";
 // import styleGlobal from "../../css/Global.module.css";
 import { useState, useEffect } from 'react';
 import mainbody from "../../resources/img/system/main.png";
-import useRegionFilter from '../search/hook/useRegionFilter';
+import useRegionSetting from '../search/hook/useRegionSetting';
 import RegionModal from "../search/RegionModal"; 
-import styleSearchStore from "../../css/SearchStore.module.css";
 
 
 const foodIcons = [
@@ -26,15 +25,14 @@ const icons = [
 ];
 
 function MainPage({sidoList}) {
-  const navigate = useNavigate(); // 4. navigate 정의
-  const {regionState, regionSetters, getCurrentLocation} = useRegionFilter();
+
+  const {regionState, regionSetters, getCurrentLocation} = useRegionSetting();
   const { selectedDo, doName, selectedSi, siName, selectedDong, dongName } = regionState;
   const [isModalOpen, setIsModalOpen] = useState(false); //지역 모달 오픈 상태
 
   useEffect(() => { getCurrentLocation(); }, [getCurrentLocation]);
 
   const getSearchPath = () => {
-    //const { selectedDo, selectedSi, selectedDong } = regionState;
     
     // 1. 주소창에 붙일 파라미터 생성
     const params = new URLSearchParams();
@@ -42,9 +40,8 @@ function MainPage({sidoList}) {
     if (selectedSi) params.append("sgg", String(selectedSi).trim());
     if (selectedDong) params.append("dong", String(selectedDong).trim());
 
-    // 2. 검색 페이지로 이동 (예: /search?sido=11&sgg=11060)
+    // 2. 검색 페이지로 이동
     return `/search/store?${params.toString()}`;
-    //navigate(`/search/store?${params.toString()}`);
   };
 
   return (
@@ -74,7 +71,6 @@ function MainPage({sidoList}) {
                     setIsModalOpen={setIsModalOpen}
                     {...regionState}
                     {...regionSetters}
-                    //onclick={onConfirm}
                     onConfirm={() => setIsModalOpen(false)}
                     sidoList={sidoList}
                 />

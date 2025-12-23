@@ -6,7 +6,7 @@ import RegionModal from "./RegionModal";
 import MapComponent from "./MapComponent";
 import { GetStoreList } from "./GetStoreList";
 import styleMain from "../../css/MainPage.module.css";
-import useRegionFilter from "./hook/useRegionFilter";
+import useRegionSetting from "./hook/useRegionSetting";
 
 function SearchStore({ storeCategories, sidoList }) {
     const location = useLocation();
@@ -15,8 +15,8 @@ function SearchStore({ storeCategories, sidoList }) {
     const keyword = queryParams.get("keyword");
 
 
-    // 1. 커스텀 훅 도입 (기존에 직접 선언했던 지역 관련 useState들을 모두 대체합니다)
-    const { regionState, regionSetters, getCurrentLocation } = useRegionFilter();
+    // 커스텀 훅 도입 
+    const { regionState, regionSetters, getCurrentLocation } = useRegionSetting();
     const { selectedDo, doName, selectedSi, siName, selectedDong, dongName, lat, lng, storeList } = regionState;
     const { setSelectedDo, setDoName, setSelectedSi, setSiName, setSelectedDong, setDongName, setLat, setLng } = regionSetters;
 
@@ -32,20 +32,8 @@ function SearchStore({ storeCategories, sidoList }) {
         swMinLat: 0, swMinLng: 0, neMaxLat: 0, neMaxLng: 0
     });
 
-    // 지역 및 위치 상태
-    //const [lat, setLat] = useState(37.5665); //서울로 바꾸기
-    //const [lng, setLng] = useState(126.9780);
-
-
-    //const [selectedDo, setSelectedDo] = useState(null); //code
-    //const [doName, setDoName] = useState("");
-    //const [selectedSi, setSelectedSi] = useState(null); //code
-    //const [siName, setSiName] = useState("");
-    //const [selectedDong, setSelectedDong] = useState(null); //code
-    //const [dongName, setDongName] = useState("");
     const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
     const [isSelectedAll, setIsSelectedAll] = useState(false);
-
     const [isResetFilter, setIsResetFilter] = useState(false);
 
     const foodIcons = {
@@ -59,52 +47,16 @@ function SearchStore({ storeCategories, sidoList }) {
         ,"디저트": "🍩"
     }
 
-    // useEffect(() => { 
-    //     const list = getCurrentLocation(); 
-
-    //     setStoreListByRegion(list);
-    //     setFilteredStoreList(list);
-    //     //setSelectedDo(currentSidoCode);
-    //     //setSelectedSi(currentSggCode);
-    // }, [getCurrentLocation]);
-
+    // 현재 위치 기반 초기 로드
+    // 훅 내부의 storeList가 변경될 때마다 반영
     useEffect(() => {
-    if (storeList && storeList.length > 0) {
-        setStoreListByRegion(storeList);
-        setFilteredStoreList(storeList);
-    }
-    }, [storeList]); // 훅 내부의 storeList가 변경될 때마다 반영
+        if (storeList && storeList.length > 0) {
+            setStoreListByRegion(storeList);
+            setFilteredStoreList(storeList);
+        }
+    }, [storeList]); 
 
     const LOCAL_API_KEY = "bd23a565a07fd608d593c2c99d192e8f";
-
-    // 현재 위치 기반 초기 로드
-    // const getCurrentLocation = useCallback(async () => {
-    //     if (navigator.geolocation) {
-    //         navigator.geolocation.getCurrentPosition(async (position) => {
-    //             const { latitude, longitude } = position.coords;
-    //             setLat(latitude);
-    //             setLng(longitude);
-
-    //             let localUrl = `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${longitude}&y=${latitude}`;
-    //             const headers = { Authorization: `KakaoAK ${LOCAL_API_KEY}` };
-
-    //             try {
-    //                 const response = await fetch(localUrl, { headers });
-    //                 const data = await response.json();
-    //                 const currentSggCode = data.documents[0].code.slice(0, 5);
-    //                 const currentSidoCode = currentSggCode.slice(0, 2);
-
-    //                 const listBySgg = await GetStoreList(`http://localhost:3001/youtaste/search/store/sgg?sggCd=${currentSggCode}`);
-    //                 setStoreListByRegion(listBySgg);
-    //                 setFilteredStoreList(listBySgg);
-    //                 setSelectedDo(currentSidoCode);
-    //                 setSelectedSi(currentSggCode);
-    //             } catch (error) {
-    //                 console.error('위치 정보 로드 실패: ', error);
-    //             }
-    //         });
-    //     }
-    // }, []);
 
     // 초기 진입 및 검색어 처리
     useEffect(() => {
@@ -139,7 +91,7 @@ function SearchStore({ storeCategories, sidoList }) {
                 return;
             } 
 
-            // 3. 결과 반영
+            // 결과 반영
             setStoreListByRegion(list);
             setFilteredStoreList(list);
 
@@ -156,7 +108,7 @@ function SearchStore({ storeCategories, sidoList }) {
 
     // 범위 내 재검색 함수
     const displayViewPortMarkers = async (area) => {
-        // 1. area가 비어있는지 확인
+        // area가 비어있는지 확인
         if (!area.swMinLat || area.swMinLat === 0) return;
         
         const { swMinLat, swMinLng, neMaxLat, neMaxLng } = area;
@@ -166,7 +118,7 @@ function SearchStore({ storeCategories, sidoList }) {
             const url = `http://localhost:3001/youtaste/search/store/position?swMinLat=${swMinLat}&neMaxLat=${neMaxLat}&swMinLng=${swMinLng}&neMaxLng=${neMaxLng}`;
             let list = await GetStoreList(url);
 
-            // 4. 원본 리스트와 필터 리스트를 동시에 업데이트
+            // 원본 리스트와 필터 리스트를 동시에 업데이트
             setStoreListByRegion(list);
 
             // 카테고리 필터가 있는 경우 적용 
@@ -224,8 +176,9 @@ function SearchStore({ storeCategories, sidoList }) {
         }
 
         setNowPage(1);
-
         setIsResetFilter(false);
+        // URL 파라미터 제거
+        navigate("/search/store", { replace: true });
     };
 
     //필터 초기화
@@ -246,7 +199,7 @@ function SearchStore({ storeCategories, sidoList }) {
         setIsMoved(false);
         setIsResetFilter(true);
         setIsSelectedAll(false);
-        setIsChangedRegion(false); //test
+        setIsChangedRegion(false); 
     };
 
     // 페이지네이션
