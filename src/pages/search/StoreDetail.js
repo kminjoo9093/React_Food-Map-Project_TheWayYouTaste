@@ -1,166 +1,242 @@
 import React, { useState, useEffect } from "react";
-import { Link, useSearchParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useSearchParams, useNavigate } from "react-router-dom";
+import starFill from "../../resources/img/search/iconStarFill.svg";
+import starHalf from "../../resources/img/search/iconStarHalf.svg";
 import ReviewRegister from "../../pages/review/ReviewRegister";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import styleStoreDetail from "../../css/StoreDetail.module.css";
 import { GetStoreList } from "./GetStoreList";
 
-function StoreDetail() {
+function StoreDetail({ storeList }) {
     const REVIEWS_PER_PAGE = 5;
     const navigate = useNavigate();
+    
+    /* 리뷰작성시 로그인여부 확인 */
+    const [user, setUser] = useState(null); // 로그인 사용자 정보
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
+    const [isInitialized, setIsInitialized] = useState(false); // 초기화
+
+    useEffect(() => {
+        // 로컬 스토리지에서 사용자 정보 가져오기
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            setUser(JSON.parse(storedUser)); // 사용자 정보가 있다면 상태에 저장
+            setIsLoggedIn(true); // 로그인 상태로 설정
+        }
+        setIsInitialized(true);
+    }, []);
+
     const [searchParams] = useSearchParams();
     const storeId = searchParams.get("storeId");
-
-    const [user, setUser] = useState(null);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [storeData, setStoreData] = useState(null);
+    const [storeData, setStoreData] = useState({});
+    
     const [isOpen, setIsOpen] = useState(false);
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-            const parsedUser = JSON.parse(storedUser);
-            setUser(parsedUser);
-            setIsLoggedIn(true);
-        }
-    }, []);
-
-    useEffect(() => {
         async function getStoreData() {
-            try {
-                let storeInfo = await GetStoreList(`http://localhost:3001/youtaste/search/store/detail?storeId=${storeId}`);
-                if (storeInfo && (storeInfo.status || storeInfo.error)) {
-                    setStoreData(null);
-                } else {
-                    setStoreData(storeInfo);
-                }
-            } catch (err) {
-                setStoreData(null);
-            }
+            // 음식점 데이터 (3001 포트)
+            let storeInfo = await GetStoreList(`http://localhost:3001/youtaste/search/store/detail?storeId=${storeId}`);
+            setStoreData(storeInfo);
         }
-        if (storeId) getStoreData();
+        getStoreData();
     }, [storeId]);
 
-    useEffect(() => {
-        if (!storeId) return;
-        setLoading(true);
-        fetch(`http://localhost:3001/api/reviews/${storeId}`)
-            .then(res => res.json())
-            .then(data => {
-                setReviews(Array.isArray(data) ? data : []);
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error("리뷰 로드 실패", err);
-                setLoading(false);
-            });
-    }, [storeId]);
+    function formatNumber(number) {
+        if (!number) return "0원";
+        const parsedPrice = number.toLocaleString("ko-KR") + "원"; 
+        return parsedPrice;
+    }
 
-    const formatNumber = (number) => {
-        const n = Number(number);
-        return isNaN(n) ? "0원" : n.toLocaleString("ko-KR") + "원";
-    };
+    function showStoreImage(image) {
+        return null;
+    }
 
-    const showAmtyServices = (services) => {
-        if (!services || !Array.isArray(services) || services.length === 0) return null;
+    function showAmtyServices(services) {
+        if (!services || !Array.isArray(services)) {
+            return null; 
+        }
+
+        let serviceType = "";
         return services.map((item, index) => {
-            let serviceType = "";
             switch (item) {
                 case "parking": serviceType = "주차 가능"; break;
                 case "pet": serviceType = "애완동물 동반"; break;
                 case "takeout": serviceType = "포장 가능"; break;
-                default: serviceType = item; break;
+                default: serviceType = ""; break;
             }
             return (
                 <span key={index} className={styleStoreDetail[item]}>
-                    <i className={styleStoreDetail.serviceIcon}></i> {serviceType}
+                    <i className={styleStoreDetail.serviceIcon}></i>
+                    {serviceType}
                 </span>
             );
         });
-    };
-
-    const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
-
-    // --- 내부 컴포넌트: 별점 뷰 ---
-    const StarRatingView = ({ rating, starSize = "1.5rem", starBoxSize = "2rem", marginRight = "-0.3rem" }) => {
-        const validRating = Number(rating) || 0;
-        return (
-            <div style={{ display: "flex", alignItems: "center" }}>
-                {Array.from({ length: 5 }).map((_, index) => {
-                    const fillPercentage = Math.min(Math.max((validRating - index) * 100, 0), 100);
-                    return (
-                        <div key={index} style={{ position: "relative", width: starBoxSize, height: starBoxSize, marginRight }}>
-                            <FontAwesomeIcon icon={faStar} style={{ color: "#ccc", fontSize: starSize }} />
-                            <div style={{ width: `${fillPercentage}%`, overflow: "hidden", position: "absolute", top: 0, left: 0 }}>
-                                <FontAwesomeIcon icon={faStar} style={{ color: "#ffc107", fontSize: starSize }} />
-                            </div>
-                        </div>
-                    );
-                })}
-                <span style={{ marginLeft: "8px", fontWeight: "bold" }}>{validRating.toFixed(1)}</span>
-            </div>
-        );
-    };
-
-    // --- 내부 컴포넌트: 리뷰 아이템 (좋아요 포함) ---
-    const ReviewItem = ({ review }) => {
-        const [likes, setLikes] = useState(review.likeSum || 0);
-        const [isLiked, setIsLiked] = useState(false);
-
-        useEffect(() => {
-            if (user?.userSn) {
-                fetch(`http://localhost:3001/api/review/${review.evlSn}/likes/${user.userSn}/status`)
-                    .then(res => res.json())
-                    .then(data => setIsLiked(data));
-            }
-        }, [review.evlSn, user]);
-
-        const toggleLike = () => {
-            if (!isLoggedIn) { alert("로그인이 필요합니다."); navigate("/login"); return; }
-            const nextStatus = !isLiked;
-            fetch(`http://localhost:3001/api/review/${review.evlSn}/likes/${user.userSn}/toggle`, { method: 'POST' })
-                .then(() => {
-                    setLikes(prev => nextStatus ? prev + 1 : prev - 1);
-                    setIsLiked(nextStatus);
-                });
-        };
-
-        return (
-            <li className={styleStoreDetail.reviewItemRow}>
-                <div className={styleStoreDetail.reviewHeader}>
-                    <strong>{review.nickname}</strong>
-                    <div className={styleStoreDetail.reviewMeta}>
-                        <StarRatingView rating={review.evlScr} starSize="1.2rem" starBoxSize="1.5rem" />
-                        <span className={styleStoreDetail.divider}>│</span>
-                        <small>{review.evlYmd}</small>
-                        <button onClick={toggleLike} className={`${styleStoreDetail.likeBtn} ${isLiked ? styleStoreDetail.liked : ""}`}>
-                            <FontAwesomeIcon icon={faThumbsUp} /> {likes}
-                        </button>
-                    </div>
-                </div>
-                <div className={styleStoreDetail.reviewImages}>
-                    {[review.evlPhoto1, review.evlPhoto2, review.evlPhoto3].map((img, i) => 
-                        img && <img key={i} src={`http://localhost:3001/uploads/review/${img}`} alt="리뷰사진" />
-                    )}
-                </div>
-                <p className={styleStoreDetail.reviewContent}>{review.evlCn}</p>
-            </li>
-        );
-    };
-
-    // 데이터 로딩 중
-    if (!storeData || !storeData.bplcNm) {
-        return <div className='contentTopPosition'>정보를 불러오는 중입니다...</div>;
     }
+
+    useEffect(() => {
+        if (!storeId) return;
+        fetch(`http://localhost:3001/api/reviews/${storeId}`)
+            .then(res => {
+                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                return res.json();
+            })
+            .then(data => {
+                setReviews(data);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error("리뷰 불러오기 실패:", err);
+                setLoading(false);
+            });
+    }, [storeId]);
 
     const indexOfLast = currentPage * REVIEWS_PER_PAGE;
     const indexOfFirst = indexOfLast - REVIEWS_PER_PAGE;
     const currentReviews = reviews.slice(indexOfFirst, indexOfLast);
     const totalPages = Math.ceil(reviews.length / REVIEWS_PER_PAGE);
+
+    const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+
+    const StarRatingView = ({ rating }) => {
+        const stars = 5;
+        return (
+            <div style={{ display: "flex", alignItems: "center" }}>
+                {Array.from({ length: stars }).map((_, index) => {
+                    const fillPercentage = Math.min(Math.max((rating - index) * 100, 0), 100);
+                    return (
+                        <div
+                            key={index}
+                            style={{ position: "relative", width: "2rem", height: "2rem", marginRight: "-0.3rem" }}
+                        >
+                            <FontAwesomeIcon icon={faStar} style={{ color: "#ccc" }} />
+                            <div
+                                style={{
+                                    width: `${fillPercentage}%`,
+                                    overflow: "hidden",
+                                    position: "absolute",
+                                    top: 0,
+                                    left: 0,
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faStar} style={{ color: "#ffc107" }} />
+                            </div>
+                        </div>
+                    );
+                })}
+                <span style={{ marginLeft: "8px", fontSize: "1.5rem", fontWeight: "bold", color: "#333" }}>
+                    {rating ? rating.toFixed(1) : "0.0"}
+                </span>
+            </div>
+        );
+    };
+
+    // ===== 리뷰 항목 컴포넌트 (좋아요 로직 포함) =====
+    const ReviewItem = ({ review }) => {
+        const { evlSn, evlScr, evlCn, evlYmd, evlPhoto1, evlPhoto2, evlPhoto3, likeSum, nickname } = review;
+        
+        const [likes, setLikes] = useState(likeSum || 0);
+        const [isLiked, setIsLiked] = useState(false);
+
+        // 추가된 부분: 페이지 로드 시 좋아요 상태 및 최신 개수 가져오기
+        useEffect(() => {
+            // 1. 최신 좋아요 개수 가져오기
+            fetch(`http://localhost:3001/api/review/${evlSn}/likes/count`)
+                .then(res => res.json())
+                .then(data => setLikes(data))
+                .catch(err => console.error("좋아요 개수 조회 실패:", err));
+
+            // 2. 내가 좋아요를 눌렀는지 상태 확인 (로그인 시에만)
+            if (user && user.userSn) {
+                fetch(`http://localhost:3001/api/review/${evlSn}/likes/${user.userSn}/status`)
+                    .then(res => res.json())
+                    .then(data => setIsLiked(data))
+                    .catch(err => console.error("좋아요 상태 조회 실패:", err));
+            }
+        }, [evlSn, user]);
+
+        const toggleLike = () => {
+            if (!user || !user.userSn) {
+                alert("로그인이 필요합니다.");
+                navigate("/login");
+                return;
+            }
+
+            const nextStatus = !isLiked;
+            
+            fetch(`http://localhost:3001/api/review/${evlSn}/likes/${user.userSn}/toggle`, {
+                method: 'POST'
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("좋아요 실패");
+                return res.text();
+            })
+            .then(message => {
+                setLikes(prev => nextStatus ? prev + 1 : prev - 1);
+                setIsLiked(nextStatus);
+            })
+            .catch(err => console.error("좋아요 통신 에러:", err));
+        };
+
+        return (
+            <li style={{ borderBottom: "1px solid #eee", paddingBottom: "20px", marginBottom: "20px", listStyle: "none" }}>
+                <div>
+                    <strong style={{display: "block"}}>{nickname}</strong>
+                    <div className={styleStoreDetail.reviewBox}>
+                        <div style={{display : "flex", alignItems : "center"}}>
+                            <StarRatingView rating={evlScr} />
+                            <span style={{margin: "0 10px", color: "#ccc"}}>│</span>
+                            <small>{evlYmd}</small>
+                        </div>
+                        <button 
+                            onClick={toggleLike}
+                            style={{
+                                cursor: "pointer",
+                                border: "1px solid #ddd",
+                                borderRadius: "15px",
+                                padding: "5px 15px",
+                                backgroundColor: isLiked ? "#ff4757" : "#fff",
+                                color: isLiked ? "#fff" : "#333",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "5px",
+                                transition: "all 0.2s"
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faThumbsUp} />
+                            {likes}
+                        </button>
+                    </div>
+                </div>
+
+                <div className={styleStoreDetail.reviewImages}>
+                    {evlPhoto1 && <img src={`http://localhost:3001/uploads/review/${evlPhoto1}`} alt="사진 1" />}
+                    {evlPhoto2 && <img src={`http://localhost:3001/uploads/review/${evlPhoto2}`} alt="사진 2" />}
+                    {evlPhoto3 && <img src={`http://localhost:3001/uploads/review/${evlPhoto3}`} alt="사진 3" />}
+                </div>
+                <p>{evlCn}</p>
+            </li>
+        );
+    };
+
+    const ReviewList = ({ reviews, loading }) => {
+        if (loading) return <p>로딩 중...</p>;
+        if (reviews.length === 0) return <p>등록된 리뷰가 없습니다.</p>;
+        return (
+            <ul className={styleStoreDetail.reviewList} style={{ padding: 0 }}>
+                {reviews.map((review) => (
+                    <ReviewItem key={review.evlSn} review={review} />
+                ))}
+            </ul>
+        );
+    };
+
+    if (!storeData.bplcNm) {
+        return <div className='contentTopPosition'>정보를 불러오는 중입니다...</div>;
+    }
 
     return (
         <div className='contentTopPosition'>
@@ -169,64 +245,99 @@ function StoreDetail() {
                     <div className={`${styleStoreDetail.storeInfoWrap} contentBox`}>
                         <div className={styleStoreDetail.storeNameWrap}>
                             <h2 className={styleStoreDetail.storeName}>{storeData.bplcNm}</h2>
-                            <span className={styleStoreDetail.categoryBadge}>{storeData.storeCatName}</span>
+                            <span>{storeData.storeCatName}</span>
                         </div>
                         <ul className={styleStoreDetail.detailInfoList}>
                             <li className={styleStoreDetail.ratingAvgWrap}>
-                                <StarRatingView rating={storeData.avg} starSize="3rem" starBoxSize="3.5rem" marginRight="0rem" />
+                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
+                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
+                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
+                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
+                                <img src={starHalf} className={styleStoreDetail.ratingStarImg} alt="star" />
+                                <em className={styleStoreDetail.ratingAvg}>4.5</em>
                             </li>
-                            <li><em className={styleStoreDetail.detailTitle}>영업시간</em> {storeData.bgngTm} - {storeData.ddlnTm}</li>
-                            <li>
+                            <li className={styleStoreDetail.time}>
+                                <em className={styleStoreDetail.detailTitle}>영업시간</em>
+                                {storeData.bgngTm} - {storeData.ddlnTm}
+                            </li>
+                            <li className={styleStoreDetail.tel}>
                                 <em className={styleStoreDetail.detailTitle}>전화번호</em>
-                                {storeData.tel ? <a href={`tel:${storeData.tel}`}>{storeData.tel}</a> : "정보 없음"}
+                                <a href={`tel:${storeData.tel}`} className={styleStoreDetail.telNumber}>{storeData.tel}</a>
                             </li>
-                            <li><em className={styleStoreDetail.detailTitle}>주소</em> {storeData.address}</li>
-                            <li className={styleStoreDetail.serviceTypes}>{showAmtyServices(storeData.amenity)}</li>
+                            <li className={styleStoreDetail.address}>
+                                <em className={styleStoreDetail.detailTitle}>주소</em>
+                                {storeData.address}
+                            </li>
+                            <li className={styleStoreDetail.serviceTypes}>
+                                {showAmtyServices(storeData.amenity)}
+                            </li>
                         </ul>
                         <div className={styleStoreDetail.linkWrap}>
-                            <button className={styleStoreDetail.linkWriteReview} onClick={() => isLoggedIn ? setIsOpen(true) : navigate("/login")}>리뷰 작성</button>
-                            <Link to={`/store/report/${user?.userSn || ''}`} className={styleStoreDetail.linkReportStore}>신고</Link>
+                            <button
+                                className={styleStoreDetail.linkWriteReview}
+                                onClick={() => {
+                                    if (isLoggedIn) {
+                                        setIsOpen(true);
+                                    } else {
+                                        navigate("/login", { replace: true });
+                                    }
+                                }}
+                            >
+                                리뷰 작성
+                            </button>
+                            <Link to="/store/report/:userSn" className={styleStoreDetail.linkReportStore}>신고</Link>
                         </div>
                     </div>
                     <div className={`${styleStoreDetail.storeImageWrap} contentBox`}>
-                        <img src={storeData.bplcPhoto ? `http://localhost:3001/uploads/${storeData.bplcPhoto}` : "/default-img.jpg"} alt="store" />
+                        {showStoreImage(storeData.bplcPhoto)}
+                    </div>
+                    <div className={`${styleStoreDetail.storeMenuWrap} contentBox`}>
+                        <h3 className={`${styleStoreDetail.menuHeading} contentHeading`}>메뉴</h3>
+                        <ul className={styleStoreDetail.menuList}>
+                            {storeData.menuObj && Object.entries(storeData.menuObj).map(([name, price], index) => (
+                                <li key={index} className={styleStoreDetail.menuItem}>
+                                    {name}
+                                    <span className={styleStoreDetail.menuPrice}>
+                                        {formatNumber(price)}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </section>
 
-                <section className={`${styleStoreDetail.storeMenuWrap} contentBox`}>
-                    <h3 className="contentHeading">메뉴</h3>
-                    <ul className={styleStoreDetail.menuList}>
-                        {storeData.menuObj && Object.entries(storeData.menuObj).map(([name, price], idx) => (
-                            <li key={idx} className={styleStoreDetail.menuItem}>
-                                {name} <span className={styleStoreDetail.menuPrice}>{formatNumber(price)}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </section>
-
-                <section className={`${styleStoreDetail.reviewListWrap} contentBox`}>
-                    <h3 className="contentHeading">리뷰</h3>
-                    {loading ? <p>로딩 중...</p> : (
-                        <>
-                            <ul className={styleStoreDetail.reviewList}>
-                                {currentReviews.length > 0 ? currentReviews.map(r => <ReviewItem key={r.evlSn} review={r} />) : <p>등록된 리뷰가 없습니다.</p>}
-                            </ul>
-                            <div className={styleStoreDetail.pagination}>
-                                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                                    <button 
-                                        key={page} 
+                <section>
+                    <div className={`${styleStoreDetail.reviewListWrap} contentBox`}>
+                        <h3 className={`${styleStoreDetail.menuHeading} contentHeading`}>리뷰</h3>
+                        <div className={styleStoreDetail.reviewList}>
+                            <ReviewList reviews={currentReviews} loading={loading} />
+                            <div className="pagination" style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "20px" }}>
+                                {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((page) => (
+                                    <button
+                                        key={page}
                                         onClick={() => handlePageChange(page)}
-                                        className={page === currentPage ? styleStoreDetail.activePage : ""}
+                                        style={{
+                                            padding: "5px 10px",
+                                            backgroundColor: page === currentPage ? "#333" : "#fff",
+                                            color: page === currentPage ? "#fff" : "#333",
+                                            border: "1px solid #ccc",
+                                            cursor: "pointer"
+                                        }}
                                     >
                                         {page}
                                     </button>
                                 ))}
                             </div>
-                        </>
-                    )}
+                        </div>
+                    </div>
                 </section>
 
-                <ReviewRegister isOpen={isOpen} onClose={() => setIsOpen(false)} bplcSn={storeId} userSn={user?.userSn} />
+                <ReviewRegister 
+                    isOpen={isOpen} 
+                    onClose={() => setIsOpen(false)} 
+                    bplcSn={storeId} 
+                    userSn={user?.userSn} 
+                />
             </div>
         </div>
     );
