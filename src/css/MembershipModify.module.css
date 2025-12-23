@@ -11,13 +11,12 @@
 .leftBox {
     border-radius: 20px;
     width: 250px;
-    height: 780px;
+    height: 786px;
     text-align: center;
     background: #ffb92e;
     border-radius: 18px;
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
     font-weight: 650;
-    text-align: center;
 }
 
 .rightBox {
@@ -28,7 +27,7 @@
     align-items: stretch;
     font-size: 20px;
     font-weight: 550;
-    text-decoration-line: underline;
+    /* text-decoration-line: underline; */
     text-decoration-color: rgba(0, 0, 0, 0.2);
     text-align: center;
 }
@@ -43,7 +42,7 @@
     font-size: 20px;
     font-weight: 550;
     text-align: center;
-    font-style: italic;
+    /* font-style: italic; */
 }
 
 .securityBox {
@@ -52,11 +51,11 @@
     border-radius: 18px;
     background: #ffb92e;
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    margin-top: 15px;
+    margin-top: 4px;
     font-size: 20px;
     font-weight: 550;
     text-align: center;
-    font-style: italic;
+    /* font-style: italic; */
 }
 
 .historyBox {
@@ -65,11 +64,11 @@
     background: #ffb92e;
     border-radius: 18px;
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    margin-top: 15px;
+    margin-top: 4px;
     font-size: 20px;
     font-weight: 550;
     text-align: center;
-    font-style: italic;
+    /* font-style: italic; */
 }
 
 .wrapBox {
@@ -141,8 +140,9 @@
 .subTitle1 {
     font-size: 18px;
     border-top: 15%;
-    font-style: italic;
-    text-align: center;
+    /* font-style: italic; */
+    text-align: left;
+    margin-left: 35px;
 }
 
 .subTitle2 {
