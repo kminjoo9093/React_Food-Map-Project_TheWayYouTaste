@@ -14,7 +14,6 @@ function SearchStore({ storeCategories, sidoList }) {
     const queryParams = new URLSearchParams(location.search);
     const keyword = queryParams.get("keyword");
 
-
     // 커스텀 훅 도입 
     const { regionState, regionSetters, getCurrentLocation } = useRegionSetting();
     const { selectedDo, doName, selectedSi, siName, selectedDong, dongName, lat, lng, storeList } = regionState;

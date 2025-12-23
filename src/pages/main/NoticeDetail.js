@@ -3,11 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import styleReport from "../../css/Report.module.css"
 import styleNotice from "../../css/Notice.module.css";
 
-function NoticeDetail() {
+function NoticeDetail({isAdmin}) {
   const location = useLocation();
   const navigate = useNavigate();
   const notice = location.state; // Notice 목록에서 전달된 notice 데이터
-  const isAdmin = true;
+
 
   if (!notice) return <p>공지사항 정보를 불러올 수 없습니다.</p>;
   const handleDelete = async () => {
