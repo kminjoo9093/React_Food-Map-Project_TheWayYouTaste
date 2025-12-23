@@ -27,7 +27,7 @@
 
 .bigContainer > * {
   position: relative; /* 내용이 overlay 위에 나오도록 */
-  z-index: 2;
+  z-index: 1;
 
 }
 

@@ -7,8 +7,12 @@ import MapComponent from "./MapComponent";
 import { GetStoreList } from "./GetStoreList";
 import styleMain from "../../css/MainPage.module.css";
 import useRegionSetting from "./hook/useRegionSetting";
+import RegionFilter from "./RegionFilter";
 
 function SearchStore({ storeCategories, sidoList }) {
+
+    console.log(sidoList);
+
     const location = useLocation();
     const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
@@ -19,6 +23,8 @@ function SearchStore({ storeCategories, sidoList }) {
     const { selectedDo, doName, selectedSi, siName, selectedDong, dongName, lat, lng, storeList } = regionState;
     const { setSelectedDo, setDoName, setSelectedSi, setSiName, setSelectedDong, setDongName, setLat, setLng } = regionSetters;
 
+    //console.log("----------->", selectedDo, selectedSi, selectedDong);
+    //console.log("----------->", doName, siName, dongName);
 
     const [filteredStoreList, setFilteredStoreList] = useState([]); // 화면에 표시될 최종 리스트
     const [storeListByRegion, setStoreListByRegion] = useState([]); // 지역/키워드 기준 원본 리스트
@@ -35,16 +41,16 @@ function SearchStore({ storeCategories, sidoList }) {
     const [isSelectedAll, setIsSelectedAll] = useState(false);
     const [isResetFilter, setIsResetFilter] = useState(false);
 
-    const foodIcons = {
-        "한식": "🍚"
-        ,"일식": "🍣"
-        ,"양식": "🍝"
-        ,"중식": "🥟"
-        ,"아시안": "🍜"
-        ,"햄버거": "🍔"
-        ,"치킨": "🍗"
-        ,"디저트": "🍩"
-    }
+    // const foodIcons = {
+    //     "한식": "🍚"
+    //     ,"일식": "🍣"
+    //     ,"양식": "🍝"
+    //     ,"중식": "🥟"
+    //     ,"아시안": "🍜"
+    //     ,"햄버거": "🍔"
+    //     ,"치킨": "🍗"
+    //     ,"디저트": "🍩"
+    // }
 
     // 현재 위치 기반 초기 로드
     // 훅 내부의 storeList가 변경될 때마다 반영
@@ -55,9 +61,6 @@ function SearchStore({ storeCategories, sidoList }) {
         }
     }, [storeList]); 
 
-    const LOCAL_API_KEY = "bd23a565a07fd608d593c2c99d192e8f";
-
-    // 초기 진입 및 검색어 처리
     useEffect(() => {
         const initLoad = async () => {
 
@@ -65,36 +68,78 @@ function SearchStore({ storeCategories, sidoList }) {
             const sido = queryParams.get("sido");
             const sgg = queryParams.get("sgg");
             const dong = queryParams.get("dong");
+            
+            const paramDoName = queryParams.get("doName");
+            const paramSiName = queryParams.get("siName");
+            const paramDongName = queryParams.get("dongName");
+
+            const paramCategories = queryParams.get("categories");
+
+            // 2. 카테고리 배열 생성 (상태 업데이트와 별개로 변수에 담기)
+            let categoryArray = [];
+            if (paramCategories) {
+                categoryArray = paramCategories.split(",");
+                setSelectedCategories(categoryArray); // UI 체크 표시용
+            }
+
+            if(paramDongName){
+                setDongName(paramDongName);
+            }
+            if(paramSiName){
+                setSiName(paramSiName);
+            }
+            if(paramDoName){
+                setDoName(paramDoName);
+            }
 
             let list = [];
 
             //키워드 검색
             if (keyword) { 
-                    const list = await GetStoreList(`http://localhost:3001/youtaste/search/store/keyword?name=${keyword}`);
+                list = await GetStoreList(`http://localhost:3001/youtaste/search/store/keyword?name=${keyword}`);
             } 
             //메인페이지 필터 설정 
             else if (dong || sgg || sido) { 
                 if (dong) {
                     list = await GetStoreList(`http://localhost:3001/youtaste/search/store/dong?dongCd=${dong}`);
                     setSelectedDong(dong); 
+                    setSelectedSi(sgg);
+                    setSelectedDo(sido);
+                    console.log("여기", dong);
                 } else if (sgg) {
                     list = await GetStoreList(`http://localhost:3001/youtaste/search/store/sgg?sggCd=${sgg}`);
                     setSelectedSi(sgg);
+                    setSelectedDo(sido);
                 } else if (sido) {
                     list = await GetStoreList(`http://localhost:3001/youtaste/search/store/sido?sidoCd=${sido}`);
                     setSelectedDo(sido);
                 } 
             } 
             else {
-                getCurrentLocation(); // 파라미터 없으면 현재위치
+                //이미 선택된 지역명(doName)이나 리스트가 있다면 현재 위치로 초기화하지 않음
+                if (doName !== "") {
+                    return; 
+                }
+                //이름X, 파라미터X
+                getCurrentLocation(); 
                 return;
             } 
 
-            // 결과 반영
+            // 4. 원본 데이터 저장 (검색이나 초기화 시 사용될 기준 데이터)
             setStoreListByRegion(list);
-            setFilteredStoreList(list);
 
+            // 5. 필터링 로직 (list 변수 그대로 사용)
+            let filteredResult = list; // 새 변수에 할당하여 명확하게 처리
+            if (categoryArray.length > 0) {
+                console.log("필터링 적용 전 개수:", list.length);
+                filteredResult = list.filter(record => categoryArray.includes(record.storeCatName));
+                console.log("필터링 적용 후 개수:", filteredResult.length);
+            }
+
+            // 6. 최종 결과 반영
+            setFilteredStoreList(filteredResult);
             setIsChangedRegion(true);
+            setNowPage(1); // 검색 시 페이지 번호 초기화
         };
         initLoad();
     }, [location.search, keyword]); 
@@ -148,13 +193,13 @@ function SearchStore({ storeCategories, sidoList }) {
         setIsResetFilter(false);
     }
 
-    // 카테고리 클릭 핸들러
-    const onSelectCategory = (categoryName) => {
-        setIsResetFilter(false);
-        setSelectedCategories(prev => 
-            prev.includes(categoryName) ? prev.filter(c => c !== categoryName) : [...prev, categoryName]
-        );
-    };
+    // // 카테고리 클릭 핸들러
+    // const onSelectCategory = (categoryName) => {
+    //     setIsResetFilter(false);
+    //     setSelectedCategories(prev => 
+    //         prev.includes(categoryName) ? prev.filter(c => c !== categoryName) : [...prev, categoryName]
+    //     );
+    // };
 
     // 검색 버튼 클릭 (카테고리 필터 적용)
     const onClickSearchBtn = () => {
@@ -164,7 +209,7 @@ function SearchStore({ storeCategories, sidoList }) {
             const list = storeListByRegion.filter(record => selectedCategories.includes(record.storeCatName));
             setFilteredStoreList(list);
         }
-
+        
         setIsChangedRegion(true);
 
         //map level 조절
@@ -206,6 +251,8 @@ function SearchStore({ storeCategories, sidoList }) {
     const viewListItemNum = 10;
     const viewStoreItems = finalStoreListWithId.slice((nowPage - 1) * viewListItemNum, nowPage * viewListItemNum);
 
+    console.log("?????????", viewStoreItems);
+
 
     return (
         <div className={`${styleSearchStore.gridMap} contentTopPosition`}>
@@ -216,13 +263,19 @@ function SearchStore({ storeCategories, sidoList }) {
                         <button className={`${styleSearchStore.btnRegion} ${styleMain.filterBtn}`} onClick={() => setIsDimmedMiddleOpen(true)}>
                             <span className={styleMain.filterIcon}>📍</span>
                             <span className={styleMain.filterText}>
-                                {doName ? `${doName} ${siName} ${dongName}`.trim() : "지역 선택"}
+                                {(doName || siName || dongName) ? `${doName} ${siName} ${dongName}` : "지역 선택"}
                             </span>
                             <span className={styleMain.arrowIcon}>▼</span>
                         </button>
                     </div>
                     <div className={styleSearchStore.filterBottomWrap}>
-                        <ul className={styleSearchStore.categoryList}>
+                        <RegionFilter 
+                            storeCategories={storeCategories}
+                            selectedCategories={selectedCategories}
+                            setSelectedCategories={setSelectedCategories}
+                            setIsResetFilter={setIsResetFilter}
+                        />
+                        {/* <ul className={styleSearchStore.categoryList}>
                             {storeCategories.map(record => (
                                 <li key={record.StoreCatNo}>
                                     <button 
@@ -234,7 +287,7 @@ function SearchStore({ storeCategories, sidoList }) {
                                     </button>
                                 </li>
                             ))}
-                        </ul>
+                        </ul> */}
                     </div>
                     <div className={styleSearchStore.filterBottomArea}>
                         <div className={styleSearchStore.btnWrap}>

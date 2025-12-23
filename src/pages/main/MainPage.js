@@ -5,18 +5,8 @@ import { useState, useEffect } from 'react';
 import mainbody from "../../resources/img/system/main.png";
 import useRegionSetting from '../search/hook/useRegionSetting';
 import RegionModal from "../search/RegionModal"; 
+import RegionFilter from '../search/RegionFilter';
 
-
-const foodIcons = [
-  { emoji: "🍚", label: "한식" },
-  { emoji: "🍣", label: "일식" },
-  { emoji: "🥟", label: "중식" },
-  { emoji: "🍝", label: "양식" },
-  { emoji: "🍜", label:"아시안"},
-  { emoji: "🍔", label: "햄버거" },
-  { emoji: "🍗", label: "치킨" },
-  { emoji: "🍰", label: "디저트"}
-];
 
 const icons = [
   { emoji: "🐕", label: "반려동물허용" },
@@ -24,11 +14,14 @@ const icons = [
   { emoji: "🥡", label: "포장" },
 ];
 
-function MainPage({sidoList}) {
+function MainPage({storeCategories, sidoList}) {
 
   const {regionState, regionSetters, getCurrentLocation} = useRegionSetting();
   const { selectedDo, doName, selectedSi, siName, selectedDong, dongName } = regionState;
   const [isModalOpen, setIsModalOpen] = useState(false); //지역 모달 오픈 상태
+
+  const [selectedCategories, setSelectedCategories] = useState([]);//test
+  const [isResetFilter, setIsResetFilter] = useState(false);//
 
   useEffect(() => { getCurrentLocation(); }, [getCurrentLocation]);
 
@@ -39,6 +32,14 @@ function MainPage({sidoList}) {
     if (selectedDo) params.append("sido", String(selectedDo).trim());
     if (selectedSi) params.append("sgg", String(selectedSi).trim());
     if (selectedDong) params.append("dong", String(selectedDong).trim());
+    if (doName) params.append("doName", String(doName).trim());
+    if (siName) params.append("siName", String(siName).trim());
+    if (dongName) params.append("dongName", String(dongName).trim());
+
+    // 2. 선택된 카테고리들을 파라미터에 추가 (배열을 쉼표로 연결)
+    if (selectedCategories.length > 0) {
+      params.append("categories", selectedCategories.join(","));
+    }
 
     // 2. 검색 페이지로 이동
     return `/search/store?${params.toString()}`;
@@ -59,7 +60,7 @@ function MainPage({sidoList}) {
             <button className={styleMain.filterBtn} onClick={() => setIsModalOpen(true)}>
               <span className={styleMain.filterIcon}>📍</span>
               <span className={styleMain.filterText}>
-                {doName ? `${doName} ${siName} ${dongName}`.trim() : "지역 선택"}
+                {(doName || siName || dongName) ? `${doName} ${siName} ${dongName}`.trim() : "지역 선택"}
               </span>
               <span className={styleMain.arrowIcon}>▼</span>
             </button>
@@ -80,14 +81,23 @@ function MainPage({sidoList}) {
           <div className={styleMain.titleBox}>
             <h4 className={styleMain.sectionTitle}>업종</h4>
           </div>
-          <div className={styleMain.iconGrid}>
-            {foodIcons.map((item, index) => (
-              <div key={index} className={styleMain.iconBtn}>
-                {item.emoji}
-                <div className={styleMain.tooltip}>{item.label}</div>
-              </div>
+          <RegionFilter 
+              storeCategories={storeCategories}
+              selectedCategories={selectedCategories}
+              setSelectedCategories={setSelectedCategories}
+              setIsResetFilter={setIsResetFilter}
+          />
+
+          {/* <ul className={styleMain.iconGrid}>
+             {storeCategories.map(record => (
+                <li key={record.StoreCatNo}>
+                  <div className={styleMain.iconBtn}>
+                    {foodIcons[record.storeCatName]}
+                    <div className={styleMain.tooltip}>{record.storeCatName}</div>
+                  </div>
+                </li>
             ))}
-          </div>
+          </ul> */}
 
           {/* 편의 */}
           <br></br><br></br><br></br>

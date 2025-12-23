@@ -6,6 +6,7 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
                         , setDoName, setSiName, setDongName, sidoList
     }){
 
+    console.log("여어어엉기", selectedDong, selectedSi, selectedDo);
     const [sggList, setSggList] = useState([]);
     const [dongList, setDongList] = useState([]);
 
@@ -66,14 +67,10 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
         console.log("선택된 동 코드 :" , selectedDong);
     }, [selectedDong]);
 
-
-    //초기 사용자 위치 시도, 시군구 미리 선택, 중앙 위치
-
-
-
     function handleSelectDo(sidoCd, sidoNm){
-        setSelectedDo(sidoCd);
-        setDoName(sidoNm || "");
+        console.log("test -> ", sidoNm);
+        setSelectedDo(sidoCd); //code
+        setDoName(sidoNm || ""); //지역명
         setSelectedSi(null);
         setSiName("");
         setSelectedDong(null);
@@ -118,7 +115,11 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
                                                             ${selectedDo === record.sidoCd 
                                                                 ? styleRegionModal.activeItem : ""}
                                                 `}
-                                                onClick={()=> handleSelectDo(record.sidoCd, record.sidoNm)}
+                                                onClick={()=> {
+                                                    console.log("클릭됨!", record.sidoCd);
+                                                    handleSelectDo(record.sidoCd, record.sidoNm);
+                                                }
+                                                }
                                                 >
                                                 {record.sidoNm}
                                             </li>

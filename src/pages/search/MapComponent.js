@@ -121,7 +121,7 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                     <CustomOverlayMap
                         key={`overlay-${store.bplcSn}`}
                         position={{ lat: parseFloat(store.lat), lng: parseFloat(store.lot) }}
-                        yAnchor={1.3}
+                        yAnchor={1.25}
                         zIndex={1000}
                     >
                         <div className={styleMap.infoWindow}>
@@ -135,6 +135,7 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                             <Link to={`/search/storeDetail?storeId=${store.bplcSn}`} className={styleMap.link}>
                                 <div className={styleMap.storeInfo}>
                                     <h3 className={styleMap.storeNm}>{store.bplcNm}</h3>
+                                    <span className={styleMap.address}>{store.address}</span>
                                     <p className={styleMap.infoBottom}>
                                         {store.avg && <span><img src={iconStar}/>{store.avg}</span>}
                                         {store.storeCatName && <span><img src={iconCategory} />{store.storeCatName}</span>}

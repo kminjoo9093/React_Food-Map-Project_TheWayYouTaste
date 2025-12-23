@@ -39,6 +39,10 @@ export default function useRegionSetting() {
 
                     setSelectedDo(currentSidoCode);
                     setSelectedSi(currentSggCode);
+
+                    //setDoName(region_1depth_name); // 예: "서울특별시"
+                    //setSiName(regionInfo.region_2depth_name);  // 예: "강남구"
+                    
                     setStoreList(listBySgg);
 
                 } catch (error) {

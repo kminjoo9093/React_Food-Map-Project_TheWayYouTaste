@@ -106,7 +106,7 @@ import StoreRegion from "./pages/search/StoreRegion";
             <Routes>
               {/* 누구나 접근 가능한 페이지*/}
               <Route path="/" element={<Navigate to="/main" replace />} />
-              <Route path="/main" element={<MainPage sidoList={sidoList} />} />
+              <Route path="/main" element={<MainPage storeCategories={storeCategories} sidoList={sidoList}/>} />
               <Route path="/notice/list" element={<NoticeList notices={notices} isAdmin={isAdmin}/>} />
               <Route path="/notice/noticeDetail" element={<NoticeDetail isAdmin={isAdmin} /> } />
               <Route path="/search/store" element={<SearchStore storeCategories={storeCategories} sidoList={sidoList} />} />
