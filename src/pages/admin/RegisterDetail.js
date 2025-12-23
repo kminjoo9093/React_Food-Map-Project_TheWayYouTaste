@@ -1,276 +1,147 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import styleStore from "../../css/StoreRegister.module.css";
 import styleNotice from "../../css/Notice.module.css";
 
-function RegisterDetail({ setMemberNotices }) {
+function RegisterDetail() {
   const location = useLocation();
   const navigate = useNavigate();
   const registerData = location.state;
 
-  /* 승인/반려박스 */
+  /* 승인/반려박스 관련 */
   const [isActionBoxOpen, setIsActionBoxOpen] = useState(false);
   const [actionType, setActionType] = useState("");
   const [actionReason, setActionReason] = useState("");
   const [noticeTitle, setNoticeTitle] = useState("");
-  
-  /* 손님, 사업자 구분 */
-  const [registerType, setRegisterType] = useState(null);
-  const user = () => setRegisterType("USER");
-  const br = () => setRegisterType("BUSINESS");
 
-  /* 사업자번호 API */
+  /* 기본 정보 상태 */
+  const [owner, setOwner] = useState("");
   const [brNo, setBrNo] = useState("");
-  const [brResult, setBrResult] = useState(null);
-  const [brError, setBrError] = useState(null);
+  const [storeName, setStoreName] = useState("");
+  const [roadAddress, setRoadAddress] = useState("");
+  const [detailAddress, setDetailAddress] = useState("");
+  const [openTime, setOpenTime] = useState("");
+  const [closeTime, setCloseTime] = useState("");
+  const [category, setCategory] = useState("");
+  const [conveniences, setConveniences] = useState([]);
+  const [preview, setPreview] = useState(null);
+  const [verifyPreview, setVerifyPreview] = useState(null);
 
-  const checkBr = async () => {
-    setBrError(null);
-    setBrResult(null);
+  /* 위도/경도 상태 (카카오 API) */
+  const [lat, setLat] = useState(""); // 위도
+  const [lot, setLot] = useState(""); // 경도
 
-    if (brNo.length !== 10) {
-      setBrError("사업자등록번호 10자리를 입력해주세요.");
+  /* 손님/사업자 구분 기준 */
+  const isGuest = registerData?.rprsvNm === "손님등록";
+
+  /* 데이터 초기화 */
+  useEffect(() => {
+    if (!registerData) return;
+
+    setOwner(registerData.rprsvNm || "");
+    setBrNo(registerData.brno || "");
+    setStoreName(registerData.bplcNm || "");
+    setRoadAddress(registerData.roadNmAddr || "");
+    
+    setCategory(registerData.storeCatNo ? Number(registerData.storeCatNo) : 1);
+
+    if (registerData.bgngTm) {
+      setOpenTime(registerData.bgngTm.slice(0, 2) + ":" + registerData.bgngTm.slice(2));
+    }
+    if (registerData.ddlnTm) {
+      setCloseTime(registerData.ddlnTm.slice(0, 2) + ":" + registerData.ddlnTm.slice(2));
+    }
+
+    const initConveniences = registerData.amtySrvc ? JSON.parse(registerData.amtySrvc) : [];
+    setConveniences(initConveniences);
+
+    const SERVER_BASE = "http://localhost:3001";
+    if (registerData.bplcPhoto) {
+      setPreview(registerData.bplcPhoto.startsWith("http") ? registerData.bplcPhoto : `${SERVER_BASE}${registerData.bplcPhoto}`);
+    }
+    if (registerData.certPhoto) {
+      setVerifyPreview(registerData.certPhoto.startsWith("http") ? registerData.certPhoto : `${SERVER_BASE}${registerData.certPhoto}`);
+    }
+  }, [registerData]);
+
+  /* 위도/경도 조회 로직 (카카오 API 사용) */
+  const handleCoordSearch = async () => {
+    if (!roadAddress) {
+      alert("주소 정보가 없습니다.");
       return;
     }
 
     try {
-      const serviceKey =
-        "nYrvOHdHDUUOV%2Fb8t4ddcrtVY02lgsfE%2BNmWpM%2F88LynhtxTOqBYkJZWbBCccrjZGcvSysLZVipV0g069cKT2A%3D%3D";
-      const url = `https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=${serviceKey}`;
-      const body = { b_no: [brNo] };
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      const data = await res.json();
-      const result = data.data?.[0];
+      const response = await fetch(
+        `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(roadAddress)}`,
+        {
+          headers: {
+            Authorization: "KakaoAK bd23a565a07fd608d593c2c99d192e8f",
+          },
+        }
+      );
 
-      if (!result) {
-        setBrError("조회 결과가 없습니다.");
-        return;
+      const data = await response.json();
+
+      if (data.documents && data.documents.length > 0) {
+        const doc = data.documents[0];
+        setLat(doc.y); // 위도 업데이트
+        setLot(doc.x); // 경도 업데이트
+        setDetailAddress(`위도: ${doc.y} / 경도: ${doc.x}`); // 입력창 표시용
+        alert("좌표 조회가 완료되었습니다.");
+      } else {
+        alert("주소에 해당하는 좌표를 찾을 수 없습니다.");
       }
-
-      const checkResult = {
-        b_no: result.b_no,
-        status: result.b_stt,
-        tax_type: result.tax_type,
-        valid: result.valid ?? "값 없음",
-      };
-
-      setBrResult(checkResult);
     } catch (err) {
-      setBrError("API 호출 중 오류가 발생했습니다.");
+      console.error(err);
+      alert("좌표 조회 중 오류가 발생했습니다.");
     }
   };
 
-  /* 주소 API */
-  const [roadAddress, setRoadAddress] = useState("");
-  const [detailAddress, setDetailAddress] = useState("");
-
-  const [lat, setLat] = useState(""); // 위도
-  const [lot, setLot] = useState(""); // 경도
-
-const handleAddressSearch = async () => {
-  if (!roadAddress) {
-    alert("주소를 입력해주세요.");
-    return;
-  }
-
-  try {
-    const response = await fetch(
-      `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(roadAddress)}`,
-      {
-        headers: {
-          Authorization: "KakaoAK bd23a565a07fd608d593c2c99d192e8f",
-        },
-      }
-    );
-
-    const data = await response.json();
-
-    if (data.documents && data.documents.length > 0) {
-      const doc = data.documents[0];
-      setLat(doc.y); // 위도
-      setLot(doc.x); // 경도
-
-      setDetailAddress(`위도: ${doc.y}, 경도: ${doc.x}`);
-    } else {
-      setDetailAddress("주소를 찾을 수 없습니다.");
+  /* 승인/반려 최종 제출 */
+  const decisionSubmit = async (title) => {
+    if (!title || !actionReason) {
+      alert("제목과 사유를 입력해주세요.");
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    setDetailAddress("주소 조회 중 오류가 발생했습니다.");
-  }
-};
-
-  /* 기본 정보 */
-  const [owner, setOwner] = useState("");
-  const [openDate, setOpenDate] = useState("");
-  const [openTime, setOpenTime] = useState("");
-  const [closeTime, setCloseTime] = useState("");
-  const [storeName, setStoreName] = useState("");
-  const [category, setCategory] = useState("");
-
-
-  /* 편의 사항 */
-  const convenienceList = [
-    { key: "pet", label: "🐕\n반려견" },
-    { key: "parking", label: "🅿️\n주차" },
-    { key: "takeout", label: "🥡\n포장" },
-  ];
-
-  const [conveniences, setConveniences] = useState([]);
-
-  const handleConvenienceChange = (checked, value) => {
-    if (checked) {
-      setConveniences((prev) => [...prev, value]);
-    } else {
-      setConveniences((prev) => prev.filter((item) => item !== value));
+    if (actionType === "승인" && !lat) {
+      alert("승인 처리 전 반드시 '조회' 버튼을 눌러 좌표를 생성해야 합니다.");
+      return;
     }
-  };
-  const conveniencePayload = conveniences;
 
-  /* 이미지 업로드 */
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(null);
-
-  /* 이미지 확대 */
-  const [selectedImg, setSelectedImg] = useState(null);
-  const closeModal = () => setSelectedImg(null);
-
-  const [verifyImage, setVerifyImage] = useState(null);
-  const [verifyPreview, setVerifyPreview] = useState(null);
-
-  /* 기존 데이터 초기화 */  
-  useEffect(() => {
-    if (!registerData) return;
-
-    setOwner(registerData.rprsvNm);
-    setBrNo(registerData.brno);
-    setStoreName(registerData.bplcNm);
-    setRoadAddress(registerData.roadNmAddr);
-    setDetailAddress(registerData.daddr);
-
- // 시간 포맷팅
-  if (registerData.bgngTm) {
-    setOpenTime(registerData.bgngTm.slice(0, 2) + ":" + registerData.bgngTm.slice(2));
-  }
-  if (registerData.ddlnTm) {
-    setCloseTime(registerData.ddlnTm.slice(0, 2) + ":" + registerData.ddlnTm.slice(2));
-  }
-
-  setCategory(registerData.storeCatNo);
-  
-  const initConveniences = registerData.amtySrvc ? JSON.parse(registerData.amtySrvc) : [];
-  setConveniences(initConveniences);
-
-  // 이미지 경로 수정: registerData.bplcPhoto 안에 이미 "/uploads/store/..."가 들어있음
-  const SERVER_BASE = "http://localhost:3001";
-
-  if (registerData.bplcPhoto) {
-    // 중복 방지를 위해 체크 후 경로 설정
-    const storePath = registerData.bplcPhoto.startsWith("http") 
-                      ? registerData.bplcPhoto 
-                      : `${SERVER_BASE}${registerData.bplcPhoto}`;
-    setPreview(storePath);
-  }
-  
-  if (registerData.certPhoto) {
-    const certPath = registerData.certPhoto.startsWith("http") 
-                     ? registerData.certPhoto 
-                     : `${SERVER_BASE}${registerData.certPhoto}`;
-    setVerifyPreview(certPath);
-  }
-}, [registerData]);
-
-  /* 이미지 & 데이터 서버 전송 */
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!window.confirm("정말로 등록하시겠습니까?")) return;
-
-    const formData = new FormData();
-
-    formData.append("brno", brNo);
-    formData.append("owner", owner);
-    formData.append("storeName", storeName);
-
-    formData.append("roadAddress", roadAddress);
-    formData.append("detailAddress", detailAddress);
-    formData.append("openTime", openTime);
-    formData.append("closeTime", closeTime);
-    formData.append("category", Number(category));
-    formData.append("opdeDate",openDate);
-
-    formData.append("convenience", JSON.stringify(conveniencePayload));
-  
-    if (image) formData.append("storeImage", image);
-    if (verifyImage) formData.append("verifyImage", verifyImage);
+    const updateData = {
+      prcsYn: actionType === "승인" ? "Y" : "N",
+      notiTtl: title,
+      notiCn: actionReason,
+      lat: lat, 
+      lot: lot,
+      storeCatNo: Number(category),
+      menuNm1: registerData.menuNm1, 
+      menuPrc1: registerData.menuPrc1
+    };
 
     try {
-      const response = await fetch("http://localhost:3001/youtaste/store/register", {
-        method: "POST",
-        body: formData, 
-      });
+      const response = await fetch(
+        `http://localhost:3001/youtaste/register/${registerData.bplcSn}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updateData)
+        }
+      );
 
-      if (!response.ok) throw new Error("등록 실패");
-
-      const result = await response.json();
-      alert("등록 완료!");
-      console.log(result);
+      if (!response.ok) throw new Error("처리 실패");
+      alert("처리가 완료되었습니다.");
+      navigate("/notice/list");
     } catch (error) {
-      console.error(error);
-      alert("오류 발생: 등록 실패");
+      alert(error.message);
     }
   };
 
   const openActionBox = (type) => {
     setActionType(type);
-    setActionReason("");
     setIsActionBoxOpen(true);
   };
-
-  const closeActionBox = () => setIsActionBoxOpen(false);
-
- const decisionSubmit = async (title) => {
-  if (!title || !actionReason) {
-    alert("제목과 사유를 입력해주세요.");
-    return;
-  }
-
-  const prcsYnValue = actionType === "승인" ? "Y" : "N";
-
-  const updateData = {
-    prcsYn: prcsYnValue,
-    notiTtl: title,
-    notiCn: actionReason,
-    lat: lat, 
-    lot: lot,
-    menuNm1: registerData.menuNm1, 
-    menuPrc1: registerData.menuPrc1
-  };
-
-  try {
-    const response = await fetch(
-      `http://localhost:3001/youtaste/register/${registerData.bplcSn}`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updateData)
-      }
-    );
-
-    if (!response.ok) throw new Error("처리 실패");
-    
-    alert("처리 완료!");
-    navigate("/notice/list");
-  } catch (error) {
-    console.error(error);
-    alert(error.message);
-  }
-};
 
   function getDclrCatName(catNo) {
     switch (catNo) {
@@ -284,229 +155,111 @@ const handleAddressSearch = async () => {
       default: return "디저트";
     }
   } 
-  function showCategory(type){
-    return type === "승인" ? "가게 등록 승인" : "가게 등록 반려";
-  }
+
   return (
     <div className="contentTopPosition">
       <div className="container">
         <div className={styleStore.storeContainer}>
-          <form onSubmit={handleSubmit}>
-
-            {/* 사업자등록번호 */}
-            <div>
-              <label htmlFor="brno">사업자 등록번호</label>
-              <div className={styleStore.brNoBox}>
-                <input
-                  id="brno"
-                  type="text"
-                  maxLength={10}
-                  value={brNo}
-                  onChange={(e) => setBrNo(e.target.value)}
-                  readOnly
-                />
-                <button
-                  className={styleStore.brNoBtn}
-                  type="button"
-                  onClick={checkBr}
-                >
-                  조회
-                </button>
-              </div>
-
-              {brError && (
-                <p style={{ background: "white", padding: "1rem", color: "red" }}>
-                  {brError}
-                </p>
-              )}
-
-              {brResult && (
-                <div
-                  style={{
-                    background: "white",
-                    padding: "1rem",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  <p>
-                    {brResult.status === "계속사업자"
-                      ? "인증되었습니다"
-                      : "사업자번호를 확인해 주세요"}
-                  </p>
-                </div>
-              )}
+          <form onSubmit={(e) => e.preventDefault()}>
+            
+            <label htmlFor="brno">사업자 등록번호</label>
+            <div className={styleStore.brNoBox}>
+              <input id="brno" type="text" value={brNo} readOnly />
+              <button className={styleStore.brNoBtn} type="button" disabled>인증</button>
             </div>
 
-            {/* 기본 정보 */}
             <div className="doubleContainer">
               <div>
-                <label htmlFor="owner" readOnly>대표자</label>
-                <input
-                  id="owner"
-                  type="text"
-                  value={owner}
-                  onChange={(e) => setOwner(e.target.value)}
-                />
+                <label>대표자</label>
+                <input type="text" value={owner} readOnly />
               </div>
               <div>
                 <label>매장 명</label>
-                <input
-                  type="text"
-                  value={storeName}
-                  onChange={(e) => setStoreName(e.target.value)}
-                  readOnly
-                />
+                <input type="text" value={storeName} readOnly />
               </div>
             </div>
-            {registerType === "BUSINESS" && (
-                <>
-                  <label htmlFor="openDate">개업일</label>
-                  <input className={styleStore.inputBox} type="date" value={openDate} onChange={(e) => setOpenDate(e.target.value)} id="openDate" />
-                </>
-              )}
 
-            {/* 주소 */}
+            {!isGuest && (
+              <>
+                <label>개업일</label>
+                <input className={styleStore.inputBox} type="text" value={registerData.prcsRegYmd || ""} readOnly />
+              </>
+            )}
+
             <label>주소</label>
             <div className={styleStore.addBox}>
-              <input
-                type="text"
-                placeholder="도로명 주소"
-                value={roadAddress}
-                onChange={(e) => setRoadAddress(e.target.value)}
-                readOnly
-              />
-              <button
-                className={styleStore.brNoBtn}
-                type="button"
-                onClick={handleAddressSearch}
-              > 조회 
+              <input type="text" value={roadAddress} readOnly />
+              <button className={styleStore.brNoBtn} type="button" onClick={handleCoordSearch}>
+                조회
               </button>
             </div>
-            <label>위도, 경도</label>
-            <input
-              type="text"
-              placeholder="상세주소 (위도/경도)"
-              value={detailAddress}
-              readOnly
-            />
+            <p style={{fontSize: '12px', color: 'blue', marginBottom: '10px'}}>
+              {lat ? `조회된 좌표 - 위도: ${lat}, 경도: ${lot}` : "* 승인 처리 전 좌표 조회를 클릭하세요."}
+            </p>
 
-            {/* 운영시간 */}
             <label>운영시간</label>
-            <div className="doubleContainer" >
+            <div className="doubleContainer">
               <div className={styleStore.flexBox}>
                 <label>OPEN</label>
-                <input
-                  className={styleStore.timeinput}
-                  type="time"
-                  value={openTime}
-                  onChange={(e) => setOpenTime(e.target.value)}
-                  style={{"padding": 5, "marginLeft" : 5}}
-                />
+                <input className={styleStore.timeinput} type="time" value={openTime} readOnly style={{padding: 5, marginLeft: 5}} />
               </div>
               <div className={styleStore.flexBox}>
                 <label>CLOSE</label>
-                <input
-                  className={styleStore.timeinput}
-                  type="time"
-                  value={closeTime}
-                  onChange={(e) => setCloseTime(e.target.value)}
-                  style={{"padding": 5, "marginLeft" : 5}}
-                />
+                <input className={styleStore.timeinput} type="time" value={closeTime} readOnly style={{padding: 5, marginLeft: 5}} />
               </div>
             </div>
 
-            {/* 카테고리 */}
-            
-            <label htmlFor="menuCat">카테고리</label>
-            <br />
-            <select
-              id="menuCat"
-              className={styleStore.inputBox}
-              value={category}
-              onChange={(e) => setCategory(Number(e.target.value))}
-            >
-              <option value="" disabled hidden>
-                선택하세요
-              </option>
-              <option value="1">한식</option>
-              <option value="2">일식</option>
-              <option value="3">중식</option>
-              <option value="4">양식</option>
-              <option value="5">아시안</option>
-              <option value="6">햄버거</option>
-              <option value="7">치킨</option>
-              <option value="8">디저트</option>
+            <label>카테고리</label>
+            <select className={styleStore.inputBox} value={category} readOnly>
+              <option value="1">한식</option><option value="2">일식</option>
+              <option value="3">중식</option><option value="4">양식</option>
+              <option value="5">아시안</option><option value="6">햄버거</option>
+              <option value="7">치킨</option><option value="8">디저트</option>
             </select>
-            {/* 메뉴 목록 확인 */}
-            <br></br><br></br>
+
+            <br /><br />
             <label>신청 메뉴 목록</label>
             <div style={{ marginBottom: "20px" }}>
               {registerData.menuNm1 && JSON.parse(registerData.menuNm1).map((name, idx) => (
-                <div key={idx} style={{ display: "flex", alignItems: "center", gap: "2px", marginBottom: "5px" }}>
-                  {/* 메뉴 이름 */}
-                  <input 
-                    className={styleStore.menu} 
-                    type="text" 
-                    value={name} 
-                    readOnly 
-                  />
-                  
-                  {/* 메뉴 가격 */}
-                  <input 
-                    className={styleStore.price} 
-                    type="text" 
-                    value={`${JSON.parse(registerData.menuPrc1)[idx]}`} 
-                    readOnly 
-                  />
-
-              
+                <div key={idx} style={{ display: "flex", gap: "2px", marginBottom: "5px" }}>
+                  <input className={styleStore.menu} type="text" value={name} readOnly />
+                  <input className={styleStore.price} type="text" value={`${JSON.parse(registerData.menuPrc1)[idx]}원`} readOnly />
                 </div>
               ))}
             </div>
-            {/* 편의시설 */}
-            
+
             <p>편의사항</p>
-            {convenienceList.map((item) => (
-              <label
-                key={item.key}
-                className={`${styleStore.checkbox} ${
-                  conveniences.includes(item.key) ? styleStore.active : ""
-                }`}
-              >
-                {item.label.split("\n").map((line, idx) => (
-                  <span key={idx}>
-                    {line}
-                    <br />
-                  </span>
-                ))}
-                <input
-                  type="checkbox"
-                  className={styleStore.hiddenCheckbox}
-                  checked={conveniences.includes(item.key)}
-                  onChange={(e) =>
-                    handleConvenienceChange(e.target.checked, item.key)
-                  }
-                />
-              </label>
-            ))}
+            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+              {[
+                { key: "pet", icon: "🐕", label: "반려견" },
+                { key: "parking", icon: "🅿️", label: "주차" },
+                { key: "takeout", icon: "🥡", label: "포장" }
+              ].map((item) => (
+                <label
+                  key={item.key}
+                  className={`${styleStore.checkbox} ${conveniences.includes(item.key) ? styleStore.active : ""}`}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center", // 수직 중앙
+                    alignItems: "center",     // 수평 중앙
+                    padding: "10px",          // 내부 여백 추가
+                    height: "80px",           
+                    minWidth: "70px",
+                  }}
+                >
+                  <span style={{ fontSize: "20px" }}>{item.icon}</span>
+                  <span style={{ fontSize: "12px", marginTop: "4px" }}>{item.label}</span>
+                  <input type="checkbox" className={styleStore.hiddenCheckbox} checked={conveniences.includes(item.key)} readOnly />
+                </label>
+              ))}
+            </div>
             
-            {/* 이미지 업로드 */}
-            <label htmlFor="storeImg">가게 대표 이미지</label>
-            <br />
-            {preview && (
-              <div style={{ marginTop: "10px" }}>
-                <img src={preview} alt="미리보기" width="200" />
-              </div>
-            )}
-            {/* <input type="file" accept="image/*" onChange={handleImageChange} /> */}
-            <label htmlFor="verifyImg">사업자 인증 이미지(영수증)</label>
-              <br />
-              {verifyPreview && (
-                <div style={{ marginTop: "10px" }}>
-                  <img src={verifyPreview} alt="인증 미리보기" width="200" />
-                </div>
-              )}
-            {/* <input type="file" accept="image/*" onChange={handleVerifyImageChange} /> */}
+            <label>가게 대표 이미지</label>
+            {preview && <div style={{ marginTop: "10px", marginBottom: "20px" }}><img src={preview} alt="대표" width="200" /></div>}
+
+            <label>{isGuest ? "사업자 인증 이미지 (영수증)" : "사업자 인증 이미지 (등록증)"}</label>
+            {verifyPreview && <div style={{ marginTop: "10px" }}><img src={verifyPreview} alt="인증" width="200" /></div>}
 
             <div className="rightContainer">
               <button type="button" onClick={() => openActionBox("승인")} > 승인 </button> 
@@ -514,37 +267,19 @@ const handleAddressSearch = async () => {
             </div>
           </form>
 
+          {/* 승인/반려 팝업 박스 */}
           {isActionBoxOpen && (
             <div className={styleNotice.popupDimmed}>
               <div className={styleNotice.popupBox}>
                 <h2>{actionType} 처리</h2>
                 <p>제목:</p>
-                <input
-                  type="text"
-                  className={styleNotice.popupInput}
-                  value={noticeTitle}
-                  onChange={(e) => setNoticeTitle(e.target.value)}
-                  placeholder="제목을 입력하세요"
-                />
-                <p>날짜: {new Date().toLocaleDateString()}</p>
-                <p>카테고리 : {showCategory(actionType)}</p>
+                <input type="text" className={styleNotice.popupInput} value={noticeTitle} onChange={(e) => setNoticeTitle(e.target.value)} placeholder="제목을 입력하세요" />
+                <p>카테고리 : {actionType === "승인" ? "가게 등록 승인" : "가게 등록 반려"}</p>
                 <p hidden>카테고리 : {getDclrCatName(6)}</p>
-                <textarea
-                  className={styleNotice.popupTextarea}
-                  placeholder="사유를 작성하세요"
-                  value={actionReason}
-                  onChange={(e) => setActionReason(e.target.value)}
-                />
+                <textarea className={styleNotice.popupTextarea} placeholder="사유를 작성하세요" value={actionReason} onChange={(e) => setActionReason(e.target.value)} />
                 <div className={styleNotice.popupButtonGroup}>
-                  <button
-                    className={styleNotice.confirmBtn}
-                    onClick={() => decisionSubmit(noticeTitle)}
-                  >
-                    등록
-                  </button>
-                  <button className={styleNotice.cancelBtn} onClick={closeActionBox}>
-                    취소
-                  </button>
+                  <button className={styleNotice.confirmBtn} onClick={() => decisionSubmit(noticeTitle)}>등록</button>
+                  <button className={styleNotice.cancelBtn} onClick={() => setIsActionBoxOpen(false)}>취소</button>
                 </div>
               </div>
             </div>
