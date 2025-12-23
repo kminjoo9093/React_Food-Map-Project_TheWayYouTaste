@@ -285,7 +285,14 @@ function StoreDetail({ storeList }) {
                             >
                                 리뷰 작성
                             </button>
-                            <Link to="/store/report/:userSn" className={styleStoreDetail.linkReportStore}>신고</Link>
+
+                            <Link to={`/store/report/${user?.userSn || ''}`} state={{ 
+                                                                                        bplcSn: storeId, 
+                                                                                        storeName: storeData.bplcNm, 
+                                                                                        address: storeData.address,
+                                                                                        userName: user?.nickname // 
+                                                                                    }}className={styleStoreDetail.linkReportStore}>신고</Link>
+
                         </div>
                     </div>
                     <div className={`${styleStoreDetail.storeImageWrap} contentBox`}>
