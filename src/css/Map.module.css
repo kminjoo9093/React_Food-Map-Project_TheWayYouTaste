@@ -4,8 +4,8 @@
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-    width: 28rem;
-    height: 14rem;
+    width: 30rem;
+    height: 16rem;
     overflow: hidden;
     position: relative;
 }
@@ -28,7 +28,7 @@
     height: 100%;
 }
 .infoImg{
-    min-width: 12rem;
+    max-width: 13rem;
     background-color: #ddd;
     object-fit: cover;
 }
@@ -39,12 +39,34 @@
     flex-direction: column;
     justify-content: space-between;
 }
+.storeNm, .address{
+    text-wrap: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
 .storeNm{
     font-size: 1.6rem;
     line-height: 1.3em;
     text-wrap: wrap;
     margin: 0;
     color: #333;
+}
+.address{
+    font-size: 1.3rem;
+    line-height: 1.3em;
+    /* margin-bottom: -1rem; */
+}
+.address::before{
+    content: "";
+    display: inline-block;
+    width: 1.3rem;
+    height: 1.3rem;
+    margin-right: 0.5rem;
+    background: url("/src/resources/img/search/iconLocation.svg") no-repeat center / cover;
 }
 .infoBottom{
     display: flex;
