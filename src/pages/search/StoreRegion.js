@@ -12,11 +12,11 @@ import serverUrl from "../../db/server.json";
 function StoreRegion({ storeCategories, sidoList }) {
     const SERVER_URL = serverUrl.SERVER_URL;
     const [nowPage, setNowPage] = useState(1);
-    const viewPeople = 5;
+    const viewPeople = 10;
     const lastMember = nowPage * viewPeople;
     const firstMember = lastMember - viewPeople;
   // const pendingMembers = members.filter(r => !r.prcsYn); 
-    const nowMembers = sidoList.slice(firstMember, lastMember);
+   
 
     const [storeList, setStoreList] = useState([]);
     const [sortType, setSortType] = useState("avg"); 
@@ -64,7 +64,7 @@ function StoreRegion({ storeCategories, sidoList }) {
         }
         return list;
     }, [storeList, sortType]);
-
+     const nowMembers = sortedList.slice(firstMember, lastMember);
     // 지역 확정 핸들러 
     const handleRegionConfirm = () => {
         const combinedName = `${doName} ${siName} ${dongName}`.trim();
@@ -76,7 +76,7 @@ function StoreRegion({ storeCategories, sidoList }) {
         <div className="contentTopPosition container">
             <section className={styleRanking.rankingHeader}>
                 <h2 className={styleRanking.title}>
-                    <FontAwesomeIcon icon={faTrophy} style={{color: "#ffca28", marginRight: "10px"}} />
+                    <FontAwesomeIcon icon={faTrophy} style={{color: "#ffca28", marginRight: "1rem"}} />
                     지역별 맛집 랭킹
                 </h2>
                 
@@ -109,18 +109,21 @@ function StoreRegion({ storeCategories, sidoList }) {
 
             <section className={styleRanking.rankingListArea}>
                 <ul className={styleRanking.list}>
-                    {sortedList.slice(0, 20).map((store, index) => (
+                    {nowMembers.map((store, index) => (
                         <li key={store.bplcSn} className={styleRanking.rankItem}>
-                            <div className={styleRanking.rankBadge}>{index + 1}</div>
+                            <div className={styleRanking.rankBadge}>{index + 1 + firstMember}</div>
                             
                             <Link to={`/search/storeDetail?storeId=${store.bplcSn}`} className={styleRanking.itemLink}>
                                 <div className={styleRanking.imgBox}>
+
                                     <img src={`http://localhost:3001${store.bplcPhoto}`} alt={store.bplcNm} />
+
+
                                 </div>
                                 
                                 <div className={styleRanking.infoBox}>
                                     <div className={styleRanking.infoTop}>
-                                        <h3>{store.bplcNm}</h3>
+                                        <h3 style={{fontSize:"1.8rem"}}>{store.bplcNm}</h3>
                                         <span className={styleRanking.category}>{store.storeCatName}</span>
                                     </div>
                                     
@@ -139,7 +142,7 @@ function StoreRegion({ storeCategories, sidoList }) {
                         </li>
                     ))}
                 </ul>
-                {sortedList.length === 0 && <p style={{textAlign: 'center', padding: '50px'}}>해당 지역에 등록된 맛집이 없습니다.</p>}
+                {nowMembers.length === 0 && <p style={{textAlign: 'center', padding: '5rem'}}>해당 지역에 등록된 맛집이 없습니다.</p>}
             </section>
 
             {/* 지역 선택 모달 */}
@@ -158,7 +161,7 @@ function StoreRegion({ storeCategories, sidoList }) {
             )}
             <Pagination
                 nowPage={nowPage}
-                totalItems={sidoList.length}
+                totalItems={sortedList.length}
                 itemsPerPage={viewPeople}
                 limitBlock={5}
                 onPageChange={setNowPage}

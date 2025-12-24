@@ -70,7 +70,7 @@ function MembershipLogin({setIsLoggedIn, setUser}) {
 
             if (!res.ok) throw new Error("register fail");
 
-            alert("회원가입 완료! 로그인 해주세요.");
+            alert("회원가입 완료! 로그인 해주세요. 닉네임은 내 정보에서 변경 가능합니다. ");
             setActive(true);
 
             setRegUser_NM("");

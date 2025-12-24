@@ -53,8 +53,13 @@ function StoreDetail({ storeList }) {
         return parsedPrice;
     }
 
-    function showStoreImage(image) {
-        return null;
+    function showStoreImage(imgData) {
+        if(imgData){
+            return <img src={`${SERVER_URL}/uploads/store/${imgData}`} alt="대표 이미지"
+                        className={styleStoreDetail.storeImage}></img>;
+        } else {
+            return <span>등록된 이미지가 없습니다.</span>;
+        }
     }
 
     function showAmtyServices(services) {
@@ -247,7 +252,7 @@ function StoreDetail({ storeList }) {
                     <div className={`${styleStoreDetail.storeInfoWrap} contentBox`}>
                         <div className={styleStoreDetail.storeNameWrap}>
                             <h2 className={styleStoreDetail.storeName}>{storeData.bplcNm}</h2>
-                            <span>{storeData.storeCatName}</span>
+                            <span className={styleStoreDetail.storeCatName}>{storeData.storeCatName}</span>
                         </div>
                         <ul className={styleStoreDetail.detailInfoList}>
                             <li className={styleStoreDetail.ratingAvgWrap}>
@@ -305,7 +310,7 @@ function StoreDetail({ storeList }) {
                         <ul className={styleStoreDetail.menuList}>
                             {storeData.menuObj && Object.entries(storeData.menuObj).map(([name, price], index) => (
                                 <li key={index} className={styleStoreDetail.menuItem}>
-                                    {name}
+                                    <span className={styleStoreDetail.menuNm}>{name}</span>
                                     <span className={styleStoreDetail.menuPrice}>
                                         {formatNumber(price)}
                                     </span>

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Map, MapMarker, MarkerClusterer, CustomOverlayMap } from "react-kakao-maps-sdk";
 import { useKakaoLoader } from "react-kakao-maps-sdk";
 import { Link } from "react-router-dom";
@@ -8,8 +8,10 @@ import iconCategory from "../../resources/img/search/iconTag.svg";
 import styleMap from "../../css/Map.module.css";
 import serverUrl from "../../db/server.json"; 
 
-export default function MapComponent({ storeList, lat, lng, setIsMoved, isChangedRegion, setPositionArea, isSelectedAll }) {
+export default function MapComponent({ storeList, lat, lng, setIsMoved, isChangedRegion, setPositionArea, positionAreaRef, isSelectedAll }) {
     
+    const isInitialCenterSetRef = useRef(false);
+
     // 카카오 로더 설정
     useKakaoLoader({
         appkey: "5794d8a0c2862c16e4c69ad303abfb4b",
@@ -17,7 +19,7 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
     });
 
     const [center, setCenter] = useState({
-        lat: lat || 37.5665,
+        lat: lat || 37.5665, 
         lng: lng || 126.9780
     });
     const SERVER_URL = serverUrl.SERVER_URL;
@@ -27,10 +29,11 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
 	// 인포윈도우 Open 여부를 저장하는 state
     const [openMarkerId, setOpenMarkerId] = useState("");
 
-    // 1. 현재 위치 기반으로 중심점 설정
+    // 현재 위치 기반으로 중심점 설정
     useEffect(() => {
         if (lat && lng) {
             setCenter({ lat, lng });
+            isInitialCenterSetRef.current = true;
         }
     }, [lat, lng]);
 
@@ -42,12 +45,14 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
         }
     }, [isSelectedAll])    
 
-    // 2. 지역 변경 시 마커들의 평균 위치로 중심 이동
+    // 지역 변경 시 마커들의 평균 위치로 중심 이동
     useEffect(() => {
         if (!storeList || storeList.length === 0) return;
         if (!isChangedRegion) return;
 
-		// 1. 유효한 좌표를 가진 데이터만 필터링
+        if (!isInitialCenterSetRef.current) return; //초기 위치 세팅 전이면 평균 이동 금지
+
+		// 유효한 좌표를 가진 데이터만 필터링
 		const validStores = storeList.filter(
 			s => !isNaN(parseFloat(s.lat)) && !isNaN(parseFloat(s.lot))
 		);
@@ -58,12 +63,9 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
         const avgLat = storeList.reduce((sum, s) => sum + (parseFloat(s.lat) || 0), 0) / storeList.length;
         const avgLng = storeList.reduce((sum, s) => sum + (parseFloat(s.lot) || 0), 0) / storeList.length;
 
-		// avgLat이 0이거나 NaN이면 setCenter X
-		if (avgLat && avgLng && avgLat !== 0) {
-			setCenter({ lat: avgLat, lng: avgLng });
-		}
+        setCenter({ lat: avgLat, lng: avgLng });
 
-    }, [storeList, isChangedRegion, lat, lng]);
+    }, [storeList, isChangedRegion]);
 
     return (
         <Map
@@ -75,17 +77,19 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                 const sw = bounds.getSouthWest();
                 const ne = bounds.getNorthEast();
 
-                // 부모의 state를 업데이트할 때 이전 값과 비교하여 불필요한 리렌더링 방지
-                setPositionArea(prev => {
-                    if (prev.swMinLat === sw.getLat() && prev.neMaxLat === ne.getLat()) return prev;
-                    return {
-                        swMinLat: sw.getLat(),
-                        swMinLng: sw.getLng(),
-                        neMaxLat: ne.getLat(),
-                        neMaxLng: ne.getLng()
-                    };
-                });
-                setIsMoved(true);
+                const newPos = {
+                    swMinLat: sw.getLat(),
+                    swMinLng: sw.getLng(),
+                    neMaxLat: ne.getLat(),
+                    neMaxLng: ne.getLng()
+                };
+
+                // Ref 업데이트 (비동기 처리 없이 즉시 반영됨)
+                positionAreaRef.current = newPos;
+
+                if (isInitialCenterSetRef.current) {
+                    setIsMoved(true); 
+                }
             }}
         >
             {/* 현재 위치 마커 */}
@@ -122,7 +126,7 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                     <CustomOverlayMap
                         key={`overlay-${store.bplcSn}`}
                         position={{ lat: parseFloat(store.lat), lng: parseFloat(store.lot) }}
-                        yAnchor={1.3}
+                        yAnchor={1.25}
                         zIndex={1000}
                     >
                         <div className={styleMap.infoWindow}>
@@ -136,6 +140,7 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                             <Link to={`/search/storeDetail?storeId=${store.bplcSn}`} className={styleMap.link}>
                                 <div className={styleMap.storeInfo}>
                                     <h3 className={styleMap.storeNm}>{store.bplcNm}</h3>
+                                    <span className={styleMap.address}>{store.address}</span>
                                     <p className={styleMap.infoBottom}>
                                         {store.avg && <span><img src={iconStar}/>{store.avg}</span>}
                                         {store.storeCatName && <span><img src={iconCategory} />{store.storeCatName}</span>}

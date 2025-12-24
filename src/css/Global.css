@@ -96,7 +96,7 @@ button {
 }
 
 button:hover {
-  background-color: #80002050;
+  background-color: #ff9800;
   border-color: #ccc;
   color: white;
 }
