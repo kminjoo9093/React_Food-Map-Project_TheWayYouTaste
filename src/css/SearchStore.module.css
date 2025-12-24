@@ -226,8 +226,8 @@ span.storeAddress{
     transform: translateX(-50%);
 }
 
-/* 반응형 */
-@media (max-width: 480px) {
+/* 태블릿(portrait) */
+@media (max-width: 1023px) {
     .gridMap{
         /* border: 2px solid red; */
         /* 그리드 초기화 */
@@ -248,6 +248,7 @@ span.storeAddress{
         inset: auto 0 0 0;
         transition: height 0.4s;
         box-shadow: 0 -1rem 3rem rgba(0, 0, 0, 0.05);
+        z-index: 1000;
     }
     .leftArea.open{
         height: 100%;
@@ -370,3 +371,4 @@ span.storeAddress{
     }
 }
 
+/* 모바일 */
