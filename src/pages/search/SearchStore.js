@@ -32,7 +32,8 @@ function SearchStore({ storeCategories, sidoList }) {
 
     const [filteredStoreList, setFilteredStoreList] = useState([]); // 화면에 표시될 최종 리스트
     const [storeListByRegion, setStoreListByRegion] = useState([]); // 지역/키워드 기준 원본 리스트
-    const [selectedCategories, setSelectedCategories] = useState([]); 
+    const [selectedCategories, setSelectedCategories] = useState([]); //선택 카테고리(임시)
+    const [appliedCategories, setAppliedCategories] = useState([]);
     const [isOpen, setIsOpen] = useState(false); //모달 오픈 상태
 
     const [isMoved, setIsMoved] = useState(false);
@@ -142,26 +143,24 @@ function SearchStore({ storeCategories, sidoList }) {
         initLoad();
     }, [location.search, keyword, getCurrentLocation]); 
 
-
-    //test
+    //리스트 갱신
     useEffect(() => {
         if (!storeListByRegion) return;
 
         if (selectedCategories.length === 0) {
+            
             setFilteredStoreList(storeListByRegion);
         } else {
             setFilteredStoreList(
                 storeListByRegion.filter(record =>
-                    selectedCategories.includes(record.storeCatName)
+                    appliedCategories.includes(record.storeCatName)
                 )
             );
         }
 
         setIsChangedRegion(true);
         setNowPage(1);
-    }, [storeListByRegion, selectedCategories]);
-
-
+    }, [storeListByRegion, appliedCategories]);
 
     // 필터링, 지도범위 적용 최종 맛집 리스트
     const finalStoreListWithId = useMemo(() => {
@@ -190,15 +189,8 @@ function SearchStore({ storeCategories, sidoList }) {
             // 원본 리스트와 필터 리스트를 동시에 업데이트
             setStoreListByRegion(list);
 
-            // 카테고리 필터가 있는 경우 적용 
-            // let filteredResult = list;
-            // if (selectedCategories && selectedCategories.length > 0) {
-            //     filteredResult = list.filter(record => selectedCategories.includes(record.storeCatName));
-            // }
-
-            // setFilteredStoreList(filteredResult);
             setIsMoved(false); // 재검색 후 버튼 비활성화
-            // setNowPage(1);
+            setNowPage(1);
         } catch (error) {
             console.error("범위 재검색 오류:", error);
         }
@@ -222,14 +214,7 @@ function SearchStore({ storeCategories, sidoList }) {
 
     // 검색 버튼 클릭 (카테고리 필터 적용)
     const onClickSearchBtn = () => {
-        // if (selectedCategories.length === 0) {
-        //     setFilteredStoreList(storeListByRegion);
-        // } else {
-        //     const list = storeListByRegion.filter(record => selectedCategories.includes(record.storeCatName));
-        //     setFilteredStoreList(list);
-        // }
-        
-        // setIsChangedRegion(true);
+        setAppliedCategories([...selectedCategories]); //적용되는 카테고리 리스트로 복사
 
         //map level 조절
         if((!selectedDo || !selectedSi) && !isResetFilter){
@@ -238,8 +223,6 @@ function SearchStore({ storeCategories, sidoList }) {
             setIsSelectedAll(false); //level 7
         }
 
-        // setNowPage(1);
-        // setIsResetFilter(false);
         // URL 파라미터 제거
         navigate("/search/store", { replace: true });
     };
