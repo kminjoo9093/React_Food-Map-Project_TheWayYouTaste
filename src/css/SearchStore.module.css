@@ -330,6 +330,7 @@
 }
 .btnSearchArea.active{
     display: block;
+    transform: translateX(-50%);
 }
 
 .storeCategory { background-image: url(/src/resources/img/search/iconTag.svg); }
