@@ -19,8 +19,8 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
     });
 
     const [center, setCenter] = useState({
-        lat: lat, //|| 37.5665, 
-        lng: lng //|| 126.9780
+        lat: lat || 37.5665, 
+        lng: lng || 126.9780
     });
     const SERVER_URL = serverUrl.SERVER_URL;
     //지도 레벨
@@ -29,7 +29,7 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
 	// 인포윈도우 Open 여부를 저장하는 state
     const [openMarkerId, setOpenMarkerId] = useState("");
 
-    // 1. 현재 위치 기반으로 중심점 설정
+    // 현재 위치 기반으로 중심점 설정
     useEffect(() => {
         if (lat && lng) {
             setCenter({ lat, lng });
@@ -45,16 +45,14 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
         }
     }, [isSelectedAll])    
 
-    // 2. 지역 변경 시 마커들의 평균 위치로 중심 이동
+    // 지역 변경 시 마커들의 평균 위치로 중심 이동
     useEffect(() => {
         if (!storeList || storeList.length === 0) return;
         if (!isChangedRegion) return;
 
         if (!isInitialCenterSetRef.current) return; //초기 위치 세팅 전이면 평균 이동 금지
 
-        //if (lat && lng) return; //현재 위치가 있으면 평균 이동 X
-
-		// 1. 유효한 좌표를 가진 데이터만 필터링
+		// 유효한 좌표를 가진 데이터만 필터링
 		const validStores = storeList.filter(
 			s => !isNaN(parseFloat(s.lat)) && !isNaN(parseFloat(s.lot))
 		);
@@ -65,17 +63,9 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
         const avgLat = storeList.reduce((sum, s) => sum + (parseFloat(s.lat) || 0), 0) / storeList.length;
         const avgLng = storeList.reduce((sum, s) => sum + (parseFloat(s.lot) || 0), 0) / storeList.length;
 
-		// avgLat이 0이거나 NaN이면 setCenter X
-		// if (avgLat && avgLng && avgLat !== 0) {
-		// 	setCenter({ lat: avgLat, lng: avgLng });
-		// }
-
         setCenter({ lat: avgLat, lng: avgLng });
 
     }, [storeList, isChangedRegion]);
-
-    // ... return 문 안에서 조건부 렌더링
-    // if (center.lat === null) return <div>위치 정보를 불러오는 중입니다...</div>;
 
     return (
         <Map
@@ -97,16 +87,6 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                 // Ref 업데이트 (비동기 처리 없이 즉시 반영됨)
                 positionAreaRef.current = newPos;
 
-                // 부모의 state를 업데이트할 때 이전 값과 비교하여 불필요한 리렌더링 방지
-                // setPositionArea(prev => {
-                //     if (prev.swMinLat === sw.getLat() && prev.neMaxLat === ne.getLat()) return prev;
-                //     return {
-                //         swMinLat: sw.getLat(),
-                //         swMinLng: sw.getLng(),
-                //         neMaxLat: ne.getLat(),
-                //         neMaxLng: ne.getLng()
-                //     };
-                // });
                 if (isInitialCenterSetRef.current) {
                     setIsMoved(true); 
                 }

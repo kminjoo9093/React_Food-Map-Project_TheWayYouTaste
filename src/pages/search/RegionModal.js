@@ -7,7 +7,6 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
                         , setDoName, setSiName, setDongName, sidoList
     }){
 
-    console.log("여어어엉기", selectedDong, selectedSi, selectedDo);
     const [sggList, setSggList] = useState([]);
     const [dongList, setDongList] = useState([]);
     const SERVER_URL = serverUrl.SERVER_URL;
@@ -19,7 +18,6 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
 
     //시군구 리스트 받아오기
     useEffect(()=>{
-        //console.log("선택된 시도 코드 :" , selectedDo);
         if (!selectedDo) {
             setSggList([]);
             return;
@@ -28,7 +26,6 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
             try{
                     const sggListRes = await fetch(selectedDo ? `${SERVER_URL}/youtaste/search/sgg?sidoCd=${selectedDo}` : null);
                     const sggListData = sggListRes.ok ? await sggListRes.json() : [];
-                    console.log("찐 시군구 --> ", sggListData);
                     
                     let list = sggListData.map(record => {
                         return {"id" : record.sggCd, ...record}    
@@ -51,7 +48,6 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
             }
             try{
                 const dongListRes = await fetch(selectedSi ? `${SERVER_URL}/youtaste/search/dong?sggCd=${selectedSi}` : null);
-                console.log("찐 읍면동 데이터 : ", dongListRes);
                 const dongListData = dongListRes.ok ? await dongListRes.json() : [];
                 let list = dongListData.map(record => {
                     return {id : record.dgCd, ...record};
@@ -65,7 +61,6 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
     }, [selectedSi]);
 
     useEffect(()=>{
-        console.log("선택된 동 코드 :" , selectedDong);
     }, [selectedDong]);
 
     function handleSelectDo(sidoCd, sidoNm){
@@ -84,7 +79,6 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
         setSelectedDong(null);
         setDongName("");
     }
-    console.log("selectedSi : " + selectedSi);
 
     function handleSelectDong(dgCd, dgNm){
         setSelectedDong(dgCd);
@@ -117,7 +111,6 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
                                                                 ? styleRegionModal.activeItem : ""}
                                                 `}
                                                 onClick={()=> {
-                                                    console.log("클릭됨!", record.sidoCd);
                                                     handleSelectDo(record.sidoCd, record.sidoNm);
                                                 }
                                                 }

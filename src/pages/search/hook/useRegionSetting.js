@@ -12,7 +12,7 @@ export default function useRegionSetting() {
     const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
     const [isSelectedAll, setIsSelectedAll] = useState(false);
 
-    const [lat, setLat] = useState(null); //서울로 바꾸기 37.5665
+    const [lat, setLat] = useState(null); //37.5665
     const [lng, setLng] = useState(null); //126.9780
     const [storeList, setStoreList] = useState([]); // 훅 내부에서 데이터 관리
     const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
@@ -38,11 +38,11 @@ export default function useRegionSetting() {
         };
 
         navigator.geolocation.getCurrentPosition(async (position) => {
-            console.log("3. 위치 정보를 받아옴", position.coords);
+            // console.log("3. 위치 정보를 받아옴", position.coords);
             setIsLoading(false);
             
             const { latitude, longitude } = position.coords;
-            console.log("위도:", latitude, "경도:", longitude);
+            // console.log("위도:", latitude, "경도:", longitude);
             setLat(latitude);
             setLng(longitude);
 
@@ -52,7 +52,7 @@ export default function useRegionSetting() {
             try {
                 const response = await fetch(localUrl, { headers });
                 const data = await response.json();
-                console.log("4. 카카오 API 응답 성공", data);
+                // console.log("4. 카카오 API 응답 성공", data);
                 
                 if (data.documents && data.documents.length > 0) {
                     console.log("여기야", data.documents[0]);
@@ -63,8 +63,8 @@ export default function useRegionSetting() {
                     setSelectedDo(currentSidoCode);
                     setSelectedSi(currentSggCode);
 
-                    setDoName(data.documents[0].region_1depth_name); // 예: "서울특별시"
-                    setSiName(data.documents[0].region_2depth_name);  // 예: "강남구"
+                    setDoName(data.documents[0].region_1depth_name); // 시도명
+                    setSiName(data.documents[0].region_2depth_name);  // 시군구명
                     
                     setStoreList(listBySgg);
                 }

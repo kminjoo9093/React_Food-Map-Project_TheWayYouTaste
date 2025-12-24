@@ -109,7 +109,6 @@ function SearchStore({ storeCategories, sidoList }) {
                     setSelectedDong(dong); 
                     setSelectedSi(sgg);
                     setSelectedDo(sido);
-                    console.log("여기", dong);
                 } else if (sgg) {
                     list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sgg?sggCd=${sgg}`);
                     setSelectedSi(sgg);
@@ -120,24 +119,17 @@ function SearchStore({ storeCategories, sidoList }) {
                 } 
             } else {
                 getCurrentLocation(); 
-                //이미 선택된 지역명(doName)이나 리스트가 있다면 현재 위치로 초기화하지 않음
-                // if (doName !== "" || (storeListByRegion?.length > 0) ) {
-                //     //이름X, 파라미터X
-                //     return; 
-                // }
                 return;
             } 
 
             if(list.length > 0){
-                // 4. 원본 데이터 저장 (검색이나 초기화 시 사용될 기준 데이터)
+                // 원본 데이터 저장 (검색이나 초기화 시 사용될 기준 데이터)
                 setStoreListByRegion(list);
 
-                // 5. 필터링 로직 (list 변수 그대로 사용)
+                // 필터링 로직 (list 변수 그대로 사용)
                 let filteredResult = list; // 새 변수에 할당하여 명확하게 처리
                 if (categoryArray.length > 0) {
-                    console.log("필터링 적용 전 개수:", list.length);
                     filteredResult = list.filter(record => categoryArray.includes(record.storeCatName));
-                    console.log("필터링 적용 후 개수:", filteredResult.length);
                 }
 
                 
@@ -150,6 +142,27 @@ function SearchStore({ storeCategories, sidoList }) {
         initLoad();
     }, [location.search, keyword, getCurrentLocation]); 
 
+
+    //test
+    useEffect(() => {
+        if (!storeListByRegion) return;
+
+        if (selectedCategories.length === 0) {
+            setFilteredStoreList(storeListByRegion);
+        } else {
+            setFilteredStoreList(
+                storeListByRegion.filter(record =>
+                    selectedCategories.includes(record.storeCatName)
+                )
+            );
+        }
+
+        setIsChangedRegion(true);
+        setNowPage(1);
+    }, [storeListByRegion, selectedCategories]);
+
+
+
     // 필터링, 지도범위 적용 최종 맛집 리스트
     const finalStoreListWithId = useMemo(() => {
         if (!Array.isArray(filteredStoreList)) return [];
@@ -159,8 +172,6 @@ function SearchStore({ storeCategories, sidoList }) {
     // 범위 내 재검색 함수
     const displayViewPortMarkers = useCallback( async (area) => {
         
-        //setIsResetFilter(true);
-        //resetFilter();
         setIsSearchArea(true);
 
         // area가 비어있는지 확인
@@ -180,14 +191,14 @@ function SearchStore({ storeCategories, sidoList }) {
             setStoreListByRegion(list);
 
             // 카테고리 필터가 있는 경우 적용 
-            let filteredResult = list;
-            if (selectedCategories && selectedCategories.length > 0) {
-                filteredResult = list.filter(record => selectedCategories.includes(record.storeCatName));
-            }
+            // let filteredResult = list;
+            // if (selectedCategories && selectedCategories.length > 0) {
+            //     filteredResult = list.filter(record => selectedCategories.includes(record.storeCatName));
+            // }
 
-            setFilteredStoreList(filteredResult);
+            // setFilteredStoreList(filteredResult);
             setIsMoved(false); // 재검색 후 버튼 비활성화
-            setNowPage(1);
+            // setNowPage(1);
         } catch (error) {
             console.error("범위 재검색 오류:", error);
         }
@@ -211,14 +222,14 @@ function SearchStore({ storeCategories, sidoList }) {
 
     // 검색 버튼 클릭 (카테고리 필터 적용)
     const onClickSearchBtn = () => {
-        if (selectedCategories.length === 0) {
-            setFilteredStoreList(storeListByRegion);
-        } else {
-            const list = storeListByRegion.filter(record => selectedCategories.includes(record.storeCatName));
-            setFilteredStoreList(list);
-        }
+        // if (selectedCategories.length === 0) {
+        //     setFilteredStoreList(storeListByRegion);
+        // } else {
+        //     const list = storeListByRegion.filter(record => selectedCategories.includes(record.storeCatName));
+        //     setFilteredStoreList(list);
+        // }
         
-        setIsChangedRegion(true);
+        // setIsChangedRegion(true);
 
         //map level 조절
         if((!selectedDo || !selectedSi) && !isResetFilter){
@@ -227,8 +238,8 @@ function SearchStore({ storeCategories, sidoList }) {
             setIsSelectedAll(false); //level 7
         }
 
-        setNowPage(1);
-        setIsResetFilter(false);
+        // setNowPage(1);
+        // setIsResetFilter(false);
         // URL 파라미터 제거
         navigate("/search/store", { replace: true });
     };
@@ -259,9 +270,6 @@ function SearchStore({ storeCategories, sidoList }) {
     const [nowPage, setNowPage] = useState(1);
     const viewListItemNum = 10;
     const viewStoreItems = finalStoreListWithId.slice((nowPage - 1) * viewListItemNum, nowPage * viewListItemNum);
-
-    console.log("?????????", viewStoreItems);
-
 
     return (
         <div className={`${styleSearchStore.gridMap} contentTopPosition`}>

@@ -20,14 +20,14 @@ function MainPage({storeCategories, sidoList}) {
   const { selectedDo, doName, selectedSi, siName, selectedDong, dongName, lat, lng, isLoading } = regionState;
   const [isModalOpen, setIsModalOpen] = useState(false); //지역 모달 오픈 상태
 
-  const [selectedCategories, setSelectedCategories] = useState([]);//test
-  const [isResetFilter, setIsResetFilter] = useState(false);//
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [isResetFilter, setIsResetFilter] = useState(false);
 
   useEffect(() => { getCurrentLocation(); }, [getCurrentLocation]);
 
   const getSearchPath = () => {
     
-    // 1. 주소창에 붙일 파라미터 생성
+    // 주소창에 붙일 파라미터 생성
     const params = new URLSearchParams();
     if (selectedDo) params.append("sido", String(selectedDo).trim());
     if (selectedSi) params.append("sgg", String(selectedSi).trim());
@@ -38,12 +38,12 @@ function MainPage({storeCategories, sidoList}) {
     if (lat) params.append("lat", lat); // 위도 추가
     if (lng) params.append("lng", lng); // 경도 추가
 
-    // 2. 선택된 카테고리들을 파라미터에 추가 (배열을 쉼표로 연결)
+    // 선택된 카테고리들을 파라미터에 추가 (배열을 쉼표로 연결)
     if (selectedCategories.length > 0) {
       params.append("categories", selectedCategories.join(","));
     }
 
-    // 2. 검색 페이지로 이동
+    // 검색 페이지로 이동
     return `/search/store?${params.toString()}`;
   };
 
