@@ -286,6 +286,7 @@ function SearchStore({ storeCategories, sidoList }) {
                 </div>
 
                 <div className={styleSearchStore.storeListArea}>
+
                     {viewStoreItems.length > 0 ? (
                         <>
                             <ul className={styleSearchStore.storeList}>
@@ -293,7 +294,7 @@ function SearchStore({ storeCategories, sidoList }) {
                                     viewStoreItems.map(record => (
                                     <li key={record.bplcSn} className={styleSearchStore.storeListItem}>
                                         <Link to={`/search/storeDetail?storeId=${record.bplcSn}`} className={styleSearchStore.storeListLink}>
-                                            <img className={styleSearchStore.storeImg} src={`${SERVER_URL}/uploads/store/${record.bplcPhoto}`} alt="store" />
+                                            <img className={styleSearchStore.storeImg} src={`${SERVER_URL}${record.bplcPhoto}`} alt="store" />
                                             <div className={styleSearchStore.storeInfo}>
                                                 <h2 className={styleSearchStore.storeName}>{record.bplcNm}</h2>
                                                 <div>
