@@ -115,7 +115,7 @@ function StoreRegion({ storeCategories, sidoList }) {
                             
                             <Link to={`/search/storeDetail?storeId=${store.bplcSn}`} className={styleRanking.itemLink}>
                                 <div className={styleRanking.imgBox}>
-                                    <img src={store.bplcPhoto || "/default-img.jpg"} alt={store.bplcNm} />
+                                    <img src={`http://localhost:3001${store.bplcPhoto}`} alt={store.bplcNm} />
                                 </div>
                                 
                                 <div className={styleRanking.infoBox}>
