@@ -53,7 +53,7 @@ function MainPage({storeCategories, sidoList}) {
         </h1>
 
         <div className={styleMain.mainContainer}>
-          <h3>원하시는 식당 유형을 선택해 주세요</h3>
+          <h3 style={{fontSize : "2.4rem"}}>원하시는 식당 유형을 선택해 주세요</h3>
 
           {/* 필터 버튼 */}
           <div className={styleMain.filterBox}>
@@ -78,10 +78,11 @@ function MainPage({storeCategories, sidoList}) {
             )}
 
           {/* 업종 */}
-          <div className={styleMain.titleBox}>
+          {/* <div className={styleMain.titleBox}>
             <h4 className={styleMain.sectionTitle}>업종</h4>
-          </div>
+          </div> */}
           <CategoryFilter 
+              mode="main"
               storeCategories={storeCategories}
               selectedCategories={selectedCategories}
               setSelectedCategories={setSelectedCategories}
@@ -99,7 +100,7 @@ function MainPage({storeCategories, sidoList}) {
             ))}
           </ul> */}
 
-          {/* 편의 */}
+          {/* 편의
           <br></br><br></br><br></br>
           <div className={styleMain.titleBox}>
             <h4 className={styleMain.sectionTitle}>편의</h4>
@@ -111,7 +112,7 @@ function MainPage({storeCategories, sidoList}) {
                 <div className={styleMain.tooltip}>{item.label}</div>
               </div>
             ))}
-          </div>
+          </div> */}
 
           {/* 검색 버튼 */}
           <div className={styleMain.iconRight}>

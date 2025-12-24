@@ -287,6 +287,7 @@ function SearchStore({ storeCategories, sidoList }) {
                     </div>
                     <div className={styleSearchStore.filterBottomWrap}>
                         <CategoryFilter 
+                            mode="search"
                             storeCategories={storeCategories}
                             selectedCategories={selectedCategories}
                             setSelectedCategories={setSelectedCategories}

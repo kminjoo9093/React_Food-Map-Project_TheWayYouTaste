@@ -184,7 +184,7 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
                         확인
                         </button>
                     </div>
-                    <button className={styleRegionModal.btnClose} onClick={()=>setIsModalOpen(false)}></button>
+                    <button className={styleRegionModal.btnClose} style={{border : "1px solid #fff "}}onClick={()=>setIsModalOpen(false)}></button>
                 </div>
             </div>
         )}
