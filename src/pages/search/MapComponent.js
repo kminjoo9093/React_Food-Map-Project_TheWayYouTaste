@@ -146,7 +146,8 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                                         {store.storeCatName && <span><img src={iconCategory} />{store.storeCatName}</span>}
                                     </p>
                                 </div>
-                                <img src={`${SERVER_URL}/uploads/store/${store.bplcPhoto}`}
+                                <img src={`${SERVER_URL}${store.bplcPhoto}`}
+                                // <img src={`${SERVER_URL}/uploads/store/${store.bplcPhoto}`}
                                     className={styleMap.infoImg} 
                                 />
                             </Link>
