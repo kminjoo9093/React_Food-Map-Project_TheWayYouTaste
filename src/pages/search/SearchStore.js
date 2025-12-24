@@ -147,8 +147,6 @@ function SearchStore({ storeCategories, sidoList }) {
     useEffect(() => {
         if (!storeListByRegion) return;
 
-       
-
         if (selectedCategories.length === 0) {
             
             setFilteredStoreList(storeListByRegion);
