@@ -15,7 +15,7 @@ const AGREEMENT_ITEMS = [
 ];
 
 function MembershipResign() {
-    const navigate = useNavigate();
+   const navigate = useNavigate();
     const [agreements, setAgreements] = useState(new Array(AGREEMENT_ITEMS.length).fill(false));
     const [isBtnEnabled, setIsBtnEnabled] = useState(false);
     const [user, setUser] = useState(null);
@@ -24,14 +24,12 @@ function MembershipResign() {
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-            setUser(JSON.parse(storedUser));
-        }
+        if (storedUser) setUser(JSON.parse(storedUser));
         setIsInitialized(true);
     }, []);
 
     useEffect(() => {
-        // [수정] index 2(탈퇴 사유 수집) 항목만 제외하고 나머지가 모두 true일 때 버튼 활성화
+        // index 2(탈퇴 사유) 제외 필수 항목 체크 확인
         const essentialChecked = agreements.filter((_, i) => i !== 2).every(val => val === true);
         setIsBtnEnabled(essentialChecked);
     }, [agreements]);
@@ -40,8 +38,9 @@ function MembershipResign() {
         setAgreements(agreements.map((item, i) => i === index ? !item : item));
     };
 
-    const thStyle = "border:1px solid #ccc; padding:12px; text-align:center; background:#f2f2f2; font-weight:bold; font-size:14px;";
-    const tdStyle = "border:1px solid #ccc; padding:12px; line-height:1.6; font-size:14px; color:#333;";
+    // 테이블 스타일 (Swal 내부용)
+    const thStyle = "border-bottom:2px solid #eee; padding:12px; text-align:center; background:#f9f9f9; font-weight:bold; font-size:14px; color:#333;";
+    const tdStyle = "border-bottom:1px solid #eee; padding:12px; line-height:1.6; font-size:14px; color:#555;";
     const redSpan = (text) => `<span style="color: #B71C1C; font-weight: bold;">${text}</span>`;
 
     // --- [원본 법령 테이블 내용 100% 유지] ---
@@ -309,36 +308,55 @@ function MembershipResign() {
     return (
         <div className="contentTopPosition">
             <div className="container">
-                <div className={style.container}>
-                    <div className={style.leftBox}>
-                        <br/><div><h1 className={style.mainTitle}>회원 정보 탈퇴</h1></div><br/>
-                        {AGREEMENT_ITEMS.map((item, idx) => (
-                            <div key={idx} className={style.subTitle1} style={{marginBottom: '10px'}}>{item}</div>
-                        ))}
-                        <div style={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}>
-                            <button className={`${style.mainBtn} ${!isBtnEnabled ? style.disabledBtn : ''}`} 
-                                    onClick={handleResignSubmit} disabled={!isBtnEnabled}>탈퇴하기</button>
-                        </div>
-                    </div>
-                    <div className={style.rightBox}>
-                        <div className={style.profileBox}>
-                            <br/><h2>유의사항 확인 및 동의</h2><br/>
-                            {AGREEMENT_ITEMS.map((item, index) => (
-                                <React.Fragment key={index}>
-                                    <div className={style.wrapBox}>
-                                        <span className={style.subTitle2}>■ {item}</span>
-                                        <button className={style.btn} onClick={() => handleGoToDetails(item, index)}>바로보기</button>
-                                    </div>
-                                    <div className={style.agreementArea}>
-                                        <label className={style.agreementLabel}>
-                                            <input type="checkbox" checked={agreements[index]} onChange={() => handleCheckboxChange(index)} />
-                                            &nbsp;위 내용을 확인하고, 동의 합니다.
-                                        </label>
-                                    </div><br/>
-                                </React.Fragment>
+                <div className={style.mainWrapper}>
+                    {/* 왼쪽 사이드바: 단계 안내 */}
+                    <aside className={style.leftBox}>
+                        <h1 className={style.mainTitle}>회원 탈퇴</h1>
+                        <div className={style.stepList}>
+                            {AGREEMENT_ITEMS.map((item, idx) => (
+                                <div key={idx} 
+                                     className={`${style.subTitle1} ${agreements[idx] ? style.activeStep : ''}`}>
+                                    {idx + 1}. {item}
+                                </div>
                             ))}
                         </div>
-                    </div>
+                        <button 
+                            className={`${style.mainBtn} ${!isBtnEnabled ? style.disabledBtn : ''}`} 
+                            onClick={handleResignSubmit} 
+                            disabled={!isBtnEnabled}
+                        >
+                            회원 탈퇴 확정
+                        </button>
+                    </aside>
+
+                    {/* 오른쪽 본문: 동의 섹션 */}
+                    <section className={style.rightBox}>
+                        <div className={style.profileBox}>
+                            <h3>유의사항 확인 및 필수 동의</h3>
+                            <p className={style.description}>안전한 데이터 파기를 위해 각 항목을 반드시 확인해 주시기 바랍니다.</p>
+                            
+                            <div className={style.agreementContainer}>
+                                {AGREEMENT_ITEMS.map((item, index) => (
+                                    <div key={index} className={style.agreementCard}>
+                                        <div className={style.wrapBox}>
+                                            <span className={style.subTitle2}>{item}</span>
+                                            <button className={style.btn} onClick={() => handleGoToDetails(item, index)}>내용 보기</button>
+                                        </div>
+                                        <div className={style.agreementArea}>
+                                            <label className={style.agreementLabel}>
+                                                <input 
+                                                    type="checkbox" 
+                                                    checked={agreements[index]} 
+                                                    onChange={() => handleCheckboxChange(index)} 
+                                                />
+                                                <span>위 안내 내용을 충분히 숙지하였으며 이에 동의합니다.</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
         </div>

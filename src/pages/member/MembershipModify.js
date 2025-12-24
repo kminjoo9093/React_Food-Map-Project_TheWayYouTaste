@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import style from "../../css/MembershipModify.module.css"; 
@@ -8,7 +8,11 @@ function MembershipModify() {
     const navigate = useNavigate();
     const SERVER_URL = serverUrl.SERVER_URL;
 
-    // 1. 데이터 로드 (localStorage "user" 키 사용)
+    // 각 섹션을 가리킬 ref 생성
+    const profileRef = useRef(null);
+    const securityRef = useRef(null);
+    const historyRef = useRef(null);
+
     const [user, setUser] = useState(() => {
         const saved = localStorage.getItem("user");
         return saved ? JSON.parse(saved) : null;
@@ -18,11 +22,23 @@ function MembershipModify() {
         nickname: user?.nickname || "",
         userMblTelno: user?.userMblTelno || "",
         userEmlAddr: user?.userEmlAddr || "",
-        password: ""
     });
 
-    // 2. 수정 모드 상태 (어떤 필드를 수정 중인지 저장)
     const [editingField, setEditingField] = useState(null);
+
+    // 2. 스크롤 이동 함수
+    const scrollToSection = (ref) => {
+        if (ref.current) {
+            const offset = 100; 
+            const elementPosition = ref.current.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth" // 부드러운 이동
+            });
+        }
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -30,13 +46,11 @@ function MembershipModify() {
     };
 
     const handleModify = async (field) => {
-        // 수정 모드가 아닐 때: 입력창으로 전환
         if (editingField !== field) {
             setEditingField(field);
             return;
         }
 
-        // 수정 모드일 때 (저장 버튼 클릭 시): 서버 전송
         if (!user || !user.userSn) return alert("로그인 정보가 없습니다.");
 
         try {
@@ -50,7 +64,7 @@ function MembershipModify() {
                 const updatedUser = { ...user, [field]: modifyData[field] };
                 localStorage.setItem("user", JSON.stringify(updatedUser));
                 setUser(updatedUser);
-                setEditingField(null); // 입력창 닫기
+                setEditingField(null);
             }
         } catch (error) {
             console.error("수정 실패:", error);
@@ -61,95 +75,95 @@ function MembershipModify() {
     return (
         <div className="contentTopPosition">
             <div className="container">
-                <div className={style.container}>
-                    {/* 왼쪽 사이드바 (디자인 보존) */}
-                    <div className={style.leftBox}>
-                        <br /><br />
-                        <h1>회원 정보 수정</h1>
-                        <br />
-                        <div className={style.subTitle1}>■ 내 프로필 수정</div>
-                        <br />
-                        <div className={style.subTitle1}>■ 비밀/보안 설정</div>
-                        <br />
-                        <div className={style.subTitle1}>■ 이력 관리</div>
-                        <br />
+                <div className={style.mainWrapper}>
+                    
+                    {/* 왼쪽 사이드바 */}
+                    <aside className={style.leftBox}>
+                        <h1>회원 설정</h1>
+                        <div className={style.subTitle1} onClick={() => scrollToSection(profileRef)}>■ 내 프로필 수정</div>
+                        <div className={style.subTitle1} onClick={() => scrollToSection(profileRef)}>■ 비밀/보안 설정</div>
+                        <div className={style.subTitle1} onClick={() => scrollToSection(profileRef)}>■ 이력 관리</div>
                         <button className={style.mainBtn} type="button" onClick={() => {
-                            alert("로그아웃 하시겠습니까?");
-                            localStorage.removeItem("user");
-                            navigate('/main');
+                            if(window.confirm("로그아웃 하시겠습니까?")) {
+                                localStorage.removeItem("user");
+                                window.location.href = "/main";
+                            }
                         }}>로그 아웃</button>
-                    </div>
+                    </aside>
 
-                    {/* 오른쪽 영역 */}
+                    {/* 오른쪽 메인 콘텐츠 */}
                     <div className={style.rightBox}>
-                        {/* 1. My Profile 박스 */}
-                        <div className={style.profileBox}>
+                        
+                        {/* 1. 프로필 관리 카드 */}
+                        <section className={style.profileBox} ref={profileRef}>
                             <h3>내 프로필 수정</h3>
+                            
                             <div className={style.wrapBox}>
-                                <span className={style.subTitle2}>■ 닉네임 </span>
-                                {editingField === 'nickname' ? (
-                                    <input type="text" name="nickname" value={modifyData.nickname} onChange={handleInputChange} />
-                                ) : (
-                                    <span>{user?.nickname}</span>
-                                )}
+                                <span className={style.subTitle2} >닉네임</span>
+                                <div className={style.dataValue}>
+                                    {editingField === 'nickname' ? (
+                                        <input className={style.editInput} type="text" name="nickname" value={modifyData.nickname} onChange={handleInputChange} />
+                                    ) : (
+                                        <span>{user?.nickname}</span>
+                                    )}
+                                </div>
                                 <button className={style.btn} onClick={() => handleModify('nickname')}>
                                     {editingField === 'nickname' ? "저장" : "수정"}
                                 </button>
                             </div>
+
                             <div className={style.wrapBox}>
-                                <span className={style.subTitle2}>■ 핸드폰 번호 </span>
-                                {editingField === 'userMblTelno' ? (
-                                    <input type="text" name="userMblTelno" value={modifyData.userMblTelno} onChange={handleInputChange} />
-                                ) : (
-                                    <span>{user?.userMblTelno}</span>
-                                )}
+                                <span className={style.subTitle2}>핸드폰 번호</span>
+                                <div className={style.dataValue}>
+                                    {editingField === 'userMblTelno' ? (
+                                        <input className={style.editInput} type="text" name="userMblTelno" value={modifyData.userMblTelno} onChange={handleInputChange} />
+                                    ) : (
+                                        <span>{user?.userMblTelno}</span>
+                                    )}
+                                </div>
                                 <button className={style.btn} onClick={() => handleModify('userMblTelno')}>
                                     {editingField === 'userMblTelno' ? "저장" : "수정"}
                                 </button>
                             </div>
+
                             <div className={style.wrapBox}>
-                                <span className={style.subTitle2}>■ 전자 메일</span>
-                                {editingField === 'userEmlAddr' ? (
-                                    <input type="text" name="userEmlAddr" value={modifyData.userEmlAddr} onChange={handleInputChange} />
-                                ) : (
-                                    <span>{user?.userEmlAddr}</span>
-                                )}
+                                <span className={style.subTitle2}>이메일 주소</span>
+                                <div className={style.dataValue}>
+                                    {editingField === 'userEmlAddr' ? (
+                                        <input className={style.editInput} type="text" name="userEmlAddr" value={modifyData.userEmlAddr} onChange={handleInputChange} />
+                                    ) : (
+                                        <span>{user?.userEmlAddr}</span>
+                                    )}
+                                </div>
                                 <button className={style.btn} onClick={() => handleModify('userEmlAddr')}>
                                     {editingField === 'userEmlAddr' ? "저장" : "수정"}
                                 </button>
                             </div>
-                        </div>
+                        </section>
 
-                        <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.3)', margin: '7px 0', width: '100%' }}></div>
-
-                        {/* 2. Security setting 박스 */}
-                        <div className={style.securityBox}>
+                        {/* 2. 보안 설정 카드 */}
+                        <section className={style.securityBox} ref={securityRef}>
                             <h3>비밀/보안 설정</h3>
-                            {/* <div className={style.wrapBox}>
-                                <span className={style.subTitle2}>■ 비밀번호</span>
-                                <span>{user?.userPswd ? "*".repeat(user.userPswd.length) : ""}</span>
-                                <button className={style.btn} onClick={() => handleModify('password')}>수정</button>
-                            </div> */}
                             <div className={style.wrapBox}>
-                                <span className={style.subTitle2}>■ 회원 탈퇴</span>
-                                <button className={style.btn} type="button" onClick={() => navigate('/member/resign')}>탈퇴 하기</button>
+                                <span className={style.subTitle2}>회원 탈퇴</span>
+                                <div className={style.dataValue}>탈퇴 시 모든 활동 기록과 정보가 삭제됩니다.</div>
+                                <button className={style.btn} type="button" onClick={() => navigate('/member/resign')}>탈퇴하기</button>
                             </div>
-                        </div>
+                        </section>
 
-                        <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.3)', margin: '7px 0', width: '100%' }}></div>
-
-                        {/* 3. History management 박스 (복구 완료) */}
-                        <div className={style.historyBox}>
-                            <h3>이력 관리</h3>
+                        {/* 3. 이력 관리 카드 */}
+                        <section className={style.historyBox} ref={historyRef}>
+                            <h3>활동 이력 관리</h3>
                             <div className={style.wrapBox}>
-                                <span className={style.subTitle2}>■ 최초 가입일</span>
-                                <span>{user?.frstRegDt || "2025-12-22"}</span>
-                                <button className={style.btn} style={{border : "1px solid #ffb92e"}}></button>
+                                <span className={style.subTitle2}>최초 가입일</span>
+                                <div className={style.dataValue}>{user?.frstRegDt || "2025-12-22"}</div>
+                                <div style={{width: '100px'}}></div> 
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        </section>
+                        
+                    </div> {/* rightBox 끝 */}
+                </div> {/* mainWrapper 끝 */}
+            </div> {/* container 끝 */}
         </div>
     );
 }

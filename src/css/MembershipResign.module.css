@@ -1,140 +1,169 @@
-.container {
-    margin-top: 18px;
-    text-align: center;
+/* 전체 레이아웃 */
+.mainWrapper {
     display: flex;
-    gap: 15px;
-    color: #800020;
-}
-
-.leftBox {
-    border-radius: 20px;
-    width: 250px;
-    height: 750px;
-    text-align: center;
-    background: #ffb92e;
-    border-radius: 18px;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    font-weight: 650;
-}
-
-.rightBox {
-    flex: 1;
-    display: flex;
-    text-align: left;
-    flex-direction: column;
-    align-items: stretch;
-    font-size: 20px;
-    font-weight: 550;
-}
-
-.profileBox {
+    align-items: flex-start;
+    gap: 3.2rem;
     width: 100%;
-    height: 750px;
-    background: #ffb92e;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    border-radius: 18px;
-    margin-top: 0%;
-    font-size: 20px;
-    font-weight: 550;
-    text-align: center;
-    font-style: italic;
+    margin-top: 2rem;
+    color: #333;
 }
 
-.mainBtn {
-    border-radius: 8px;
-    border: none;
-    text-align: center;
-    cursor: pointer;
-    font-size: 23px;
-    color: #800020;
-    font-weight: 700;
-    width: 120px;
-    height: 35px;
-    background: transparent;
-    border: 2px solid #800020;
-    box-shadow: none;
-    padding: 0;
+/* 왼쪽 사이드바 */
+.leftBox {
+    width: 28rem;
+    flex-shrink: 0;
+    background: #F7F3F0;
+    border-radius: 1.6rem;
+    padding: 3rem 2rem;
+    box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 10rem;
+    text-align: left;
 }
 
-.btn {
-    border-radius: 8px;
-    border: none;
-    margin-right: 22px;
-    text-align: center;
-    cursor: pointer;
-    font-size: 16px;
-    color: #800020;
-    font-weight: 750;
-    width: 100px;
-    height: 30px;
-    background: transparent;
-    border: 2px solid #800020;
-    box-shadow: none;
-    padding: 0;
+.mainTitle {
+    font-size: 2.4rem;
+    color: #800020; /* Primary Color */
+    margin-bottom: 2.5rem;
+    font-weight: 800;
+    padding-left: 1rem;
+}
+
+.stepList {
+    margin-bottom: 3rem;
 }
 
 .subTitle1 {
-    font-size: 20px;
-    border-top: 15%;
-    font-style: italic;
-    text-decoration-line: underline;
-    text-decoration-color: rgba(0, 0, 0, 0.2);
+    font-size: 1.5rem;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 0.8rem;
+    border-radius: 0.8rem;
+    color: #777;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+/* 동의 완료 시 스타일 */
+.activeStep {
+    background-color: #fff5f5;
+    color: #800020;
+    border-color: #800020;
+}
+
+/* 오른쪽 본문 */
+.rightBox {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.profileBox {
+    background: #F2EDE4;
+    border-radius: 1.6rem;
+    padding: 4rem;
+    box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.05);
+}
+
+.profileBox h3 {
+    font-size: 2.2rem;
+    color: #111;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.description {
+    font-size: 1.4rem;
+    color: #888;
+    margin-bottom: 3rem;
+}
+
+/* 개별 항목 카드 스타일 */
+.agreementCard {
+    padding: 2rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.agreementCard:last-child {
+    border-bottom: none;
+}
+
+.wrapBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
 }
 
 .subTitle2 {
-    font-size: 17px;
-    margin-left: 25px;
-    margin-top: 7px;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #333;
 }
 
-.wrapBox {
-    display: flex;
-    margin-top: 12px;
-    justify-content: space-between;
-}
-
-/* ===================================== 새롭게 추가된 항목 */
-
-/* 1. 항목 제목 + 버튼 컨테이너 */
-.wrapBox {
-    display: flex;
-    justify-content: space-between; /* 제목/버튼을 양 끝으로 정렬 */
-    align-items: center;
-    margin-bottom: 5px; /* 아래 동의 영역과의 간격 */
-}
-
-/* 2. 동의 체크박스 및 멘트 영역 */
+/* 체크박스 영역 */
 .agreementArea {
-    /* wrapBox 아래에 위치시키기 위해 블록 요소로 */
-    text-align: center;
-    padding-left: 15px; /* 약간 들여쓰기 */
-    margin-top: -3px; /* 위쪽 wrapBox와 간격 조정 */
-    margin-left: 37px;
+    background-color: #F2EDE4;
+    padding: 1.5rem;
+    border-radius: 0.8rem;
 }
 
-/* 3. 체크박스 라벨 */
 .agreementLabel {
-    display: flex; /* 체크박스와 멘트를 한 줄에 정렬 */
+    display: flex;
     align-items: center;
+    gap: 1rem;
     cursor: pointer;
-    font-size: 0.9em;   
+    font-size: 1.4rem;
     color: #555;
-    margin-top: 20px;
 }
 
-/* 4. '바로가기' 버튼 스타일 */
-.btn1 {
-    padding: 5px 10px;
-    border: 1px solid #800020;
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 0.85em; /* 크기 조정 */
-    background: #ffb92e;
-} 
+.agreementLabel input[type="checkbox"] {
+    width: 1.8rem;
+    height: 1.8rem;
+    accent-color: #800020;
+}
 
-/* 5. '탈퇴하기' 버튼 비활성화 상태 */
+/* 버튼 스타일 */
+.btn {
+    padding: 0.6rem 1.5rem;
+    border: 1.5px solid #800020;
+    background: #fff;
+    color: #800020;
+    font-weight: bold;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    font-size: 1.3rem;
+    transition: 0.2s;
+}
+
+.btn:hover {
+    background: #800020;
+    color: #fff;
+}
+
+.mainBtn {
+    width: 100%;
+    padding: 1.5rem;
+    background: #800020;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.7rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 12px rgba(128, 0, 32, 0.2);
+}
+
+.mainBtn:hover:not(.disabledBtn) {
+    background: #a00028;
+    transform: translateY(-2px);
+}
+
 .disabledBtn {
-    background-color: #ffb92e; 
+    background: #ccc;
     cursor: not-allowed;
-    opacity: 0.6;
+    box-shadow: none;
+    opacity: 0.7;
 }

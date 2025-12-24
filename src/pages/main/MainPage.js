@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
 import styleMain from "../../css/MainPage.module.css";
-// import styleGlobal from "../../css/Global.module.css";
 import { useState, useEffect } from 'react';
-import mainbody from "../../resources/img/system/main.png";
 import useRegionSetting from '../search/hook/useRegionSetting';
 import RegionModal from "../search/RegionModal"; 
 import CategoryFilter from '../search/CategoryFilter';
