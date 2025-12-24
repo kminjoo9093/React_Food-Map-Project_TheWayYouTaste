@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useSearchParams, useNavigate } from "react-router-dom";
-import starFill from "../../resources/img/search/iconStarFill.svg";
-import starHalf from "../../resources/img/search/iconStarHalf.svg";
 import ReviewRegister from "../../pages/review/ReviewRegister";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
@@ -108,7 +106,7 @@ function StoreDetail({ storeList }) {
 
     const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
-    const StarRatingView = ({ rating }) => {
+    const StarRatingView = ({ rating, starSize="1.5rem", starBoxSize="2rem", marginRight="-0.3rem", ratingFont="1.5rem"}) => {
         const stars = 5;
         return (
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -117,9 +115,9 @@ function StoreDetail({ storeList }) {
                     return (
                         <div
                             key={index}
-                            style={{ position: "relative", width: "2rem", height: "2rem", marginRight: "-0.3rem" }}
+                            style={{ position: "relative", width: starBoxSize, height: starBoxSize, marginRight: marginRight }}
                         >
-                            <FontAwesomeIcon icon={faStar} style={{ color: "#ccc" }} />
+                            <FontAwesomeIcon icon={faStar} style={{ color: "#ccc", fontSize: starSize, marginTop: "2px" }} />
                             <div
                                 style={{
                                     width: `${fillPercentage}%`,
@@ -129,13 +127,13 @@ function StoreDetail({ storeList }) {
                                     left: 0,
                                 }}
                             >
-                                <FontAwesomeIcon icon={faStar} style={{ color: "#ffc107" }} />
+                                <FontAwesomeIcon icon={faStar} style={{ color: "#ffc107", fontSize: starSize, marginTop: "2px" }} />
                             </div>
                         </div>
                     );
                 })}
-                <span style={{ marginLeft: "8px", fontSize: "1.5rem", fontWeight: "bold", color: "#333" }}>
-                    {rating ? rating.toFixed(1) : "0.0"}
+                <span style={{ marginLeft: "8px", fontSize: ratingFont, fontWeight: "bold", color: "#333" }}>
+                    {rating.toFixed(1)}
                 </span>
             </div>
         );
@@ -256,12 +254,7 @@ function StoreDetail({ storeList }) {
                         </div>
                         <ul className={styleStoreDetail.detailInfoList}>
                             <li className={styleStoreDetail.ratingAvgWrap}>
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <img src={starHalf} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <em className={styleStoreDetail.ratingAvg}>4.5</em>
+                                    <StarRatingView rating={storeData.avg} starSize={"3rem"} starBoxSize={"4rem"} marginRight={"0rem"} ratingFont={"2.8rem"}/>
                             </li>
                             <li className={styleStoreDetail.time}>
                                 <em className={styleStoreDetail.detailTitle}>영업시간</em>
