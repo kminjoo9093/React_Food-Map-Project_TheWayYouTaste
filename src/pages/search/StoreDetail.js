@@ -55,7 +55,7 @@ function StoreDetail({ storeList }) {
 
     function showStoreImage(imgData) {
         if(imgData){
-            return <img src={`${SERVER_URL}/uploads/store/${imgData}`} alt="대표 이미지"
+            return <img src={`${SERVER_URL}${imgData}`} alt="대표 이미지"
                         className={styleStoreDetail.storeImage}></img>;
         } else {
             return <span>등록된 이미지가 없습니다.</span>;
@@ -108,7 +108,7 @@ function StoreDetail({ storeList }) {
 
     const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
-    const StarRatingView = ({ rating }) => {
+    const StarRatingView = ({ rating, starSize="1.5rem", starBoxSize="2rem", marginRight="-0.3rem", ratingFont="1.5rem"}) => {
         const stars = 5;
         return (
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -117,9 +117,9 @@ function StoreDetail({ storeList }) {
                     return (
                         <div
                             key={index}
-                            style={{ position: "relative", width: "2rem", height: "2rem", marginRight: "-0.3rem" }}
+                            style={{ position: "relative", width: starBoxSize, height: starBoxSize, marginRight: marginRight }}
                         >
-                            <FontAwesomeIcon icon={faStar} style={{ color: "#ccc" }} />
+                            <FontAwesomeIcon icon={faStar} style={{ color: "#ccc", fontSize: starSize, marginTop: "2px" }} />
                             <div
                                 style={{
                                     width: `${fillPercentage}%`,
@@ -129,17 +129,18 @@ function StoreDetail({ storeList }) {
                                     left: 0,
                                 }}
                             >
-                                <FontAwesomeIcon icon={faStar} style={{ color: "#ffc107" }} />
+                                <FontAwesomeIcon icon={faStar} style={{ color: "#ffc107", fontSize: starSize, marginTop: "2px" }} />
                             </div>
                         </div>
                     );
                 })}
-                <span style={{ marginLeft: "8px", fontSize: "1.5rem", fontWeight: "bold", color: "#333" }}>
-                    {rating ? rating.toFixed(1) : "0.0"}
+                <span style={{ marginLeft: "8px", fontSize: ratingFont, fontWeight: "bold", color: "#333" }}>
+                    {(rating || 0).toFixed(1)}
                 </span>
             </div>
         );
     };
+
 
     // ===== 리뷰 항목 컴포넌트 (좋아요 로직 포함) =====
     const ReviewItem = ({ review }) => {
@@ -256,12 +257,7 @@ function StoreDetail({ storeList }) {
                         </div>
                         <ul className={styleStoreDetail.detailInfoList}>
                             <li className={styleStoreDetail.ratingAvgWrap}>
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <img src={starFill} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <img src={starHalf} className={styleStoreDetail.ratingStarImg} alt="star" />
-                                <em className={styleStoreDetail.ratingAvg}>4.5</em>
+                                    <StarRatingView rating={storeData.avg} starSize={"3rem"} starBoxSize={"4rem"} marginRight={"0rem"} ratingFont={"2.8rem"}/>
                             </li>
                             <li className={styleStoreDetail.time}>
                                 <em className={styleStoreDetail.detailTitle}>영업시간</em>
@@ -290,6 +286,7 @@ function StoreDetail({ storeList }) {
                                     }
                                 }}
                             >
+
                                 리뷰 작성
                             </button>
 
