@@ -1,15 +1,30 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styleReport from "../../../css/Report.module.css";
 import styleMember from "../../../css/MemberListCheck.module.css";
 import styleNotice from "../../../css/Notice.module.css";
 import serverUrl from "../../../db/server.json";
+import axios from "axios";
 
 function ReportDetail({ setMemberNotices }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const [members, setMembers] = useState([]);
+  const [stores, setStores] = useState([]);
   const report = location.state;
   const SERVER_URL = serverUrl.SERVER_URL;
+
+  useEffect(() => {
+    axios.get(`${SERVER_URL}/youtaste/search/store/all`)
+      .then(res => setStores(res.data))
+      .catch(err => console.error("가게 목록 로드 실패", err));
+  }, []);
+
+  useEffect(() => {
+    axios.get(`${SERVER_URL}/membership/check`)
+      .then(res => setMembers(res.data))
+      .catch(err => console.error("회원 목록 로드 실패", err));
+  }, []);
 
   const [showDetail, setShowDetail] = useState(false);
   const [noticeTitle, setNoticeTitle] = useState(report?.dclrTtl || "");
@@ -18,6 +33,7 @@ function ReportDetail({ setMemberNotices }) {
   const [actionReason, setActionReason] = useState("");
 
   if (!report) return <p>신고 정보가 없습니다.</p>;
+  
 
   const { dclrTtl, dclrCn, dclrCatNo, userSn, bplcSn, storeName, isAdmin } = report;
 
@@ -38,6 +54,16 @@ function ReportDetail({ setMemberNotices }) {
 
   const closeActionBox = () => setIsActionBoxOpen(false);
 
+  function transName(userSn) {
+    const member = members.find(m => m.userSn === userSn);
+    return member ? member.userNm : userSn; // 이름을 찾으면 반환, 없으면 번호 그대로 표시
+  }
+
+  function transStore(bplcSn) {
+    const store = stores.find(s => s.bplcSn === bplcSn);
+    return store ? store.bplcNm : bplcSn; // 이름을 찾으면 반환, 없으면 번호 그대로 표시
+  }
+
   const handleSubmit = async (title) => {
     const prcsYnValue = actionType === "수리" ? "Y" : "N";
 
@@ -46,6 +72,8 @@ function ReportDetail({ setMemberNotices }) {
       notiTtl: title,
       notiCn: actionReason
     };
+
+    
 
     try {
       // 신고 상태 업데이트
@@ -112,9 +140,9 @@ function ReportDetail({ setMemberNotices }) {
             <tbody>
               <tr>
                 <td>{getDclrCatName(dclrCatNo)}</td>
-                <td>{storeName || bplcSn}</td>
+                <td>{transStore(bplcSn)}</td>
                 <td>{dclrTtl}</td>
-                <td>{userSn}</td>
+                <td>{transName(userSn)}</td>
                 <td>
                   <button onClick={() => setShowDetail(!showDetail)} className="button"> 
                     자세히 보기

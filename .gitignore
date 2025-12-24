@@ -23,6 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 #2개추가
-# //yarn.lock
+yarn.lock
 
-# package-lock.json
+package-lock.json

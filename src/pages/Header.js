@@ -134,8 +134,8 @@ function Header(){
                         <h3 className={styleSidebar.greeting}>
                             {isLogin ? (
                                 user?.authrtYn === 'Y' 
-                                    ? `${user.userNm} 관리자님 안녕하세요!`  // 관리자일 때
-                                    : `${user.userNm}님 안녕하세요!`      // 일반 사용자일 때
+                                    ? `${user.nickname} 관리자님 안녕하세요!`  // 관리자일 때
+                                    : `${user.nickname}님 안녕하세요!`      // 일반 사용자일 때
                             ) : (
                                 "로그인해주세요"
                             )}
