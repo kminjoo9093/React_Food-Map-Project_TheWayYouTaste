@@ -196,9 +196,16 @@ span.storeAddress{
     background-image: url(/src/resources/img/search/iconLocation.svg);
     background-position: top left;
 }
-/* .storeInfo .storeAddress{
-    padding-left: 0;
-} */
+.noData{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 1.6rem;
+}
+
+
 /* 페이지네이션 */
 .pagination{
     margin-block: 1.5rem 2rem;
