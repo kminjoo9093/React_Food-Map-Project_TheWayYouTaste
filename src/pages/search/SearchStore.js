@@ -162,8 +162,6 @@ function SearchStore({ storeCategories, sidoList }) {
         setNowPage(1);
     }, [storeListByRegion, appliedCategories]);
 
-
-
     // 필터링, 지도범위 적용 최종 맛집 리스트
     const finalStoreListWithId = useMemo(() => {
         if (!Array.isArray(filteredStoreList)) return [];
