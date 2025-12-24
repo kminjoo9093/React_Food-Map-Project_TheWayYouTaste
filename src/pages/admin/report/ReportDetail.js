@@ -56,12 +56,12 @@ function ReportDetail({ setMemberNotices }) {
 
   function transName(userSn) {
     const member = members.find(m => m.userSn === userSn);
-    return member ? member.userNm : userSn; // 이름을 찾으면 반환, 없으면 번호 그대로 표시
+    return member ? member.userNm : (report.writer || report.userName || userSn); // 이름을 찾으면 반환, 없으면 번호 그대로 표시
   }
 
   function transStore(bplcSn) {
     const store = stores.find(s => s.bplcSn === bplcSn);
-    return store ? store.bplcNm : bplcSn; // 이름을 찾으면 반환, 없으면 번호 그대로 표시
+    return store ? store.bplcNm : (report.storeName || bplcSn); // 이름을 찾으면 반환, 없으면 번호 그대로 표시
   }
 
   const handleSubmit = async (title) => {
