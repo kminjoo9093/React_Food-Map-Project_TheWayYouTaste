@@ -270,6 +270,7 @@ function SearchStore({ storeCategories, sidoList }) {
                     </div>
                     <div className={styleSearchStore.filterBottomWrap}>
                         <CategoryFilter 
+                            mode="search"
                             storeCategories={storeCategories}
                             selectedCategories={selectedCategories}
                             setSelectedCategories={setSelectedCategories}
@@ -295,12 +296,12 @@ function SearchStore({ storeCategories, sidoList }) {
                                             <img className={styleSearchStore.storeImg} src={`${SERVER_URL}/uploads/store/${record.bplcPhoto}`} alt="store" />
                                             <div className={styleSearchStore.storeInfo}>
                                                 <h2 className={styleSearchStore.storeName}>{record.bplcNm}</h2>
-                                                <div>
+                                                <div className={styleSearchStore.avgNCat}>
                                                     <span className={styleSearchStore.storeRating}>{record.avg}</span>
                                                     <span className={styleSearchStore.storeCategory}>{record.storeCatName}</span>
                                                 </div>
-                                                <span className={styleSearchStore.storeTime}><em>영업시간</em>{record.bgngTm}-{record.ddlnTm}</span>
-                                                <span className={styleSearchStore.storeAddress}><em>주소</em>{record.address}</span>
+                                                <span className={styleSearchStore.storeTime}>{record.bgngTm}-{record.ddlnTm}</span>
+                                                <span className={styleSearchStore.storeAddress}>{record.address}</span>
                                             </div>
                                         </Link>
                                     </li>

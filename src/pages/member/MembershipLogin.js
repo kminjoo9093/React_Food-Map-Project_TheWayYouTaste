@@ -70,7 +70,7 @@ function MembershipLogin({setIsLoggedIn, setUser}) {
 
             if (!res.ok) throw new Error("register fail");
 
-            alert("회원가입 완료! 로그인 해주세요.");
+            alert("회원가입 완료! 로그인 해주세요. 닉네임은 내 정보에서 변경 가능합니다. ");
             setActive(true);
 
             setRegUser_NM("");
@@ -84,13 +84,11 @@ function MembershipLogin({setIsLoggedIn, setUser}) {
     };
 
     return (
-        <div className="contentTopPosition" style={{marginTop : "180px"}}>
+        <div className={style.loginWrap}>
             <div className={`${style.container} ${active ? style.active : ""}`}>
-            
-                <div className={`${style.formBox} ${style.login}`}> 
+                <div className={`${style.formBox} ${style.registerFormBox} ${style.login}`}> 
                     <form onSubmit={handleRegister}>
-                        <h1>회원가입</h1>
-
+                        <h1 className={style.title}>회원가입</h1>
                         <div className={style.inputBox}>
                             <input 
                                 type="text" 
@@ -133,11 +131,31 @@ function MembershipLogin({setIsLoggedIn, setUser}) {
                         <br></br>
                         <button className={style.btn} type="submit">회원가입</button>
                     </form>
+                    {/* 모바일 토글박스 */}
+                    <div className={style.mobToggleBox}> 
+                        <div className={style.mobToggleInner}>
+                            <h1 className={style.toggleTitle}>Signing up only takes
+                                <br></br>a few seconds.</h1>
+                            <p>Already have an account?</p>
+                            {/* 클릭 시 active를 true로 변경하여 Login 화면(.register) 활성화 */}
+                            <button type="button" className={style.registerBtn} onClick={() => setActive(true)}>Login</button>
+                        </div>
+                    </div>
                 </div>
                 {/* 로그인 */}
-                <div className={`${style.formBox} ${style.register}`}>
-                    <div>
-                        <h1>Login</h1>
+                <div className={`${style.formBox} ${style.mobLoginWrap} ${style.register}`}>
+                    {/* 모바일 토글박스 */}
+                    <div className={style.mobToggleBox}> 
+                        <div className={style.mobToggleInner}>
+                            <h1 className={style.toggleTitle}>A service you can trust 
+                                <br></br>- join us today~~!</h1>
+                            <p>Don't have an account?</p>
+                            {/* 클릭 시 active를 false로 변경하여 Registration 화면(.login) 활성화 */}
+                            <button type="button" className={style.loginBtn} onClick={() => setActive(false)}>Register</button>
+                        </div>
+                    </div>
+                    <div className={style.loginFomBox}>
+                        <h1 className={style.title}>Login</h1>
                         <form onSubmit={handleLogin}>
                             <div className={style.inputBox}>
                                 <input 

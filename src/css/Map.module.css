@@ -58,7 +58,7 @@
 .address{
     font-size: 1.3rem;
     line-height: 1.3em;
-    /* margin-bottom: -1rem; */
+    margin-bottom: -2rem;
 }
 .address::before{
     content: "";

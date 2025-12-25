@@ -13,6 +13,7 @@ function Header(){
     const [user, setUser] = useState(null); // 로그인된 사용자 정보
     const [searchTerm, setSearchTerm] = useState(""); // 검색어
     const navigate = useNavigate();
+    // const [menuActive, setMenuActive] = useState(false)
 
     //모바일 메뉴 버튼 state
     const [openMobMenu, setOpenMobMenu] = useState(false);
@@ -59,10 +60,10 @@ function Header(){
                     </h1>
                     {/* PC */}
                     <div className={styleHeader.searchContainer}>
-                        <input type="text" placeholder="지역, 음식 또는 식당명을 검색하세요" style={{ border : "none"}} 
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)} // 값 변경 감지
-                        onKeyDown={handleSearch} // 엔터키 
+                        <input type="text" placeholder="지역, 음식 또는 식당명을 검색하세요" className={styleHeader.searchInput} 
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)} // 값 변경 감지
+                            onKeyDown={handleSearch} // 엔터키 
                         /> 
                         <img src={searchIcon} 
                         alt="search" 
@@ -83,23 +84,23 @@ function Header(){
                             <span className={styleSidebar.menuLine}></span>
                         </button>
                     )}
-                    
                 </div>
-                
-                <ul className={styleHeader.menubarPC}>
-                    <li>
-                        <Link to = "/store/region" >지역 맛집</Link>
-                    </li>
-                    <li>
-                        <Link to = "/search/store" >지도 찾기</Link>
-                    </li>
-                    <li>
-                        <Link to = "/store/register" >가게 등록</Link>
-                    </li>
-                    <li>
-                        <Link to = "/notice/list"> 공지사항 </Link> 
-                    </li>
-                </ul>
+                <div className={styleHeader.menubarPC}>
+                    <ul className={styleHeader.menuListPC}>
+                        <li>
+                            <Link to = "/store/region" >지역 맛집</Link>
+                        </li>
+                        <li>
+                            <Link to = "/search/store" >지도 찾기</Link>
+                        </li>
+                        <li>
+                            <Link to = "/store/register" >가게 등록</Link>
+                        </li>
+                        <li>
+                            <Link to = "/notice/list"> 공지사항 </Link> 
+                        </li>
+                    </ul>
+                </div>
 
                 {/* mobile menu sidebar */}
                 {/* dimmed */}

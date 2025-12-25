@@ -10,7 +10,7 @@
 }
 
 .button:hover {
-  background-color: #80002050;
+  background-color: var(--primary-color);
   border-color: #ccc;
   color: white;
 }
@@ -20,7 +20,7 @@
 }
 
 .selectBtnL.completed {
-    background-color: #80002050;
+    background-color: var(--primary-color);
     border-color: #ccc;
     color: white;
 }
@@ -38,12 +38,6 @@
     margin-right: 5%;
 }
 
-.selectBtnL.completed {
-    background-color: #80002050;
-    border-color: #ccc;
-    color: white;
-}
-
 .selectBtnR{
     width: 45%;
     height: 6rem;
@@ -51,7 +45,7 @@
 }
 
 .selectBtnR.completed {
-    background-color: #80002050;
+    background-color: var(--primary-color);
     border-color: #ccc;
     color: white;
 }
@@ -210,13 +204,13 @@
 }
 
 .customFileLabel:hover {
-    background-color: #80002050;
+    background-color: var(--primary-color);
     border-color: #ccc;
     color: white;
 }
 
 .customFileLabel.completed {
-    background-color: #80002050;
+    background-color: var(--primary-color);
     border-color: #ccc;
     color: white;
 }

@@ -96,7 +96,7 @@ button {
 }
 
 button:hover {
-  background-color: #80002050;
+  background-color: #ff9800;
   border-color: #ccc;
   color: white;
 }
@@ -117,7 +117,7 @@ button:active {
 }
 
 .contentTopPosition{
-  margin-top: 14.6rem; /*header+menubar height*/
+  margin-top: 15rem; /*header+menubar height*/
 }
 
 /* 컨텐츠 box 스타일 */
@@ -142,6 +142,9 @@ button:active {
         width: 80%;
         max-width: 100%;
     }
+    .contentTopPosition {
+      margin-top: 7rem;
+    }
 }
 
 /* 모바일 세로, 가로 */
@@ -149,13 +152,13 @@ button:active {
     html{
         font-size: 56.25%; /* 9px = 1rem */
     }
-    .contentTopPosition {
-      margin-top: 7rem;
-    }
     .container {
         width: 95%;
         max-width: 100%;
         margin: 0 auto;
         padding: 4rem 1rem;
+    }
+    .contentTopPosition {
+      margin-top: 7rem;
     }
 }

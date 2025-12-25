@@ -329,7 +329,7 @@ function StoreRegister({ userSn }) {
                   <input className={styleStore.inputBox} type="date" value={openDate} onChange={(e) => setOpenDate(e.target.value)} id="openDate" />
                 </>
               )}
-
+              <br></br>
               <div className={styleStore.imgBox}>
                 <label>{registerType === "BUSINESS" ? "사업자 등록증" : "영수증"}</label>
                 <label htmlFor="verifyImage" className={`${styleStore.customFileLabel} ${verifyImage ? styleStore.completed : ""}`}>
@@ -338,7 +338,7 @@ function StoreRegister({ userSn }) {
                 <input type="file" id="verifyImage" accept="image/*" onChange={VerifyImageChange} className={styleStore.hiddenFileInput} />
               </div>
               {verifyPreview && <div style={{ marginTop: "10px" }}><img src={verifyPreview} alt="미리보기" width="200" onClick={() => setSelectedImg(verifyPreview)}/></div>}
-
+              <br></br>
               <label>매장 명</label>
               <input type="text" value={storeName} onChange={(e) => setStoreName(e.target.value)} />
 
@@ -374,14 +374,14 @@ function StoreRegister({ userSn }) {
                 <label>CLOSE</label>
                 <input className={styleStore.timeinput} type="time" value={closeTime} onChange={(e) => setCloseTime(e.target.value)} />
               </div>
-
+              <br></br>
               <label htmlFor="menuCat">카테고리</label>
               <select id="menuCat" className={styleStore.inputBox} value={category} onChange={(e) => setCategory(e.target.value)}>
                 <option value="" disabled hidden>선택하세요</option>
                 <option value="1">한식</option><option value="2">일식</option><option value="3">중식</option><option value="4">양식</option>
                 <option value="5">아시안</option><option value="6">햄버거</option><option value="7">치킨</option><option value="8">디저트</option>
               </select>
-
+              <br></br><br></br>
               <p>편의사항</p>
               {convenienceList.map((item) => (
                 <label key={item.key} className={`${styleStore.checkbox} ${conveniences.includes(item.key) ? styleStore.active : ""}`}>
