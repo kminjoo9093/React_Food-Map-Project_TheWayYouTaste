@@ -66,17 +66,6 @@ function MainPage({storeCategories, sidoList}) {
             </button>
           </div>
 
-          {/* 지역 선택 모달 */}
-          {isModalOpen && (
-                <RegionModal 
-                    setIsModalOpen={setIsModalOpen}
-                    {...regionState}
-                    {...regionSetters}
-                    onConfirm={() => setIsModalOpen(false)}
-                    sidoList={sidoList}
-                />
-            )}
-
           {/* 업종 */}
           {/* <div className={styleMain.titleBox}>
             <h4 className={styleMain.sectionTitle}>업종</h4>
@@ -122,6 +111,16 @@ function MainPage({storeCategories, sidoList}) {
           </div>
         </div>
       </div>
+      {/* 지역 선택 모달  bigContainer 밖으로 수정*/}
+      {isModalOpen && (
+            <RegionModal 
+                setIsModalOpen={setIsModalOpen}
+                {...regionState}
+                {...regionSetters}
+                onConfirm={() => setIsModalOpen(false)}
+                sidoList={sidoList}
+            />
+        )}
     </div>
   );
 }

@@ -1,0 +1,129 @@
+/* 메인, 검색페이지 카테고리 버튼 공통 스타일 */
+.categoryList{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4열 유지 */
+}
+.categoryList li {
+    list-style: none;
+}
+.categoryList button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;    
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.categoryList button:hover {
+    border-color: var(--yellow-accent);
+    background-color: #fffdf7;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+}
+/* 호버 효과 */
+.categoryList button:hover:not(.active) {
+    background-color: #fafafa;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+}
+
+/* 카테고리 활성화 상태 */
+.categoryList button.active {
+    background-color: #fff9e6;
+    border: 2.5px solid #ffab15;
+    transform: scale(1.08); /* 선택 시 더 크게 강조 */
+    box-shadow: 0 10px 20px rgba(255, 171, 21, 0.2);
+}
+.categoryEmoji {
+    font-style: normal;
+    line-height: 1;
+    display: block;
+    transition: transform 0.3s ease;
+}
+.categoryList button span:last-child {
+    font-weight: 600;
+    color: #444;
+}
+.categoryList button.active .categoryEmoji {
+    transform: scale(1.15) rotate(-5deg); /* 이모지만 더 튀어나오게 */
+}
+
+
+
+
+/* 검색 페이지 사이드바 전용 (SearchStore.js에서 사용) */
+.searchMode {
+    gap: 1rem;
+    /* padding: 1.5rem 0.5rem; */
+    width: 100%;
+}
+
+.searchMode li {
+    width: 100%;
+}
+
+.searchMode button {
+    width: 100%;
+    /* 높이를 7rem -> 8.5rem으로 키워 정사각형에 가깝게 만듦 */
+    height: 8.5rem; 
+    gap: 0.6rem;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 1.2rem;
+    transition: all 0.2s ease;
+}
+
+/* 사이드바 내 이모지 크기 보정 */
+.searchMode .categoryEmoji {
+    font-size: 2.4rem; /* 2rem에서 2.4rem으로 확대 */
+}
+
+/* 사이드바 내 텍스트 크기 보정 */
+.searchMode button span:last-child {
+    font-size: 1.5rem; /* 1.1rem에서 1.25rem으로 확대 */
+}
+
+/* 선택되었을 때 효과 강조 */
+.searchMode button.active {
+    background-color: #fff9e6 !important;
+    border: 2px solid #ffab15 !important;
+    box-shadow: 0 4px 8px rgba(255, 171, 21, 0.15);
+}
+
+
+
+
+
+/* 메인페이지 전용 */
+/* 음식 카테고리 그리드 */
+.mainMode {
+    gap: 1.5rem; /* 간격을 더 넓혀서 박스를 채움 */
+    padding: 2rem 0;
+    width: 85%;
+}
+
+.mainMode button {
+    width: 90%;
+    aspect-ratio: 1 / 1.1; 
+    gap: 1.2rem; /* 이모지와 글자 사이 간격 */
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 2rem; /* 더 둥글게 */
+    transition: all 0.3s ease;
+}
+
+/* .mainMode button:hover {
+    border-color: var(--yellow-accent);
+    background-color: #fffdf7;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+} */
+
+
+.mainMode .categoryEmoji {
+    font-size: 4.2rem; /* 기존보다 훨씬 크게 (약 2배) */
+}
+
+/* 카테고리 글자 크기 조정 */
+.mainMode button span:last-child {
+    font-size: 2rem;
+}
