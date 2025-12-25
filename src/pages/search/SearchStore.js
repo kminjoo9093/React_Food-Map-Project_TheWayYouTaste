@@ -158,7 +158,7 @@ function SearchStore({ storeCategories, sidoList }) {
             );
         }
 
-        setIsChangedRegion(true);
+        // setIsChangedRegion(true);
         setNowPage(1);
     }, [storeListByRegion, appliedCategories]);
 
@@ -180,6 +180,9 @@ function SearchStore({ storeCategories, sidoList }) {
         if (swMinLat === 0) return; // 좌표가 0인 초기상태 방지
 
         try {
+            // 지역변경x, 현재 화면에서 찾는 것임을 명시
+            setIsChangedRegion(false);
+
             const url = `${SERVER_URL}/youtaste/search/store/position?swMinLat=${swMinLat}&neMaxLat=${neMaxLat}&swMinLng=${swMinLng}&neMaxLng=${neMaxLng}`;
             let list = await GetStoreList(url);
 

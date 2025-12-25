@@ -81,6 +81,7 @@
 /* 사이드바 내 텍스트 크기 보정 */
 .searchMode button span:last-child {
     font-size: 1.5rem; /* 1.1rem에서 1.25rem으로 확대 */
+    text-wrap: nowrap;
 }
 
 /* 선택되었을 때 효과 강조 */
@@ -126,4 +127,33 @@
 /* 카테고리 글자 크기 조정 */
 .mainMode button span:last-child {
     font-size: 2rem;
+}
+
+
+/* 반응형 태블릿(portrait) */
+@media (max-width: 1023px){
+    .searchMode{
+        grid-template-columns: repeat(8, 1fr); 
+    }
+    .searchMode .categoryEmoji {
+        font-size: 2rem; /* 2rem에서 2.4rem으로 확대 */
+    }
+    .searchMode button span:last-child{
+        font-size: 1.4rem;
+    }
+    .searchMode button{
+        padding: 0.3rem;
+    }
+}
+
+
+/* 반응형 모바일 (가로, 세로) */
+@media (max-width: 767px){
+    .searchMode{
+        grid-template-columns: repeat(4, 1fr); 
+    }
+    .searchMode button {
+        padding-block: 1rem;
+        height: auto; 
+    }
 }
