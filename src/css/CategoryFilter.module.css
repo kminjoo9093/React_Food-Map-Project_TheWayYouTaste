@@ -44,6 +44,7 @@
 .categoryList button span:last-child {
     font-weight: 600;
     color: #444;
+    text-wrap: nowrap;
 }
 .categoryList button.active .categoryEmoji {
     transform: scale(1.15) rotate(-5deg); /* 이모지만 더 튀어나오게 */
@@ -81,7 +82,6 @@
 /* 사이드바 내 텍스트 크기 보정 */
 .searchMode button span:last-child {
     font-size: 1.5rem; /* 1.1rem에서 1.25rem으로 확대 */
-    text-wrap: nowrap;
 }
 
 /* 선택되었을 때 효과 강조 */
@@ -98,27 +98,20 @@
 /* 메인페이지 전용 */
 /* 음식 카테고리 그리드 */
 .mainMode {
-    gap: 1.5rem; /* 간격을 더 넓혀서 박스를 채움 */
+    column-gap: 1.5rem; /* 간격을 더 넓혀서 박스를 채움 */
+    row-gap: 3rem;
     padding: 2rem 0;
     width: 85%;
 }
 
 .mainMode button {
-    width: 90%;
+    width: 85%;
     aspect-ratio: 1 / 1.1; 
     gap: 1.2rem; /* 이모지와 글자 사이 간격 */
     border: 1px solid rgba(0,0,0,0.05);
     border-radius: 2rem; /* 더 둥글게 */
     transition: all 0.3s ease;
 }
-
-/* .mainMode button:hover {
-    border-color: var(--yellow-accent);
-    background-color: #fffdf7;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.05);
-} */
-
 
 .mainMode .categoryEmoji {
     font-size: 4.2rem; /* 기존보다 훨씬 크게 (약 2배) */
@@ -144,6 +137,10 @@
     .searchMode button{
         padding: 0.3rem;
     }
+    .mainMode{
+        width: 90%;
+    }
+
 }
 
 
@@ -155,5 +152,14 @@
     .searchMode button {
         padding-block: 1rem;
         height: auto; 
+    }
+    .mainMode .categoryEmoji {
+        font-size: 3rem; /* 2rem에서 2.4rem으로 확대 */
+    }
+    .mainMode button{
+        width: 100%;
+    }
+    .mainMode button span:last-child {
+        font-size: 1.8rem;
     }
 }
