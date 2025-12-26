@@ -181,7 +181,6 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                                     </p>
                                 </div>
                                 <img src={`${SERVER_URL}${store.bplcPhoto}`}
-                                // <img src={`${SERVER_URL}/uploads/store/${store.bplcPhoto}`}
                                     className={styleMap.infoImg} 
                                 />
                             </Link>

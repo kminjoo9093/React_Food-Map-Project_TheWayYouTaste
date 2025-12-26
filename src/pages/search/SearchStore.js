@@ -335,7 +335,6 @@ function SearchStore({ storeCategories, sidoList }) {
             </div>
 
             <div className={styleSearchStore.mapArea}>
-                {/* 버튼 클릭 시 displayViewPortMarkers 호출 */}
                 <button 
                     className={`${styleSearchStore.btnSearchArea} ${isMoved ? styleSearchStore.active : ""}`} 
                     onClick={() => displayViewPortMarkers(positionAreaRef.current)}

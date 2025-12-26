@@ -90,9 +90,9 @@ function ReportListCheck({ reports }) {
                 onClick={() => goDetail(report)}       // 클릭 시 이동!
                 style={{ cursor: "pointer" }}         // 클릭 가능 표시
               >
-                <td>{transName(report.userSn)}</td> {/* 회원명은 나중에 JOIN해서 가져와야 함 */}
-                <td>{transEmail(report.userSn)}</td> {/* 실제 이메일도 JOIN 필요 */}
-                <td>{transStore(report.bplcSn)}</td> {/* 실제 가게명도 JOIN 필요 */}
+                <td>{transName(report.userSn)}</td> 
+                <td>{transEmail(report.userSn)}</td> 
+                <td>{transStore(report.bplcSn)}</td> 
                 <td>{report.dclrTtl}</td>
                 <td>{getDclrCatName(report.dclrCatNo)}</td>
               </tr>

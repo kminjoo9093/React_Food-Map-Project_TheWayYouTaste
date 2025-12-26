@@ -137,7 +137,6 @@ function MembershipLogin({setIsLoggedIn, setUser}) {
                             <h1 className={style.toggleTitle}>Signing up only takes
                                 <br></br>a few seconds.</h1>
                             <p>Already have an account?</p>
-                            {/* 클릭 시 active를 true로 변경하여 Login 화면(.register) 활성화 */}
                             <button type="button" className={style.registerBtn} onClick={() => setActive(true)}>Login</button>
                         </div>
                     </div>
@@ -150,7 +149,6 @@ function MembershipLogin({setIsLoggedIn, setUser}) {
                             <h1 className={style.toggleTitle}>A service you can trust 
                                 <br></br>- join us today~~!</h1>
                             <p>Don't have an account?</p>
-                            {/* 클릭 시 active를 false로 변경하여 Registration 화면(.login) 활성화 */}
                             <button type="button" className={style.loginBtn} onClick={() => setActive(false)}>Register</button>
                         </div>
                     </div>

@@ -1,4 +1,3 @@
-// src/components/Pagination.js
 import React from "react";
 import stylePagination from "../css/Pagination.module.css";
 
