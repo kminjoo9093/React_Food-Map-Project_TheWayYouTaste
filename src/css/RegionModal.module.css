@@ -113,6 +113,9 @@
   .regionContainer{
     margin: 0;
   }
+  .regionColumn{
+    width: 33%;
+  }
   .regionList{
     height: auto;
     max-height: 45rem;

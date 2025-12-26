@@ -26,7 +26,13 @@ function MainPage({storeCategories, sidoList}) {
    const [searchTerm, setSearchTerm] = useState(""); // 검색어
    const navigate = useNavigate();
 
-  useEffect(() => { getCurrentLocation(); }, [getCurrentLocation]);
+  // 최초 1회 혹은 위치 정보가 없을 때만 위치 획득
+  useEffect(() => { 
+    if (!lat || !lng) {
+        getCurrentLocation(); 
+    }
+  }, [getCurrentLocation, lat, lng]);
+
 
   const getSearchPath = () => {
     

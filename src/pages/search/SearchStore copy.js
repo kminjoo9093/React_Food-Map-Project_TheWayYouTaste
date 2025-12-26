@@ -10,7 +10,7 @@ import useRegionSetting from "./hook/useRegionSetting";
 import CategoryFilter from "./CategoryFilter";
 import serverUrl from "../../db/server.json";
 
-function SearchStore({ storeCategories, sidoList }) {
+function SearchStore({ storeCategories, sidoList, regionState={}, regionSetters={}, getCurrentLocation}) {
 
     const positionAreaRef = useRef({
         swMinLat: 0,
@@ -25,10 +25,28 @@ function SearchStore({ storeCategories, sidoList }) {
     const keyword = queryParams.get("keyword");
     
     // 커스텀 훅 도입 
-    const { regionState, regionSetters, getCurrentLocation } = useRegionSetting();
     const { selectedDo, doName, selectedSi, siName, selectedDong, dongName, lat, lng, storeList } = regionState;
     const { setSelectedDo, setDoName, setSelectedSi, setSiName, setSelectedDong, setDongName, setLat, setLng } = regionSetters;
+    //const { regionState, regionSetters, getCurrentLocation } = useRegionSetting();
+    // const { selectedDo, doName, selectedSi, siName, selectedDong, dongName, lat, lng, storeList } = regionState;
+    // const { setSelectedDo, setDoName, setSelectedSi, setSiName, setSelectedDong, setDongName, setLat, setLng } = regionSetters;
     const SERVER_URL = serverUrl.SERVER_URL;
+
+    // 1. 상태 선언 (초기값은 부모가 준 값)
+    // const [lat, setLat] = useState(initialLat);
+    // const [lng, setLng] = useState(initialLng);
+    
+    // // 지역 이름 상태 (초기값이 필요한 경우)
+    // const [doName, setDoName] = useState("");
+    // const [siName, setSiName] = useState("");
+    // const [dongName, setDongName] = useState("");
+    
+    // // 지역 코드 상태
+    // const [selectedDo, setSelectedDo] = useState(null);
+    // const [selectedSi, setSelectedSi] = useState(null);
+    // const [selectedDong, setSelectedDong] = useState(null);
+
+    //-----------------------------------------
 
     const [filteredStoreList, setFilteredStoreList] = useState([]); // 화면에 표시될 최종 리스트
     const [storeListByRegion, setStoreListByRegion] = useState([]); // 지역/키워드 기준 원본 리스트
@@ -47,13 +65,26 @@ function SearchStore({ storeCategories, sidoList }) {
     const [isResetFilter, setIsResetFilter] = useState(false);
     const [isSearchArea, setIsSearchArea] = useState(false);
 
-    // URL에서 카테고리 가져오기
-    const paramCategories = queryParams.get("categories");
 
-    // URL에 있으면 배열로 변환, 없으면 빈 배열
-    const urlCategoryArray = useMemo(() => {
-        return paramCategories ? paramCategories.split(",") : [];
-    }, [paramCategories]);
+    // 2. [추가] URL 파라미터에서 직접 이름을 추출 (Props가 늦을 때를 대비)
+    const urlDoName = queryParams.get("doName");
+    const urlSiName = queryParams.get("siName");
+    const urlDongName = queryParams.get("dongName");
+
+    // 3. 화면에 표시할 최종 이름 결정 (URL에 있으면 URL꺼, 없으면 Props꺼)
+    const displayDoName = urlDoName || doName || "";
+    const displaySiName = urlSiName || siName || "";
+    const displayDongName = urlDongName || dongName || "";
+
+
+    // 2. [중요] 부모로부터 lat, lng가 뒤늦게 도착했을 때 처리
+    // useEffect(() => {
+    //     if (initialLat && initialLng && !lat) { // 처음 한 번만 설정
+    //         setLat(initialLat);
+    //         setLng(initialLng);
+    //     }
+    // }, [initialLat, initialLng]);
+
 
 
     // 현재 위치 기반 초기 로드
@@ -65,90 +96,202 @@ function SearchStore({ storeCategories, sidoList }) {
         }
     }, [storeList]); 
 
+
+
+    // 부모가 넘겨준 regionState에 이름이 생기면, 내부 상태로 강제 동기화
     useEffect(() => {
-        const initLoad = async () => {
-            //현재 위치
-            const paramLat = queryParams.get("lat");
-            const paramLng = queryParams.get("lng");
+        if (doName) setDoName(doName);
+        if (siName) setSiName(siName);
+        if (dongName) setDongName(dongName);
+    }, [doName, siName, dongName]); // 부모 Props의 이름들이 바뀌면 실행
 
-            if (paramLat && paramLng) {
-                setLat(parseFloat(paramLat));
-                setLng(parseFloat(paramLng));
-            }
 
-            //지역 필터
-            const sido = queryParams.get("sido");
-            const sgg = queryParams.get("sgg");
-            const dong = queryParams.get("dong");
+
+    // useEffect(() => {
+    //     const initLoad = async () => {
+    //         const queryParams = new URLSearchParams(location.search);
+
+    //         // const keyword = queryParams.get("keyword");
+
+    //         //현재 위치
+    //        // URL에 좌표 파라미터가 있다면 우선순위 적용
+    //         const paramLat = queryParams.get("lat");
+    //         const paramLng = queryParams.get("lng");
+    //         if (paramLat && paramLng) {
+    //             setLat(parseFloat(paramLat));
+    //             setLng(parseFloat(paramLng));
+    //         }
+
+    //         //지역 필터
+    //         const sido = queryParams.get("sido");
+    //         const sgg = queryParams.get("sgg");
+    //         const dong = queryParams.get("dong");
             
-            const paramDoName = queryParams.get("doName");
-            const paramSiName = queryParams.get("siName");
-            const paramDongName = queryParams.get("dongName");
+    //         const paramDoName = queryParams.get("doName");
+    //         const paramSiName = queryParams.get("siName");
+    //         const paramDongName = queryParams.get("dongName");
 
-            if(paramDongName){
-                setDongName(paramDongName);
-            }
-            if(paramSiName){
-                setSiName(paramSiName);
-            }
-            if(paramDoName){
-                setDoName(paramDoName);
-            }
+    //         if(paramDongName){
+    //             setDongName(paramDongName);
+    //         }
+    //         if(paramSiName){
+    //             setSiName(paramSiName);
+    //         }
+    //         if(paramDoName){
+    //             setDoName(paramDoName);
+    //         }
 
-            //카테고리
-            if (urlCategoryArray.length > 0) {
-                // 메인에서 넘어온 카테고리가 있다면 상태 업데이트
-                setSelectedCategories(urlCategoryArray);
-                setAppliedCategories(urlCategoryArray);
-            }
+    //         //카테고리
+    //         const paramCategories = queryParams.get("categories");
 
-            let list = []; //맛집 목록
+    //         let categoryArray = [];
+    //         if (paramCategories) {
+    //             categoryArray = paramCategories.split(",");
+    //             setSelectedCategories(categoryArray); // UI 체크 표시용
+    //         }
 
-            //키워드 검색
-            if (keyword) { 
-                list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/keyword?name=${keyword}`);
-            } 
-            //메인페이지 필터 설정 
-            else if (dong || sgg || sido) { 
-                if (dong) {
-                    list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/dong?dongCd=${dong}`);
-                    setSelectedDong(dong); 
-                    setSelectedSi(sgg);
-                    setSelectedDo(sido);
-                } else if (sgg) {
-                    list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sgg?sggCd=${sgg}`);
-                    setSelectedSi(sgg);
-                    setSelectedDo(sido);
-                } else if (sido) {
-                    list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sido?sidoCd=${sido}`);
-                    setSelectedDo(sido);
-                } 
-            } else {
-                getCurrentLocation(); 
-                return;
-            } 
+    //         let list = []; //맛집 목록
 
-            if(list.length > 0){
-                // 원본 데이터 저장 (검색이나 초기화 시 사용될 기준 데이터)
-                setStoreListByRegion(list);
+    //         //키워드 검색
+    //         if (keyword) { 
+    //             list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/keyword?name=${keyword}`);
+    //         } 
+    //         //메인페이지 필터 설정 
+    //         else if (dong || sgg || sido) { 
+    //             if (dong) {
+    //                 list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/dong?dongCd=${dong}`);
+    //                 setSelectedDong(dong); 
+    //                 setSelectedSi(sgg);
+    //                 setSelectedDo(sido);
+    //             } else if (sgg) {
+    //                 list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sgg?sggCd=${sgg}`);
+    //                 setSelectedSi(sgg);
+    //                 setSelectedDo(sido);
+    //             } else if (sido) {
+    //                 list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sido?sidoCd=${sido}`);
+    //                 setSelectedDo(sido);
+    //             } 
+    //         } else {
+    //             if (selectedDong || selectedSi || selectedDo) {
+    //                 const targetCd = selectedDong || selectedSi || selectedDo;
+    //                 const type = selectedDong ? 'dong' : (selectedSi ? 'sgg' : 'sido');
+    //                 list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/${type}?${type}Cd=${targetCd}`);
+    //             } else {
+    //                 // 정말 아무 정보도 없다면 현재 위치 잡기
+    //                 getCurrentLocation();
+    //                 return; 
+    //             }
+    //             // if (lat && lng) {
+    //             //     // 여기서 부모 좌표 기반으로 리스트를 가져오는 API 호출 (예: /search/store/around)
+    //             //     // 만약 useRegionSetting의 getCurrentLocation 내부 로직이 필요하다면
+    //             //     // 해당 fetch 부분만 함수로 빼서 여기서 실행하세요.
+    //                 // getCurrentLocation(); 
+    //             // }
+    //             // return;
+    //         } 
 
-                // 필터링 로직 (list 변수 그대로 사용)
-                let filteredResult = list; // 새 변수에 할당
-                if (urlCategoryArray.length > 0) {
-                    filteredResult = list.filter(record => urlCategoryArray.includes(record.storeCatName));
-                }
+    //         if(list.length > 0){
+    //             // 원본 데이터 저장 (검색이나 초기화 시 사용될 기준 데이터)
+    //             setStoreListByRegion(list);
+
+    //             // 필터링 로직 (list 변수 그대로 사용)
+    //             let filteredResult = list; // 새 변수에 할당하여 명확하게 처리
+    //             if (categoryArray.length > 0) {
+    //                 filteredResult = list.filter(record => categoryArray.includes(record.storeCatName));
+    //             }
 
                 
-                // 6. 최종 결과 반영
-                setFilteredStoreList(filteredResult);
-                setIsChangedRegion(true);
-                setNowPage(1); // 검색 시 페이지 번호 초기화
-            }
-        };
-        initLoad();
-    }, [location.search, keyword, getCurrentLocation]); 
+    //             // 6. 최종 결과 반영
+    //             setFilteredStoreList(filteredResult);
+    //             setIsChangedRegion(true);
+    //             setNowPage(1); // 검색 시 페이지 번호 초기화
+    //         }
+    //     };
+    //     initLoad();
+    // }, [location.search, keyword]); 
 
     //리스트 갱신
+    
+    
+
+    useEffect(() => {
+    const initLoad = async () => {
+        const queryParams = new URLSearchParams(location.search);
+
+        // 1. URL 파라미터 우선 확인
+        const paramLat = queryParams.get("lat");
+        const paramLng = queryParams.get("lng");
+        const paramDoName = queryParams.get("doName");
+        const paramSiName = queryParams.get("siName");
+        const paramDongName = queryParams.get("dongName");
+        const sido = queryParams.get("sido");
+        const sgg = queryParams.get("sgg");
+        const dong = queryParams.get("dong");
+
+        // 2. URL에 이름 정보가 있다면 Setter 호출 (부모 상태 업데이트)
+        if (paramDongName) setDongName(paramDongName);
+        if (paramSiName) setSiName(paramSiName);
+        if (paramDoName) setDoName(paramDoName);
+        if (paramLat && paramLng) {
+            setLat(parseFloat(paramLat));
+            setLng(parseFloat(paramLng));
+        }
+
+        //카테고리
+        const paramCategories = queryParams.get("categories");
+
+        let categoryArray = [];
+        if (paramCategories) {
+            categoryArray = paramCategories.split(",");
+            setSelectedCategories(categoryArray); // UI 체크 표시용
+        }
+
+        let list = [];
+
+        // 3. 데이터 로딩 우선순위 결정
+        if (keyword) {
+            list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/keyword?name=${keyword}`);
+        } 
+        // URL에 지역 코드가 있는 경우
+        else if (dong || sgg || sido) {
+            if (dong) {
+                list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/dong?dongCd=${dong}`);
+                setSelectedDong(dong); setSelectedSi(sgg); setSelectedDo(sido);
+            } else if (sgg) {
+                list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sgg?sggCd=${sgg}`);
+                setSelectedSi(sgg); setSelectedDo(sido);
+            } else if (sido) {
+                list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sido?sidoCd=${sido}`);
+                setSelectedDo(sido);
+            }
+        } 
+        // ★ [여기가 핵심] URL엔 없지만 부모 Props(regionState)에 이미 지역 코드가 있는 경우
+        else if (selectedDong || selectedSi || selectedDo) {
+            const code = selectedDong || selectedSi || selectedDo;
+            const type = selectedDong ? 'dong' : (selectedSi ? 'sgg' : 'sido');
+            list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/${type}?${type}Cd=${code}`);
+        } 
+        // 정말 아무것도 없다면 현재 위치 잡기
+        else {
+            getCurrentLocation();
+            return; 
+        }
+
+        // 4. 결과가 있다면 상태 반영
+        if (list && list.length > 0) {
+            setStoreListByRegion(list);
+            setFilteredStoreList(list);
+            setIsChangedRegion(true); // 지도를 해당 위치로 이동시킴
+            setNowPage(1);
+        }
+    };
+
+    initLoad();
+}, [location.search, keyword]); // [주의] selectedDong 등을 의존성에 넣으면 무한루프 위험이 있으니 주소창 변경 시에만 작동하게 합니다.
+
+
+    
+    
     useEffect(() => {
         if (!storeListByRegion) return;
 
@@ -265,13 +408,13 @@ function SearchStore({ storeCategories, sidoList }) {
     return (
         <div className={`${styleSearchStore.gridMap} contentTopPosition`}>
             <div className={`${styleSearchStore.leftArea} ${isOpen ? styleSearchStore.open : ""}`}>
-                <button className={styleSearchStore.btnViewList} onClick={() => setIsOpen(!isOpen)}></button>
+                <button className={styleSearchStore.btnViewList} onClick={() => setIsOpen(!isOpen)}>&nbsp;</button>
                 <div className={styleSearchStore.filterArea}>
                     <div className={styleSearchStore.filterTopWrap}>
                         <button className={`${styleSearchStore.btnRegion} ${styleMain.filterBtn}`} onClick={() => setIsDimmedMiddleOpen(true)}>
                             <span className={styleMain.filterIcon}>📍</span>
                             <span className={styleMain.filterText}>
-                                {isSearchArea ? "범위 내" : (doName || siName || dongName) ? `${doName} ${siName} ${dongName}` : "지역 선택"}
+                                {isSearchArea ? "범위 내" : (displayDoName || displaySiName || displayDongName) ? `${displayDoName} ${displaySiName} ${displayDongName}` : "지역 선택"}
                             </span>
                             <span className={styleMain.arrowIcon}>▼</span>
                         </button>
@@ -334,8 +477,7 @@ function SearchStore({ storeCategories, sidoList }) {
             </div>
 
             <div className={styleSearchStore.mapArea}>
-                {/* 버튼 클릭 시 displayViewPortMarkers 호출 */}
-                <button 
+                 <button 
                     className={`${styleSearchStore.btnSearchArea} ${isMoved ? styleSearchStore.active : ""}`} 
                     onClick={() => displayViewPortMarkers(positionAreaRef.current)}
                 >
@@ -350,6 +492,7 @@ function SearchStore({ storeCategories, sidoList }) {
                     positionAreaRef={positionAreaRef} 
                     isSelectedAll={isSelectedAll}
                 />
+
             </div>
 
             {isDimmedMiddleOpen && (

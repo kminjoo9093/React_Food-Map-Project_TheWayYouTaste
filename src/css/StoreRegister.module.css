@@ -1,3 +1,9 @@
+.storeContainer{
+    padding-block: 3rem;
+}
+.registerBtnWrap{
+    margin-bottom: 3rem;
+}
 .button {
   padding: 0.8rem 1.6rem;
   border: 1px solid #ddd;
@@ -30,6 +36,11 @@
     width: 60%;
     margin: 0 auto;
     /* background-color: white; */
+}
+
+.storeContainer form>:global(label) {
+    display: block;
+    margin-block: 2rem 0.5rem;
 }
 
 .selectBtnL{
@@ -104,22 +115,29 @@
     border: solid 1px rgb(221, 221, 221);
 }
 
+.menuArea{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.menuInputWrap{
+    flex: 1;
+}
+
 .menu[type=text]{
     width: 40%;
     height: 4rem;
     margin-right: 2%;
 }
 
-.menuBtnL{
+.menuBtnL, .menuBtnR{
     width: 7%;
     height: 4rem;
     margin-left: 2%;
-}
-
-.menuBtnR{
-    width: 7%;
-    height: 4rem;
-    margin-left: 2%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .submit{
@@ -142,6 +160,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 0.8rem;
 }
 
 .brNoBtn{
@@ -185,8 +204,6 @@
 .active {
     background-color: lightgray;
 }
-
-
 
 .hiddenFileInput {
     display: none; /* 실제 input은 숨기기 */
@@ -238,4 +255,32 @@
     height: 4rem;
     padding-left: 2rem;
     border: solid 1px rgb(221, 221, 221);
+}
+
+.labelMarginTop{
+    margin-top: 1.5rem;
+}
+
+/* 모바일 세로, 가로 */
+@media (max-width: 767px){
+    .storeContainer{
+        width: 80%;
+    }
+    .menuArea{
+        flex-direction: column;
+    }
+    .menuInputWrap{
+        width: 100%;
+    }
+    .menuInputWrap input[type="text"],
+    .menuInputWrap input[type="number"]{
+        width: 48%;
+    }
+    .menuBtnWrap{
+        display: block;
+        align-self: flex-end;
+    }
+    .imgBox{
+        margin-top: 2rem;
+    }
 }

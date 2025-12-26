@@ -101,7 +101,7 @@ header {
 .menubarPC{
     background: var(--primary-color); /* 단색 대신 그라데이션 */
     width: 100vw;
-    height: 5rem; /* 높이 살짝 키움 */
+    height: 5rem; /* 높이 살짝 키움 -> 5rem으로 수정 */
 }
 .menuListPC {
     max-width: 120rem;
@@ -131,13 +131,14 @@ header {
     height: 100%;
     line-height: 5rem;
     transition: all 0.3s ease;
+    position: relative;
 }
 
-/* 메뉴 하단 언더라인 애니메이션 추가 */
-/* .menuListPC li a.active::after {
+/* 메뉴 하단 언더라인 애니메이션 추가 - 수정*/
+.menuListPC li a::after{
     content: "";
     position: absolute;
-    bottom: 0px;
+    bottom: 2px;
     left: 50%;
     width: 0;
     height: 2px;
@@ -145,11 +146,13 @@ header {
     transition: all 0.3s ease;
     transform: translateX(-50%);
 }
+.menuListPC li a.active::after {
+    width: 80%;
+}
 
 .menuListPC a:hover::after {
-    width: 100%;
-    border: 1px solid yellow;
-} */
+    width: 80%;
+}
 
 /* 로그인/마이메뉴 버튼 */
 .login, .myMenu {

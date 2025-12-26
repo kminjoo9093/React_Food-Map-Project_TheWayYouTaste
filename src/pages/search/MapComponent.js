@@ -25,11 +25,13 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
         lat: lat || 37.5665, 
         lng: lng || 126.9780
     });
+
     const SERVER_URL = serverUrl.SERVER_URL;
+
     //지도 레벨
     const [level, setLevel] = useState(7);
 
-	// 인포윈도우 Open 여부를 저장하는 state
+	// 인포윈도우 Open 여부
     const [openMarkerId, setOpenMarkerId] = useState("");
 
     // 현재 위치 기반으로 중심점 설정
@@ -50,15 +52,15 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
 
 
 
-    // 지역 변경 또는 스토어 리스트 변경 시 setBounds 적용
+    //  setBounds (지역 변경 or 스토어 리스트 변경)
     useEffect(() => {
         const map = mapRef.current;
         if (!map) return;
 
-        // 1. 전국 검색 모드일 때는 bounds를 계산하지 않고 고정된 level(12) 유지
+        // 전국 검색 모드 -> 고정 level(12)
         if (isSelectedAll) return;
 
-        // 범위 내 재검색일 때는 지도를 자동으로 움직이지(setBounds) 않음
+        // 범위 내 재검색 -> 지도를 자동으로 움직이지(setBounds) 않음
     if (!isChangedRegion && isInitialCenterSetRef.current) return;
 
         // 실행 타이밍 조절 (지연 시간을 주어 맵 인스턴스 안정화)
@@ -79,7 +81,7 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
             }
 
            //  지역이 변경되었을 때만 '내 위치'를 범위에 포함
-            // '범위 내 재검색' 시에는 isChangedRegion이 false일 것이므로 내 위치를 포함하지 않음
+            // 범위 내 재검색 -> isChangedRegion이 false. 내 위치를 포함하지 않음
             if (isChangedRegion && lat && lng) {
                 bounds.extend(new window.kakao.maps.LatLng(lat, lng));
                 hasValidPoint = true;
@@ -184,7 +186,7 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                 </CustomOverlayMap>
             )}
 
-            <MarkerClusterer averageCenter={true} minLevel={4}>
+            <MarkerClusterer averageCenter={true} minLevel={4} disableClickZoom={false}>
                 {storeList.map((store) => (
                     <Fragment key={store.bplcSn}>
                         <MapMarker

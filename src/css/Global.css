@@ -118,6 +118,7 @@ button:active {
 
 .contentTopPosition{
   margin-top: 15rem; /*header+menubar height*/
+  /* height: calc(100vh - 15rem - 37rem); viewport height - header height - footer height */
 }
 
 /* 컨텐츠 box 스타일 */
@@ -144,6 +145,7 @@ button:active {
     }
     .contentTopPosition {
       margin-top: 7rem;
+      /* height: calc(100vh - 7rem - 37rem); viewport height - header height - footer height */
     }
 }
 

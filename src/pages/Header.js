@@ -2,7 +2,7 @@
 import styleHeader from "../css/Header.module.css";
 import styleSidebar from "../css/sidebar.module.css"
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 import searchIcon from "../resources/img/system/search.png";
 
 function Header(){
@@ -13,7 +13,6 @@ function Header(){
     const [user, setUser] = useState(null); // 로그인된 사용자 정보
     const [searchTerm, setSearchTerm] = useState(""); // 검색어
     const navigate = useNavigate();
-    // const [menuActive, setMenuActive] = useState(false)
 
     //모바일 메뉴 버튼 state
     const [openMobMenu, setOpenMobMenu] = useState(false);
@@ -88,16 +87,16 @@ function Header(){
                 <div className={styleHeader.menubarPC}>
                     <ul className={styleHeader.menuListPC}>
                         <li>
-                            <Link to = "/store/region" >지역 맛집</Link>
+                            <NavLink to = "/store/region" className={({ isActive }) => isActive ? styleHeader.active : ""}>지역 맛집</NavLink>
                         </li>
                         <li>
-                            <Link to = "/search/store" >지도 찾기</Link>
+                            <NavLink to = "/search/store" className={({ isActive }) => isActive ? styleHeader.active : ""}>지도 찾기</NavLink>
                         </li>
                         <li>
-                            <Link to = "/store/register" >가게 등록</Link>
+                            <NavLink to = "/store/register" className={({ isActive }) => isActive ? styleHeader.active : ""}>가게 등록</NavLink>
                         </li>
                         <li>
-                            <Link to = "/notice/list"> 공지사항 </Link> 
+                            <NavLink to = "/notice/list" className={({ isActive }) => isActive ? styleHeader.active : ""}> 공지사항 </NavLink> 
                         </li>
                     </ul>
                 </div>

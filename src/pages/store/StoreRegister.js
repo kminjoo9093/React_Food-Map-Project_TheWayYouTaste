@@ -300,7 +300,7 @@ function StoreRegister({ userSn }) {
       <div className="container">
         <div className={styleStore.storeContainer}>
           <form onSubmit={handleSubmit}>
-            <div>
+            <div className={styleStore.registerBtnWrap}>
               <button className={`${styleStore.selectBtnL} ${styleStore.button} ${registerType === "USER" ? styleStore.completed : ""}`} type="button" onClick={user}>
                 내 맛집 등록 <br /> (손님 등록)
               </button>
@@ -392,11 +392,15 @@ function StoreRegister({ userSn }) {
 
               <label>메뉴</label>
               {items.map((item, index) => (
-                <div key={index}>
-                  <input className={styleStore.menu} type="text" placeholder={"메뉴" + (index + 1)} value={item.menu} onChange={(e) => handleChange(index, "menu", e.target.value)} />
-                  <input className={styleStore.price} type="number" placeholder="가격" value={item.price} onChange={(e) => handleChange(index, "price", e.target.value)} />
-                  <button className={`${styleStore.menuBtnL} ${styleStore.button}`} type="button" onClick={addItem}>+</button>
-                  <button className={`${styleStore.menuBtnR} ${styleStore.button}`} type="button" onClick={() => removeItem(index)}>-</button>
+                <div key={index} className={styleStore.menuArea}>
+                  <div className={styleStore.menuInputWrap}>
+                    <input className={styleStore.menu} type="text" placeholder={"메뉴" + (index + 1)} value={item.menu} onChange={(e) => handleChange(index, "menu", e.target.value)} />
+                    <input className={styleStore.price} type="number" placeholder="가격" value={item.price} onChange={(e) => handleChange(index, "price", e.target.value)} />
+                  </div>
+                  <div className={styleStore.menuBtnWrap}>
+                    <button className={`${styleStore.menuBtnL} ${styleStore.button}`} type="button" onClick={addItem}>+</button>
+                    <button className={`${styleStore.menuBtnR} ${styleStore.button}`} type="button" onClick={() => removeItem(index)}>-</button>
+                  </div>
                 </div>
               ))}
 
