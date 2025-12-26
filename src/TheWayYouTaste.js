@@ -25,6 +25,7 @@
   import serverUrl from "./db/server.json";
 
   function TheWayYouTaste() {
+
     const location = useLocation();
     const hideHeaderRoutes = ["/login"];
     const hideFooterRoutes = ["/search/store","/login"];

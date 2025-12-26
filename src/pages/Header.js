@@ -2,7 +2,7 @@
 import styleHeader from "../css/Header.module.css";
 import styleSidebar from "../css/sidebar.module.css"
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 import searchIcon from "../resources/img/system/search.png";
 
 function Header(){
@@ -59,10 +59,10 @@ function Header(){
                     </h1>
                     {/* PC */}
                     <div className={styleHeader.searchContainer}>
-                        <input type="text" placeholder="지역, 음식 또는 식당명을 검색하세요" style={{ border : "none"}} 
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)} // 값 변경 감지
-                        onKeyDown={handleSearch} // 엔터키 
+                        <input type="text" placeholder="지역, 음식 또는 식당명을 검색하세요" className={styleHeader.searchInput} 
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)} // 값 변경 감지
+                            onKeyDown={handleSearch} // 엔터키 
                         /> 
                         <img src={searchIcon} 
                         alt="search" 
@@ -83,23 +83,23 @@ function Header(){
                             <span className={styleSidebar.menuLine}></span>
                         </button>
                     )}
-                    
                 </div>
-                
-                <ul className={styleHeader.menubarPC}>
-                    <li>
-                        <Link to = "/store/region" >지역 맛집</Link>
-                    </li>
-                    <li>
-                        <Link to = "/search/store" >지도 찾기</Link>
-                    </li>
-                    <li>
-                        <Link to = "/store/register" >가게 등록</Link>
-                    </li>
-                    <li>
-                        <Link to = "/notice/list"> 공지사항 </Link> 
-                    </li>
-                </ul>
+                <div className={styleHeader.menubarPC}>
+                    <ul className={styleHeader.menuListPC}>
+                        <li>
+                            <NavLink to = "/store/region" className={({ isActive }) => isActive ? styleHeader.active : ""}>지역 맛집</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to = "/search/store" className={({ isActive }) => isActive ? styleHeader.active : ""}>지도 찾기</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to = "/store/register" className={({ isActive }) => isActive ? styleHeader.active : ""}>가게 등록</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to = "/notice/list" className={({ isActive }) => isActive ? styleHeader.active : ""}> 공지사항 </NavLink> 
+                        </li>
+                    </ul>
+                </div>
 
                 {/* mobile menu sidebar */}
                 {/* dimmed */}

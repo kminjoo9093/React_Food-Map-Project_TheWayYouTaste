@@ -1,8 +1,16 @@
+.loginWrap{
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* margin-inline: 2rem; */
+}
 .container {
   position: relative;
-  width: 850px;
-  height: 550px;
-  margin: 60px auto;
+  width: 85rem;
+  height: 55rem;
+  margin: 3rem;
   background: none;
   border-radius: 30px;
   overflow: hidden;
@@ -136,4 +144,89 @@
   top: 50%;
   transform: translateY(-50%);
   font-size: 20px;
+}
+
+/* mobile */
+.mobToggleBox{
+  display: none;
+}
+
+/* 모바일 */
+@media (max-width: 767px) {
+  .container{
+    height: 90%;
+  }
+  /* register, login 세로로 분리 */
+  .formBox{
+    padding: 0rem;
+    width: 100%;
+    flex-direction: column;
+  }
+  .formBox{
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  .loginFomBox{
+    width: 100%;
+  }
+  .formBox form, .loginFormBox{
+    padding: 4rem 10% 3rem;
+    width: 100%;
+    flex: 1;
+  }
+  .registerFormBox{
+    transform: translateY(0);
+  }
+  .title{
+    margin-block: 2rem;
+    font-size: 2.4rem;
+  }
+  .mobLoginWrap{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+  }
+  .mobLoginWrap .loginFomBox{
+    flex: 1;
+    padding-top: 4rem;
+  }
+  .loginFomBox form{
+    padding-top: 0;
+  }
+  .loginFomBox h1{
+    margin-bottom: 3rem;
+  }
+  .mobToggleBox{
+    display: block;
+    width: 100%;
+    height: 35%;
+    max-height: 25rem;
+    background-color: #ffb92e;
+    inset: 0 0 auto;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mobToggleInner{
+    text-align: center;
+  }
+  .toggleTitle{
+    margin-block: 2rem;
+    font-size: 2rem;
+  }
+  /* action */
+  .container.active .registerFormBox{ 
+    transform: translateY(-100%);
+  }
+  .container.active .mobLoginWrap{
+    transform: translateY(0);
+  }
+
+  /* PC 토글 박스 없애기 */
+  .toggleBox{
+    display: none;
+  }
 }
