@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { GetStoreList } from "../GetStoreList";
+import serverUrl from "../../../db/server.json";
 
 
 export default function useRegionSetting() {
@@ -12,10 +13,12 @@ export default function useRegionSetting() {
     const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
     const [isSelectedAll, setIsSelectedAll] = useState(false);
 
+
     const [lat, setLat] = useState(null); //37.5665
     const [lng, setLng] = useState(null); //126.9780
     const [storeList, setStoreList] = useState([]); // 훅 내부에서 데이터 관리
     const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+    const SERVER_URL = serverUrl.SERVER_URL;
 
     const LOCAL_API_KEY = "bd23a565a07fd608d593c2c99d192e8f";
     
@@ -33,7 +36,7 @@ export default function useRegionSetting() {
         // 정확도 높이고, 캐시된 위치 정보 사용 안함
         const geoOptions = {
             enableHighAccuracy: true,
-            timeout: 5000,
+            timeout: 15000,
             maximumAge: 0
         };
 
@@ -55,10 +58,10 @@ export default function useRegionSetting() {
                 console.log("4. 카카오 API 응답 성공", data);
                 
                 if (data.documents && data.documents.length > 0) {
-                    console.log("여기야", data.documents[0]);
+                    //console.log("여기야", data.documents[0]);
                     const currentSggCode = data.documents[0].code.slice(0, 5);
                     const currentSidoCode = currentSggCode.slice(0, 2);
-                    const listBySgg = await GetStoreList(`http://localhost:3001/youtaste/search/store/sgg?sggCd=${currentSggCode}`);
+                    const listBySgg = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sgg?sggCd=${currentSggCode}`);
 
                     setSelectedDo(currentSidoCode);
                     setSelectedSi(currentSggCode);

@@ -18,7 +18,7 @@ export default function CategoryFilter({storeCategories, selectedCategories, set
     return (
        <ul className={`${styleCategory.categoryList} ${filterClass}`}>
             {storeCategories.map(record => (
-                <li key={record.StoreCatNo}>
+                <li key={record.storeCatNo}>
                     <button 
                         type="button" /* 타입 명시 */
                         className={selectedCategories.includes(record.storeCatName) ? styleCategory.active : ""} 

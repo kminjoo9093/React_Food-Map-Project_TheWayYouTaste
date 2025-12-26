@@ -91,7 +91,7 @@ function Notice({ notices, isAdmin }) {
 
         {/* 관리자만 보이는 작성 버튼 */}
         {isAdmin && (
-          <div style={{ width: "85%", textAlign: "right", paddingBottom: "20px" }}>
+          <div style={{ width: "83.5%", textAlign: "right", paddingBottom: "20px" }}>
             <button
               className="button"
               onClick={() => navigate("/notice/write")}

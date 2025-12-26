@@ -100,30 +100,12 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
         // lat, lng를 의존성에 추가하여 내 위치가 잡히는 순간 바로 범위를 조정하게 합니다.
     }, [storeList, isSelectedAll, lat, lng, isChangedRegion]);
 
-    // 리사이즈(화면 크기 변경) 대응을 위한 로직
-    // useEffect(() => {
-    //     const map = mapRef.current;
-    //     if (!map) return;
-
-    //     const handleResize = () => {
-    //         // 지도의 크기가 변했을 때 레이아웃을 재정렬합니다.
-    //         // setBounds는 위의 useEffect가 storeList 변경 시 처리하므로 여기선 relayout만 실행합니다.
-    //         map.relayout();
-    //     };
-
-    //     window.addEventListener("resize", handleResize);
-
-    //     return () => {
-    //         window.removeEventListener("resize", handleResize);
-    //     };
-    // }, []);
-
     return (
         <Map
             center={center}
             style={{ width: "100%", height: "100%" }}
             level={level}
-            ref={mapRef} // 4. ref 연결 중요!
+            ref={mapRef} // ref 연결
             onIdle={(map) => {
                 const bounds = map.getBounds();
                 const sw = bounds.getSouthWest();
@@ -198,7 +180,8 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                                         {store.storeCatName && <span><img src={iconCategory} />{store.storeCatName}</span>}
                                     </p>
                                 </div>
-                                <img src={`${SERVER_URL}/uploads/store/${store.bplcPhoto}`}
+                                <img src={`${SERVER_URL}${store.bplcPhoto}`}
+                                // <img src={`${SERVER_URL}/uploads/store/${store.bplcPhoto}`}
                                     className={styleMap.infoImg} 
                                 />
                             </Link>

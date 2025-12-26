@@ -53,7 +53,7 @@ function StoreDetail({ storeList }) {
 
     function showStoreImage(imgData) {
         if(imgData){
-            return <img src={`${SERVER_URL}/uploads/store/${imgData}`} alt="대표 이미지"
+            return <img src={`${SERVER_URL}${imgData}`} alt="대표 이미지"
                         className={styleStoreDetail.storeImage}></img>;
         } else {
             return <span>등록된 이미지가 없습니다.</span>;
@@ -133,11 +133,12 @@ function StoreDetail({ storeList }) {
                     );
                 })}
                 <span style={{ marginLeft: "8px", fontSize: ratingFont, fontWeight: "bold", color: "#333" }}>
-                    {rating.toFixed(1)}
+                    {(rating || 0).toFixed(1)}
                 </span>
             </div>
         );
     };
+
 
     // ===== 리뷰 항목 컴포넌트 (좋아요 로직 포함) =====
     const ReviewItem = ({ review }) => {
@@ -283,8 +284,10 @@ function StoreDetail({ storeList }) {
                                     }
                                 }}
                             >
+
                                 리뷰 작성
                             </button>
+
                             <Link to={`/store/report/${user?.userSn || ''}`} state={{ 
                                                                                         bplcSn: storeId, 
                                                                                         storeName: storeData.bplcNm, 
