@@ -139,7 +139,7 @@ function SearchStore({ storeCategories, sidoList }) {
                 }
 
                 
-                // 6. 최종 결과 반영
+                // 최종 결과 반영
                 setFilteredStoreList(filteredResult);
                 setIsChangedRegion(true);
                 setNowPage(1); // 검색 시 페이지 번호 초기화

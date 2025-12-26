@@ -30,7 +30,7 @@ export default function useRegionSetting() {
             return;
         }
 
-        // 옵션 추가: 정확도 높이고, 캐시된 위치 정보 사용 안함
+        // 정확도 높이고, 캐시된 위치 정보 사용 안함
         const geoOptions = {
             enableHighAccuracy: true,
             timeout: 5000,

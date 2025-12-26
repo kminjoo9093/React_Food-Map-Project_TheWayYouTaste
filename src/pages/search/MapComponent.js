@@ -10,10 +10,8 @@ import serverUrl from "../../db/server.json";
 
 export default function MapComponent({ storeList, lat, lng, setIsMoved, isChangedRegion, setPositionArea, positionAreaRef, isSelectedAll }) {
     
-    const mapRef = useRef(); // 1. Map 객체에 접근하기 위한 ref 추가
+    const mapRef = useRef(); // Map 객체에 접근하기 위한 ref 추가
     const isInitialCenterSetRef = useRef(false);
-
-
 
     // 카카오 로더 설정
     useKakaoLoader({
@@ -119,31 +117,6 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
     //         window.removeEventListener("resize", handleResize);
     //     };
     // }, []);
-
-
-
-
-    // // 지역 변경 시 마커들의 평균 위치로 중심 이동
-    // useEffect(() => {
-    //     if (!storeList || storeList.length === 0) return;
-    //     if (!isChangedRegion) return;
-
-    //     if (!isInitialCenterSetRef.current) return; //초기 위치 세팅 전이면 평균 이동 금지
-
-	// 	// 유효한 좌표를 가진 데이터만 필터링
-	// 	const validStores = storeList.filter(
-	// 		s => !isNaN(parseFloat(s.lat)) && !isNaN(parseFloat(s.lot))
-	// 	);
-
-	// 	if (validStores.length === 0) return;
-
-    //     // API 데이터의 키값 확인: lat, lot (로그 기준)
-    //     const avgLat = storeList.reduce((sum, s) => sum + (parseFloat(s.lat) || 0), 0) / storeList.length;
-    //     const avgLng = storeList.reduce((sum, s) => sum + (parseFloat(s.lot) || 0), 0) / storeList.length;
-
-    //     setCenter({ lat: avgLat, lng: avgLng });
-
-    //  }, [storeList, isChangedRegion]);
 
     return (
         <Map

@@ -1,5 +1,4 @@
   import { Routes,Route, useLocation, Navigate } from "react-router-dom";
-  // import { useKakaoLoader } from "react-kakao-maps-sdk";
   import Error404Page from "./Error404Page";
   import MemberListCheck from "./pages/admin/MemberListCheck"
   import MainPage from "./pages/main/MainPage"
@@ -24,24 +23,8 @@
   import RegisterDetail from "./pages/admin/RegisterDetail";
   import StoreRegion from "./pages/search/StoreRegion";
   import serverUrl from "./db/server.json";
-  // import useRegionSetting from "./pages/search/hook/useRegionSetting";
 
   function TheWayYouTaste() {
-
-    // 1. 위치 관련 훅을 여기서 선언
-    // const { regionState, regionSetters, getCurrentLocation } = useRegionSetting();
-    // const { lat, lng, storeList, isLoading: isRegionLoading } = regionState;
-
-    // 2. 앱이 마운트될 때 한 번만 현재 위치를 가져옴
-    // useEffect(() => {
-    //     getCurrentLocation();
-    // }, [getCurrentLocation]);
-
-    // // 카카오 로더 설정
-    // useKakaoLoader({
-    //     appkey: "5794d8a0c2862c16e4c69ad303abfb4b",
-    //     libraries: ["clusterer", "drawing", "services"],
-    // });
 
     const location = useLocation();
     const hideHeaderRoutes = ["/login"];
