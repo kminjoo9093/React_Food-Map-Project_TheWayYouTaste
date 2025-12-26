@@ -75,11 +75,13 @@
 }
 
 .wrapBox:last-child {
+    flex-shrink: 0;
     border-bottom: none;
 }
 
 .subTitle2 {
-    width: 15rem;
+    min-width: 9rem;
+    max-width: 15rem;
     font-size: 1.5rem;
     color: var(--gray-77);
     font-weight: bold;
@@ -133,4 +135,30 @@
     font-weight: bold;
     border-radius: 0.6rem;
     cursor: pointer;
+    text-wrap: nowrap;
+}
+
+@media (max-width: 767px){
+    .mainWrapper{
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .leftBox{
+        position: static;
+        width: 100%;
+    }
+    .profileBox, .securityBox, .historyBox{
+        width: 100%;
+        padding-inline: 2rem;
+    }
+    .wrapBox{
+        gap: 1rem;
+    }
+    .rightBox{
+        width: 100%;
+    }
+    .email{
+        max-width: 70%;
+        word-break: break-all;
+    }
 }

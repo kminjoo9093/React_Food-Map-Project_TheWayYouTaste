@@ -47,6 +47,14 @@ function SearchStore({ storeCategories, sidoList }) {
     const [isResetFilter, setIsResetFilter] = useState(false);
     const [isSearchArea, setIsSearchArea] = useState(false);
 
+    // URL에서 카테고리 가져오기
+    const paramCategories = queryParams.get("categories");
+
+    // URL에 있으면 배열로 변환, 없으면 빈 배열
+    const urlCategoryArray = useMemo(() => {
+        return paramCategories ? paramCategories.split(",") : [];
+    }, [paramCategories]);
+
 
     // 현재 위치 기반 초기 로드
     // 훅 내부의 storeList가 변경될 때마다 반영
@@ -59,7 +67,6 @@ function SearchStore({ storeCategories, sidoList }) {
 
     useEffect(() => {
         const initLoad = async () => {
-            const queryParams = new URLSearchParams(location.search);
             //현재 위치
             const paramLat = queryParams.get("lat");
             const paramLng = queryParams.get("lng");
@@ -89,12 +96,10 @@ function SearchStore({ storeCategories, sidoList }) {
             }
 
             //카테고리
-            const paramCategories = queryParams.get("categories");
-
-            let categoryArray = [];
-            if (paramCategories) {
-                categoryArray = paramCategories.split(",");
-                setSelectedCategories(categoryArray); // UI 체크 표시용
+            if (urlCategoryArray.length > 0) {
+                // 메인에서 넘어온 카테고리가 있다면 상태 업데이트
+                setSelectedCategories(urlCategoryArray);
+                setAppliedCategories(urlCategoryArray);
             }
 
             let list = []; //맛집 목록
@@ -128,13 +133,13 @@ function SearchStore({ storeCategories, sidoList }) {
                 setStoreListByRegion(list);
 
                 // 필터링 로직 (list 변수 그대로 사용)
-                let filteredResult = list; // 새 변수에 할당하여 명확하게 처리
-                if (categoryArray.length > 0) {
-                    filteredResult = list.filter(record => categoryArray.includes(record.storeCatName));
+                let filteredResult = list; // 새 변수에 할당
+                if (urlCategoryArray.length > 0) {
+                    filteredResult = list.filter(record => urlCategoryArray.includes(record.storeCatName));
                 }
 
                 
-                // 6. 최종 결과 반영
+                // 최종 결과 반영
                 setFilteredStoreList(filteredResult);
                 setIsChangedRegion(true);
                 setNowPage(1); // 검색 시 페이지 번호 초기화
@@ -158,7 +163,7 @@ function SearchStore({ storeCategories, sidoList }) {
             );
         }
 
-        setIsChangedRegion(true);
+        // setIsChangedRegion(true);
         setNowPage(1);
     }, [storeListByRegion, appliedCategories]);
 
@@ -180,6 +185,9 @@ function SearchStore({ storeCategories, sidoList }) {
         if (swMinLat === 0) return; // 좌표가 0인 초기상태 방지
 
         try {
+            // 지역변경x, 현재 화면에서 찾는 것임을 명시
+            setIsChangedRegion(false);
+
             const url = `${SERVER_URL}/youtaste/search/store/position?swMinLat=${swMinLat}&neMaxLat=${neMaxLat}&swMinLng=${swMinLng}&neMaxLng=${neMaxLng}`;
             let list = await GetStoreList(url);
 
@@ -297,12 +305,12 @@ function SearchStore({ storeCategories, sidoList }) {
                                             <img className={styleSearchStore.storeImg} src={`${SERVER_URL}${record.bplcPhoto}`} alt="store" />
                                             <div className={styleSearchStore.storeInfo}>
                                                 <h2 className={styleSearchStore.storeName}>{record.bplcNm}</h2>
-                                                <div>
+                                                <div className={styleSearchStore.avgNCat}>
                                                     <span className={styleSearchStore.storeRating}>{record.avg}</span>
                                                     <span className={styleSearchStore.storeCategory}>{record.storeCatName}</span>
                                                 </div>
-                                                <span className={styleSearchStore.storeTime}><em>영업시간</em>{record.bgngTm}-{record.ddlnTm}</span>
-                                                <span className={styleSearchStore.storeAddress}><em>주소</em>{record.address}</span>
+                                                <span className={styleSearchStore.storeTime}>{record.bgngTm}-{record.ddlnTm}</span>
+                                                <span className={styleSearchStore.storeAddress}>{record.address}</span>
                                             </div>
                                         </Link>
                                     </li>

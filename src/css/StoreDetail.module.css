@@ -60,7 +60,7 @@
 }
 .time, .tel, .address{
     padding-left: 2.5rem;
-    background-position: center left;
+    background-position: left;
     background-repeat: no-repeat;
 }
 .time{
@@ -71,6 +71,7 @@
 }
 .address{
     background-image: url(../resources/img/search/iconLocation.svg);
+    background-position: top 0.5rem left;
 }
 .detailTitle{
     font-style: normal;

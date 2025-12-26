@@ -1,4 +1,7 @@
 import styleFooter from "../css/Footer.module.css"
+import iconInsta from "../resources/img/system/instagram.svg"
+import iconFacebook from "../resources/img/system/facebook.svg"
+import iconTwitter from "../resources/img/system/twitter.svg"
 
 function Footer() {
     return (
@@ -14,7 +17,7 @@ function Footer() {
 
                 <div className={styleFooter.footerSection}>
                     <h3>Quick Links</h3>
-                    <ul>
+                    <ul className={styleFooter.quickList}>
                         <li><a href="/home">홈</a></li>
                         <li><a href="/about">회사소개</a></li>
                         <li><a href="/services">서비스</a></li>
@@ -24,9 +27,9 @@ function Footer() {
 
                <div className={`${styleFooter.footerSection} ${styleFooter.footerSocial}`}>
                     <h3>Follow Us</h3>
-                    <a href="#">Facebook</a>
-                    <a href="#">Twitter</a>
-                    <a href="#">Instagram</a>
+                    <a href="#"><img src={iconFacebook} alt="니맛대로 페이스북"></img></a>
+                    <a href="#"><img src={iconTwitter} alt="니맛대로 트위터"></img></a>
+                    <a href="#"><img src={iconInsta} alt="니맛대로 인스타그램"></img></a>
                 </div>
 
             </div>

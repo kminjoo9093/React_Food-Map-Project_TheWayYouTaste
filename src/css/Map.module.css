@@ -28,7 +28,8 @@
     height: 100%;
 }
 .infoImg{
-    max-width: 13rem;
+    width: 45%;
+    min-width: 7rem;
     background-color: #ddd;
     object-fit: cover;
 }
@@ -58,7 +59,7 @@
 .address{
     font-size: 1.3rem;
     line-height: 1.3em;
-    /* margin-bottom: -1rem; */
+    margin-bottom: -2rem;
 }
 .address::before{
     content: "";
