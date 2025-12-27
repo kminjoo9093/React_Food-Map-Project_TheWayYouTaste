@@ -8,7 +8,7 @@ import iconCategory from "../../resources/img/search/iconTag.svg";
 import styleMap from "../../css/Map.module.css";
 import serverUrl from "../../db/server.json"; 
 
-export default function MapComponent({ storeList, lat, lng, setIsMoved, isChangedRegion, setPositionArea, positionAreaRef, isSelectedAll }) {
+export default function MapComponent({ storeList, lat, lng, setIsMoved, isChangedRegion, positionAreaRef, isSelectedAll }) {
     
     const mapRef = useRef(); // Map 객체에 접근하기 위한 ref 추가
     const isInitialCenterSetRef = useRef(false);

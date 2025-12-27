@@ -347,7 +347,7 @@ function SearchStore({ storeCategories, sidoList }) {
                     lat={lat} lng={lng} 
                     setIsMoved={setIsMoved}
                     isChangedRegion={isChangedRegion} 
-                    setPositionArea={setPositionArea}
+                    // setPositionArea={setPositionArea}
                     positionAreaRef={positionAreaRef} 
                     isSelectedAll={isSelectedAll}
                 />
