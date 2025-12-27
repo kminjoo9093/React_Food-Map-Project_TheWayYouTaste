@@ -51,7 +51,7 @@ function RegisterListCheck({ registerAdmin }) {
   return (
     <div className='contentTopPosition'>
       <div className={styleMember.middleContainer}>
-        <h1 className="heading">등록 신청 조회</h1>
+        <h1 className="heading">가게 등록 조회</h1>
         <table className="container">
           <thead>
             <tr>

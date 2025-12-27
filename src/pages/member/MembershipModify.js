@@ -35,7 +35,7 @@ function MembershipModify() {
 
             window.scrollTo({
                 top: offsetPosition,
-                behavior: "smooth" // 부드러운 이동
+                behavior: "smooth" 
             });
         }
     };
