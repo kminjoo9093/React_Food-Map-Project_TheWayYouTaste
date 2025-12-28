@@ -308,6 +308,7 @@ function StoreDetail({ storeList }) {
                             {storeData.menuObj && Object.entries(storeData.menuObj).map(([name, price], index) => (
                                 <li key={index} className={styleStoreDetail.menuItem}>
                                     <span className={styleStoreDetail.menuNm}>{name}</span>
+                                    <div className={styleStoreDetail.menudots}></div>
                                     <span className={styleStoreDetail.menuPrice}>
                                         {formatNumber(price)}
                                     </span>

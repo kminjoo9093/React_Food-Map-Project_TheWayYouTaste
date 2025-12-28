@@ -100,7 +100,7 @@ const ReviewRegister = ({ isOpen, onClose, bplcSn, userSn }) => {
       evlScr: rating,
       evlCn: reviewText,
       evlYmd: today,
-      bplcSn: bplcSn, // <--- 강제로 박혀있던 1000을 넘겨받은 변수로 수정!
+      bplcSn: bplcSn,
       userSn: userSn,  
     };
 
