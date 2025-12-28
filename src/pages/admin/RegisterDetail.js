@@ -243,9 +243,9 @@ function RegisterDetail() {
                   style={{
                     display: "flex",
                     flexDirection: "column",
-                    justifyContent: "center", // 수직 중앙
-                    alignItems: "center",     // 수평 중앙
-                    padding: "10px",          // 내부 여백 추가
+                    justifyContent: "center", 
+                    alignItems: "center",     
+                    padding: "10px",          
                     height: "80px",           
                     minWidth: "70px",
                   }}

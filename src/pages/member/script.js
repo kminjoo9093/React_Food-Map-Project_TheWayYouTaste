@@ -18,25 +18,3 @@ export default function Script() {
 }
 
 
-/*
-import style from "../../css/MembershipLogin.module.css";
-
-function script () {
-    const container = document.querySelector('.container');
-    const registerBtn = document.querySelector('.registerBtn');
-    const loginBtn = document.querySelector('.loginBtn');
-    return (
-        <>
-            registerBtn.addEventListener('click', () = {
-                container.classList.add('active')
-            })
-
-            loginBtn.addEventListener('click', () = {
-                container.classList.remove('active')
-            })
-        </>
-    );
-}
-
-export default script;
-*/

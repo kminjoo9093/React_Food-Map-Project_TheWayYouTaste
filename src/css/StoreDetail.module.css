@@ -77,10 +77,6 @@
     font-style: normal;
     margin-right: 1rem;
 }
-/* .telNumber{
-    text-decoration: underline;
-    color: #333;
-} */
 /* 편의 서비스 */
 .serviceTypes{
     margin-top: 1rem;
@@ -225,7 +221,7 @@
 
 
 
-@media (max-width: 1024px){
+@media (max-width: 1023px){
     .storeInfoArea{
         width: 100%;
         grid-template-columns: 1fr;
@@ -240,16 +236,7 @@
     }
 }
 
-@media (max-width: 480px){
-    /* .storeInfoArea{
-        width: 100%;
-        grid-template-columns: 1fr;
-        grid-template-rows: 30rem 1fr 1fr;
-        gap: 3rem;
-    } */
-    /* .linkWrap, .serviceTypes{
-        text-wrap: wrap;
-    } */
+@media (max-width: 767px){
     .linkWrap{
         margin-top: 3rem;
     }
@@ -262,9 +249,7 @@
     .linkWriteReview{
         margin-bottom: 1.5rem;
     }
-    /* .storeImageWrap{
-        order: -1;
-    } */
+    
     .serviceTypes > span{
         color: #777;
         padding-inline: 0.5rem;
@@ -273,5 +258,8 @@
     .menuItem{
         display: flex;
         justify-content: space-between;
+    }
+    .storeMenuWrap, .reviewListWrap{
+        padding: 3rem;
     }
 }

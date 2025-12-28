@@ -115,7 +115,7 @@ function StoreRegion({ storeCategories, sidoList }) {
                             
                             <Link to={`/search/storeDetail?storeId=${store.bplcSn}`} className={styleRanking.itemLink}>
                                 <div className={styleRanking.imgBox}>
-                                    <img src={`${SERVER_URL} ${store.bplcPhoto}`} alt={store.bplcNm} />
+                                    <img src={`${SERVER_URL}${store.bplcPhoto}`} alt={store.bplcNm} />
                                 </div>
                                 
                                 <div className={styleRanking.infoBox}>
@@ -152,7 +152,7 @@ function StoreRegion({ storeCategories, sidoList }) {
                     setDoName={setDoName} 
                     setSiName={setSiName} 
                     setDongName={setDongName}
-                    onConfirm={handleRegionConfirm} // 수정된 핸들러 연결
+                    onConfirm={handleRegionConfirm}
                     sidoList={sidoList}
                 />
             )}

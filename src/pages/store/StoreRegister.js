@@ -434,7 +434,7 @@ function StoreRegister({ userSn }) {
             </div>
               {selectedImg && (
                 <div 
-                  onClick={closeModal} // 배경 클릭 시 닫기
+                  onClick={closeModal}
                   style={{
                     position: "fixed",
                     top: 0,
@@ -445,7 +445,7 @@ function StoreRegister({ userSn }) {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    zIndex: 11000, // Daum 주소 API보다 높게 설정
+                    zIndex: 11000, 
                     cursor: "zoom-out"
                   }}
                 >

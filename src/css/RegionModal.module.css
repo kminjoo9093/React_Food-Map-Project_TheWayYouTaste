@@ -61,9 +61,9 @@
 .regionItem{
     line-height: 2.4em;
     border-radius: 5px;
-    text-align: left;
     text-wrap: nowrap;
-    padding-left: 2em;
+    padding-left: 0;
+    text-align: center;
 }
 
 .regionItem:hover {

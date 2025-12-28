@@ -225,7 +225,7 @@ function SearchStore({ storeCategories, sidoList }) {
         setAppliedCategories([...selectedCategories]); //적용되는 카테고리 리스트로 복사
 
         //map level 조절
-        if((!selectedDo || !selectedSi) && !isResetFilter){
+        if(!selectedDo || (selectedDo && !selectedSi)){ //&& !isResetFilter
             setIsSelectedAll(true); //level 12
         } else {
             setIsSelectedAll(false); //level 7
@@ -249,12 +249,13 @@ function SearchStore({ storeCategories, sidoList }) {
         navigate("/search/store", { replace: true });
 
         setIsSearchArea(false);
-        getCurrentLocation();
         
         setIsMoved(false);
         setIsResetFilter(true);
         setIsSelectedAll(false);
-        setIsChangedRegion(false); 
+        setIsChangedRegion(true);
+         
+        getCurrentLocation();
     };
 
     // 페이지네이션
@@ -335,7 +336,6 @@ function SearchStore({ storeCategories, sidoList }) {
             </div>
 
             <div className={styleSearchStore.mapArea}>
-                {/* 버튼 클릭 시 displayViewPortMarkers 호출 */}
                 <button 
                     className={`${styleSearchStore.btnSearchArea} ${isMoved ? styleSearchStore.active : ""}`} 
                     onClick={() => displayViewPortMarkers(positionAreaRef.current)}

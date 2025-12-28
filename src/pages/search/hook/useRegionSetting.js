@@ -10,8 +10,8 @@ export default function useRegionSetting() {
     const [siName, setSiName] = useState("");
     const [selectedDong, setSelectedDong] = useState(null); //code
     const [dongName, setDongName] = useState("");
-    const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
-    const [isSelectedAll, setIsSelectedAll] = useState(false);
+    // const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
+    // const [isSelectedAll, setIsSelectedAll] = useState(false);
 
 
     const [lat, setLat] = useState(null); //37.5665
@@ -33,10 +33,9 @@ export default function useRegionSetting() {
             return;
         }
 
-        // 정확도 높이고, 캐시된 위치 정보 사용 안함
         const geoOptions = {
             enableHighAccuracy: true,
-            timeout: 15000,
+            timeout: 10000,
             maximumAge: 0
         };
 
@@ -58,7 +57,6 @@ export default function useRegionSetting() {
                 console.log("4. 카카오 API 응답 성공", data);
                 
                 if (data.documents && data.documents.length > 0) {
-                    //console.log("여기야", data.documents[0]);
                     const currentSggCode = data.documents[0].code.slice(0, 5);
                     const currentSidoCode = currentSggCode.slice(0, 2);
                     const listBySgg = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sgg?sggCd=${currentSggCode}`);
@@ -66,8 +64,8 @@ export default function useRegionSetting() {
                     setSelectedDo(currentSidoCode);
                     setSelectedSi(currentSggCode);
 
-                    setDoName(data.documents[0].region_1depth_name); // 시도명
-                    setSiName(data.documents[0].region_2depth_name);  // 시군구명
+                    setDoName(data.documents[0].region_1depth_name); 
+                    setSiName(data.documents[0].region_2depth_name);  
                     
                     setStoreList(listBySgg);
                 }

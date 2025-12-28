@@ -63,6 +63,12 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
 
         // 실행 타이밍 조절 (지연 시간을 주어 맵 인스턴스 안정화)
         const timer = setTimeout(() => {
+            
+            if(isSelectedAll) return;
+
+            // isChangedRegion이 true일 때만 지도를 강제로 움직임
+             if (!isChangedRegion && isInitialCenterSetRef.current) return;
+            
             const bounds = new window.kakao.maps.LatLngBounds();
             let hasValidPoint = false;
 
@@ -78,26 +84,21 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                 });
             }
 
-           //  지역이 변경되었을 때만 '내 위치'를 범위에 포함
-            // 범위 내 재검색 -> isChangedRegion이 false. 내 위치를 포함하지 않음
-            if (isChangedRegion && lat && lng) {
-                bounds.extend(new window.kakao.maps.LatLng(lat, lng));
-                hasValidPoint = true;
-            }
-
-            // 유효한 좌표가 있다면 지도의 범위 변경
             if (hasValidPoint) {
-                const padding = window.innerWidth < 768 ? 100 : 80;
+                // 맛집들이 있다면 그 맛집들을 다 보여주는 최적의 범위로 이동
+                const padding = window.innerWidth < 768 ? 80 : 50; 
                 map.setBounds(bounds, padding, padding, padding, padding);
-                
-                // 범위를 잡은 후, 초기 설정이 완료되었음을 표시
-                isInitialCenterSetRef.current = true;
+            } 
+            // 맛집이 없거나 초기화된 경우 -> 내 위치(lat, lng)로 이동
+            else if (lat && lng) {
+                const moveLatLng = new window.kakao.maps.LatLng(lat, lng);
+                map.setCenter(moveLatLng);
+                map.setLevel(7);
             }
         }, 100);
 
         return () => clearTimeout(timer);
-
-        // lat, lng를 의존성에 추가하여 내 위치가 잡히는 순간 바로 범위를 조정하게 합니다.
+        
     }, [storeList, isSelectedAll, lat, lng, isChangedRegion]);
 
     return (
@@ -181,7 +182,6 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                                     </p>
                                 </div>
                                 <img src={`${SERVER_URL}${store.bplcPhoto}`}
-                                // <img src={`${SERVER_URL}/uploads/store/${store.bplcPhoto}`}
                                     className={styleMap.infoImg} 
                                 />
                             </Link>

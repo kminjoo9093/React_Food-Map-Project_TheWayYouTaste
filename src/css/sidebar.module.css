@@ -79,11 +79,8 @@
     cursor: pointer;
 }
 .btnMobMenu {
-    /* font-size: 26px;
-    margin-right: 20px; */
     cursor: pointer;
     user-select: none;
-
     /* test */
     display: none;
 }
