@@ -5,13 +5,6 @@ import useRegionSetting from '../search/hook/useRegionSetting';
 import RegionModal from "../search/RegionModal"; 
 import CategoryFilter from '../search/CategoryFilter';
 
-
-const icons = [
-  { emoji: "🐕", label: "반려동물허용" },
-  { emoji: "🅿️", label: "주차" },
-  { emoji: "🥡", label: "포장" },
-];
-
 function MainPage({storeCategories, sidoList}) {
 
   const {regionState, regionSetters, getCurrentLocation} = useRegionSetting();
@@ -78,9 +71,6 @@ function MainPage({storeCategories, sidoList}) {
             )}
 
           {/* 업종 */}
-          {/* <div className={styleMain.titleBox}>
-            <h4 className={styleMain.sectionTitle}>업종</h4>
-          </div> */}
           <CategoryFilter 
               mode="main"
               storeCategories={storeCategories}
@@ -88,31 +78,6 @@ function MainPage({storeCategories, sidoList}) {
               setSelectedCategories={setSelectedCategories}
               setIsResetFilter={setIsResetFilter}
           />
-
-          {/* <ul className={styleMain.iconGrid}>
-             {storeCategories.map(record => (
-                <li key={record.StoreCatNo}>
-                  <div className={styleMain.iconBtn}>
-                    {foodIcons[record.storeCatName]}
-                    <div className={styleMain.tooltip}>{record.storeCatName}</div>
-                  </div>
-                </li>
-            ))}
-          </ul> */}
-
-          {/* 편의
-          <br></br><br></br><br></br>
-          <div className={styleMain.titleBox}>
-            <h4 className={styleMain.sectionTitle}>편의</h4>
-          </div>
-          <div className={styleMain.iconGrid}>
-            {icons.map((item, index) => (
-              <div key={index} className={styleMain.iconBtn}>
-                {item.emoji}
-                <div className={styleMain.tooltip}>{item.label}</div>
-              </div>
-            ))}
-          </div> */}
 
           {/* 검색 버튼 */}
           <div className={styleMain.iconRight}>

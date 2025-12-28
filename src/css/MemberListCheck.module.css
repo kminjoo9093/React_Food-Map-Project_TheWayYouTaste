@@ -45,10 +45,6 @@ td {
   height: 50px;
 }
 
-/* tr:nth-child(even) {
-  background-color: #ffffff;
-} */
-
 tr:hover {
   background-color:#FFDFB9; 
   cursor: pointer;

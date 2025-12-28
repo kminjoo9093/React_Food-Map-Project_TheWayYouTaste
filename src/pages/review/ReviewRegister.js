@@ -72,7 +72,7 @@ const StarRating = ({ rating, setRating }) => {
 const ReviewRegister = ({ isOpen, onClose, bplcSn, userSn }) => {
   const navigate = useNavigate();
   const [rating, setRating] = useState(0);
-  const [images, setImages] = useState([]); // [{file: File, preview: string}]
+  const [images, setImages] = useState([]); 
   const [reviewText, setReviewText] = useState("");
 
   if (!isOpen) return null;
@@ -100,7 +100,7 @@ const ReviewRegister = ({ isOpen, onClose, bplcSn, userSn }) => {
       evlScr: rating,
       evlCn: reviewText,
       evlYmd: today,
-      bplcSn: bplcSn,
+      bplcSn: bplcSn, 
       userSn: userSn,  
     };
 
@@ -124,7 +124,7 @@ const ReviewRegister = ({ isOpen, onClose, bplcSn, userSn }) => {
 
       alert("리뷰가 등록되었습니다!");
       onClose();
-      window.location.reload(); // 등록 후 목록 갱신을 위해 새로고침 추가
+      window.location.reload(); 
     } catch (err) {
       console.error(err);
       alert("리뷰 등록 실패");

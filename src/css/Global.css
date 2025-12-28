@@ -78,12 +78,6 @@ a{
   cursor: pointer;
 }
 
-/* button {
-  border: 1px solid black;
-  background-color: transparent;
-  cursor: pointer;
-} */
-
 button {
   padding: 0.8rem 1.6rem;
   border: 1px solid #ddd;
@@ -117,7 +111,7 @@ button:active {
 }
 
 .contentTopPosition{
-  margin-top: 14.6rem; /*header+menubar height*/
+  margin-top: 15rem; /*header+menubar height*/
 }
 
 /* 컨텐츠 box 스타일 */
@@ -136,24 +130,29 @@ button:active {
     margin-block: 1.2rem;
 }
 
-@media (max-width: 1024px){
+/* 태블릿 세로 */
+@media (max-width: 1023px){ 
     .container {
         width: 80%;
         max-width: 100%;
     }
-}
-
-@media (max-width: 430px){
-    html{
-        font-size: 56.25%; /* 9px = 1rem */
-    }
     .contentTopPosition {
       margin-top: 7rem;
+    }
+}
+
+/* 모바일 세로, 가로 */
+@media (max-width: 767px){
+    html{
+        font-size: 56.25%; /* 9px = 1rem */
     }
     .container {
         width: 95%;
         max-width: 100%;
         margin: 0 auto;
         padding: 4rem 1rem;
+    }
+    .contentTopPosition {
+      margin-top: 7rem;
     }
 }

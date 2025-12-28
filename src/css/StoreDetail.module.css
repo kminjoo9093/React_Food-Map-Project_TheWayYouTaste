@@ -60,7 +60,7 @@
 }
 .time, .tel, .address{
     padding-left: 2.5rem;
-    background-position: center left;
+    background-position: left;
     background-repeat: no-repeat;
 }
 .time{
@@ -71,15 +71,12 @@
 }
 .address{
     background-image: url(../resources/img/search/iconLocation.svg);
+    background-position: top 0.5rem left;
 }
 .detailTitle{
     font-style: normal;
     margin-right: 1rem;
 }
-/* .telNumber{
-    text-decoration: underline;
-    color: #333;
-} */
 /* 편의 서비스 */
 .serviceTypes{
     margin-top: 1rem;
@@ -246,15 +243,6 @@
 }
 
 @media (max-width: 480px){
-    /* .storeInfoArea{
-        width: 100%;
-        grid-template-columns: 1fr;
-        grid-template-rows: 30rem 1fr 1fr;
-        gap: 3rem;
-    } */
-    /* .linkWrap, .serviceTypes{
-        text-wrap: wrap;
-    } */
     .linkWrap{
         margin-top: 3rem;
     }
@@ -267,9 +255,7 @@
     .linkWriteReview{
         margin-bottom: 1.5rem;
     }
-    /* .storeImageWrap{
-        order: -1;
-    } */
+    
     .serviceTypes > span{
         color: #777;
         padding-inline: 0.5rem;
