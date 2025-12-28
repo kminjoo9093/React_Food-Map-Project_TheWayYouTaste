@@ -258,7 +258,7 @@ function StoreRegister({ userSn }) {
     if (storeImage) formData.append("storeImage", storeImage);
     if (verifyImage) formData.append("verifyImage", verifyImage);
 
-    //전송 데이터 확인
+    //전송 데이터 확인 지우기
     console.log("--- 서버 전송 데이터 목록 ---");
     for (let [key, value] of formData.entries()) {
         if (value instanceof File) {
@@ -329,7 +329,7 @@ function StoreRegister({ userSn }) {
                   <input className={styleStore.inputBox} type="date" value={openDate} onChange={(e) => setOpenDate(e.target.value)} id="openDate" />
                 </>
               )}
-              <br></br>
+              <br/>
               <div className={styleStore.imgBox}>
                 <label>{registerType === "BUSINESS" ? "사업자 등록증" : "영수증"}</label>
                 <label htmlFor="verifyImage" className={`${styleStore.customFileLabel} ${verifyImage ? styleStore.completed : ""}`}>
@@ -356,7 +356,8 @@ function StoreRegister({ userSn }) {
               <label>주소</label>
               <div>
                 <div ref={wrapRef} style={{ display: "none", zIndex: 10000 }}>
-                  <img src="//t1.daumcdn.net/postcode/resource/images/close.png" alt="닫기" style={{ cursor: "pointer", position: "absolute", right: 0, top: -1, zIndex: 1 }} onClick={foldAddress} />
+                  <img src="//t1.daumcdn.net/postcode/resource/images/close.png" alt="닫기"
+                    style={{ cursor: "pointer", position: "absolute", right: 0, top: -1, zIndex: 1 }} onClick={foldAddress} />
                 </div>
                 <div className={styleStore.addBox}>
                   <input type="text" placeholder="도로명 주소" value={roadAddress} readOnly />
