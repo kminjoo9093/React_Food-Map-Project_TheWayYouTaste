@@ -64,7 +64,6 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
     }, [selectedDong]);
 
     function handleSelectDo(sidoCd, sidoNm){
-        console.log("test -> ", sidoNm);
         setSelectedDo(sidoCd); //code
         setDoName(sidoNm || ""); //지역명
         setSelectedSi(null);

@@ -227,7 +227,7 @@
 
 
 
-@media (max-width: 1024px){
+@media (max-width: 1023px){
     .storeInfoArea{
         width: 100%;
         grid-template-columns: 1fr;
@@ -242,7 +242,7 @@
     }
 }
 
-@media (max-width: 480px){
+@media (max-width: 767px){
     .linkWrap{
         margin-top: 3rem;
     }
@@ -264,5 +264,8 @@
     .menuItem{
         display: flex;
         justify-content: space-between;
+    }
+    .storeMenuWrap, .reviewListWrap{
+        padding: 3rem;
     }
 }

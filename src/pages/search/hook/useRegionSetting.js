@@ -10,8 +10,6 @@ export default function useRegionSetting() {
     const [siName, setSiName] = useState("");
     const [selectedDong, setSelectedDong] = useState(null); //code
     const [dongName, setDongName] = useState("");
-    const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
-    const [isSelectedAll, setIsSelectedAll] = useState(false);
 
 
     const [lat, setLat] = useState(null); //37.5665
@@ -35,7 +33,7 @@ export default function useRegionSetting() {
 
         const geoOptions = {
             enableHighAccuracy: true,
-            timeout: 15000,
+            timeout: 10000,
             maximumAge: 0
         };
 
