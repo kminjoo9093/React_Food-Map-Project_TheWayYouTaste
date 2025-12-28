@@ -286,6 +286,7 @@ function SearchStore({ storeCategories, sidoList }) {
                 </div>
 
                 <div className={styleSearchStore.storeListArea}>
+
                     {viewStoreItems.length > 0 ? (
                         <>
                             <ul className={styleSearchStore.storeList}>

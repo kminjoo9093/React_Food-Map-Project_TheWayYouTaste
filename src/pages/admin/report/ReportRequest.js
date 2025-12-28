@@ -64,7 +64,11 @@ function ReportRequest() {
 
       alert("신고가 등록되었습니다!");
       navigate("/store/reportDetail", {
-        state: { ...reportData, storeName, address, writer }
+        state: { ...reportData, 
+          storeName : storeName
+          , address 
+          , userName : writer
+          , isAdmin: false }
       });
     } catch (err) {
       console.error(err);
