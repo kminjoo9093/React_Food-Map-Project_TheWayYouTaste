@@ -170,11 +170,17 @@
     border-bottom: 1px solid #eee;
 }
 .menuNm{
-    flex-basis: 10rem;
+    flex-shrink: 0;
+    padding-right: 8px;
 }
 .menuPrice{
     font-size: 1.6rem;
     color: #777;
+}
+.menudots{
+    flex-grow: 1;
+    border-bottom: 0.5rem dotted #ccc;
+
 }
 
 

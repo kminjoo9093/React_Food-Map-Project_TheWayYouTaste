@@ -7,13 +7,6 @@ import CategoryFilter from '../search/CategoryFilter';
 import styleHeader from "../../css/Header.module.css";
 import searchIcon from "../../resources/img/system/search.png";
 
-
-const icons = [
-  { emoji: "🐕", label: "반려동물허용" },
-  { emoji: "🅿️", label: "주차" },
-  { emoji: "🥡", label: "포장" },
-];
-
 function MainPage({storeCategories, sidoList}) {
 
   const {regionState, regionSetters, getCurrentLocation} = useRegionSetting();
