@@ -1,16 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styleMain from "../../css/MainPage.module.css";
 import { useState, useEffect } from 'react';
 import useRegionSetting from '../search/hook/useRegionSetting';
 import RegionModal from "../search/RegionModal"; 
 import CategoryFilter from '../search/CategoryFilter';
-
-
-const icons = [
-  { emoji: "🐕", label: "반려동물허용" },
-  { emoji: "🅿️", label: "주차" },
-  { emoji: "🥡", label: "포장" },
-];
+import styleHeader from "../../css/Header.module.css";
+import searchIcon from "../../resources/img/system/search.png";
 
 function MainPage({storeCategories, sidoList}) {
 
@@ -20,6 +15,10 @@ function MainPage({storeCategories, sidoList}) {
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [isResetFilter, setIsResetFilter] = useState(false);
+
+  const [searchTerm, setSearchTerm] = useState(""); // 검색어
+  const navigate = useNavigate();
+
 
   useEffect(() => { getCurrentLocation(); }, [getCurrentLocation]);
 
@@ -45,12 +44,35 @@ function MainPage({storeCategories, sidoList}) {
     return `/search/store?${params.toString()}`;
   };
 
+    //검색
+  const handleSearch = (e) => {
+      if (e.key === "Enter" || e.type === "click") {
+          if (!searchTerm.trim()) return;
+          // 검색어를 포함하여 SearchStore 페이지로 이동
+          navigate(`/search/store?keyword=${encodeURIComponent(searchTerm)}`);
+          setSearchTerm(""); // 입력창 초기화
+      }
+  };
+
   return (
     <div className='contentTopPosition'>
       <div className={styleMain.bigContainer}>
         <h1 className={`${styleMain.mainFont} heading`}>
           The Way You Taste
         </h1>
+
+        {/* 모바일 */}
+        <div className={`${styleHeader.searchContainer} ${styleMain.mobSearch}`}>
+            <input type="text" placeholder="지역, 음식 또는 식당명을 검색하세요" className={styleHeader.searchInput} 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)} // 값 변경 감지
+                onKeyDown={handleSearch} // 엔터키 
+            /> 
+            <img src={searchIcon} 
+            alt="search" 
+            onClick={handleSearch} // 돋보기 클릭 감지
+            style={{ cursor: "pointer" }}/>
+        </div>
 
         <div className={styleMain.mainContainer}>
           <h3 style={{fontSize : "2.4rem"}}>원하시는 식당 유형을 선택해 주세요</h3>
@@ -78,9 +100,6 @@ function MainPage({storeCategories, sidoList}) {
             )}
 
           {/* 업종 */}
-          {/* <div className={styleMain.titleBox}>
-            <h4 className={styleMain.sectionTitle}>업종</h4>
-          </div> */}
           <CategoryFilter 
               mode="main"
               storeCategories={storeCategories}
@@ -88,31 +107,6 @@ function MainPage({storeCategories, sidoList}) {
               setSelectedCategories={setSelectedCategories}
               setIsResetFilter={setIsResetFilter}
           />
-
-          {/* <ul className={styleMain.iconGrid}>
-             {storeCategories.map(record => (
-                <li key={record.StoreCatNo}>
-                  <div className={styleMain.iconBtn}>
-                    {foodIcons[record.storeCatName]}
-                    <div className={styleMain.tooltip}>{record.storeCatName}</div>
-                  </div>
-                </li>
-            ))}
-          </ul> */}
-
-          {/* 편의
-          <br></br><br></br><br></br>
-          <div className={styleMain.titleBox}>
-            <h4 className={styleMain.sectionTitle}>편의</h4>
-          </div>
-          <div className={styleMain.iconGrid}>
-            {icons.map((item, index) => (
-              <div key={index} className={styleMain.iconBtn}>
-                {item.emoji}
-                <div className={styleMain.tooltip}>{item.label}</div>
-              </div>
-            ))}
-          </div> */}
 
           {/* 검색 버튼 */}
           <div className={styleMain.iconRight}>

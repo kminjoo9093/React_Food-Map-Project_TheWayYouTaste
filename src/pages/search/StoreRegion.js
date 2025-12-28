@@ -152,7 +152,7 @@ function StoreRegion({ storeCategories, sidoList }) {
                     setDoName={setDoName} 
                     setSiName={setSiName} 
                     setDongName={setDongName}
-                    onConfirm={handleRegionConfirm} // 수정된 핸들러 연결
+                    onConfirm={handleRegionConfirm}
                     sidoList={sidoList}
                 />
             )}

@@ -2,16 +2,16 @@
 import styleHeader from "../css/Header.module.css";
 import styleSidebar from "../css/sidebar.module.css"
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 import searchIcon from "../resources/img/system/search.png";
 
 function Header(){
 
     const [open, setOpen] = useState(false);
     const [openMyMenu, setOpenMyMenu] = useState(false);
-    const [isLogin, setIsLogin] = useState(false); // 로그인 여부
-    const [user, setUser] = useState(null); // 로그인된 사용자 정보
-    const [searchTerm, setSearchTerm] = useState(""); // 검색어
+    const [isLogin, setIsLogin] = useState(false); 
+    const [user, setUser] = useState(null); 
+    const [searchTerm, setSearchTerm] = useState(""); 
     const navigate = useNavigate();
 
     //모바일 메뉴 버튼 state
@@ -29,9 +29,8 @@ function Header(){
     const handleSearch = (e) => {
         if (e.key === "Enter" || e.type === "click") {
             if (!searchTerm.trim()) return;
-            // 검색어를 포함하여 SearchStore 페이지로 이동
             navigate(`/search/store?keyword=${encodeURIComponent(searchTerm)}`);
-            setSearchTerm(""); // 입력창 초기화
+            setSearchTerm("");
         }
     };
 
@@ -55,14 +54,14 @@ function Header(){
             <header>
                 <div className={styleHeader.headerTop}>
                     <h1 className={styleHeader.logo}>
-                        <Link to = "/main"> 니맛대로 </Link>    {/* <p style={{fontSize: 12}}>TheWayYouTaste</p> */}
+                        <Link to = "/main"> 니맛대로 </Link>    
                     </h1>
                     {/* PC */}
                     <div className={styleHeader.searchContainer}>
-                        <input type="text" placeholder="지역, 음식 또는 식당명을 검색하세요" style={{ border : "none"}} 
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)} // 값 변경 감지
-                        onKeyDown={handleSearch} // 엔터키 
+                        <input type="text" placeholder="지역, 음식 또는 식당명을 검색하세요" className={styleHeader.searchInput} 
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)} 
+                            onKeyDown={handleSearch} 
                         /> 
                         <img src={searchIcon} 
                         alt="search" 
@@ -83,23 +82,23 @@ function Header(){
                             <span className={styleSidebar.menuLine}></span>
                         </button>
                     )}
-                    
                 </div>
-                
-                <ul className={styleHeader.menubarPC}>
-                    <li>
-                        <Link to = "/store/region" >지역 맛집</Link>
-                    </li>
-                    <li>
-                        <Link to = "/search/store" >지도 찾기</Link>
-                    </li>
-                    <li>
-                        <Link to = "/store/register" >가게 등록</Link>
-                    </li>
-                    <li>
-                        <Link to = "/notice/list"> 공지사항 </Link> 
-                    </li>
-                </ul>
+                <div className={styleHeader.menubarPC}>
+                    <ul className={styleHeader.menuListPC}>
+                        <li>
+                            <NavLink to = "/store/region" className={({ isActive }) => isActive ? styleHeader.active : ""}>지역 맛집</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to = "/search/store" className={({ isActive }) => isActive ? styleHeader.active : ""}>지도 찾기</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to = "/store/register" className={({ isActive }) => isActive ? styleHeader.active : ""}>가게 등록</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to = "/notice/list" className={({ isActive }) => isActive ? styleHeader.active : ""}> 공지사항 </NavLink> 
+                        </li>
+                    </ul>
+                </div>
 
                 {/* mobile menu sidebar */}
                 {/* dimmed */}
@@ -134,8 +133,8 @@ function Header(){
                         <h3 className={styleSidebar.greeting}>
                             {isLogin ? (
                                 user?.authrtYn === 'Y' 
-                                    ? `${user.nickname} 관리자님 안녕하세요!`  // 관리자일 때
-                                    : `${user.nickname}님 안녕하세요!`      // 일반 사용자일 때
+                                    ? `${user.nickname} 관리자님 안녕하세요!`  
+                                    : `${user.nickname}님 안녕하세요!`      
                             ) : (
                                 "로그인해주세요"
                             )}
@@ -155,9 +154,9 @@ function Header(){
                             <button
                                 className={styleSidebar.logoutBtn}
                                 onClick={() => {
-                                    localStorage.removeItem("user"); // 로컬 스토리지에서 사용자 정보 삭제
-                                    setIsLogin(false); // 로그인 상태 false로 변경
-                                    setUser(null); // 사용자 정보 초기화
+                                    localStorage.removeItem("user"); 
+                                    setIsLogin(false); 
+                                    setUser(null); 
                                     window.location.href = "/main";
                                 }}
                             >로그아웃</button>

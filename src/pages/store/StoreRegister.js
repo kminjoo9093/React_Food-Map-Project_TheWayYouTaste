@@ -258,7 +258,7 @@ function StoreRegister({ userSn }) {
     if (storeImage) formData.append("storeImage", storeImage);
     if (verifyImage) formData.append("verifyImage", verifyImage);
 
-    //전송 데이터 확인
+    //전송 데이터 확인 지우기
     console.log("--- 서버 전송 데이터 목록 ---");
     for (let [key, value] of formData.entries()) {
         if (value instanceof File) {
@@ -300,7 +300,7 @@ function StoreRegister({ userSn }) {
       <div className="container">
         <div className={styleStore.storeContainer}>
           <form onSubmit={handleSubmit}>
-            <div>
+            <div className={styleStore.registerBtnWrap}>
               <button className={`${styleStore.selectBtnL} ${styleStore.button} ${registerType === "USER" ? styleStore.completed : ""}`} type="button" onClick={user}>
                 내 맛집 등록 <br /> (손님 등록)
               </button>
@@ -329,7 +329,7 @@ function StoreRegister({ userSn }) {
                   <input className={styleStore.inputBox} type="date" value={openDate} onChange={(e) => setOpenDate(e.target.value)} id="openDate" />
                 </>
               )}
-              <br></br>
+              <br/>
               <div className={styleStore.imgBox}>
                 <label>{registerType === "BUSINESS" ? "사업자 등록증" : "영수증"}</label>
                 <label htmlFor="verifyImage" className={`${styleStore.customFileLabel} ${verifyImage ? styleStore.completed : ""}`}>
@@ -356,7 +356,8 @@ function StoreRegister({ userSn }) {
               <label>주소</label>
               <div>
                 <div ref={wrapRef} style={{ display: "none", zIndex: 10000 }}>
-                  <img src="//t1.daumcdn.net/postcode/resource/images/close.png" alt="닫기" style={{ cursor: "pointer", position: "absolute", right: 0, top: -1, zIndex: 1 }} onClick={foldAddress} />
+                  <img src="//t1.daumcdn.net/postcode/resource/images/close.png" alt="닫기"
+                    style={{ cursor: "pointer", position: "absolute", right: 0, top: -1, zIndex: 1 }} onClick={foldAddress} />
                 </div>
                 <div className={styleStore.addBox}>
                   <input type="text" placeholder="도로명 주소" value={roadAddress} readOnly />
@@ -392,11 +393,15 @@ function StoreRegister({ userSn }) {
 
               <label>메뉴</label>
               {items.map((item, index) => (
-                <div key={index}>
-                  <input className={styleStore.menu} type="text" placeholder={"메뉴" + (index + 1)} value={item.menu} onChange={(e) => handleChange(index, "menu", e.target.value)} />
-                  <input className={styleStore.price} type="number" placeholder="가격" value={item.price} onChange={(e) => handleChange(index, "price", e.target.value)} />
-                  <button className={`${styleStore.menuBtnL} ${styleStore.button}`} type="button" onClick={addItem}>+</button>
-                  <button className={`${styleStore.menuBtnR} ${styleStore.button}`} type="button" onClick={() => removeItem(index)}>-</button>
+                <div key={index} className={styleStore.menuArea}>
+                  <div className={styleStore.menuInputWrap}>
+                    <input className={styleStore.menu} type="text" placeholder={"메뉴" + (index + 1)} value={item.menu} onChange={(e) => handleChange(index, "menu", e.target.value)} />
+                    <input className={styleStore.price} type="number" placeholder="가격" value={item.price} onChange={(e) => handleChange(index, "price", e.target.value)} />
+                  </div>
+                  <div className={styleStore.menuBtnWrap}>
+                    <button className={`${styleStore.menuBtnL} ${styleStore.button}`} type="button" onClick={addItem}>+</button>
+                    <button className={`${styleStore.menuBtnR} ${styleStore.button}`} type="button" onClick={() => removeItem(index)}>-</button>
+                  </div>
                 </div>
               ))}
 
@@ -430,7 +435,7 @@ function StoreRegister({ userSn }) {
             </div>
               {selectedImg && (
                 <div 
-                  onClick={closeModal} // 배경 클릭 시 닫기
+                  onClick={closeModal}
                   style={{
                     position: "fixed",
                     top: 0,
@@ -441,7 +446,7 @@ function StoreRegister({ userSn }) {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    zIndex: 11000, // Daum 주소 API보다 높게 설정
+                    zIndex: 11000, 
                     cursor: "zoom-out"
                   }}
                 >

@@ -35,7 +35,7 @@ function MembershipModify() {
 
             window.scrollTo({
                 top: offsetPosition,
-                behavior: "smooth" // 부드러운 이동
+                behavior: "smooth" 
             });
         }
     };
@@ -132,7 +132,7 @@ function MembershipModify() {
                                     {editingField === 'userEmlAddr' ? (
                                         <input className={style.editInput} type="text" name="userEmlAddr" value={modifyData.userEmlAddr} onChange={handleInputChange} />
                                     ) : (
-                                        <span>{user?.userEmlAddr}</span>
+                                        <span className={style.email}>{user?.userEmlAddr}</span>
                                     )}
                                 </div>
                                 <button className={style.btn} onClick={() => handleModify('userEmlAddr')}>

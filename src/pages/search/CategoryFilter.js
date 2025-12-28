@@ -1,4 +1,4 @@
-import styleSearchStore from "../../css/SearchStore.module.css";
+import styleCategory from "../../css/CategoryFilter.module.css";
 
 export default function CategoryFilter({storeCategories, selectedCategories, setSelectedCategories, setIsResetFilter, mode}){
     const foodIcons = {
@@ -6,7 +6,7 @@ export default function CategoryFilter({storeCategories, selectedCategories, set
         "아시안": "🍜", "햄버거": "🍔", "치킨": "🍗", "디저트": "🍩"
     };
 
-    const filterClass = mode === 'main' ? styleSearchStore.mainMode : styleSearchStore.searchMode;
+    const filterClass = mode === 'main' ? styleCategory.mainMode : styleCategory.searchMode;
 
     const onSelectCategory = (categoryName) => {
         setIsResetFilter(false);
@@ -16,18 +16,18 @@ export default function CategoryFilter({storeCategories, selectedCategories, set
     };
 
     return (
-       <ul className={`${styleSearchStore.categoryList} ${filterClass}`}>
+       <ul className={`${styleCategory.categoryList} ${filterClass}`}>
             {storeCategories.map(record => (
                 <li key={record.storeCatNo}>
                     <button 
                         type="button" /* 타입 명시 */
-                        className={selectedCategories.includes(record.storeCatName) ? styleSearchStore.active : ""} 
+                        className={selectedCategories.includes(record.storeCatName) ? styleCategory.active : ""} 
                         onClick={() => onSelectCategory(record.storeCatName)}
                     >
-                        <span className={styleSearchStore.categoryEmoji}>
+                        <span className={styleCategory.categoryEmoji}>
                             {foodIcons[record.storeCatName] || "🍴"}
                         </span>
-                        <span className={styleSearchStore.categoryText}>
+                        <span className={styleCategory.categoryText}>
                             {record.storeCatName}
                         </span>
                     </button>

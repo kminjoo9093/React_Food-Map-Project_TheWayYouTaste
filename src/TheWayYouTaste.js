@@ -25,6 +25,7 @@
   import serverUrl from "./db/server.json";
 
   function TheWayYouTaste() {
+
     const location = useLocation();
     const hideHeaderRoutes = ["/login"];
     const hideFooterRoutes = ["/search/store","/login"];
@@ -32,9 +33,9 @@
     const hideHeader = hideHeaderRoutes.includes(location.pathname);
     const SERVER_URL = serverUrl.SERVER_URL;
 
-    const [user, setUser] = useState(null); // 로그인 사용자 정보
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
-    const [isInitialized, setIsInitialized] = useState(false); // 초기화
+    const [user, setUser] = useState(null); 
+    const [isLoggedIn, setIsLoggedIn] = useState(false); 
+    const [isInitialized, setIsInitialized] = useState(false); 
 
     const [members, setMembers] = useState([]);
     const [reports, setReports] = useState([]);
@@ -46,11 +47,10 @@
     const [sidoList, setSidoList] = useState([]);
 
     useEffect(() => {
-      // 로컬 스토리지에서 사용자 정보 가져오기
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
-          setUser(JSON.parse(storedUser)); // 사용자 정보가 있다면 상태에 저장
-          setIsLoggedIn(true); // 로그인 상태로 설정
+          setUser(JSON.parse(storedUser)); 
+          setIsLoggedIn(true); 
         }
 
         setIsInitialized(true);
@@ -59,7 +59,6 @@
 
     useEffect(() => {
       if (!isInitialized) return;
-      // 사용자 정보가 있을 때만 fetchData 실행
           const fetchData = async () => {
               try {
                 /* 공통 정보 */
@@ -96,7 +95,7 @@
               }
           };
           fetchData();
-    }, [isInitialized, user]); // user가 있을 때만 fetchData 실행
+    }, [isInitialized, user]); 
   
     //f5하였을때 로그인페이지로 넘어가는 상황 방지 
     if (!isInitialized) {

@@ -9,7 +9,6 @@ export default function UseSearchStoreFetch(url){
             if(!url) return;
             const fetchData = async() => {
                 try{
-                    // const url = "http://localhost:3001/store";
                     const result = await GetStoreList(url);
 
                     setData(result);

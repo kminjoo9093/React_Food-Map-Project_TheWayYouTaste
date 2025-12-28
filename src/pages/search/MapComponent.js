@@ -8,8 +8,9 @@ import iconCategory from "../../resources/img/search/iconTag.svg";
 import styleMap from "../../css/Map.module.css";
 import serverUrl from "../../db/server.json"; 
 
-export default function MapComponent({ storeList, lat, lng, setIsMoved, isChangedRegion, setPositionArea, positionAreaRef, isSelectedAll }) {
+export default function MapComponent({ storeList, lat, lng, setIsMoved, isChangedRegion, positionAreaRef, isSelectedAll }) {
     
+    const mapRef = useRef(); // Map 객체에 접근하기 위한 ref 추가
     const isInitialCenterSetRef = useRef(false);
 
     // 카카오 로더 설정
@@ -22,11 +23,13 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
         lat: lat || 37.5665, 
         lng: lng || 126.9780
     });
+
     const SERVER_URL = serverUrl.SERVER_URL;
+
     //지도 레벨
     const [level, setLevel] = useState(7);
 
-	// 인포윈도우 Open 여부를 저장하는 state
+	// 인포윈도우 Open 여부
     const [openMarkerId, setOpenMarkerId] = useState("");
 
     // 현재 위치 기반으로 중심점 설정
@@ -45,33 +48,65 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
         }
     }, [isSelectedAll])    
 
-    // 지역 변경 시 마커들의 평균 위치로 중심 이동
+
+
+    //  setBounds (지역 변경 or 스토어 리스트 변경)
     useEffect(() => {
-        if (!storeList || storeList.length === 0) return;
-        if (!isChangedRegion) return;
+        const map = mapRef.current;
+        if (!map) return;
 
-        if (!isInitialCenterSetRef.current) return; //초기 위치 세팅 전이면 평균 이동 금지
+        // 전국 검색 모드 -> 고정 level(12)
+        if (isSelectedAll) return;
 
-		// 유효한 좌표를 가진 데이터만 필터링
-		const validStores = storeList.filter(
-			s => !isNaN(parseFloat(s.lat)) && !isNaN(parseFloat(s.lot))
-		);
+        // 범위 내 재검색 -> 지도를 자동으로 움직이지(setBounds) 않음
+    if (!isChangedRegion && isInitialCenterSetRef.current) return;
 
-		if (validStores.length === 0) return;
+        // 실행 타이밍 조절 (지연 시간을 주어 맵 인스턴스 안정화)
+        const timer = setTimeout(() => {
+            
+            if(isSelectedAll) return;
 
-        // API 데이터의 키값 확인: lat, lot (로그 기준)
-        const avgLat = storeList.reduce((sum, s) => sum + (parseFloat(s.lat) || 0), 0) / storeList.length;
-        const avgLng = storeList.reduce((sum, s) => sum + (parseFloat(s.lot) || 0), 0) / storeList.length;
+            // isChangedRegion이 true일 때만 지도를 강제로 움직임
+             if (!isChangedRegion && isInitialCenterSetRef.current) return;
+            
+            const bounds = new window.kakao.maps.LatLngBounds();
+            let hasValidPoint = false;
 
-        setCenter({ lat: avgLat, lng: avgLng });
+            // 스토어 마커들을 범위에 포함
+            if (storeList && storeList.length > 0) {
+                storeList.forEach((store) => {
+                    const sLat = parseFloat(store.lat);
+                    const sLng = parseFloat(store.lot);
+                    if (!isNaN(sLat) && !isNaN(sLng)) {
+                        bounds.extend(new window.kakao.maps.LatLng(sLat, sLng));
+                        hasValidPoint = true;
+                    }
+                });
+            }
 
-    }, [storeList, isChangedRegion]);
+            if (hasValidPoint) {
+                // 맛집들이 있다면 그 맛집들을 다 보여주는 최적의 범위로 이동
+                const padding = window.innerWidth < 768 ? 80 : 50; 
+                map.setBounds(bounds, padding, padding, padding, padding);
+            } 
+            // 맛집이 없거나 초기화된 경우 -> 내 위치(lat, lng)로 이동
+            else if (lat && lng) {
+                const moveLatLng = new window.kakao.maps.LatLng(lat, lng);
+                map.setCenter(moveLatLng);
+                map.setLevel(7);
+            }
+        }, 100);
+
+        return () => clearTimeout(timer);
+        
+    }, [storeList, isSelectedAll, lat, lng, isChangedRegion]);
 
     return (
         <Map
             center={center}
             style={{ width: "100%", height: "100%" }}
             level={level}
+            ref={mapRef} // ref 연결
             onIdle={(map) => {
                 const bounds = map.getBounds();
                 const sw = bounds.getSouthWest();
@@ -147,7 +182,6 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                                     </p>
                                 </div>
                                 <img src={`${SERVER_URL}${store.bplcPhoto}`}
-                                // <img src={`${SERVER_URL}/uploads/store/${store.bplcPhoto}`}
                                     className={styleMap.infoImg} 
                                 />
                             </Link>

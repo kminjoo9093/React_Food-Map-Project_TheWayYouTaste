@@ -10,8 +10,6 @@ export default function useRegionSetting() {
     const [siName, setSiName] = useState("");
     const [selectedDong, setSelectedDong] = useState(null); //code
     const [dongName, setDongName] = useState("");
-    const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
-    const [isSelectedAll, setIsSelectedAll] = useState(false);
 
 
     const [lat, setLat] = useState(null); //37.5665
@@ -33,19 +31,18 @@ export default function useRegionSetting() {
             return;
         }
 
-        // 옵션 추가: 정확도 높이고, 캐시된 위치 정보 사용 안함
         const geoOptions = {
             enableHighAccuracy: true,
-            timeout: 15000,
+            timeout: 10000,
             maximumAge: 0
         };
 
         navigator.geolocation.getCurrentPosition(async (position) => {
-            // console.log("3. 위치 정보를 받아옴", position.coords);
+            console.log("3. 위치 정보를 받아옴", position.coords);
             setIsLoading(false);
             
             const { latitude, longitude } = position.coords;
-            // console.log("위도:", latitude, "경도:", longitude);
+            console.log("위도:", latitude, "경도:", longitude);
             setLat(latitude);
             setLng(longitude);
 
@@ -55,10 +52,9 @@ export default function useRegionSetting() {
             try {
                 const response = await fetch(localUrl, { headers });
                 const data = await response.json();
-                // console.log("4. 카카오 API 응답 성공", data);
+                console.log("4. 카카오 API 응답 성공", data);
                 
                 if (data.documents && data.documents.length > 0) {
-                    //console.log("여기야", data.documents[0]);
                     const currentSggCode = data.documents[0].code.slice(0, 5);
                     const currentSidoCode = currentSggCode.slice(0, 2);
                     const listBySgg = await GetStoreList(`${SERVER_URL}/youtaste/search/store/sgg?sggCd=${currentSggCode}`);
@@ -66,8 +62,8 @@ export default function useRegionSetting() {
                     setSelectedDo(currentSidoCode);
                     setSelectedSi(currentSggCode);
 
-                    setDoName(data.documents[0].region_1depth_name); // 시도명
-                    setSiName(data.documents[0].region_2depth_name);  // 시군구명
+                    setDoName(data.documents[0].region_1depth_name); 
+                    setSiName(data.documents[0].region_2depth_name);  
                     
                     setStoreList(listBySgg);
                 }
@@ -78,16 +74,6 @@ export default function useRegionSetting() {
                 console.error("6. 위치 권한/획득 에러", err);
             }, geoOptions);
     }, []);
-
-    // 필터 초기화 함수 추가 
-    // const resetRegion = useCallback(() => {
-    //     setSelectedDo(null); 
-    //     setDoName("");
-    //     setSelectedSi(null); 
-    //     setSiName("");
-    //     setSelectedDong(null); 
-    //     setDongName("");
-    // }, []);
 
     return {
         regionState: { selectedDo, doName, selectedSi, siName, selectedDong, dongName, lat, lng, storeList, isLoading },

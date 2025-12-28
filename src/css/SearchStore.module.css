@@ -11,7 +11,7 @@
 .gridMap {
     display: grid;
     grid-template-columns: 45rem 1fr;
-    height: calc(100vh - 14.6rem); /* 14.6rem = 헤더(10rem) + 메뉴바(4.6rem) */
+    height: calc(100vh - 15rem); /* 14.6rem = 헤더(10rem) + 메뉴바(4.6rem) */
 }
 
 .leftArea {
@@ -25,7 +25,7 @@
 }
 
 .mapArea {
-    height: calc(100vh - 14.6rem);
+    height: calc(100vh - 15rem);
     position: relative;
     background-color: #e5e3df; /* 지도 로딩 전 배경색 */
 }
@@ -34,16 +34,18 @@
     display: none;
 }
 
+.btnViewList:hover{
+    background-color: var(--secondary-color);
+}
+
 /* 필터 검색 영역 */
 .filterArea {
     width: 100%;
     padding: 2.5rem 2rem;
-    background: linear-gradient(180deg, #ffffff 0%, var(--soft-beige) 100%);
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 2rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
     border-bottom: 1px solid var(--border-light);
 }
 
@@ -68,127 +70,6 @@
 .btnRegion:hover {
     filter: brightness(1.1);
     transform: translateY(-1px);
-}
-
-/* 검색 페이지 사이드바 전용 (SearchStore.js에서 사용) */
-.searchMode {
-    display: grid !important;
-    /* 4열로 유지하되 버튼 사이의 간격을 살짝 넓힘 */
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 1rem !important;
-    padding: 1.5rem 0.5rem !important;
-    width: 100% !important;
-}
-
-.searchMode li {
-    list-style: none;
-    width: 100%;
-}
-
-.searchMode button {
-    width: 100% !important;
-    /* 높이를 7rem -> 8.5rem으로 키워 정사각형에 가깝게 만듦 */
-    height: 8.5rem !important; 
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important;
-    gap: 0.6rem !important;
-    
-    background-color: #ffffff;
-    border: 1px solid rgba(0,0,0,0.1) !important;
-    border-radius: 1.2rem !important;
-    transition: all 0.2s ease;
-}
-
-/* 사이드바 내 이모지 크기 보정 */
-.searchMode .categoryEmoji {
-    font-size: 2.4rem !important; /* 2rem에서 2.4rem으로 확대 */
-    line-height: 1;
-}
-
-/* 사이드바 내 텍스트 크기 보정 */
-.searchMode button span:last-child {
-    font-size: 1.5rem !important; /* 1.1rem에서 1.25rem으로 확대 */
-    font-weight: 600;
-    color: #444;
-}
-
-/* 선택되었을 때 효과 강조 */
-.searchMode button.active {
-    background-color: #fff9e6 !important;
-    border: 2px solid #ffab15 !important;
-    box-shadow: 0 4px 8px rgba(255, 171, 21, 0.15);
-}
-/* 메인페이지 전용 */
-/* 음식 카테고리 그리드 */
-.categoryList {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4열 유지 */
-    gap: 1.5rem; /* 간격을 더 넓혀서 박스를 채움 */
-    padding: 2rem 0;
-    width: 85%;
-}
-
-.categoryList button {
-    width: 90%;
-    aspect-ratio: 1 / 1.1; 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1.2rem; /* 이모지와 글자 사이 간격 */
-    
-    background-color: #fff;
-    border: 1px solid rgba(0,0,0,0.05);
-    border-radius: 2rem; /* 더 둥글게 */
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.categoryList li {
-    list-style: none;
-}
-
-.categoryList button:hover {
-    border-color: var(--yellow-accent);
-    background-color: #fffdf7;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.05);
-}
-
-/* 호버 효과 */
-.categoryList button:hover:not(.active) {
-    background-color: #fafafa;
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.08);
-}
-
-/* 카테고리 활성화 상태 */
-.categoryList button.active {
-    background-color: #fff9e6;
-    border: 2.5px solid #ffab15;
-    transform: scale(1.08); /* 선택 시 더 크게 강조 */
-    box-shadow: 0 10px 20px rgba(255, 171, 21, 0.2);
-}
-
-.categoryEmoji {
-    font-style: normal;
-    font-size: 4.2rem; /* 기존보다 훨씬 크게 (약 2배) */
-    line-height: 1;
-    display: block;
-    transition: transform 0.3s ease;
-}
-
-/* 카테고리 글자 크기 조정 */
-.categoryList button span:last-child {
-    font-size: 2rem;
-    font-weight: 600;
-    color: #444;
-}
-
-.categoryList button.active .categoryEmoji {
-    transform: scale(1.15) rotate(-5deg); /* 이모지만 더 튀어나오게 */
 }
 
 /* 적용된 필터, 검색, 초기화 버튼 */
@@ -302,8 +183,14 @@
 .storeName {
     font-size: 1.8rem;
     font-weight: 700;
-    color: #222;
-    margin-bottom: 0.2rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.avgNCat{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .storeInfo span {
@@ -311,10 +198,25 @@
     align-items: center;
     color: #666;
     font-size: 1.35rem;
+    line-height: 1.5em;
     padding-left: 2.2rem;
     background-repeat: no-repeat;
     background-position: left center;
     background-size: 1.5rem auto;
+}
+
+.storeCategory { 
+    background-image: url(/src/resources/img/search/iconTag.svg); 
+}
+.storeRating { 
+    background-image: url(/src/resources/img/search/iconStar.svg); 
+    color: #ff9500 !important; }
+.storeTime { 
+    background-image: url(/src/resources/img/search/iconClock.svg); 
+}
+.storeInfo .storeAddress { 
+    background-image: url(/src/resources/img/search/iconLocation.svg); 
+    background-position: top left;
 }
 
 /* 재검색버튼 */
@@ -333,40 +235,52 @@
     transform: translateX(-50%);
 }
 
-.storeCategory { background-image: url(/src/resources/img/search/iconTag.svg); }
-.storeRating { background-image: url(/src/resources/img/search/iconStar.svg); color: #ff9500 !important; }
-.storeTime { background-image: url(/src/resources/img/search/iconClock.svg); }
-.storeAddress { background-image: url(/src/resources/img/search/iconLocation.svg); }
+.noData{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-/* 반응형 모바일 (480px 이하) */
-@media (max-width: 480px) {
+
+
+/* 반응형 태블릿(portrait) */
+@media (max-width: 1023px) {
     .gridMap {
         display: block;
         height: calc(100vh - 7rem);
         position: relative;
         overflow: hidden;
     }
-
     .leftArea {
         height: 45vh;
         width: 100%;
+        /* padding-inline: 4rem; */
         position: absolute;
         bottom: 0;
         left: 0;
         transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         border-radius: 2.4rem 2.4rem 0 0;
         box-shadow: 0 -1rem 3rem rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        z-index: 200;
     }
-
     .leftArea.open {
         height: calc(100% - 2rem);
     }
-
+    .filterArea{
+        gap: 1.5rem;
+        padding-block: 1rem;
+    }
     .btnViewList {
+        border: 1px solid red;
+        flex-shrink: 0;
+        padding: 0;
         display: block;
         width: 100%;
-        height: 3rem;
+        height: 2rem;
         border: none;
+        border-radius: 0;
         background: url(/src/resources/img/search/iconArrowUp.svg) no-repeat center;
         background-size: 2rem;
         cursor: pointer;
@@ -398,5 +312,18 @@
 
     .btnWrap {
         flex-direction: row;
+    }
+    .mapArea {
+        height: calc(100vh - 45vh - 7rem + 2rem);
+        position: relative;
+        background-color: #e5e3df; /* 지도 로딩 전 배경색 */
+    }
+}
+
+
+/* 반응형 모바일 (가로, 세로) */
+@media (max-width: 767px) {
+    .filterArea{
+        padding: 1.5rem 2rem;
     }
 }

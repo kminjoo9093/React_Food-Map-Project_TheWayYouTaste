@@ -61,9 +61,9 @@
 .regionItem{
     line-height: 2.4em;
     border-radius: 5px;
-    text-align: left;
     text-wrap: nowrap;
-    padding-left: 2em;
+    padding-left: 0;
+    text-align: center;
 }
 
 .regionItem:hover {
@@ -100,7 +100,7 @@
     right: 1.5rem;
 }
 
-@media (max-width: 480px){
+@media (max-width: 767px){
   .regionDimmedMiddle {
     max-width: auto;
     width: 100vw;
@@ -112,6 +112,9 @@
   }
   .regionContainer{
     margin: 0;
+  }
+  .regionColumn{
+    width: 33%;
   }
   .regionList{
     height: auto;
