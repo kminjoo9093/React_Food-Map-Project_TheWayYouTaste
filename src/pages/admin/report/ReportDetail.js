@@ -97,20 +97,20 @@ function ReportDetail({ setMemberNotices }) {
           prcsYn: "N"
         };
 
-        const noticeRes = await fetch(
-          `${SERVER_URL}/youtaste/member-notices`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(noticeData)
-          }
-        );
+        // const noticeRes = await fetch(
+        //   `${SERVER_URL}/youtaste/member-notices`,
+        //   {
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/json" },
+        //     body: JSON.stringify(noticeData)
+        //   }
+        // );
 
-        if (!noticeRes.ok) throw new Error("공지사항 등록 실패");
+        // if (!noticeRes.ok) throw new Error("공지사항 등록 실패");
 
-        const newNotice = await noticeRes.json();
-        // MemberNoticeList에 즉시 반영
-        setMemberNotices(prev => [newNotice, ...prev]);
+        // const newNotice = await noticeRes.json();
+        // // MemberNoticeList에 즉시 반영
+        // setMemberNotices(prev => [newNotice, ...prev]);
       }
 
       alert("처리 완료!");

@@ -258,18 +258,6 @@ function StoreRegister({ userSn }) {
     if (storeImage) formData.append("storeImage", storeImage);
     if (verifyImage) formData.append("verifyImage", verifyImage);
 
-    //전송 데이터 확인 지우기
-    console.log("--- 서버 전송 데이터 목록 ---");
-    for (let [key, value] of formData.entries()) {
-        if (value instanceof File) {
-            console.log(`${key}: [파일] ${value.name} (${(value.size / 1024).toFixed(1)} KB)`);
-        } else {
-            console.log(`${key}: ${value}`);
-        }
-    }
-    console.log("------------------------------");
-
-
     try {
       const response = await fetch(`${SERVER_URL}/youtaste/store/register`, {
         method: "POST",

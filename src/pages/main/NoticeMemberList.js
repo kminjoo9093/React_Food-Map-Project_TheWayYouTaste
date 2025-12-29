@@ -12,7 +12,6 @@ function NoticeMemberList({ notices }) {
 
   const lastMember = nowPage * viewPeople;
   const firstMember = lastMember - viewPeople;
-  const nowNotices = notices.slice(firstMember, lastMember);
  
   function getPrcsYn(YorN) {
     return YorN === "Y" ? "승인" : "반려";
@@ -22,6 +21,7 @@ function NoticeMemberList({ notices }) {
     navigate("/member/notice/noticeDetail", { state: notices });
   };
 
+  const nowNotices = notices.slice(firstMember, lastMember);
   return (
     <div className="contentTopPosition">
       <div className={styleMember.middleContainer}>
@@ -45,9 +45,9 @@ function NoticeMemberList({ notices }) {
 
         <Pagination
           nowPage={nowPage}
-          totalItems={nowNotices.length}
+          totalItems={notices.length}
           itemsPerPage={viewPeople}
-          limitBlock={limitBlock}
+          limitBlock={5}
           onPageChange={setNowPage}
         />
       </div>
