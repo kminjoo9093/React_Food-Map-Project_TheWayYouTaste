@@ -63,7 +63,7 @@ function ReportRequest() {
       if (!res.ok) throw new Error("신고 등록 실패");
 
       alert("신고가 등록되었습니다!");
-      navigate("/store/reportDetail", {
+      navigate(`/search/storeDetail?storeId=${incomingData.bplcSn}`, {
         state: { ...reportData, 
           storeName : storeName
           , address 

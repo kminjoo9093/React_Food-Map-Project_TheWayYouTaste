@@ -22,7 +22,14 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+<<<<<<< HEAD
+
 #2개추가
 yarn.lock
 
+=======
+#2개추가
+yarn.lock
+
+>>>>>>> 63e1a549e69787a6ceb8a7109e067e83f5b33a3f
 package-lock.json
