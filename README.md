@@ -3,7 +3,6 @@
 <br>
 시연 영상 : https://drive.google.com/file/d/1_KJ2dRvbtXWWgIKGapKBwEmorx42Ctz4/view?usp=sharing
 
----
 
 ## 기여한 부분
 
