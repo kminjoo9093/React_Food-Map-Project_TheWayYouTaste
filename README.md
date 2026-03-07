@@ -3,7 +3,13 @@
 <br>
 시연 영상 : https://drive.google.com/file/d/1_KJ2dRvbtXWWgIKGapKBwEmorx42Ctz4/view?usp=sharing
 
-<br>
+## **프로젝트 개요**
+- 사용자 참여(맛집 등록 요청, 리뷰, 신고) 기반 맛집 정보 공유 및 관리 웹 서비스
+- 팀원 | 4인 팀프로젝트
+- 반응형(PC, 태블릿, 모바일)
+- 사용 스킬 : HTML, CSS, JavaScript, React, Spring Boot, Java, JPA, Oracle, SQL
+
+<br><br>
 
 ## 기여한 부분
 
