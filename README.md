@@ -1,7 +1,8 @@
 # 맛집 찾기 프로젝트 니맛대로
 사용자 참여(맛집 등록 요청, 리뷰, 신고) 기반 맛집 정보 공유 및 관리 웹 서비스
 
-<br>
+<br><br>
+
 시연 영상 : https://drive.google.com/file/d/1_KJ2dRvbtXWWgIKGapKBwEmorx42Ctz4/view?usp=sharing
 
 <br><br>
