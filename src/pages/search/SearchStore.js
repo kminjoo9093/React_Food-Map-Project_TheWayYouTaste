@@ -163,7 +163,6 @@ function SearchStore({ storeCategories, sidoList }) {
             );
         }
 
-        // setIsChangedRegion(true);
         setNowPage(1);
     }, [storeListByRegion, appliedCategories]);
 

@@ -106,7 +106,7 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
             center={center}
             style={{ width: "100%", height: "100%" }}
             level={level}
-            ref={mapRef} // ref 연결
+            ref={mapRef} 
             onIdle={(map) => {
                 const bounds = map.getBounds();
                 const sw = bounds.getSouthWest();
@@ -136,7 +136,7 @@ export default function MapComponent({ storeList, lat, lng, setIsMoved, isChange
                         내 위치
                     </div>
                     
-                    {/* 위치를 나타내는 점 (애니메이션 포함 가능) */}
+                    {/* 위치를 나타내는 점 */}
                     <div className={styleMap.curPoint}></div>
                     </div>
                 </CustomOverlayMap>

@@ -1,6 +1,5 @@
 import styleRegionModal from "../../css/RegionModal.module.css";
 import { useEffect, useState } from "react";
-import UseSearchStoreFetch from "./hook/UseSearchStoreFetch";
 import serverUrl from "../../db/server.json";
 
 function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, setSelectedSi, selectedDong, setSelectedDong, onConfirm
