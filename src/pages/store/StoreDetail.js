@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useSearchParams, useNavigate } from "react-router-dom";
-import ReviewRegister from "../../pages/review/ReviewRegister";
+import ReviewRegister from "../review/ReviewRegister";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import styleStoreDetail from "../../css/StoreDetail.module.css";
-import { GetStoreList } from "./GetStoreList";
+import { GetStoreList } from "../search/GetStoreList";
 import serverUrl from "../../db/server.json";
 
 function StoreDetail({ storeList }) {
     const REVIEWS_PER_PAGE = 5;
     const navigate = useNavigate();
     
-    /* 리뷰작성시 로그인여부 확인 */
+    //리뷰작성시 로그인여부 확인
     const [user, setUser] = useState(null); // 로그인 사용자 정보
     const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
     const [isInitialized, setIsInitialized] = useState(false); // 초기화
@@ -38,7 +38,7 @@ function StoreDetail({ storeList }) {
 
     useEffect(() => {
         async function getStoreData() {
-            // 음식점 데이터 (3001 포트)
+            // 음식점 데이터
             let storeInfo = await GetStoreList(`${SERVER_URL}/youtaste/search/store/detail?storeId=${storeId}`);
             setStoreData(storeInfo);
         }
@@ -149,13 +149,13 @@ function StoreDetail({ storeList }) {
 
         // 추가된 부분: 페이지 로드 시 좋아요 상태 및 최신 개수 가져오기
         useEffect(() => {
-            // 1. 최신 좋아요 개수 가져오기
+            // 최신 좋아요 개수 가져오기
             fetch(`${SERVER_URL}/api/review/${evlSn}/likes/count`)
                 .then(res => res.json())
                 .then(data => setLikes(data))
                 .catch(err => console.error("좋아요 개수 조회 실패:", err));
 
-            // 2. 내가 좋아요를 눌렀는지 상태 확인 (로그인 시에만)
+            // 내가 좋아요를 눌렀는지 상태 확인 (로그인 시에만)
             if (user && user.userSn) {
                 fetch(`${SERVER_URL}/api/review/${evlSn}/likes/${user.userSn}/status`)
                     .then(res => res.json())

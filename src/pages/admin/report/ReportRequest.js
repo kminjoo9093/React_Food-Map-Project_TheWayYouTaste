@@ -9,17 +9,16 @@ function ReportRequest() {
   const { userSn } = useParams();
   const location = useLocation();
   const SERVER_URL = serverUrl.SERVER_URL;
-  
+
   const incomingData = location.state || {};
 
   // 초기값을 incomingData에서 가져옵니다.
-  const [writer, setWriter] = useState(incomingData.userName || ""); 
-  const [storeName, setStoreName] = useState(incomingData.storeName || ""); 
-  const [address, setAddress] = useState(incomingData.address || ""); 
-  const [title, setTitle] = useState(""); 
-  const [reason, setReason] = useState(""); 
+  const [writer, setWriter] = useState(incomingData.userName || "");
+  const [storeName, setStoreName] = useState(incomingData.storeName || "");
+  const [address, setAddress] = useState(incomingData.address || "");
+  const [title, setTitle] = useState("");
+  const [reason, setReason] = useState("");
   const [category, setCategory] = useState("");
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,39 +35,41 @@ function ReportRequest() {
 
     // 카테고리 문자열 → 숫자 매핑
     const categoryMap = {
-      "매장폐업": 1,
-      "허위사실": 2,
-      "리뷰신고": 3,
-      "기타": 4
+      매장폐업: 1,
+      허위사실: 2,
+      리뷰신고: 3,
+      기타: 4,
     };
 
     const reportData = {
-      userSn: userSn, 
-      bplcSn: incomingData.bplcSn, 
+      userSn: userSn,
+      bplcSn: incomingData.bplcSn,
       address: incomingData.address,
       dclrTtl: title,
       dclrCn: reason,
-      dclrCatNo: categoryMap[category]
+      dclrCatNo: categoryMap[category],
     };
 
     try {
       const res = await fetch(`${SERVER_URL}/youtaste/reports`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(reportData)
+        body: JSON.stringify(reportData),
       });
 
       if (!res.ok) throw new Error("신고 등록 실패");
 
       alert("신고가 등록되었습니다!");
-      navigate(`/search/storeDetail?storeId=${incomingData.bplcSn}`, {
-        state: { ...reportData, 
-          storeName : storeName
-          , address 
-          , userName : writer
-          , isAdmin: false }
+      navigate(`/store/storeDetail?storeId=${incomingData.bplcSn}`, {
+        state: {
+          ...reportData,
+          storeName: storeName,
+          address,
+          userName: writer,
+          isAdmin: false,
+        },
       });
     } catch (err) {
       console.error(err);
@@ -109,7 +110,10 @@ function ReportRequest() {
           </div>
 
           <p>카테고리</p>
-          <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
             <option value="">카테고리를 선택하세요</option>
             <option value="매장폐업">매장폐업</option>
             <option value="허위사실">허위사실</option>
