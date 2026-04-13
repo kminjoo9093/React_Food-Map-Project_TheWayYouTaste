@@ -10,7 +10,6 @@
 
 ### Tech Skills
 
-![JavaScript](https://img.shields.io/badge/JavaScript-000000?style=for-the-badge&logo=javascript)
 ![React](https://img.shields.io/badge/React-000000?style=for-the-badge&logo=react)
 ![Java](https://img.shields.io/badge/Java-000000?style=for-the-badge&logo=Java)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-000000?style=for-the-badge&logo=springboot)
@@ -30,19 +29,19 @@
 
 - 위치/지도 기반 맛집 검색 및 리스트 조회 기능
 - 지역/음식 카테고리 필터링 기반 맛집 검색 기능
-- **카카오 지도 API 연동 및 클러스터, 마커 활용** &emsp; [ 코드 보기 → ](./src/pages/search/MapComponent.js)
+- [카카오 지도 API 연동 및 클러스터, 마커 활용](./src/pages/search/MapComponent.js)
 - 지도 API의 idle 이벤트를 사용한 사용자 인터렉션 기반 **뷰포트 범위 내 데이터 재조회** 구현
-- 현재 위치 기반 지역 상태 관리 및 초기 데이터 로딩 로직을 **커스텀 훅(useRegionSetting)으로 캡슐화**하여 컴포넌트의 책임 분리 &emsp; [ 코드 보기 → ](./src/pages/search/hook/useRegionSetting.js)
+- 현재 위치 기반 지역 상태 관리 및 초기 데이터 로딩 로직을 [커스텀 훅(useRegionSetting)으로 캡슐화](./src/pages/search/hook/useRegionSetting.js)하여 컴포넌트의 책임 분리
 - 초기 로딩 시 사용자 위치 기반 **행정구역 자동 선택** 및 주변 맛집 리스트 즉시 노출로 **탐색 단계 최소화**
-- **계층형 지역 선택 구조**(시도 → 시군구 → 읍면동)로 **불필요한 API 호출을 방지 및 잘못된 하위 선택 차단** &emsp; [ 코드 보기 → ](./src/pages/search/RegionModal.js)
+- [계층형 지역 선택 구조(시도 → 시군구 → 읍면동)로 불필요한 API 호출을 방지 및 잘못된 하위 선택 차단](./src/pages/search/RegionModal.js)
 
 <br><br>
 
 #### **맛집 상세 페이지 개발** &emsp; [ 코드 보기 → ](./src/pages/store/storeDetail.js)
 
-- 지도 찾기 페이지의 마커 인포윈도우와 좌측 리스트 클릭 시 해당 맛집 상세페이지로 이동
-- 맛집 리스트 –> 상세 페이지 구조를 RESTful GET 방식으로 설계하고,
-  URL 파라미터 기반으로 상세 데이터를 조회하도록 구현
+- URL 파라미터 기반으로 데이터 조회
+- [매장 편의시설 데이터를 사용자 친화적인 텍스트로 변환 후 표시하고, <br/>
+  아이콘을 매핑은 CSS 클래스와 연결하여 UI 스타일을 동적으로 적용](./src/pages/store/StoreDetail.js#L63-L83)
 
 <br><br>
 
@@ -55,13 +54,13 @@
 
 ## 문제 해결 및 성과
 
-#### **1. 데이터 검색 범위가 제한되는 문제를 해결하기 위해 ‘범위 내 재검색’ 버튼 추가로 데이터 호출 메커니즘 전환** &emsp; [ 코드 보기 → ](./src/pages/search/SearchStore.js#L199-L230)
+#### **1. 데이터 검색 범위가 제한되는 문제를 해결하기 위해 ‘범위 내 재검색’ 버튼 추가로 데이터 호출 메커니즘 전환** &emsp; 
 
 - **문제**
   - 사용자의 지도 이동 및 확대/축소에 따른 지역 변화에 대응하기 위해 고정된 행정구역 경계를 벗어나
     **실시간으로 다중 지역 데이터를 통합 조회해야 할 필요성**을 인식
 - **해결**
-  - **‘범위 내 재검색' 버튼**을 데이터 호출 파라미터 전환 트리거로 활용하여  
+  - [**‘범위 내 재검색' 버튼**을 데이터 호출 파라미터 전환 트리거로 활용](./src/pages/search/SearchStore.js#L199-L230)하여  
      특정 행정 구역 중심에서 **뷰포트 좌표(positionAreaRef) 기반 호출로 검색 메커니즘 변경**
   - 지도 idle이벤트와 useRef(positionAreaRef)를 활용하여 지도 이동 시 최신 뷰포트 좌표만 저장하고,
     ‘범위 내 재검색' 버튼 클릭 시 해당 좌표로 API를 호출하도록하여 불필요한 리렌더링 최소화
