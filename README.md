@@ -38,7 +38,7 @@
 
 <br><br>
 
-#### **맛집 상세 페이지 개발** &emsp; [ 코드 보기 → ](./src/pages/store/storeDetail.js)
+#### **맛집 상세 페이지 개발** &emsp; [ 코드 보기 → ](./src/pages/store/StoreDetail.js)
 
 - 지도 찾기 페이지의 마커 인포윈도우와 좌측 리스트 클릭 시 해당 맛집 상세페이지로 이동
 - 맛집 리스트 –> 상세 페이지 구조를 RESTful GET 방식으로 설계하고,

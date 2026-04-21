@@ -19,7 +19,6 @@ function StoreRegion({ storeCategories, sidoList }) {
   const viewPeople = 10;
   const lastMember = nowPage * viewPeople;
   const firstMember = lastMember - viewPeople;
-  // const pendingMembers = members.filter(r => !r.prcsYn);
 
   const [storeList, setStoreList] = useState([]);
   const [sortType, setSortType] = useState("avg");
@@ -42,11 +41,14 @@ function StoreRegion({ storeCategories, sidoList }) {
     let url = `${SERVER_URL}/youtaste/search/store/all`;
 
     if (selectedDong)
-      url = `${SERVER_URL}/youtaste/search/store/dong?dongCd=${selectedDong}`;
+      // url = `${SERVER_URL}/youtaste/search/store/dong?dongCd=${selectedDong}`;
+      url = `${SERVER_URL}/dong?dongCd=${selectedDong}`;
     else if (selectedSi)
-      url = `${SERVER_URL}/youtaste/search/store/sgg?sggCd=${selectedSi}`;
+      // url = `${SERVER_URL}/youtaste/search/store/sgg?sggCd=${selectedSi}`;
+      url = `${SERVER_URL}/sgg?sggCd=${selectedSi}`;
     else if (selectedDo)
-      url = `${SERVER_URL}/youtaste/search/store/sido?sidoCd=${selectedDo}`;
+      // url = `${SERVER_URL}/youtaste/search/store/sido?sidoCd=${selectedDo}`;
+      url = `${SERVER_URL}/sido?sidoCd=${selectedDo}`;
 
     try {
       const list = await GetStoreList(url);

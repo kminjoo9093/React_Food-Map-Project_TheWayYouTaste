@@ -12,7 +12,7 @@ import ReportRequest from "./pages/admin/report/ReportRequest";
 import ReportDetail from "./pages/admin/report/ReportDetail";
 import { useEffect, useState } from "react";
 import NoticeDetail from "./pages/main/NoticeDetail";
-import StoreDetail from "./pages/store/storeDetail";
+import StoreDetail from "./pages/store/StoreDetail";
 import NoticeMemberList from "./pages/main/NoticeMemberList";
 import NoticeMemberDetail from "./pages/main/NoticeMemberDetail";
 import NoticeWrite from "./pages/main/NoticeWrite";
@@ -61,8 +61,10 @@ function TheWayYouTaste() {
       try {
         /* 공통 정보 */
         const noticesRes = await fetch(`${SERVER_URL}/youtaste/notice`);
-        const storeCategoriesRes = await fetch(`${SERVER_URL}/youtaste/search`);
-        const sidoListRes = await fetch(`${SERVER_URL}/youtaste/search/sido`);
+        // const storeCategoriesRes = await fetch(`${SERVER_URL}/youtaste/search`);
+        const storeCategoriesRes = await fetch(`${SERVER_URL}/category`);
+        // const sidoListRes = await fetch(`${SERVER_URL}/youtaste/search/sido`);
+        const sidoListRes = await fetch(`${SERVER_URL}/sido`);
         const noticesData = noticesRes.ok ? await noticesRes.json() : [];
         const storeCategoryData = storeCategoriesRes.ok
           ? await storeCategoriesRes.json()

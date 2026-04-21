@@ -127,20 +127,23 @@ function SearchStore({ storeCategories, sidoList }) {
       else if (dong || sgg || sido) {
         if (dong) {
           list = await GetStoreList(
-            `${SERVER_URL}/youtaste/search/store/dong?dongCd=${dong}`,
+            // `${SERVER_URL}/youtaste/search/store/dong?dongCd=${dong}`,
+            `${SERVER_URL}/store?dongCd=${dong}`,
           );
           setSelectedDong(dong);
           setSelectedSi(sgg);
           setSelectedDo(sido);
         } else if (sgg) {
           list = await GetStoreList(
-            `${SERVER_URL}/youtaste/search/store/sgg?sggCd=${sgg}`,
+            // `${SERVER_URL}/youtaste/search/store/sgg?sggCd=${sgg}`,
+            `${SERVER_URL}/store?sggCd=${sgg}`,
           );
           setSelectedSi(sgg);
           setSelectedDo(sido);
         } else if (sido) {
           list = await GetStoreList(
-            `${SERVER_URL}/youtaste/search/store/sido?sidoCd=${sido}`,
+            // `${SERVER_URL}/youtaste/search/store/sido?sidoCd=${sido}`,
+            `${SERVER_URL}/store?sidoCd=${sido}`,
           );
           setSelectedDo(sido);
         }
@@ -211,8 +214,20 @@ function SearchStore({ storeCategories, sidoList }) {
         // 지역변경x, 현재 화면에서 찾는 것임을 명시
         setIsChangedRegion(false);
 
-        const url = `${SERVER_URL}/youtaste/search/store/position?swMinLat=${swMinLat}&neMaxLat=${neMaxLat}&swMinLng=${swMinLng}&neMaxLng=${neMaxLng}`;
+        // const url = `${SERVER_URL}/youtaste/search/store/position?swMinLat=${swMinLat}&neMaxLat=${neMaxLat}&swMinLng=${swMinLng}&neMaxLng=${neMaxLng}`;
+        const url = `${SERVER_URL}/store`;
         let list = await GetStoreList(url);
+
+        //임시 위도 경도 범위 검증 - 추후 삭제 예정
+        list = list.filter((data) => {
+          return (
+            data.lat >= swMinLat &&
+            data.lat <= neMaxLat &&
+            data.lng >= swMinLng &&
+            data.lng <= neMaxLng
+          );
+        });
+        console.log("test store list : ", list);
 
         // 데이터가 없을 경우 처리
         if (!list) return;
@@ -234,17 +249,21 @@ function SearchStore({ storeCategories, sidoList }) {
     let list = [];
     if (selectedDong)
       list = await GetStoreList(
-        `${SERVER_URL}/youtaste/search/store/dong?dongCd=${selectedDong}`,
+        // `${SERVER_URL}/youtaste/search/store/dong?dongCd=${selectedDong}`,
+        `${SERVER_URL}/store?dongCd=${selectedDong}`,
       );
     else if (selectedSi)
       list = await GetStoreList(
-        `${SERVER_URL}/youtaste/search/store/sgg?sggCd=${selectedSi}`,
+        // `${SERVER_URL}/youtaste/search/store/sgg?sggCd=${selectedSi}`,
+        `${SERVER_URL}/store?sggCd=${selectedSi}`,
       );
     else if (selectedDo)
       list = await GetStoreList(
-        `${SERVER_URL}/youtaste/search/store/sido?sidoCd=${selectedDo}`,
+        // `${SERVER_URL}/youtaste/search/store/sido?sidoCd=${selectedDo}`,
+        `${SERVER_URL}/store?sidoCd=${selectedDo}`,
       );
-    else list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/all`);
+    // else list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/all`);
+    else list = await GetStoreList(`${SERVER_URL}/store`);
 
     setStoreListByRegion(list);
     setIsDimmedMiddleOpen(false);
@@ -369,7 +388,12 @@ function SearchStore({ storeCategories, sidoList }) {
                     >
                       <img
                         className={styleSearchStore.storeImg}
-                        src={`${SERVER_URL}${record.bplcPhoto}`}
+                        // src={`${SERVER_URL}${record.bplcPhoto}`}
+                        src={
+                          record.bplcPhoto
+                            ? `${SERVER_URL}${record.bplcPhoto}`
+                            : "/default.png"
+                        }
                         alt="store"
                       />
                       <div className={styleSearchStore.storeInfo}>

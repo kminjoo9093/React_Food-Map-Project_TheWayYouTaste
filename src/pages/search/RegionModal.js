@@ -23,7 +23,8 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
         }
         const fetchData = async () => {
             try{
-                    const sggListRes = await fetch(selectedDo ? `${SERVER_URL}/youtaste/search/sgg?sidoCd=${selectedDo}` : null);
+                    // const sggListRes = await fetch(selectedDo ? `${SERVER_URL}/youtaste/search/sgg?sidoCd=${selectedDo}` : null);
+                    const sggListRes = await fetch(selectedDo ? `${SERVER_URL}/sgg?sidoCd=${selectedDo}` : null);
                     const sggListData = sggListRes.ok ? await sggListRes.json() : [];
                     
                     let list = sggListData.map(record => {
@@ -46,7 +47,8 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
                 return;
             }
             try{
-                const dongListRes = await fetch(selectedSi ? `${SERVER_URL}/youtaste/search/dong?sggCd=${selectedSi}` : null);
+                // const dongListRes = await fetch(selectedSi ? `${SERVER_URL}/youtaste/search/dong?sggCd=${selectedSi}` : null);
+                const dongListRes = await fetch(selectedSi ? `${SERVER_URL}/dong?sggCd=${selectedSi}` : null);
                 const dongListData = dongListRes.ok ? await dongListRes.json() : [];
                 let list = dongListData.map(record => {
                     return {id : record.dgCd, ...record};
@@ -85,7 +87,6 @@ function RegionModal({setIsModalOpen, selectedDo, setSelectedDo, selectedSi, set
 
     return (
         <>
-        {/* 지역 선택 모달 */}
         {setIsModalOpen && (
             <div className={styleRegionModal.regionDimmed}>
               <div className={styleRegionModal.regionDimmedMiddle}>
