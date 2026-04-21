@@ -23,6 +23,7 @@ import MembershipResign from "./pages/member/MembershipResign";
 import RegisterDetail from "./pages/admin/RegisterDetail";
 import StoreRegion from "./pages/search/StoreRegion";
 import serverUrl from "./db/server.json";
+import { AppDataProvider } from "./context/AppDataProvider";
 
 function TheWayYouTaste() {
   const location = useLocation();
@@ -42,8 +43,8 @@ function TheWayYouTaste() {
   const [registerAdmin, setRegisterAdmin] = useState([]);
   const [memberNotices, setMemberNotices] = useState([]);
   const isAdmin = user?.authrtYn === "Y";
-  const [storeCategories, setStoreCategories] = useState([]);
-  const [sidoList, setSidoList] = useState([]);
+  // const [storeCategories, setStoreCategories] = useState([]);
+  // const [sidoList, setSidoList] = useState([]);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -62,17 +63,17 @@ function TheWayYouTaste() {
         /* 공통 정보 */
         const noticesRes = await fetch(`${SERVER_URL}/youtaste/notice`);
         // const storeCategoriesRes = await fetch(`${SERVER_URL}/youtaste/search`);
-        const storeCategoriesRes = await fetch(`${SERVER_URL}/category`);
+        // const storeCategoriesRes = await fetch(`${SERVER_URL}/category`);
         // const sidoListRes = await fetch(`${SERVER_URL}/youtaste/search/sido`);
-        const sidoListRes = await fetch(`${SERVER_URL}/sido`);
+        // const sidoListRes = await fetch(`${SERVER_URL}/sido`);
         const noticesData = noticesRes.ok ? await noticesRes.json() : [];
-        const storeCategoryData = storeCategoriesRes.ok
-          ? await storeCategoriesRes.json()
-          : [];
-        const sidoListData = sidoListRes.ok ? await sidoListRes.json() : [];
+        // const storeCategoryData = storeCategoriesRes.ok
+        //   ? await storeCategoriesRes.json()
+        //   : [];
+        // const sidoListData = sidoListRes.ok ? await sidoListRes.json() : [];
         setNotices(noticesData);
-        setStoreCategories(storeCategoryData);
-        setSidoList(sidoListData);
+        // setStoreCategories(storeCategoryData);
+        // setSidoList(sidoListData);
 
         /* 로그인했을때 불러올 정보 */
         if (user) {
@@ -113,168 +114,160 @@ function TheWayYouTaste() {
   return (
     <div className="App">
       {!hideHeader && <Header />}
-      <Routes>
-        {/* 누구나 접근 가능한 페이지*/}
-        <Route path="/" element={<Navigate to="/main" replace />} />
-        <Route
-          path="/main"
-          element={
-            <MainPage storeCategories={storeCategories} sidoList={sidoList} />
-          }
-        />
-        <Route
-          path="/notice/list"
-          element={<NoticeList notices={notices} isAdmin={isAdmin} />}
-        />
-        <Route
-          path="/notice/noticeDetail"
-          element={<NoticeDetail isAdmin={isAdmin} />}
-        />
-        <Route
-          path="/search/store"
-          element={
-            <SearchStore
-              storeCategories={storeCategories}
-              sidoList={sidoList}
-            />
-          }
-        />
-        <Route path="/store/storeDetail" element={<StoreDetail />} />
-        <Route
-          path="/store/region"
-          element={
-            <StoreRegion
-              storeCategories={storeCategories}
-              sidoList={sidoList}
-            />
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <MembershipLogin setUser={setUser} setIsLoggedIn={setIsLoggedIn} />
-          }
-        />
-        <Route path="/*" element={<Error404Page />} />
+      <AppDataProvider>
+        <Routes>
+          {/* 누구나 접근 가능한 페이지*/}
+          <Route path="/" element={<Navigate to="/main" replace />} />
+          <Route path="/main" element={<MainPage />} />
+          <Route
+            path="/notice/list"
+            element={<NoticeList notices={notices} isAdmin={isAdmin} />}
+          />
+          <Route
+            path="/notice/noticeDetail"
+            element={<NoticeDetail isAdmin={isAdmin} />}
+          />
+          <Route path="/search/store" element={<SearchStore />} />
+          <Route path="/store/storeDetail" element={<StoreDetail />} />
+          <Route path="/store/region" element={<StoreRegion />} />
+          <Route
+            path="/login"
+            element={
+              <MembershipLogin
+                setUser={setUser}
+                setIsLoggedIn={setIsLoggedIn}
+              />
+            }
+          />
+          <Route path="/*" element={<Error404Page />} />
 
-        {/* 로그인한 일반 사용자만 접근 가능한 페이지*/}
-        <Route
-          path="/notice/write"
-          element={
-            isLoggedIn ? <NoticeWrite /> : <Navigate to="/login" replace />
-          }
-        />
-        <Route
-          path="/member/notice/list"
-          element={
-            isLoggedIn ? (
-              <NoticeMemberList notices={memberNotices} />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
-        <Route
-          path="/member/notice/noticeDetail"
-          element={
-            isLoggedIn ? (
-              <NoticeMemberDetail />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
-        <Route
-          path="/store/register"
-          element={
-            isLoggedIn ? (
-              <StoreRegister userSn={user ? user.userSn : ""} />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
-        <Route
-          path="/store/report/:userSn"
-          element={
-            isLoggedIn ? <ReportRequest /> : <Navigate to="/login" replace />
-          }
-        />
-        <Route
-          path="/member/modify"
-          element={
-            isLoggedIn ? <MembershipModify /> : <Navigate to="/login" replace />
-          }
-        />
-        <Route
-          path="/member/resign"
-          element={
-            isLoggedIn ? <MembershipResign /> : <Navigate to="/login" replace />
-          }
-        />
+          {/* 로그인한 일반 사용자만 접근 가능한 페이지*/}
+          <Route
+            path="/notice/write"
+            element={
+              isLoggedIn ? <NoticeWrite /> : <Navigate to="/login" replace />
+            }
+          />
+          <Route
+            path="/member/notice/list"
+            element={
+              isLoggedIn ? (
+                <NoticeMemberList notices={memberNotices} />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route
+            path="/member/notice/noticeDetail"
+            element={
+              isLoggedIn ? (
+                <NoticeMemberDetail />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route
+            path="/store/register"
+            element={
+              isLoggedIn ? (
+                <StoreRegister userSn={user ? user.userSn : ""} />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route
+            path="/store/report/:userSn"
+            element={
+              isLoggedIn ? <ReportRequest /> : <Navigate to="/login" replace />
+            }
+          />
+          <Route
+            path="/member/modify"
+            element={
+              isLoggedIn ? (
+                <MembershipModify />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route
+            path="/member/resign"
+            element={
+              isLoggedIn ? (
+                <MembershipResign />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
 
-        {/* 로그인 + 관리자 권한(isAdmin)이 있어야 접근 가능한 페이지 */}
-        <Route
-          path="/notice/write"
-          element={
-            isLoggedIn && isAdmin ? (
-              <NoticeWrite />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
-        <Route
-          path="/store/registerDetail"
-          element={
-            isLoggedIn && isAdmin ? (
-              <RegisterDetail setMemberNotices={setMemberNotices} />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
-        <Route
-          path="/store/reportDetail"
-          element={
-            isLoggedIn && isAdmin ? (
-              <ReportDetail setMemberNotices={setMemberNotices} />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
-        <Route
-          path="/admin/member/list"
-          element={
-            isLoggedIn && isAdmin ? (
-              <MemberListCheck members={members} />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
-        <Route
-          path="/admin/report/list"
-          element={
-            isLoggedIn && isAdmin ? (
-              <ReportListCheck reports={reports} />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
-        <Route
-          path="/admin/register/list"
-          element={
-            isLoggedIn && isAdmin ? (
-              <RegisterListCheck registerAdmin={registerAdmin} />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
-      </Routes>
+          {/* 로그인 + 관리자 권한(isAdmin)이 있어야 접근 가능한 페이지 */}
+          <Route
+            path="/notice/write"
+            element={
+              isLoggedIn && isAdmin ? (
+                <NoticeWrite />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route
+            path="/store/registerDetail"
+            element={
+              isLoggedIn && isAdmin ? (
+                <RegisterDetail setMemberNotices={setMemberNotices} />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route
+            path="/store/reportDetail"
+            element={
+              isLoggedIn && isAdmin ? (
+                <ReportDetail setMemberNotices={setMemberNotices} />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/member/list"
+            element={
+              isLoggedIn && isAdmin ? (
+                <MemberListCheck members={members} />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/report/list"
+            element={
+              isLoggedIn && isAdmin ? (
+                <ReportListCheck reports={reports} />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/register/list"
+            element={
+              isLoggedIn && isAdmin ? (
+                <RegisterListCheck registerAdmin={registerAdmin} />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+        </Routes>
+      </AppDataProvider>
       {!hideFooter && <Footer />}
     </div>
   );

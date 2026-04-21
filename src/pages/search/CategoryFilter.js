@@ -1,6 +1,6 @@
 import styleCategory from "../../css/CategoryFilter.module.css";
 
-export default function CategoryFilter({storeCategories, selectedCategories, setSelectedCategories, setIsResetFilter, mode}){
+export default function CategoryFilter({categories, selectedCategories, setSelectedCategories, setIsResetFilter, mode}){
     const foodIcons = {
         "한식": "🍚", "일식": "🍣", "양식": "🍝", "중식": "🥟",
         "아시안": "🍜", "햄버거": "🍔", "치킨": "🍗", "디저트": "🍩"
@@ -17,10 +17,10 @@ export default function CategoryFilter({storeCategories, selectedCategories, set
 
     return (
        <ul className={`${styleCategory.categoryList} ${filterClass}`}>
-            {storeCategories.map(record => (
+            {categories.map(record => (
                 <li key={record.storeCatNo}>
                     <button 
-                        type="button" /* 타입 명시 */
+                        type="button" 
                         className={selectedCategories.includes(record.storeCatName) ? styleCategory.active : ""} 
                         onClick={() => onSelectCategory(record.storeCatName)}
                     >
