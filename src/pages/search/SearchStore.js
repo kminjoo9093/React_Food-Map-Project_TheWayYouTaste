@@ -6,7 +6,7 @@ import RegionModal from "./RegionModal";
 import MapComponent from "./MapComponent";
 import { GetStoreList } from "./GetStoreList";
 import styleMain from "../../css/MainPage.module.css";
-import useRegionSetting from "./hook/useRegionSetting";
+import useRegionSetting from "../../hooks/useRegionSetting";
 import CategoryFilter from "./CategoryFilter";
 import serverUrl from "../../db/server.json";
 
