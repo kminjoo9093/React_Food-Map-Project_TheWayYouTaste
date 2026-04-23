@@ -1,13 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import styleMain from "../../css/MainPage.module.css";
 import { useState, useEffect, useContext } from "react";
-import useRegionSetting from "../search/hook/useRegionSetting";
+import useRegionSetting from "../../hooks/useRegionSetting";
 import RegionModal from "../search/RegionModal";
 import CategoryFilter from "../search/CategoryFilter";
 import styleHeader from "../../css/Header.module.css";
 import searchIcon from "../../resources/img/system/search.png";
 import { AppDataContext } from "../../context/AppDataProvider";
-import { getSearchPath } from "../../utils/getSearchPath";
+import { getSearchPath } from "../../lib/utils/getSearchPath";
 
 function MainPage() {
   const { regionState, regionSetters, getCurrentLocation } = useRegionSetting();
@@ -110,14 +110,13 @@ function MainPage() {
           {isModalOpen && (
             <RegionModal
               setIsModalOpen={setIsModalOpen}
-              {...regionState}
-              {...regionSetters}
+              regionState={regionState}
+              regionSetters={regionSetters}
               onConfirm={() => setIsModalOpen(false)}
               sidoList={sidoList}
             />
           )}
 
-          {/* 업종 */}
           <CategoryFilter
             mode="main"
             categories={categories}
@@ -126,7 +125,6 @@ function MainPage() {
             setIsResetFilter={setIsResetFilter}
           />
 
-          {/* 검색 버튼 */}
           <div className={styleMain.iconRight}>
             <div className={styleMain.iconSearch}>
               <Link to={searchUrl}>🔍검색</Link>
