@@ -1,0 +1,51 @@
+/* 지역 선택 필터 버튼 */
+.filterBox {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 10px 0;
+}
+
+.filterBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 25rem;
+  background: #ffffff;
+  padding: 14px 22px;
+  border-radius: 30px;
+  font-size: 17px;
+  border: 1.8px solid #ff9800;
+  color: #444;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(255, 153, 0, 0.25);
+  transition: all 0.25s ease;
+}
+
+.filterBtn:hover {
+  background: #ffe0b2;
+  box-shadow: 0 6px 14px rgba(255, 153, 0, 0.4);
+  transform: translateY(-1px);
+  color:black;
+}
+
+.filterBtn:active {
+  transform: scale(0.98);
+}
+
+/* 아이콘 */
+.filterIcon {
+  font-size: 20px;
+}
+
+/* 선택된 텍스트 */
+.filterText {
+  flex-grow: 1;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* ▼ 화살표 */
+.arrowIcon {
+  font-size: 14px;
+  opacity: 0.6;
+}

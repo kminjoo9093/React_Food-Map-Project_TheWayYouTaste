@@ -2,15 +2,17 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import styleSearchStore from "../../css/SearchStore.module.css";
 import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import Pagination from "../Pagination";
-import RegionModal from "./RegionModal";
+import RegionModal from "../../components/RegionModal";
 import MapComponent from "./MapComponent";
 import { GetStoreList } from "./GetStoreList";
-import styleMain from "../../css/MainPage.module.css";
-import useRegionSetting from "../../hooks/useRegionSetting";
-import CategoryFilter from "./CategoryFilter";
+import CategoryFilter from "../../components/CategoryFilter";
 import serverUrl from "../../db/server.json";
+import useInitLocationStores from "../../hooks/useInitLocationStores";
+import { useContext } from "react";
+import { AppDataContext } from "../../context/AppDataProvider";
 
-function SearchStore({ storeCategories, sidoList }) {
+function SearchStore() {
+  const { categories, sidoList } = useContext(AppDataContext);
   const positionAreaRef = useRef({
     swMinLat: 0,
     swMinLng: 0,
@@ -24,27 +26,28 @@ function SearchStore({ storeCategories, sidoList }) {
   const keyword = queryParams.get("keyword");
 
   // 커스텀 훅 도입
-  const { regionState, regionSetters, getCurrentLocation } = useRegionSetting();
+  const { regionState, regionSetters, getLocation } =
+    useInitLocationStores();
   const {
     selectedDo,
-    doName,
+    sidoName,
     selectedSi,
-    siName,
+    sggName,
     selectedDong,
     dongName,
     lat,
     lng,
-    storeList,
+    // storeList,
   } = regionState;
   const {
     setSelectedDo,
-    setDoName,
+    // setDoName,
     setSelectedSi,
-    setSiName,
+    // setSiName,
     setSelectedDong,
-    setDongName,
-    setLat,
-    setLng,
+    // setDongName,
+    // setLat,
+    // setLng,
   } = regionSetters;
   const SERVER_URL = serverUrl.SERVER_URL;
 
@@ -57,7 +60,7 @@ function SearchStore({ storeCategories, sidoList }) {
   const [isMoved, setIsMoved] = useState(false);
   const [isChangedRegion, setIsChangedRegion] = useState(false);
 
-  const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
+  // const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
   const [isSelectedAll, setIsSelectedAll] = useState(false);
   const [isResetFilter, setIsResetFilter] = useState(false);
   const [isSearchArea, setIsSearchArea] = useState(false);
@@ -148,7 +151,7 @@ function SearchStore({ storeCategories, sidoList }) {
           setSelectedDo(sido);
         }
       } else {
-        getCurrentLocation();
+        getLocation();
         return;
       }
 
@@ -171,7 +174,7 @@ function SearchStore({ storeCategories, sidoList }) {
       }
     };
     initLoad();
-  }, [location.search, keyword, getCurrentLocation]);
+  }, [location.search, keyword, getLocation]);
 
   //리스트 갱신
   useEffect(() => {
@@ -309,7 +312,7 @@ function SearchStore({ storeCategories, sidoList }) {
     setIsSelectedAll(false);
     setIsChangedRegion(true);
 
-    getCurrentLocation();
+    getLocation();
   };
 
   // 페이지네이션
@@ -330,7 +333,7 @@ function SearchStore({ storeCategories, sidoList }) {
           onClick={() => setIsOpen(!isOpen)}
         ></button>
         <div className={styleSearchStore.filterArea}>
-          <div className={styleSearchStore.filterTopWrap}>
+          {/* <div className={styleSearchStore.filterTopWrap}>
             <button
               className={`${styleSearchStore.btnRegion} ${styleMain.filterBtn}`}
               onClick={() => setIsDimmedMiddleOpen(true)}
@@ -345,11 +348,11 @@ function SearchStore({ storeCategories, sidoList }) {
               </span>
               <span className={styleMain.arrowIcon}>▼</span>
             </button>
-          </div>
+          </div> */}
           <div className={styleSearchStore.filterBottomWrap}>
             <CategoryFilter
               mode="search"
-              storeCategories={storeCategories}
+              storeCategories={categories}
               selectedCategories={selectedCategories}
               setSelectedCategories={setSelectedCategories}
               setIsResetFilter={setIsResetFilter}
@@ -453,7 +456,7 @@ function SearchStore({ storeCategories, sidoList }) {
         />
       </section>
 
-      {isDimmedMiddleOpen && (
+      {/* {isDimmedMiddleOpen && (
         <RegionModal
           setIsModalOpen={setIsDimmedMiddleOpen}
           selectedDo={selectedDo}
@@ -468,7 +471,7 @@ function SearchStore({ storeCategories, sidoList }) {
           setDongName={setDongName}
           sidoList={sidoList}
         />
-      )}
+      )} */}
     </div>
   );
 }
