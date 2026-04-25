@@ -1,28 +1,29 @@
 import { Link, useNavigate } from "react-router-dom";
 import styleMain from "../../css/MainPage.module.css";
 import { useState, useEffect, useContext } from "react";
-import useRegionSetting from "../../hooks/useRegionSetting";
-import RegionModal from "../search/RegionModal";
-import CategoryFilter from "../search/CategoryFilter";
+import useRegionSetting from "../../hooks/useInitLocationStores";
+import RegionModal from "../../components/RegionModal";
+import CategoryFilter from "../../components/CategoryFilter";
 import styleHeader from "../../css/Header.module.css";
 import searchIcon from "../../resources/img/system/search.png";
 import { AppDataContext } from "../../context/AppDataProvider";
 import { getSearchPath } from "../../lib/utils/getSearchPath";
+import RegionSelector from "../../components/RegionSelector";
 
 function MainPage() {
-  const { regionState, regionSetters, getCurrentLocation } = useRegionSetting();
+  const { regionState, regionSetters, getLocation } = useRegionSetting();
   const {
     selectedDo,
-    doName,
+    sidoName,
     selectedSi,
-    siName,
+    sggName,
     selectedDong,
     dongName,
     lat,
     lng,
-    isLoading,
+    // isLoading,
   } = regionState;
-  const [isModalOpen, setIsModalOpen] = useState(false); //지역 모달 오픈 상태
+  // const [isModalOpen, setIsModalOpen] = useState(false); //지역 모달 오픈 상태
 
   const { categories, sidoList } = useContext(AppDataContext);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -33,17 +34,17 @@ function MainPage() {
 
   useEffect(() => {
     if (!lat && !lng) {
-      getCurrentLocation();
+      getLocation();
     }
-  }, [lat, lng, getCurrentLocation]);
+  }, [lat, lng, getLocation]);
 
   const searchUrl = getSearchPath({
     region: {
       selectedDo,
       selectedSi,
       selectedDong,
-      doName,
-      siName,
+      sidoName,
+      sggName,
       dongName,
     },
     location: { lat, lng },
@@ -80,7 +81,7 @@ function MainPage() {
           <img
             src={searchIcon}
             alt="search"
-            onClick={handleSearch} // 돋보기 클릭 감지
+            onClick={handleSearch} 
             style={{ cursor: "pointer" }}
           />
         </div>
@@ -89,9 +90,14 @@ function MainPage() {
           <h3 style={{ fontSize: "2.4rem" }}>
             원하시는 식당 유형을 선택해 주세요
           </h3>
-
+          <RegionSelector
+            regionState={regionState}
+            regionSetters={regionSetters}
+            sidoList={sidoList}
+            // mode="main"
+          />
           {/* 필터 버튼 */}
-          <div className={styleMain.filterBox}>
+          {/* <div className={styleMain.filterBox}>
             <button
               className={styleMain.filterBtn}
               onClick={() => setIsModalOpen(true)}
@@ -104,9 +110,9 @@ function MainPage() {
               </span>
               <span className={styleMain.arrowIcon}>▼</span>
             </button>
-          </div>
+          </div> */}
 
-          {/* 지역 선택 모달 */}
+          {/* 지역 선택 모달
           {isModalOpen && (
             <RegionModal
               setIsModalOpen={setIsModalOpen}
@@ -115,7 +121,7 @@ function MainPage() {
               onConfirm={() => setIsModalOpen(false)}
               sidoList={sidoList}
             />
-          )}
+          )} */}
 
           <CategoryFilter
             mode="main"
