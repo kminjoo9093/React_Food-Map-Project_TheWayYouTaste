@@ -2,14 +2,14 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import styleSearchStore from "../../css/SearchStore.module.css";
 import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import Pagination from "../Pagination";
-import RegionModal from "../../components/RegionModal";
 import MapComponent from "./MapComponent";
 import { GetStoreList } from "./GetStoreList";
 import CategoryFilter from "../../components/CategoryFilter";
 import serverUrl from "../../db/server.json";
-import useInitLocationStores from "../../hooks/useInitLocationStores";
+import useInitLocationInfo from "../../hooks/useInitLocationInfo";
 import { useContext } from "react";
 import { AppDataContext } from "../../context/AppDataProvider";
+import RegionSelector from "../../components/RegionSelector";
 
 function SearchStore() {
   const { categories, sidoList } = useContext(AppDataContext);
@@ -26,26 +26,25 @@ function SearchStore() {
   const keyword = queryParams.get("keyword");
 
   // 커스텀 훅 도입
-  const { regionState, regionSetters, getLocation } =
-    useInitLocationStores();
+  const { regionState, regionSetters, getLocation } = useInitLocationInfo();
   const {
-    selectedDo,
-    sidoName,
-    selectedSi,
-    sggName,
+    selectedSido,
+    selectedSgg,
     selectedDong,
+    sidoName,
+    sggName,
     dongName,
     lat,
     lng,
     // storeList,
   } = regionState;
   const {
-    setSelectedDo,
-    // setDoName,
-    setSelectedSi,
-    // setSiName,
+    setSelectedSido,
+    setSelectedSgg,
     setSelectedDong,
-    // setDongName,
+    setSidoName,
+    setSggName,
+    setDongName,
     // setLat,
     // setLng,
   } = regionSetters;
@@ -105,10 +104,10 @@ function SearchStore() {
         setDongName(paramDongName);
       }
       if (paramSiName) {
-        setSiName(paramSiName);
+        setSggName(paramSiName);
       }
       if (paramDoName) {
-        setDoName(paramDoName);
+        setSidoName(paramDoName);
       }
 
       //카테고리
@@ -134,21 +133,21 @@ function SearchStore() {
             `${SERVER_URL}/store?dongCd=${dong}`,
           );
           setSelectedDong(dong);
-          setSelectedSi(sgg);
-          setSelectedDo(sido);
+          setSelectedSgg(sgg);
+          setSelectedSido(sido);
         } else if (sgg) {
           list = await GetStoreList(
             // `${SERVER_URL}/youtaste/search/store/sgg?sggCd=${sgg}`,
             `${SERVER_URL}/store?sggCd=${sgg}`,
           );
-          setSelectedSi(sgg);
-          setSelectedDo(sido);
+          setSelectedSgg(sgg);
+          setSelectedSido(sido);
         } else if (sido) {
           list = await GetStoreList(
             // `${SERVER_URL}/youtaste/search/store/sido?sidoCd=${sido}`,
             `${SERVER_URL}/store?sidoCd=${sido}`,
           );
-          setSelectedDo(sido);
+          setSelectedSido(sido);
         }
       } else {
         getLocation();
@@ -255,15 +254,15 @@ function SearchStore() {
         // `${SERVER_URL}/youtaste/search/store/dong?dongCd=${selectedDong}`,
         `${SERVER_URL}/store?dongCd=${selectedDong}`,
       );
-    else if (selectedSi)
+    else if (selectedSgg)
       list = await GetStoreList(
         // `${SERVER_URL}/youtaste/search/store/sgg?sggCd=${selectedSi}`,
-        `${SERVER_URL}/store?sggCd=${selectedSi}`,
+        `${SERVER_URL}/store?sggCd=${selectedSgg}`,
       );
-    else if (selectedDo)
+    else if (selectedSido)
       list = await GetStoreList(
         // `${SERVER_URL}/youtaste/search/store/sido?sidoCd=${selectedDo}`,
-        `${SERVER_URL}/store?sidoCd=${selectedDo}`,
+        `${SERVER_URL}/store?sidoCd=${selectedSido}`,
       );
     // else list = await GetStoreList(`${SERVER_URL}/youtaste/search/store/all`);
     else list = await GetStoreList(`${SERVER_URL}/store`);
@@ -281,7 +280,7 @@ function SearchStore() {
     setAppliedCategories([...selectedCategories]); //적용되는 카테고리 리스트로 복사
 
     //map level 조절
-    if (!selectedDo || (selectedDo && !selectedSi)) {
+    if (!selectedSido || (selectedSido && !selectedSgg)) {
       //&& !isResetFilter
       setIsSelectedAll(true); //level 12
     } else {
@@ -295,11 +294,11 @@ function SearchStore() {
   //필터 초기화
   const resetFilter = () => {
     setSelectedCategories([]);
-    setSelectedDo(null);
-    setSelectedSi(null);
+    setSelectedSido(null);
+    setSelectedSgg(null);
     setSelectedDong(null);
-    setDoName("");
-    setSiName("");
+    setSidoName("");
+    setSggName("");
     setDongName("");
 
     // URL 파라미터 제거
@@ -333,22 +332,12 @@ function SearchStore() {
           onClick={() => setIsOpen(!isOpen)}
         ></button>
         <div className={styleSearchStore.filterArea}>
-          {/* <div className={styleSearchStore.filterTopWrap}>
-            <button
-              className={`${styleSearchStore.btnRegion} ${styleMain.filterBtn}`}
-              onClick={() => setIsDimmedMiddleOpen(true)}
-            >
-              <span className={styleMain.filterIcon}>📍</span>
-              <span className={styleMain.filterText}>
-                {isSearchArea
-                  ? "범위 내"
-                  : doName || siName || dongName
-                    ? `${doName} ${siName} ${dongName}`
-                    : "지역 선택"}
-              </span>
-              <span className={styleMain.arrowIcon}>▼</span>
-            </button>
-          </div> */}
+          <RegionSelector
+            regionState={regionState}
+            regionSetters={regionSetters}
+            sidoList={sidoList}
+            // mode="main"
+          />
           <div className={styleSearchStore.filterBottomWrap}>
             <CategoryFilter
               mode="search"

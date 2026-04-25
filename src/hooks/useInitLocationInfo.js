@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useGeolocation } from "./useGeolocation";
 import { useRegionByCoords } from "./queries/useRegionByCoords";
 
-export default function useInitLocationStores() {
+export default function useInitLocationInfo() {
   const [selectedSido, setSelectedSido] = useState(null); 
   const [selectedSgg, setSelectedSgg] = useState(null); 
   const [selectedDong, setSelectedDong] = useState(null); 
