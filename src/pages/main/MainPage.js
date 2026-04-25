@@ -1,17 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
 import styleMain from "../../css/MainPage.module.css";
 import { useState, useEffect, useContext } from "react";
-import useRegionSetting from "../../hooks/useInitLocationStores";
-import RegionModal from "../../components/RegionModal";
 import CategoryFilter from "../../components/CategoryFilter";
 import styleHeader from "../../css/Header.module.css";
 import searchIcon from "../../resources/img/system/search.png";
 import { AppDataContext } from "../../context/AppDataProvider";
 import { getSearchPath } from "../../lib/utils/getSearchPath";
 import RegionSelector from "../../components/RegionSelector";
+import useInitLocationInfo from "../../hooks/useInitLocationInfo";
 
 function MainPage() {
-  const { regionState, regionSetters, getLocation } = useRegionSetting();
+  const { regionState, regionSetters, getLocation } = useInitLocationInfo();
   const {
     selectedDo,
     sidoName,
@@ -23,7 +22,6 @@ function MainPage() {
     lng,
     // isLoading,
   } = regionState;
-  // const [isModalOpen, setIsModalOpen] = useState(false); //지역 모달 오픈 상태
 
   const { categories, sidoList } = useContext(AppDataContext);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -81,7 +79,7 @@ function MainPage() {
           <img
             src={searchIcon}
             alt="search"
-            onClick={handleSearch} 
+            onClick={handleSearch}
             style={{ cursor: "pointer" }}
           />
         </div>
@@ -96,33 +94,6 @@ function MainPage() {
             sidoList={sidoList}
             // mode="main"
           />
-          {/* 필터 버튼 */}
-          {/* <div className={styleMain.filterBox}>
-            <button
-              className={styleMain.filterBtn}
-              onClick={() => setIsModalOpen(true)}
-            >
-              <span className={styleMain.filterIcon}>📍</span>
-              <span className={styleMain.filterText}>
-                {doName || siName || dongName
-                  ? `${doName} ${siName} ${dongName}`.trim()
-                  : "지역 선택"}
-              </span>
-              <span className={styleMain.arrowIcon}>▼</span>
-            </button>
-          </div> */}
-
-          {/* 지역 선택 모달
-          {isModalOpen && (
-            <RegionModal
-              setIsModalOpen={setIsModalOpen}
-              regionState={regionState}
-              regionSetters={regionSetters}
-              onConfirm={() => setIsModalOpen(false)}
-              sidoList={sidoList}
-            />
-          )} */}
-
           <CategoryFilter
             mode="main"
             categories={categories}
