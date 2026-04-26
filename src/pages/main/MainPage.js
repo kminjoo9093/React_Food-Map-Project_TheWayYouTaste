@@ -12,9 +12,9 @@ import useInitLocationInfo from "../../hooks/useInitLocationInfo";
 function MainPage() {
   const { regionState, regionSetters, getLocation } = useInitLocationInfo();
   const {
-    selectedDo,
+    selectedSido,
     sidoName,
-    selectedSi,
+    selectedSgg,
     sggName,
     selectedDong,
     dongName,
@@ -38,11 +38,11 @@ function MainPage() {
 
   const searchUrl = getSearchPath({
     region: {
-      selectedDo,
-      selectedSi,
-      selectedDong,
+      selectedSido,
       sidoName,
+      selectedSgg,
       sggName,
+      selectedDong,
       dongName,
     },
     location: { lat, lng },
