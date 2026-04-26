@@ -8,24 +8,16 @@ import { AppDataContext } from "../../context/AppDataProvider";
 import { getSearchPath } from "../../lib/utils/getSearchPath";
 import RegionSelector from "../../components/RegionSelector";
 import useInitLocationInfo from "../../hooks/useInitLocationInfo";
+import { useCategories, useFilterStore, useRegion, useRegionCode, useRegionName } from "../../store/filters";
 
 function MainPage() {
-  const { regionState, regionSetters, getLocation } = useInitLocationInfo();
-  const {
-    selectedSido,
-    sidoName,
-    selectedSgg,
-    sggName,
-    selectedDong,
-    dongName,
-    lat,
-    lng,
-    // isLoading,
-  } = regionState;
-
+  
   const { categories, sidoList } = useContext(AppDataContext);
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [isResetFilter, setIsResetFilter] = useState(false);
+  const { lat, lng, getLocation } = useInitLocationInfo();
+    const {selectedSido, selectedSgg, selectedDong} = useRegionCode();
+    const {sidoName, sggName, dongName} = useRegionName();
+    const selectedCategories = useCategories();
+  // const [isResetFilter, setIsResetFilter] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState(""); // 검색어
   const navigate = useNavigate();
@@ -89,17 +81,13 @@ function MainPage() {
             원하시는 식당 유형을 선택해 주세요
           </h3>
           <RegionSelector
-            regionState={regionState}
-            regionSetters={regionSetters}
             sidoList={sidoList}
             // mode="main"
           />
           <CategoryFilter
             mode="main"
             categories={categories}
-            selectedCategories={selectedCategories}
-            setSelectedCategories={setSelectedCategories}
-            setIsResetFilter={setIsResetFilter}
+            // setIsResetFilter={setIsResetFilter}
           />
 
           <div className={styleMain.iconRight}>

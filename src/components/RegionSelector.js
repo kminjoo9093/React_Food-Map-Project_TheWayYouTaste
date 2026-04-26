@@ -1,9 +1,11 @@
 import style from "../css/RegionSelector.module.css";
 import { useState } from "react";
 import RegionModal from "./RegionModal";
+import { useRegionName } from "../store/filters";
 
-export default function RegionSelector({regionState, regionSetters, sidoList, isSearchArea}) {
+export default function RegionSelector({sidoList, isSearchArea}) {
   const [isModalOpen, setIsModalOpen] = useState(false); //지역 모달 오픈 상태
+  const {sidoName, sggName, dongName} = useRegionName();
 
   return (
     <div>
@@ -14,8 +16,8 @@ export default function RegionSelector({regionState, regionSetters, sidoList, is
         >
           <span className={style.filterIcon}>📍</span>
           <span className={style.filterText}>
-            {regionState.sidoName || regionState.sggName || regionState.dongName
-              ? `${regionState.sidoName} ${regionState.sggName} ${regionState.dongName}`.trim()
+            {sidoName || sggName || dongName
+              ? `${sidoName} ${sggName} ${dongName}`.trim()
               : "지역 선택"}
           </span>
           <span className={style.arrowIcon}>▼</span>
@@ -24,8 +26,6 @@ export default function RegionSelector({regionState, regionSetters, sidoList, is
 
       {isModalOpen && (
         <RegionModal
-          regionState={regionState}
-          regionSetters={regionSetters}
           onConfirm={() => setIsModalOpen(false)}
           sidoList={sidoList}
         />

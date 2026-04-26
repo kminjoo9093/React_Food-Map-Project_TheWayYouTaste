@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { shallow } from "zustand/shallow";
 
 export const useFilterStore = create((set) => ({
   selectedSido: null,
@@ -15,7 +16,7 @@ export const useFilterStore = create((set) => ({
   setSido: (sidoCd, sidoNm) =>
     set({
       selectedSido: sidoCd,
-      sidoName: sidoNm,
+      sidoName: sidoNm || "",
       selectedSgg: null,
       sggName: "",
       selectedDong: null,
@@ -24,14 +25,23 @@ export const useFilterStore = create((set) => ({
   setSgg: (sggCd, sggNm) =>
     set({
       selectedSgg: sggCd,
-      sggName: sggNm,
+      sggName: sggNm || "",
       selectedDong: null,
       dongName: "",
     }),
   setDong: (dongCd, dongNm) =>
     set({
       selectedDong: dongCd,
-      dongName: dongNm,
+      dongName: dongNm || "",
+    }),
+  setRegion: ({ sidoCode, sggCode, dongCode, sidoName, sggName, dongName }) =>
+    set({
+      selectedSido: sidoCode,
+      selectedSgg: sggCode,
+      selectedDong: dongCode,
+      sidoName,
+      sggName,
+      dongName,
     }),
   resetRegion: () =>
     set({
@@ -53,3 +63,38 @@ export const useFilterStore = create((set) => ({
     })),
   resetCategories: () => set({ selectedCategories: [] }),
 }));
+
+export const useRegionCode = () =>
+  useFilterStore(
+    (store) => ({
+      selectedSido: store.selectedSido,
+      selectedSgg: store.selectedSgg,
+      selectedDong: store.selectedDong,
+    }),
+    shallow,
+  );
+
+export const useRegionName = () =>
+  useFilterStore((store) => ({
+    sidoName: store.sidoName,
+    sggName: store.sggName,
+    dongName: store.dongName,
+  }));
+
+export const useCategories = () =>
+  useFilterStore((store) => ({
+    selectedCategories: store.selectedCategories,
+  }));
+
+export const useCategoryActions = () =>
+  useFilterStore((store) => ({
+    setCategories: store.setCategories,
+    toggleCategories: store.toggleCategories,
+    resetCategories: store.resetCategories,
+  }));
+
+export const useFilterReset = () =>
+  useFilterStore((store) => ({
+    resetRegion: store.resetRegion,
+    resetCategories: store.resetCategories,
+  }));
