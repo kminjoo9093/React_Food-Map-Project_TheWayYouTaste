@@ -29,10 +29,10 @@ function SearchStore() {
   const { regionState, regionSetters, getLocation } = useInitLocationInfo();
   const {
     selectedSido,
-    selectedSgg,
-    selectedDong,
     sidoName,
+    selectedSgg,
     sggName,
+    selectedDong,
     dongName,
     lat,
     lng,
