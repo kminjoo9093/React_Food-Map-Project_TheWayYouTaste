@@ -1,4 +1,5 @@
 import styleCategory from "../../css/CategoryFilter.module.css";
+import { useCategories, useCategoryActions } from "../store/filters";
 
 const foodIcons = {
   c01: "🍚",
@@ -12,22 +13,13 @@ const foodIcons = {
 };
 export default function CategoryFilter({
   categories,
-  selectedCategories,
-  setSelectedCategories,
-  setIsResetFilter,
+  // setIsResetFilter,
   mode,
 }) {
+  const selectedCategories = useCategories();
+  const {toggleCategories} = useCategoryActions();
   const filterClass =
     mode === "main" ? styleCategory.mainMode : styleCategory.searchMode;
-
-  const onSelectCategory = (categoryName) => {
-    setIsResetFilter(false);
-    setSelectedCategories((prev) =>
-      prev.includes(categoryName)
-        ? prev.filter((c) => c !== categoryName)
-        : [...prev, categoryName],
-    );
-  };
 
   return (
     <ul className={`${styleCategory.categoryList} ${filterClass}`}>
@@ -40,7 +32,7 @@ export default function CategoryFilter({
                 ? styleCategory.active
                 : ""
             }
-            onClick={() => onSelectCategory(category.storeCatName)}
+            onClick={() => toggleCategories(category.storeCatName)}
           >
             <span className={styleCategory.categoryEmoji}>
               {foodIcons[category.storeCatNo] || "🍴"}

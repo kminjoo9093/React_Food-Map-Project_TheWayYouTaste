@@ -1,17 +1,13 @@
 import styleRegionModal from "../../css/RegionModal.module.css";
 import { useSggList } from "../hooks/queries/useSggList";
 import { useDongList } from "../hooks/queries/useDongList";
+import { useFilterStore, useRegionCode } from "../store/filters";
 
-function RegionModal({ regionState, regionSetters, onConfirm, sidoList }) {
-  const { selectedSido, selectedSgg, selectedDong } = regionState;
-  const {
-    setSelectedSido,
-    setSelectedSgg,
-    setSelectedDong,
-    setSidoName,
-    setSggName,
-    setDongName,
-  } = regionSetters;
+function RegionModal({ onConfirm, sidoList }) {
+  const { selectedSido, selectedSgg, selectedDong } = useRegionCode();
+  const setSido = useFilterStore((store)=>store.setSido);
+  const setSgg = useFilterStore((store)=>store.setSgg);
+  const setDong = useFilterStore((store)=>store.setDong);
 
   const sidoData = sidoList || [];
 
@@ -27,27 +23,6 @@ function RegionModal({ regionState, regionSetters, onConfirm, sidoList }) {
     isLoading: isDongLoading,
     isError: isDongError,
   } = useDongList(selectedSgg);
-
-  function handleSelectDo(sidoCd, sidoNm) {
-    setSelectedSido(sidoCd);
-    setSidoName(sidoNm || "");
-    setSelectedSgg(null);
-    setSggName("");
-    setSelectedDong(null);
-    setDongName("");
-  }
-
-  function handleSelectSi(sggCd, siName) {
-    setSelectedSgg(sggCd);
-    setSggName(siName || "");
-    setSelectedDong(null);
-    setDongName("");
-  }
-
-  function handleSelectDong(dgCd, dgNm) {
-    setSelectedDong(dgCd);
-    setDongName(dgNm || "");
-  }
 
   return (
     <div className={styleRegionModal.regionDimmed}>
@@ -66,7 +41,7 @@ function RegionModal({ regionState, regionSetters, onConfirm, sidoList }) {
               <li
                 className={`${styleRegionModal.regionItem} 
                                                     ${selectedSido === null ? styleRegionModal.activeItem : ""}`}
-                onClick={() => handleSelectDo(null, "")}
+                onClick={() => setSido(null, "")}
               >
                 전체
               </li>
@@ -82,7 +57,7 @@ function RegionModal({ regionState, regionSetters, onConfirm, sidoList }) {
                                                             }
                                                 `}
                   onClick={() => {
-                    handleSelectDo(record.sidoCd, record.sidoNm);
+                    setSido(record.sidoCd, record.sidoNm);
                   }}
                 >
                   {record.sidoNm}
@@ -99,7 +74,7 @@ function RegionModal({ regionState, regionSetters, onConfirm, sidoList }) {
                 <li
                   className={`${styleRegionModal.regionItem} 
                                                     ${selectedSgg === null ? styleRegionModal.activeItem : ""}`}
-                  onClick={() => handleSelectSi(null)}
+                  onClick={() => setSgg(null, "")}
                 >
                   전체
                 </li>
@@ -119,7 +94,7 @@ function RegionModal({ regionState, regionSetters, onConfirm, sidoList }) {
                                                                     : ""
                                                                 }
                                                     `}
-                      onClick={() => handleSelectSi(record.sggCd, record.sggNm)}
+                      onClick={() => setSgg(record.sggCd, record.sggNm)}
                     >
                       {record.sggNm}
                     </li>
@@ -137,7 +112,7 @@ function RegionModal({ regionState, regionSetters, onConfirm, sidoList }) {
                 <li
                   className={`${styleRegionModal.regionItem} 
                                                     ${selectedDong === null ? styleRegionModal.activeItem : ""}`}
-                  onClick={() => handleSelectDong(null, "")}
+                  onClick={() => setDong(null, "")}
                 >
                   전체
                 </li>
@@ -157,7 +132,7 @@ function RegionModal({ regionState, regionSetters, onConfirm, sidoList }) {
                                                             : ""
                                                         }
                                                         `}
-                      onClick={() => handleSelectDong(record.dgCd, record.dgNm)}
+                      onClick={() => setDong(record.dgCd, record.dgNm)}
                     >
                       {record.dgNm}
                     </li>
