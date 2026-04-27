@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useGeolocation } from "./useGeolocation";
 import { useRegionByCoords } from "./queries/useRegionByCoords";
 import { useFilterStore } from "../store/filters";
@@ -9,6 +9,10 @@ export default function useInitLocationInfo() {
     lat,
     lng,
   });
+
+  useEffect(()=>{
+    getLocation(); 
+  }, [])
 
   const setRegion = useFilterStore((store) => store.setRegion);
 
@@ -25,9 +29,4 @@ export default function useInitLocationInfo() {
     }
   }, [regionData]);
 
-  return {
-    lat,
-    lng,
-    getLocation,
-  };
 }
