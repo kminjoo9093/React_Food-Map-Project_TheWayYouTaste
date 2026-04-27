@@ -5,6 +5,7 @@ export const QUERY_KEYS = {
     dong: (sggCode) => ['region', 'dong', sggCode],
   },
   stores: {
-    list: (sggCode) => ['stores', 'list', sggCode],
+    list: (params) => ['stores', 'list', params],
+    viewport: (viewport) => ['stores', 'viewport', viewport],
   }
 }

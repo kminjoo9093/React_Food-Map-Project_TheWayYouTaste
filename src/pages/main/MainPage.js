@@ -9,11 +9,12 @@ import { getSearchPath } from "../../lib/utils/getSearchPath";
 import RegionSelector from "../../components/RegionSelector";
 import useInitLocationInfo from "../../hooks/useInitLocationInfo";
 import { useCategories, useFilterStore, useRegion, useRegionCode, useRegionName } from "../../store/filters";
+import { useGeolocation } from "../../hooks/useGeolocation";
 
 function MainPage() {
   
   const { categories, sidoList } = useContext(AppDataContext);
-  const { lat, lng, getLocation } = useInitLocationInfo();
+  const { lat, lng, getLocation } = useGeolocation();
     const {selectedSido, selectedSgg, selectedDong} = useRegionCode();
     const {sidoName, sggName, dongName} = useRegionName();
     const selectedCategories = useCategories();

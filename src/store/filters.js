@@ -11,6 +11,7 @@ export const useFilterStore = create((set) => ({
   dongName: "",
 
   selectedCategories: [],
+  appliedCategories: [],
 
   //action
   setSido: (sidoCd, sidoNm) =>
@@ -55,13 +56,14 @@ export const useFilterStore = create((set) => ({
     }),
 
   setCategories: (categories) => set({ selectedCategories: categories }),
+  applyCategories: (categories) => set({appliedCategories: categories}),
   toggleCategories: (categoryId) =>
     set((state) => ({
       selectedCategories: state.selectedCategories.includes(categoryId)
         ? state.selectedCategories.filter((id) => id !== categoryId)
         : [...state.selectedCategories, categoryId],
     })),
-  resetCategories: () => set({ selectedCategories: [] }),
+  resetCategories: () => set({ selectedCategories: [], appliedCategories: [] }),
 }));
 
 export const useRegionCode = () =>
@@ -84,11 +86,13 @@ export const useRegionName = () =>
 export const useCategories = () =>
   useFilterStore((store) => ({
     selectedCategories: store.selectedCategories,
+    appliedCategories: store.appliedCategories,
   }));
 
 export const useCategoryActions = () =>
   useFilterStore((store) => ({
     setCategories: store.setCategories,
+    applyCategories: store.applyCategories,
     toggleCategories: store.toggleCategories,
     resetCategories: store.resetCategories,
   }));
