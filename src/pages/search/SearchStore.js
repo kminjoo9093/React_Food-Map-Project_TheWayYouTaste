@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styleSearchStore from "../../css/SearchStore.module.css";
-import { useEffect, useMemo, useState, useRef, useCallback } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import Pagination from "../Pagination";
 import MapComponent from "./MapComponent";
 import CategoryFilter from "../../components/CategoryFilter";
@@ -10,15 +10,13 @@ import { useContext } from "react";
 import { AppDataContext } from "../../context/AppDataProvider";
 import RegionSelector from "../../components/RegionSelector";
 import {
-  useCategories,
-  useCategoryActions,
-  useFilterReset,
   useFilterStore,
-  useRegionCode,
+  useSelectedDong,
+  useSelectedSgg,
+  useSelectedSido,
 } from "../../store/filters";
 import { useStoresByCondition } from "../../hooks/queries/useStoresByCondition";
 import { useStoresByViewport } from "../../hooks/queries/useStoresByViewport";
-import { useGeolocation } from "../../hooks/useGeolocation";
 
 function SearchStore() {
   const { categories, sidoList } = useContext(AppDataContext);
@@ -34,11 +32,17 @@ function SearchStore() {
   const queryParams = new URLSearchParams(location.search);
   const keyword = queryParams.get("keyword");
 
-  // const { lat, lng, getLocation } = useGeolocation();
-  const { selectedSido, selectedSgg, selectedDong } = useRegionCode();
-  const { selectedCategories, appliedCategories } = useCategories();
-  const { setCategories, applyCategories } = useCategoryActions();
-  const { resetRegion, resetCategories } = useFilterReset();
+  const selectedSido = useSelectedSido();
+  const selectedSgg = useSelectedSgg();
+  const selectedDong = useSelectedDong();
+  const selectedCategories = useFilterStore(
+    (store) => store.selectedCategories,
+  );
+  const appliedCategories = useFilterStore((store) => store.appliedCategories);
+  const setCategories = useFilterStore((store)=> store.setCategories);
+  const applyCategories = useFilterStore((store)=>store.applyCategories);
+  const resetRegion = useFilterStore((store)=>store.resetRegion);
+  const resetCategories = useFilterStore((store)=>store.resetCategories);
   const setRegion = useFilterStore((store) => store.setRegion);
   const mapQueryToRegion = ({
     sidoCode,
@@ -60,17 +64,21 @@ function SearchStore() {
 
   const SERVER_URL = serverUrl.SERVER_URL;
   const [isOpen, setIsOpen] = useState(false); //모달 오픈 상태
-
   const [isMoved, setIsMoved] = useState(false);
   const [isChangedRegion, setIsChangedRegion] = useState(false);
-
-  // const [isDimmedMiddleOpen, setIsDimmedMiddleOpen] = useState(false);
   const [isSelectedAll, setIsSelectedAll] = useState(false);
   const [isResetFilter, setIsResetFilter] = useState(false);
   const [isSearchViewport, setIsSearchViewport] = useState(false);
 
+  const hasQueryRegion =
+    queryParams.get("sido") ||
+    queryParams.get("sgg") ||
+    queryParams.get("dong");
+
   //지도 검색 페이지에서 초기 sgg기반 리스트
-  useInitLocationInfo();
+  const { lat, lng, getLocation } = useInitLocationInfo({
+    skip: !!hasQueryRegion,
+  });
 
   // URL에서 카테고리 가져오기
   const paramCategories = queryParams.get("categories");
@@ -80,7 +88,7 @@ function SearchStore() {
     return paramCategories ? paramCategories.split(",") : [];
   }, [paramCategories]);
 
-  //fetch -> query storeList 요청
+  // fetch -> query storeList 요청
   const params = useMemo(
     () => ({
       keyword,
@@ -95,27 +103,41 @@ function SearchStore() {
 
   //메인페이지에서 넘어온 url상태 동기화
   useEffect(() => {
-    setRegion(
-      mapQueryToRegion({
-        sidoCode: queryParams.get("sido"),
-        sggCode: queryParams.get("sgg"),
-        dongCode: queryParams.get("dong"),
-        sidoName: queryParams.get("doName"),
-        sggName: queryParams.get("siName"),
-        dongName: queryParams.get("dongName"),
-      }),
-    );
+
+    if (!hasQueryRegion) return;
+
+    const nextRegion = mapQueryToRegion({
+      sidoCode: queryParams.get("sido"),
+      sggCode: queryParams.get("sgg"),
+      dongCode: queryParams.get("dong"),
+      sidoName: queryParams.get("doName"),
+      sggName: queryParams.get("siName"),
+      dongName: queryParams.get("dongName"),
+    });
+    if (
+      nextRegion.selectedSido !== selectedSido ||
+      nextRegion.selectedSgg !== selectedSgg ||
+      nextRegion.selectedDong !== selectedDong
+    ) {
+      setRegion(nextRegion);
+    }
 
     //카테고리
-    if (urlCategoryArray.length > 0) {
+    const isCategoryChanged =
+      JSON.stringify([...urlCategoryArray].sort()) !==
+      JSON.stringify([...appliedCategories].sort());
+
+    if (urlCategoryArray.length > 0 && isCategoryChanged) {
       setCategories(urlCategoryArray);
       applyCategories(urlCategoryArray);
     }
-  }, [location.search]);
-
-  useEffect(() => {
-    setNowPage(1); // 검색 시 페이지 번호 초기화
-  }, [filteredStoreList]);
+  }, [
+    location.search,
+    selectedSido,
+    selectedSgg,
+    selectedDong,
+    appliedCategories,
+  ]);
 
   useEffect(() => {
     setIsChangedRegion(true);
@@ -164,8 +186,7 @@ function SearchStore() {
     applyCategories(selectedCategories); //적용되는 카테고리 리스트로 복사
 
     //map level 조절
-    if (!selectedSido || (selectedSido && !selectedSgg)) {
-      //&& !isResetFilter
+    if (!selectedSido && selectedSido === null) {
       setIsSelectedAll(true); //level 12
     } else {
       setIsSelectedAll(false); //level 7
@@ -186,12 +207,18 @@ function SearchStore() {
     setIsSearchViewport(false);
 
     setIsMoved(false);
-    // setIsResetFilter(true);
+    setIsResetFilter(true);
     setIsSelectedAll(false);
     setIsChangedRegion(true);
 
     getLocation();
   };
+
+  useEffect(() => {
+    if (nowPage !== 1) {
+      setNowPage(1); // 검색 시 페이지 번호 초기화
+    }
+  }, [filteredStoreList]);
 
   // 페이지네이션
   const [nowPage, setNowPage] = useState(1);
@@ -213,13 +240,11 @@ function SearchStore() {
         <div className={styleSearchStore.filterArea}>
           <RegionSelector
             sidoList={sidoList}
-            // mode="main"
           />
           <div className={styleSearchStore.filterBottomWrap}>
             <CategoryFilter
               mode="search"
               categories={categories}
-              // setIsResetFilter={setIsResetFilter}
             />
           </div>
           <div className={styleSearchStore.filterBottomArea}>
@@ -255,12 +280,7 @@ function SearchStore() {
                     >
                       <img
                         className={styleSearchStore.storeImg}
-                        // src={`${SERVER_URL}${record.bplcPhoto}`}
-                        src={
-                          record.bplcPhoto
-                            ? `${SERVER_URL}${record.bplcPhoto}`
-                            : "/default.png"
-                        }
+                        src={`${SERVER_URL}${record.bplcPhoto}`}
                         alt="store"
                       />
                       <div className={styleSearchStore.storeInfo}>

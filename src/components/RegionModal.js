@@ -1,10 +1,14 @@
-import styleRegionModal from "../../css/RegionModal.module.css";
+import styleRegionModal from "../css/RegionModal.module.css";
 import { useSggList } from "../hooks/queries/useSggList";
 import { useDongList } from "../hooks/queries/useDongList";
-import { useFilterStore, useRegionCode } from "../store/filters";
+import { useFilterStore, useRegionCode, useSelectedDong, useSelectedSgg, useSelectedSido } from "../store/filters";
 
 function RegionModal({ onConfirm, sidoList }) {
-  const { selectedSido, selectedSgg, selectedDong } = useRegionCode();
+  // const { selectedSido, selectedSgg, selectedDong } = useRegionCode();
+  const selectedSido = useSelectedSido();
+  const selectedSgg = useSelectedSgg();
+  const selectedDong = useSelectedDong();
+
   const setSido = useFilterStore((store)=>store.setSido);
   const setSgg = useFilterStore((store)=>store.setSgg);
   const setDong = useFilterStore((store)=>store.setDong);

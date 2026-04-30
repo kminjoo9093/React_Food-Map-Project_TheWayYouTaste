@@ -7,19 +7,27 @@ import searchIcon from "../../resources/img/system/search.png";
 import { AppDataContext } from "../../context/AppDataProvider";
 import { getSearchPath } from "../../lib/utils/getSearchPath";
 import RegionSelector from "../../components/RegionSelector";
-import useInitLocationInfo from "../../hooks/useInitLocationInfo";
-import { useCategories, useFilterStore, useRegion, useRegionCode, useRegionName } from "../../store/filters";
+import {
+  useDongName,
+  useFilterStore,
+  useSelectedDong,
+  useSelectedSgg,
+  useSelectedSido,
+  useSggName,
+  useSidoName,
+} from "../../store/filters";
 import { useGeolocation } from "../../hooks/useGeolocation";
 
 function MainPage() {
-  
   const { categories, sidoList } = useContext(AppDataContext);
   const { lat, lng, getLocation } = useGeolocation();
-    const {selectedSido, selectedSgg, selectedDong} = useRegionCode();
-    const {sidoName, sggName, dongName} = useRegionName();
-    const selectedCategories = useCategories();
-  // const [isResetFilter, setIsResetFilter] = useState(false);
-
+  const selectedSido = useSelectedSido();
+  const selectedSgg = useSelectedSgg();
+  const selectedDong = useSelectedDong();
+  const sidoName = useSidoName();
+  const sggName = useSggName();
+  const dongName = useDongName();
+  const selectedCategories = useFilterStore((store)=>store.selectedCategories);
   const [searchTerm, setSearchTerm] = useState(""); // 검색어
   const navigate = useNavigate();
 
@@ -83,12 +91,10 @@ function MainPage() {
           </h3>
           <RegionSelector
             sidoList={sidoList}
-            // mode="main"
           />
           <CategoryFilter
             mode="main"
             categories={categories}
-            // setIsResetFilter={setIsResetFilter}
           />
 
           <div className={styleMain.iconRight}>
