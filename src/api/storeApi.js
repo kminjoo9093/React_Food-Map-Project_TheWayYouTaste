@@ -16,10 +16,12 @@ export function getStoreListByCondition(param) {
     return getData(`/youtaste/search/store/sido?sidoCd=${sidoCode}`);
   }
 
-  return getData("/store"); //임시
+  return getData("/store"); 
 }
 
-export function getStoreListByViewport(viewport){
+export function getStoreListByViewport(viewport) {
   const { swMinLat, swMinLng, neMaxLat, neMaxLng } = viewport;
-  return getData(`/youtaste/search/store/position?swMinLat=${swMinLat}&neMaxLat=${neMaxLat}&swMinLng=${swMinLng}&neMaxLng=${neMaxLng}`);
+  return getData(
+    `/youtaste/search/store/position?swMinLat=${swMinLat}&neMaxLat=${neMaxLat}&swMinLng=${swMinLng}&neMaxLng=${neMaxLng}`,
+  );
 }

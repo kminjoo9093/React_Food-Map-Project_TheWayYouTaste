@@ -1,11 +1,13 @@
 import style from "../css/RegionSelector.module.css";
 import { useState } from "react";
 import RegionModal from "./RegionModal";
-import { useRegionName } from "../store/filters";
+import { useDongName, useSggName, useSidoName } from "../store/filters";
 
-export default function RegionSelector({sidoList, isSearchArea}) {
+export default function RegionSelector({sidoList}) {
   const [isModalOpen, setIsModalOpen] = useState(false); //지역 모달 오픈 상태
-  const {sidoName, sggName, dongName} = useRegionName();
+  const sidoName = useSidoName();
+  const sggName = useSggName();
+  const dongName = useDongName();
 
   return (
     <div>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   Link,
-  useParams,
   useSearchParams,
   useNavigate,
 } from "react-router-dom";
@@ -9,7 +8,6 @@ import ReviewRegister from "../review/ReviewRegister";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import styleStoreDetail from "../../css/StoreDetail.module.css";
-import { GetStoreList } from "../search/GetStoreList";
 import serverUrl from "../../db/server.json";
 
 function StoreDetail({ storeList }) {
@@ -44,8 +42,14 @@ function StoreDetail({ storeList }) {
   useEffect(() => {
     async function getStoreData() {
       // 음식점 데이터
-      let storeInfo = await GetStoreList(
+      let storeInfo = await fetch(
         `${SERVER_URL}/youtaste/search/store/detail?storeId=${storeId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
       );
       setStoreData(storeInfo);
     }

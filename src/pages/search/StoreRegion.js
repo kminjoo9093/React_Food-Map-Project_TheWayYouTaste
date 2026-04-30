@@ -2,8 +2,7 @@ import { useState, useEffect, useMemo, useCallback, useContext } from "react";
 import { Link } from "react-router-dom";
 import styleRanking from "../../css/StoreRegion.module.css";
 import styleMain from "../../css/MainPage.module.css";
-import { GetStoreList } from "./GetStoreList";
-import RegionModal from "./RegionModal";
+import RegionModal from "../../components/RegionModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStar,
@@ -43,17 +42,19 @@ function StoreRegion() {
     let url = `${SERVER_URL}/youtaste/search/store/all`;
 
     if (selectedDong)
-      // url = `${SERVER_URL}/youtaste/search/store/dong?dongCd=${selectedDong}`;
-      url = `${SERVER_URL}/dong?dongCd=${selectedDong}`;
+      url = `${SERVER_URL}/youtaste/search/store/dong?dongCd=${selectedDong}`;
     else if (selectedSi)
-      // url = `${SERVER_URL}/youtaste/search/store/sgg?sggCd=${selectedSi}`;
-      url = `${SERVER_URL}/sgg?sggCd=${selectedSi}`;
+      url = `${SERVER_URL}/youtaste/search/store/sgg?sggCd=${selectedSi}`;
     else if (selectedDo)
-      // url = `${SERVER_URL}/youtaste/search/store/sido?sidoCd=${selectedDo}`;
-      url = `${SERVER_URL}/sido?sidoCd=${selectedDo}`;
+      url = `${SERVER_URL}/youtaste/search/store/sido?sidoCd=${selectedDo}`;
 
     try {
-      const list = await GetStoreList(url);
+      const list = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       setStoreList(list);
     } catch (error) {
       console.error("랭킹 데이터 로드 실패:", error);

@@ -13,6 +13,9 @@ import iconCategory from "../../resources/img/search/iconTag.svg";
 import styleMap from "../../css/Map.module.css";
 import serverUrl from "../../db/server.json";
 
+const MAP_KEY = process.env.REACT_APP_KAKAO_MAP_API_KEY;
+const SERVER_URL = serverUrl.SERVER_URL;
+
 export default function MapComponent({
   storeList,
   lat,
@@ -22,29 +25,22 @@ export default function MapComponent({
   positionAreaRef,
   isSelectedAll,
 }) {
-  const mapRef = useRef(); // Map 객체에 접근하기 위한 ref 추가
+  const mapRef = useRef();
   const isInitialCenterSetRef = useRef(false);
-
-  // 카카오 로더 설정
-  useKakaoLoader({
-    appkey: "5794d8a0c2862c16e4c69ad303abfb4b",
-    libraries: ["clusterer", "drawing", "services"],
-  });
-
+  const [level, setLevel] = useState(7); //지도 레벨
   const [center, setCenter] = useState({
     lat: lat || 37.5665,
     lng: lng || 126.978,
   });
+  const [openMarkerId, setOpenMarkerId] = useState(""); // 인포윈도우 Open 여부
 
-  const SERVER_URL = serverUrl.SERVER_URL;
+  // 카카오 로더 설정
+  useKakaoLoader({
+    appkey: MAP_KEY,
+    libraries: ["clusterer", "drawing", "services"],
+  });
 
-  //지도 레벨
-  const [level, setLevel] = useState(7);
-
-  // 인포윈도우 Open 여부
-  const [openMarkerId, setOpenMarkerId] = useState("");
-
-  // 현재 위치 기반으로 중심점 설정
+  // 현재 위치 기반 중심점 설정
   useEffect(() => {
     if (lat && lng) {
       setCenter({ lat, lng });
@@ -60,49 +56,52 @@ export default function MapComponent({
     }
   }, [isSelectedAll]);
 
-  //  setBounds (지역 변경 or 스토어 리스트 변경)
+  function getBoundsFromStores(storeList) {
+    const bounds = new window.kakao.maps.LatLngBounds();
+    let hasValidPoint = false;
+
+    if (storeList && storeList.length > 0) {
+      storeList.forEach((store) => {
+        const sLat = parseFloat(store.lat);
+        const sLng = parseFloat(store.lot);
+        if (!isNaN(sLat) && !isNaN(sLng)) {
+          bounds.extend(new window.kakao.maps.LatLng(sLat, sLng));
+          hasValidPoint = true;
+        }
+      });
+    }
+    return { bounds, hasValidPoint };
+  }
+
+  function moveToBounds(map, bounds) {
+    const padding = window.innerWidth < 768 ? 80 : 50;
+    map.setBounds(bounds, padding, padding, padding, padding);
+  }
+
+  function moveToInitLocation(map, lat, lng) {
+    const moveLatLng = new window.kakao.maps.LatLng(lat, lng);
+    map.setCenter(moveLatLng);
+    map.setLevel(7);
+  }
+
+  // setBounds (지역 변경 or 스토어 리스트 변경)
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
+    if (isSelectedAll) return; // 전국 검색 모드 -> 고정 level(12)
+    if (!isChangedRegion && isInitialCenterSetRef.current) return;  // 범위 내 재검색인 경우
 
-    // 전국 검색 모드 -> 고정 level(12)
-    if (isSelectedAll) return;
-
-    // 범위 내 재검색 -> 지도를 자동으로 움직이지(setBounds) 않음
-    if (!isChangedRegion && isInitialCenterSetRef.current) return;
-
-    // 실행 타이밍 조절 (지연 시간을 주어 맵 인스턴스 안정화)
+    // 실행 타이밍 조절 (맵 렌더링 완료 대기)
     const timer = setTimeout(() => {
-      if (isSelectedAll) return;
-
-      // isChangedRegion이 true일 때만 지도를 강제로 움직임
-      if (!isChangedRegion && isInitialCenterSetRef.current) return;
-
-      const bounds = new window.kakao.maps.LatLngBounds();
-      let hasValidPoint = false;
-
-      // 스토어 마커들을 범위에 포함
-      if (storeList && storeList.length > 0) {
-        storeList.forEach((store) => {
-          const sLat = parseFloat(store.lat);
-          const sLng = parseFloat(store.lot);
-          if (!isNaN(sLat) && !isNaN(sLng)) {
-            bounds.extend(new window.kakao.maps.LatLng(sLat, sLng));
-            hasValidPoint = true;
-          }
-        });
-      }
+      const { bounds, hasValidPoint } = getBoundsFromStores(storeList);
 
       if (hasValidPoint) {
-        // 맛집들이 있다면 그 맛집들을 다 보여주는 최적의 범위로 이동
-        const padding = window.innerWidth < 768 ? 80 : 50;
-        map.setBounds(bounds, padding, padding, padding, padding);
+        // 최적의 범위로 이동
+        moveToBounds(map, bounds);
       }
-      // 맛집이 없거나 초기화된 경우 -> 내 위치(lat, lng)로 이동
+      // 맛집이 없거나 초기화 -> 현재 위치(lat, lng)로 이동
       else if (lat && lng) {
-        const moveLatLng = new window.kakao.maps.LatLng(lat, lng);
-        map.setCenter(moveLatLng);
-        map.setLevel(7);
+        moveToInitLocation(map, lat, lng);
       }
     }, 100);
 
@@ -127,7 +126,6 @@ export default function MapComponent({
           neMaxLng: ne.getLng(),
         };
 
-        // Ref 업데이트 (비동기 처리 없이 즉시 반영됨)
         positionAreaRef.current = newPos;
 
         if (isInitialCenterSetRef.current) {
@@ -139,10 +137,7 @@ export default function MapComponent({
       {lat && lng && (
         <CustomOverlayMap position={{ lat, lng }}>
           <div className={styleMap.curMarker}>
-            {/* 텍스트 말풍선 */}
             <div className={styleMap.curInfoWindow}>내 위치</div>
-
-            {/* 위치를 나타내는 점 */}
             <div className={styleMap.curPoint}></div>
           </div>
         </CustomOverlayMap>
@@ -164,65 +159,61 @@ export default function MapComponent({
               title={store.bplcNm}
               onClick={() => setOpenMarkerId(store.bplcSn)}
             />
+            {/* 인포윈도우 */}
+            {openMarkerId === store.bplcSn && (
+              <CustomOverlayMap
+                key={`overlay-${store.bplcSn}`}
+                position={{
+                  lat: parseFloat(store.lat),
+                  lng: parseFloat(store.lot),
+                }}
+                yAnchor={1.25}
+                zIndex={1000}
+              >
+                <div className={styleMap.infoWindow}>
+                  <button
+                    className={styleMap.closeBtn}
+                    onClick={(e) => {
+                      e.stopPropagation(); // 지도 클릭 이벤트가 발생하는 것 방지
+                      setOpenMarkerId("");
+                    }}
+                  >
+                    X
+                  </button>
+
+                  <Link
+                    to={`/store/storeDetail?storeId=${store.bplcSn}`}
+                    className={styleMap.link}
+                  >
+                    <div className={styleMap.storeInfo}>
+                      <h3 className={styleMap.storeNm}>{store.bplcNm}</h3>
+                      <span className={styleMap.address}>{store.address}</span>
+                      <p className={styleMap.infoBottom}>
+                        {store.avg && (
+                          <span>
+                            <img src={iconStar} />
+                            {store.avg}
+                          </span>
+                        )}
+                        {store.storeCatName && (
+                          <span>
+                            <img src={iconCategory} />
+                            {store.storeCatName}
+                          </span>
+                        )}
+                      </p>
+                    </div>
+                    <img
+                      src={`${SERVER_URL}${store.bplcPhoto}`}
+                      className={styleMap.infoImg}
+                    />
+                  </Link>
+                </div>
+              </CustomOverlayMap>
+            )}
           </Fragment>
         ))}
       </MarkerClusterer>
-
-      {/* 인포윈도우 */}
-      {storeList.map(
-        (store) =>
-          openMarkerId === store.bplcSn && (
-            <CustomOverlayMap
-              key={`overlay-${store.bplcSn}`}
-              position={{
-                lat: parseFloat(store.lat),
-                lng: parseFloat(store.lot),
-              }}
-              yAnchor={1.25}
-              zIndex={1000}
-            >
-              <div className={styleMap.infoWindow}>
-                <button
-                  className={styleMap.closeBtn}
-                  onClick={(e) => {
-                    e.stopPropagation(); // 지도 클릭 이벤트가 발생하는 것 방지
-                    setOpenMarkerId("");
-                  }}
-                >
-                  X
-                </button>
-
-                <Link
-                  to={`/store/storeDetail?storeId=${store.bplcSn}`}
-                  className={styleMap.link}
-                >
-                  <div className={styleMap.storeInfo}>
-                    <h3 className={styleMap.storeNm}>{store.bplcNm}</h3>
-                    <span className={styleMap.address}>{store.address}</span>
-                    <p className={styleMap.infoBottom}>
-                      {store.avg && (
-                        <span>
-                          <img src={iconStar} />
-                          {store.avg}
-                        </span>
-                      )}
-                      {store.storeCatName && (
-                        <span>
-                          <img src={iconCategory} />
-                          {store.storeCatName}
-                        </span>
-                      )}
-                    </p>
-                  </div>
-                  <img
-                    src={`${SERVER_URL}${store.bplcPhoto}`}
-                    className={styleMap.infoImg}
-                  />
-                </Link>
-              </div>
-            </CustomOverlayMap>
-          ),
-      )}
     </Map>
   );
 }

@@ -11,8 +11,10 @@ export function AppDataProvider({ children }) {
   const fetchAppData = async () => {
     try {
       const [categoryData, sidoData] = await Promise.all([
-        getData("/youtaste/search"),
-        getData("/youtaste/search/sido"),
+        getData("/category"),
+        getData("/sido"),
+        // getData("/youtaste/search"),
+        // getData("/youtaste/search/sido"),
       ]);
       setCategories(categoryData);
       setSidoList(sidoData);
