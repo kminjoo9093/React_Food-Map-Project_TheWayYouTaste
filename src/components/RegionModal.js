@@ -4,7 +4,6 @@ import { useDongList } from "../hooks/queries/useDongList";
 import { useFilterStore, useRegionCode, useSelectedDong, useSelectedSgg, useSelectedSido } from "../store/filters";
 
 function RegionModal({ onConfirm, sidoList }) {
-  // const { selectedSido, selectedSgg, selectedDong } = useRegionCode();
   const selectedSido = useSelectedSido();
   const selectedSgg = useSelectedSgg();
   const selectedDong = useSelectedDong();
