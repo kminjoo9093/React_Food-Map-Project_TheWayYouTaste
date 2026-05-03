@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import styleSearchStore from "../../css/SearchStore.module.css";
 import { useEffect, useMemo, useState, useRef } from "react";
 import Pagination from "../Pagination";
-import MapComponent from "./MapComponent";
+import MapComponent from "../../components/MapComponent";
 import CategoryFilter from "../../components/CategoryFilter";
 import serverUrl from "../../db/server.json";
 import useInitLocationInfo from "../../hooks/useInitLocationInfo";
@@ -39,10 +39,10 @@ function SearchStore() {
     (store) => store.selectedCategories,
   );
   const appliedCategories = useFilterStore((store) => store.appliedCategories);
-  const setCategories = useFilterStore((store)=> store.setCategories);
-  const applyCategories = useFilterStore((store)=>store.applyCategories);
-  const resetRegion = useFilterStore((store)=>store.resetRegion);
-  const resetCategories = useFilterStore((store)=>store.resetCategories);
+  const setCategories = useFilterStore((store) => store.setCategories);
+  const applyCategories = useFilterStore((store) => store.applyCategories);
+  const resetRegion = useFilterStore((store) => store.resetRegion);
+  const resetCategories = useFilterStore((store) => store.resetCategories);
   const setRegion = useFilterStore((store) => store.setRegion);
   const mapQueryToRegion = ({
     sidoCode,
@@ -103,7 +103,6 @@ function SearchStore() {
 
   //메인페이지에서 넘어온 url상태 동기화
   useEffect(() => {
-
     if (!hasQueryRegion) return;
 
     const nextRegion = mapQueryToRegion({
@@ -238,14 +237,9 @@ function SearchStore() {
           onClick={() => setIsOpen(!isOpen)}
         ></button>
         <div className={styleSearchStore.filterArea}>
-          <RegionSelector
-            sidoList={sidoList}
-          />
+          <RegionSelector sidoList={sidoList} />
           <div className={styleSearchStore.filterBottomWrap}>
-            <CategoryFilter
-              mode="search"
-              categories={categories}
-            />
+            <CategoryFilter mode="search" categories={categories} />
           </div>
           <div className={styleSearchStore.filterBottomArea}>
             <div className={styleSearchStore.btnWrap}>

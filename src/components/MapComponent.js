@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import iconStar from "../../resources/img/search/iconStar.svg";
 import iconCategory from "../../resources/img/search/iconTag.svg";
 import styleMap from "../../css/Map.module.css";
-import serverUrl from "../../db/server.json";
+import serverUrl from "../db/server.json";
 
 const MAP_KEY = process.env.REACT_APP_KAKAO_MAP_API_KEY;
 const SERVER_URL = serverUrl.SERVER_URL;
@@ -89,7 +89,7 @@ export default function MapComponent({
     const map = mapRef.current;
     if (!map) return;
     if (isSelectedAll) return; // 전국 검색 모드 -> 고정 level(12)
-    if (!isChangedRegion && isInitialCenterSetRef.current) return;  // 범위 내 재검색인 경우
+    if (!isChangedRegion && isInitialCenterSetRef.current) return; // 범위 내 재검색인 경우
 
     // 실행 타이밍 조절 (맵 렌더링 완료 대기)
     const timer = setTimeout(() => {
