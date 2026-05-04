@@ -32,7 +32,7 @@
 - **Zustand** 기반 전역 상태 관리 : 시도/시군구/읍면동 지역과 카테고리 필터 상태를 전역으로 관리하여 컴포넌트 간 상태 공유
 - **TanStack Query를 활용하여 서버 상태와 클라이언트 상태를 분리**하고, 쿼리 키 설계를 통해 데이터 캐싱 및 재사용 구조 구축
 - **URL Query Parameter와 전역 상태(지역, 음식 카테고리 필터)를 동기화**하여 페이지 간 이동 시 검색 조건 유지 및 실제 적용된 검색 조건과 UI 선택 상태 간 불일치 방지
-- 카카오 지도 API 연동 및 MarkerClusterer, CustomOverlay를 활용한 맛집 데이터 시각화
+- [카카오 지도 API 연동 및 MarkerClusterer, CustomOverlay를 활용한 맛집 데이터 시각화](./src/components/MapComponent.js)
 - 지도 idle 이벤트를 사용하여 사용자 인터렉션 기반 뷰포트 범위 내 데이터 재조회 구현 및 
 **범위 내 재검색 버튼**으로 불필요한 데이터 요청 최소화
 - [계층형 지역 선택 구조(시도 → 시군구 → 읍면동)로 불필요한 API 호출 방지 및 잘못된 하위 선택 차단](./src/components/RegionModal.js)
