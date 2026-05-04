@@ -1,4 +1,4 @@
-export const getSearchPath = ({region, location, categories}) => {
+export const getSearchPath = ({region, categories}) => {
     // 파라미터 생성
     const params = new URLSearchParams();
 
@@ -8,9 +8,6 @@ export const getSearchPath = ({region, location, categories}) => {
     if (region?.doName) params.append("doName", String(region.doName).trim());
     if (region?.siName) params.append("siName", String(region.siName).trim());
     if (region?.dongName) params.append("dongName", String(region.dongName).trim());
-
-    if (location.lat) params.append("lat", location.lat); // 위도 추가
-    if (location.lng) params.append("lng", location.lng); // 경도 추가
 
   // 선택된 카테고리들 파라미터에 추가
     if (Array.isArray(categories) && categories.length > 0) {

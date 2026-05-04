@@ -28,9 +28,10 @@ function SearchStore() {
     neMaxLng: 0,
   });
 
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  console.log(location.search);
   const keyword = queryParams.get("keyword");
 
   const selectedSido = useSelectedSido();
@@ -63,7 +64,6 @@ function SearchStore() {
 
   const [viewport, setViewport] = useState(null);
 
-  // const SERVER_URL = serverUrl.SERVER_URL;
   const [isOpen, setIsOpen] = useState(false); //모달 오픈 상태
   const [isMoved, setIsMoved] = useState(false);
   const [isChangedRegion, setIsChangedRegion] = useState(false);
@@ -103,8 +103,6 @@ function SearchStore() {
 
   //메인페이지에서 넘어온 url상태 동기화
   useEffect(() => {
-    // if (!hasQueryRegion) return;
-
     if (hasQueryRegion) {
       const nextRegion = mapQueryToRegion({
         sidoCode: queryParams.get("sido"),
@@ -125,20 +123,16 @@ function SearchStore() {
     }
 
     //카테고리
-    // const isCategoryChanged =
-    //   JSON.stringify([...urlCategoryArray].sort()) !==
-    //   JSON.stringify([...appliedCategories].sort());
-
     if (urlCategoryArray.length > 0) {
       setCategories(urlCategoryArray);
       applyCategories(urlCategoryArray);
     }
   }, [
     location.search,
-    selectedSido,
-    selectedSgg,
-    selectedDong,
-    appliedCategories,
+    // selectedSido,
+    // selectedSgg,
+    // selectedDong,
+    // appliedCategories,
   ]);
 
   useEffect(() => {

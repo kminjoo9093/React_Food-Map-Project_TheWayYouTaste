@@ -3,8 +3,6 @@ import { useGeolocation } from "./useGeolocation";
 import { useRegionByCoords } from "./queries/useRegionByCoords";
 import {
   useFilterStore,
-  useSelectedSgg,
-  useSelectedSido,
 } from "../store/filters";
 
 export default function useInitLocationInfo({ skip }) {
@@ -13,8 +11,6 @@ export default function useInitLocationInfo({ skip }) {
     lat,
     lng,
   });
-  const selectedSido = useSelectedSido();
-  const selectedSgg = useSelectedSgg();
   const setRegion = useFilterStore((store) => store.setRegion);
   const isInitialized = useRef(false);
 
@@ -27,15 +23,7 @@ export default function useInitLocationInfo({ skip }) {
     if (!regionData) return;
     if (isInitialized.current) return;
 
-    if (
-      String(regionData.sidoCode) === String(selectedSido) &&
-      String(regionData.sggCode) === String(selectedSgg)
-    ) {
-      isInitialized.current = true;
-      return;
-    }
-
-    isInitialized.current = true;
+    console.log("regionData 들어옴", regionData);
 
     setRegion({
       selectedSido: regionData.sidoCode,
@@ -45,7 +33,9 @@ export default function useInitLocationInfo({ skip }) {
       sggName: regionData.sggName,
       dongName: "",
     });
-  }, [regionData, skip, selectedSido, selectedSgg]);
+
+    isInitialized.current = true;
+  }, [regionData, skip]); 
 
   return { lat, lng, getCoords };
 }

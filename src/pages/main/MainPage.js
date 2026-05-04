@@ -34,24 +34,26 @@ function MainPage() {
   const navigate = useNavigate();
   const isRegionReady = selectedSido && selectedSgg;
 
-  // useEffect(() => {
-  //   if (!lat && !lng) {
-  //     getCoords();
-  //   }
-  // }, [lat, lng, getCoords]);
+  const searchUrl = getSearchPath({
+    region: {
+      selectedSido,
+      sidoName,
+      selectedSgg,
+      sggName,
+      selectedDong,
+      dongName,
+    },
+    categories: selectedCategories,
+  });
 
-    const searchUrl = getSearchPath({
-      region: {
-        selectedSido,
-        sidoName,
-        selectedSgg,
-        sggName,
-        selectedDong,
-        dongName,
-      },
-      location: { lat, lng },
-      categories: selectedCategories,
-    });
+  console.log(selectedSido, selectedSgg);
+
+  const handleSearchClick = () => {
+    if (!selectedSido || !selectedSgg) {
+      alert("위치를 불러오는 중입니다.");
+      return;
+    }
+  };
 
   //검색
   const handleSearch = (e) => {
@@ -97,7 +99,7 @@ function MainPage() {
 
           <div className={styleMain.iconRight}>
             <div className={styleMain.iconSearch}>
-              <Link to={searchUrl}>🔍검색</Link>
+              <Link to={searchUrl} onClick={handleSearchClick}>🔍검색</Link>
             </div>
           </div>
         </div>
