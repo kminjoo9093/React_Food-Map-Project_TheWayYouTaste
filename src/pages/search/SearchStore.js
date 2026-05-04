@@ -17,6 +17,7 @@ import {
 } from "../../store/filters";
 import { useStoresByCondition } from "../../hooks/queries/useStoresByCondition";
 import { useStoresByViewport } from "../../hooks/queries/useStoresByViewport";
+import StoreItem from "../../components/StoreItem";
 
 function SearchStore() {
   const { categories, sidoList } = useContext(AppDataContext);
@@ -62,7 +63,7 @@ function SearchStore() {
 
   const [viewport, setViewport] = useState(null);
 
-  const SERVER_URL = serverUrl.SERVER_URL;
+  // const SERVER_URL = serverUrl.SERVER_URL;
   const [isOpen, setIsOpen] = useState(false); //모달 오픈 상태
   const [isMoved, setIsMoved] = useState(false);
   const [isChangedRegion, setIsChangedRegion] = useState(false);
@@ -76,14 +77,13 @@ function SearchStore() {
     queryParams.get("dong");
 
   //지도 검색 페이지에서 초기 sgg기반 리스트
-  const { lat, lng, getLocation } = useInitLocationInfo({
+  const { lat, lng, getCoords } = useInitLocationInfo({
     skip: !!hasQueryRegion,
   });
 
   // URL에서 카테고리 가져오기
   const paramCategories = queryParams.get("categories");
 
-  // URL에 있으면 배열로 변환, 없으면 빈 배열
   const urlCategoryArray = useMemo(() => {
     return paramCategories ? paramCategories.split(",") : [];
   }, [paramCategories]);
@@ -103,30 +103,33 @@ function SearchStore() {
 
   //메인페이지에서 넘어온 url상태 동기화
   useEffect(() => {
-    if (!hasQueryRegion) return;
+    // if (!hasQueryRegion) return;
 
-    const nextRegion = mapQueryToRegion({
-      sidoCode: queryParams.get("sido"),
-      sggCode: queryParams.get("sgg"),
-      dongCode: queryParams.get("dong"),
-      sidoName: queryParams.get("doName"),
-      sggName: queryParams.get("siName"),
-      dongName: queryParams.get("dongName"),
-    });
-    if (
-      nextRegion.selectedSido !== selectedSido ||
-      nextRegion.selectedSgg !== selectedSgg ||
-      nextRegion.selectedDong !== selectedDong
-    ) {
-      setRegion(nextRegion);
+    if (hasQueryRegion) {
+      const nextRegion = mapQueryToRegion({
+        sidoCode: queryParams.get("sido"),
+        sggCode: queryParams.get("sgg"),
+        dongCode: queryParams.get("dong"),
+        sidoName: queryParams.get("doName"),
+        sggName: queryParams.get("siName"),
+        dongName: queryParams.get("dongName"),
+      });
+
+      if (
+        nextRegion.selectedSido !== selectedSido ||
+        nextRegion.selectedSgg !== selectedSgg ||
+        nextRegion.selectedDong !== selectedDong
+      ) {
+        setRegion(nextRegion);
+      }
     }
 
     //카테고리
-    const isCategoryChanged =
-      JSON.stringify([...urlCategoryArray].sort()) !==
-      JSON.stringify([...appliedCategories].sort());
+    // const isCategoryChanged =
+    //   JSON.stringify([...urlCategoryArray].sort()) !==
+    //   JSON.stringify([...appliedCategories].sort());
 
-    if (urlCategoryArray.length > 0 && isCategoryChanged) {
+    if (urlCategoryArray.length > 0) {
       setCategories(urlCategoryArray);
       applyCategories(urlCategoryArray);
     }
@@ -166,8 +169,9 @@ function SearchStore() {
   const filteredStoreList = useMemo(() => {
     if (appliedCategories.length === 0) return baseList;
 
+    console.log(appliedCategories);
     return baseList.filter((record) =>
-      appliedCategories.includes(record.storeCatName),
+      appliedCategories.includes(record.storeCatNo),
     );
   }, [baseList, appliedCategories]);
 
@@ -210,7 +214,7 @@ function SearchStore() {
     setIsSelectedAll(false);
     setIsChangedRegion(true);
 
-    getLocation();
+    getCoords();
   };
 
   useEffect(() => {
@@ -264,40 +268,7 @@ function SearchStore() {
             <>
               <ul className={styleSearchStore.storeList}>
                 {viewStoreItems.map((record) => (
-                  <li
-                    key={record.bplcSn}
-                    className={styleSearchStore.storeListItem}
-                  >
-                    <Link
-                      to={`/store/storeDetail?storeId=${record.bplcSn}`}
-                      className={styleSearchStore.storeListLink}
-                    >
-                      <img
-                        className={styleSearchStore.storeImg}
-                        src={`${SERVER_URL}${record.bplcPhoto}`}
-                        alt="store"
-                      />
-                      <div className={styleSearchStore.storeInfo}>
-                        <h2 className={styleSearchStore.storeName}>
-                          {record.bplcNm}
-                        </h2>
-                        <div className={styleSearchStore.avgNCat}>
-                          <span className={styleSearchStore.storeRating}>
-                            {record.avg}
-                          </span>
-                          <span className={styleSearchStore.storeCategory}>
-                            {record.storeCatName}
-                          </span>
-                        </div>
-                        <span className={styleSearchStore.storeTime}>
-                          {record.bgngTm}-{record.ddlnTm}
-                        </span>
-                        <span className={styleSearchStore.storeAddress}>
-                          {record.address}
-                        </span>
-                      </div>
-                    </Link>
-                  </li>
+                  <StoreItem store={record}/>
                 ))}
               </ul>
               <Pagination

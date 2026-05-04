@@ -16,47 +16,50 @@ import {
   useSggName,
   useSidoName,
 } from "../../store/filters";
-import { useGeolocation } from "../../hooks/useGeolocation";
+import useInitLocationInfo from "../../hooks/useInitLocationInfo";
 
 function MainPage() {
   const { categories, sidoList } = useContext(AppDataContext);
-  const { lat, lng, getLocation } = useGeolocation();
+  const { lat, lng, getCoords } = useInitLocationInfo({ skip: false });
   const selectedSido = useSelectedSido();
   const selectedSgg = useSelectedSgg();
   const selectedDong = useSelectedDong();
   const sidoName = useSidoName();
   const sggName = useSggName();
   const dongName = useDongName();
-  const selectedCategories = useFilterStore((store)=>store.selectedCategories);
-  const [searchTerm, setSearchTerm] = useState(""); // 검색어
+  const selectedCategories = useFilterStore(
+    (store) => store.selectedCategories,
+  );
+  const [keyword, setKeyword] = useState("");
   const navigate = useNavigate();
+  const isRegionReady = selectedSido && selectedSgg;
 
-  useEffect(() => {
-    if (!lat && !lng) {
-      getLocation();
-    }
-  }, [lat, lng, getLocation]);
+  // useEffect(() => {
+  //   if (!lat && !lng) {
+  //     getCoords();
+  //   }
+  // }, [lat, lng, getCoords]);
 
-  const searchUrl = getSearchPath({
-    region: {
-      selectedSido,
-      sidoName,
-      selectedSgg,
-      sggName,
-      selectedDong,
-      dongName,
-    },
-    location: { lat, lng },
-    categories: selectedCategories,
-  });
+    const searchUrl = getSearchPath({
+      region: {
+        selectedSido,
+        sidoName,
+        selectedSgg,
+        sggName,
+        selectedDong,
+        dongName,
+      },
+      location: { lat, lng },
+      categories: selectedCategories,
+    });
 
   //검색
   const handleSearch = (e) => {
     if (e.key === "Enter" || e.type === "click") {
-      if (!searchTerm.trim()) return;
+      if (!keyword.trim()) return;
       // 검색어를 포함하여 SearchStore 페이지로 이동
-      navigate(`/search/store?keyword=${encodeURIComponent(searchTerm)}`);
-      setSearchTerm(""); // 입력창 초기화
+      navigate(`/search/store?keyword=${encodeURIComponent(keyword)}`);
+      setKeyword(""); // 입력창 초기화
     }
   };
 
@@ -73,9 +76,9 @@ function MainPage() {
             type="text"
             placeholder="지역, 음식 또는 식당명을 검색하세요"
             className={styleHeader.searchInput}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)} // 값 변경 감지
-            onKeyDown={handleSearch} // 엔터키
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            onKeyDown={handleSearch}
           />
           <img
             src={searchIcon}
@@ -89,13 +92,8 @@ function MainPage() {
           <h3 style={{ fontSize: "2.4rem" }}>
             원하시는 식당 유형을 선택해 주세요
           </h3>
-          <RegionSelector
-            sidoList={sidoList}
-          />
-          <CategoryFilter
-            mode="main"
-            categories={categories}
-          />
+          <RegionSelector sidoList={sidoList} />
+          <CategoryFilter mode="main" categories={categories} />
 
           <div className={styleMain.iconRight}>
             <div className={styleMain.iconSearch}>

@@ -43,8 +43,6 @@ function TheWayYouTaste() {
   const [registerAdmin, setRegisterAdmin] = useState([]);
   const [memberNotices, setMemberNotices] = useState([]);
   const isAdmin = user?.authrtYn === "Y";
-  // const [storeCategories, setStoreCategories] = useState([]);
-  // const [sidoList, setSidoList] = useState([]);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -62,18 +60,8 @@ function TheWayYouTaste() {
       try {
         /* 공통 정보 */
         const noticesRes = await fetch(`${SERVER_URL}/youtaste/notice`);
-        // const storeCategoriesRes = await fetch(`${SERVER_URL}/youtaste/search`);
-        // const storeCategoriesRes = await fetch(`${SERVER_URL}/category`);
-        // const sidoListRes = await fetch(`${SERVER_URL}/youtaste/search/sido`);
-        // const sidoListRes = await fetch(`${SERVER_URL}/sido`);
         const noticesData = noticesRes.ok ? await noticesRes.json() : [];
-        // const storeCategoryData = storeCategoriesRes.ok
-        //   ? await storeCategoriesRes.json()
-        //   : [];
-        // const sidoListData = sidoListRes.ok ? await sidoListRes.json() : [];
         setNotices(noticesData);
-        // setStoreCategories(storeCategoryData);
-        // setSidoList(sidoListData);
 
         /* 로그인했을때 불러올 정보 */
         if (user) {

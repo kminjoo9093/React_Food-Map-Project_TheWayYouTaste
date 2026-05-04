@@ -6,7 +6,7 @@ export async function fetchRegionByCoords({ lat, lng }) {
   const response = await fetch(localUrl, { headers });
   const data = await response.json();
   
-  if (!data.documents && data.documents.length === 0) return null;
+  if (!data.documents || data.documents.length === 0) return null;
 
   const regionInfo = data.documents[0];
   const sggCode = regionInfo.code.slice(0, 5);
