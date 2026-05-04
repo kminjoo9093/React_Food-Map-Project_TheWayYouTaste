@@ -4,7 +4,7 @@ export function useGeolocation() {
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
 
-  const getLocation = useCallback(() => {
+  const getCoords = useCallback(() => {
     navigator.geolocation.getCurrentPosition(async (position) => {
       const { latitude, longitude } = position.coords;
       setLat(latitude);
@@ -12,5 +12,5 @@ export function useGeolocation() {
     });
   }, []);
 
-  return { lat, lng, getLocation };
+  return { lat, lng, getCoords };
 }

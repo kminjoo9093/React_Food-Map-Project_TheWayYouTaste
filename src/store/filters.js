@@ -57,24 +57,14 @@ export const useFilterStore = create((set) => ({
 
   setCategories: (categories) => set({ selectedCategories: categories }),
   applyCategories: (categories) => set({ appliedCategories: categories }),
-  toggleCategories: (categoryId) =>
+  toggleCategories: (storeCatNo) =>
     set((state) => ({
-      selectedCategories: state.selectedCategories.includes(categoryId)
-        ? state.selectedCategories.filter((id) => id !== categoryId)
-        : [...state.selectedCategories, categoryId],
+      selectedCategories: state.selectedCategories.includes(storeCatNo)
+        ? state.selectedCategories.filter((id) => id !== storeCatNo)
+        : [...state.selectedCategories, storeCatNo],
     })),
   resetCategories: () => set({ selectedCategories: [], appliedCategories: [] }),
 }));
-
-// export const useRegionCode = () =>
-//   useFilterStore(
-//     (store) => ({
-//       selectedSido: store.selectedSido,
-//       selectedSgg: store.selectedSgg,
-//       selectedDong: store.selectedDong,
-//     }),
-//     shallow,
-//   );
 
 export const useSelectedSido = () =>
   useFilterStore((store) => store.selectedSido);
@@ -86,18 +76,6 @@ export const useSidoName = () => useFilterStore((store) => store.sidoName);
 export const useSggName = () => useFilterStore((store) => store.sggName);
 export const useDongName = () => useFilterStore((store) => store.dongName);
 
-// export const useRegionName = () =>
-//   useFilterStore((store) => ({
-//     sidoName: store.sidoName,
-//     sggName: store.sggName,
-//     dongName: store.dongName,
-//   }));
-
-// export const useCategories = () =>
-//   useFilterStore((store) => ({
-//     selectedCategories: store.selectedCategories,
-//     appliedCategories: store.appliedCategories,
-//   }));
 
 export const useCategoryActions = () =>
   useFilterStore((store) => ({

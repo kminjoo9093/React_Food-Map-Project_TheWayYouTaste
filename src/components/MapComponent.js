@@ -8,9 +8,9 @@ import {
 } from "react-kakao-maps-sdk";
 import { useKakaoLoader } from "react-kakao-maps-sdk";
 import { Link } from "react-router-dom";
-import iconStar from "../../resources/img/search/iconStar.svg";
-import iconCategory from "../../resources/img/search/iconTag.svg";
-import styleMap from "../../css/Map.module.css";
+import iconStar from "../resources/img/search/iconStar.svg";
+import iconCategory from "../resources/img/search/iconTag.svg";
+import styleMap from "../css/Map.module.css";
 import serverUrl from "../db/server.json";
 
 const MAP_KEY = process.env.REACT_APP_KAKAO_MAP_API_KEY;
@@ -63,7 +63,7 @@ export default function MapComponent({
     if (storeList && storeList.length > 0) {
       storeList.forEach((store) => {
         const sLat = parseFloat(store.lat);
-        const sLng = parseFloat(store.lot);
+        const sLng = parseFloat(store.lng);
         if (!isNaN(sLat) && !isNaN(sLng)) {
           bounds.extend(new window.kakao.maps.LatLng(sLat, sLng));
           hasValidPoint = true;
@@ -154,7 +154,7 @@ export default function MapComponent({
               key={store.bplcSn}
               position={{
                 lat: parseFloat(store.lat),
-                lng: parseFloat(store.lot),
+                lng: parseFloat(store.lng),
               }}
               title={store.bplcNm}
               onClick={() => setOpenMarkerId(store.bplcSn)}
@@ -165,7 +165,7 @@ export default function MapComponent({
                 key={`overlay-${store.bplcSn}`}
                 position={{
                   lat: parseFloat(store.lat),
-                  lng: parseFloat(store.lot),
+                  lng: parseFloat(store.lng),
                 }}
                 yAnchor={1.25}
                 zIndex={1000}

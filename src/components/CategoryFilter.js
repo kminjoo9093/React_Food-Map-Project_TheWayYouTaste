@@ -11,12 +11,11 @@ const foodIcons = {
   c07: "🍗",
   c08: "🍩",
 };
-export default function CategoryFilter({
-  categories,
-  mode,
-}) {
-  const selectedCategories = useFilterStore((store)=>store.selectedCategories);
-  const toggleCategories = useFilterStore((store)=>store.toggleCategories);
+export default function CategoryFilter({ categories, mode }) {
+  const selectedCategories = useFilterStore(
+    (store) => store.selectedCategories,
+  );
+  const toggleCategories = useFilterStore((store) => store.toggleCategories);
   const filterClass =
     mode === "main" ? styleCategory.mainMode : styleCategory.searchMode;
 
@@ -27,11 +26,11 @@ export default function CategoryFilter({
           <button
             type="button"
             className={
-              selectedCategories.includes(category.storeCatName)
+              selectedCategories.includes(category.storeCatNo)
                 ? styleCategory.active
                 : ""
             }
-            onClick={() => toggleCategories(category.storeCatName)}
+            onClick={() => toggleCategories(category.storeCatNo)}
           >
             <span className={styleCategory.categoryEmoji}>
               {foodIcons[category.storeCatNo] || "🍴"}

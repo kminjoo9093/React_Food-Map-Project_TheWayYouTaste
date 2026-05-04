@@ -8,7 +8,7 @@ import {
 } from "../store/filters";
 
 export default function useInitLocationInfo({ skip }) {
-  const { lat, lng, getLocation } = useGeolocation();
+  const { lat, lng, getCoords } = useGeolocation();
   const { data: regionData, isLoading: regionLoading } = useRegionByCoords({
     lat,
     lng,
@@ -19,8 +19,8 @@ export default function useInitLocationInfo({ skip }) {
   const isInitialized = useRef(false);
 
   useEffect(() => {
-    getLocation();
-  }, []);
+    getCoords();
+  }, [getCoords]);
 
   useEffect(() => {
     if (skip) return;
@@ -37,7 +37,6 @@ export default function useInitLocationInfo({ skip }) {
 
     isInitialized.current = true;
 
-    console.log("세팅시도!?");
     setRegion({
       selectedSido: regionData.sidoCode,
       selectedSgg: regionData.sggCode,
@@ -48,5 +47,5 @@ export default function useInitLocationInfo({ skip }) {
     });
   }, [regionData, skip, selectedSido, selectedSgg]);
 
-  return { lat, lng, getLocation };
+  return { lat, lng, getCoords };
 }
