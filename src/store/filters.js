@@ -35,11 +35,11 @@ export const useFilterStore = create((set) => ({
       selectedDong: dongCd,
       dongName: dongNm || "",
     }),
-  setRegion: ({ sidoCode, sggCode, dongCode, sidoName, sggName, dongName }) =>
+  setRegion: ({ selectedSido, selectedSgg, selectedDong, sidoName, sggName, dongName }) =>
     set({
-      selectedSido: sidoCode,
-      selectedSgg: sggCode,
-      selectedDong: dongCode,
+      selectedSido,
+      selectedSgg,
+      selectedDong,
       sidoName,
       sggName,
       dongName,
