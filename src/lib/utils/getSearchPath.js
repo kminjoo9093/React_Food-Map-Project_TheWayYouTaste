@@ -1,6 +1,8 @@
-export const getSearchPath = ({region, categories}) => {
+export const getSearchPath = ({region, categories, keyword}) => {
     // 파라미터 생성
     const params = new URLSearchParams();
+
+    if(keyword) params.append("keyword", String(keyword.trim()));
 
     if (region?.selectedSido) params.append("sido", String(region.selectedSido).trim());
     if (region?.selectedSgg) params.append("sgg", String(region.selectedSgg).trim());

@@ -19,7 +19,7 @@ export function getStoreListByCondition(param) {
   // return getData("/store");
 
   if (keyword) {
-    return getData(`/youtaste/search/store/keyword?name=${keyword}`);
+    return getData(`/store?bplcNm=${encodeURIComponent(keyword)}`);
   }
   if (dongCode) {
     return getData(`/store?dongCd=${dongCode}`);

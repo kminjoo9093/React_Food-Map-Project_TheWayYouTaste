@@ -1,26 +1,28 @@
 .bigContainer {
-  height: calc(100vh - (15rem + 37rem));
+  height: auto;
+  min-height: calc(100vh - (15rem + 37rem));
+  padding-block: 4rem;
   background-image: url("../resources/img/system/main.png");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   position: relative;
   overflow: hidden;
-  display: flex; /* 중앙 정렬을 위해 추가 */
+  display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 0; /* 기준점 설정 */
+  z-index: 0;
 }
 .bigContainer::before {
   content: "";
-  position: absolute; /* fixed -> absolute */
+  position: absolute; 
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(5px);
-  z-index: 1; /*내용보다 위로*/
+  z-index: 1;
 }
 
 .bigContainer > * {
@@ -53,10 +55,10 @@ h4 {
   position: relative;
   z-index: 1;
   margin: 0 auto;
-  padding: 6rem 4rem; /* 내부 여백 확대 */
-  width: 70vw; /* 고정폭 혹은 넓은 비율 */
+  padding: 6rem 4rem; 
+  width: 70vw; 
   max-width: 100rem;
-  height: auto; /* 내용에 따라 늘어나되 최소 높이 지정 */
+  height: auto; 
   min-height: 55rem;
   justify-items: center;
   background: rgba(255, 255, 255, 0.8);
@@ -152,7 +154,6 @@ h4 {
   bottom: -45px;
 }
 .iconSearch {
-  /* background-color: #FF8F00; */
   background-color: #ffab15;
   border: none;
   color: white;
@@ -259,9 +260,6 @@ h4 {
   font-size: 15px;
 }
 
-.bigContainer .mobSearch {
-  display: none;
-}
 .dd {
   display: none;
 }
@@ -269,18 +267,10 @@ h4 {
 /* 태블릿 */
 @media (max-width: 1023px) {
   .bigContainer {
-    height: calc(100vh - 7rem - 37rem);
+    min-height: calc(100vh - (7rem + 37rem));
   }
   .mobContentWrap {
     border: 2px solid blue;
-  }
-  .bigContainer .mobSearch {
-    display: flex;
-    margin-top: 6rem;
-    width: 80%;
-    max-width: 60rem;
-    align-items: center;
-    justify-content: space-between;
   }
   .mainContainer {
     width: 80%;
@@ -297,16 +287,6 @@ h4 {
   .bigContainer::before {
     background-color: rgba(255, 255, 255, 0.5);
   }
-  .bigContainer .mobSearch {
-    padding-inline: 2rem;
-  }
-  .bigContainer .mobSearch input {
-    padding-inline: 1rem;
-  }
-  .bigContainer .mobSearch img {
-    width: 1.8rem;
-    height: auto;
-  }
   .mainContainer {
     padding-top: 5rem;
     padding-inline: 1.5rem;
@@ -319,9 +299,7 @@ h4 {
   .typeTitle {
     font-size: 2rem;
   }
-  .mobSearch {
-    width: 70%;
-  }
+
   .iconRight {
     justify-items: right;
     margin-bottom: 0;
