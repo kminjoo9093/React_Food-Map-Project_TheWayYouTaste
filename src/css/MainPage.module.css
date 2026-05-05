@@ -1,6 +1,5 @@
 .bigContainer {
-  height: 90vw;
-  max-height: 120rem;
+  height: calc(100vh - (15rem + 37rem));
   background-image: url("../resources/img/system/main.png");
   background-size: cover;
   background-position: center;
@@ -19,7 +18,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255,255,255,0.3);
+  background-color: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(5px);
   z-index: 1; /*내용보다 위로*/
 }
@@ -27,7 +26,6 @@
 .bigContainer > * {
   position: relative; /* 내용이 overlay 위에 나오도록 */
   z-index: 1;
-
 }
 
 .mainFont {
@@ -39,19 +37,19 @@
   color: black;
   text-shadow:
     0px 6px 8px #ffd180,
-    /* 6px 6px 8px rgba(247, 169, 106, 0.8), */
-    0 0 20px rgba(255, 255, 255, 0.5);
+    /* 6px 6px 8px rgba(247, 169, 106, 0.8), */ 0 0 20px
+      rgba(255, 255, 255, 0.5);
 }
 
-h1{
-  margin : 50px 0px;
+h1 {
+  margin: 50px 0px;
 }
 
-h4{
+h4 {
   margin-bottom: 0px;
 }
 
-.mainContainer{
+.mainContainer {
   position: relative;
   z-index: 1;
   margin: 0 auto;
@@ -62,13 +60,13 @@ h4{
   min-height: 55rem;
   justify-items: center;
   background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0px 0.6rem 1.8rem rgba(0,0,0,0.08);
-  
+  box-shadow: 0px 0.6rem 1.8rem rgba(0, 0, 0, 0.08);
+
   text-align: center;
   align-items: center;
   border-radius: 0.4rem;
 }
-.typeTitle{
+.typeTitle {
   font-size: 2.4rem;
   margin-bottom: 4rem;
 }
@@ -77,8 +75,8 @@ h4{
   font-size: 20px;
   font-weight: bold;
 }
-.mainContainer p{
-  margin : 0px;
+.mainContainer p {
+  margin: 0px;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -153,7 +151,7 @@ h4{
   opacity: 1;
   bottom: -45px;
 }
-.iconSearch{
+.iconSearch {
   /* background-color: #FF8F00; */
   background-color: #ffab15;
   border: none;
@@ -161,7 +159,7 @@ h4{
   font-size: 18px;
   border-radius: 25px;
   cursor: pointer;
-  box-shadow: 0 5px 10px #FFB74D;
+  box-shadow: 0 5px 10px #ffb74d;
   transition: background-color 0.3s ease;
 }
 .iconSearch:hover {
@@ -169,8 +167,8 @@ h4{
   box-shadow: 0 15px 30px rgba(255, 143, 0, 0.5);
 }
 
-.iconSearch a{
-  color : black;
+.iconSearch a {
+  color: black;
   display: block;
   width: 14rem;
   height: 5.6rem;
@@ -178,8 +176,8 @@ h4{
   text-decoration: none;
 }
 
-.titleBox{
-  width : 90%;
+.titleBox {
+  width: 90%;
   text-align: left;
   margin: 0px;
 }
@@ -191,7 +189,7 @@ h4{
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.55);
+  background: rgba(0, 0, 0, 0.55);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -257,27 +255,26 @@ h4{
   background: #e67c00;
 }
 
-.regionColumn p{
+.regionColumn p {
   font-size: 15px;
 }
 
-.bigContainer .mobSearch{
+.bigContainer .mobSearch {
   display: none;
 }
-.dd{
+.dd {
   display: none;
 }
 
 /* 태블릿 */
-@media (max-width: 1023px){ 
-  .bigContainer{
-    height: 110vw;
-    min-height: 90vh;
+@media (max-width: 1023px) {
+  .bigContainer {
+    height: calc(100vh - 7rem - 37rem);
   }
-  .mobContentWrap{
+  .mobContentWrap {
     border: 2px solid blue;
   }
-  .bigContainer .mobSearch{
+  .bigContainer .mobSearch {
     display: flex;
     margin-top: 6rem;
     width: 80%;
@@ -285,33 +282,33 @@ h4{
     align-items: center;
     justify-content: space-between;
   }
-  .mainContainer{
+  .mainContainer {
     width: 80%;
     margin-block: 5rem;
     padding-top: 10rem;
   }
-  .mainFont{
+  .mainFont {
     display: none;
   }
 }
 
 /* 모바일 세로, 가로 */
-@media (max-width: 767px){
+@media (max-width: 767px) {
   .bigContainer::before {
-    background-color: rgba(255,255,255,0.5);
+    background-color: rgba(255, 255, 255, 0.5);
   }
-  .bigContainer .mobSearch{
+  .bigContainer .mobSearch {
     padding-inline: 2rem;
-  } 
-  .bigContainer .mobSearch input{
+  }
+  .bigContainer .mobSearch input {
     padding-inline: 1rem;
   }
-  .bigContainer .mobSearch img{
+  .bigContainer .mobSearch img {
     width: 1.8rem;
     height: auto;
   }
-  .mainContainer{
-    padding-top: 5rem; 
+  .mainContainer {
+    padding-top: 5rem;
     padding-inline: 1.5rem;
     margin: 0;
     width: 100%;
@@ -319,10 +316,10 @@ h4{
     background: transparent;
     box-shadow: none;
   }
-  .typeTitle{
+  .typeTitle {
     font-size: 2rem;
   }
-  .mobSearch{
+  .mobSearch {
     width: 70%;
   }
   .iconRight {

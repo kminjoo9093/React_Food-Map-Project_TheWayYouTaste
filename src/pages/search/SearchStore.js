@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState, useRef } from "react";
 import Pagination from "../Pagination";
 import MapComponent from "../../components/MapComponent";
 import CategoryFilter from "../../components/CategoryFilter";
-import serverUrl from "../../db/server.json";
 import useInitLocationInfo from "../../hooks/useInitLocationInfo";
 import { useContext } from "react";
 import { AppDataContext } from "../../context/AppDataProvider";
@@ -129,10 +128,6 @@ function SearchStore() {
     }
   }, [
     location.search,
-    // selectedSido,
-    // selectedSgg,
-    // selectedDong,
-    // appliedCategories,
   ]);
 
   useEffect(() => {
