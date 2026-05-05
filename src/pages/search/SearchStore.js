@@ -125,24 +125,22 @@ function SearchStore() {
       setCategories(urlCategoryArray);
       applyCategories(urlCategoryArray);
     }
-  }, [
-    location.search,
-  ]);
+  }, [location.search]);
 
   useEffect(() => {
     setIsChangedRegion(true);
     setIsSearchViewport(false);
   }, [keyword, selectedSido, selectedSgg, selectedDong]);
 
-  const { data: viewportStoreList, refetch: getStoreListByViewport } =
+  const { data: viewportStoreList } =
     useStoresByViewport(viewport);
 
+  console.log("viewport:", viewport);
   // 범위 내 재검색 함수
   const handleSearchViewportArea = () => {
     const currentArea = positionAreaRef.current;
-    if (!currentArea || currentArea.swMinLat === 0) return;
+    if (!currentArea) return;
     setViewport(currentArea);
-    getStoreListByViewport();
 
     setIsSearchViewport(true);
     setIsChangedRegion(false);
@@ -256,7 +254,7 @@ function SearchStore() {
             <>
               <ul className={styleSearchStore.storeList}>
                 {viewStoreItems.map((record) => (
-                  <StoreItem store={record}/>
+                  <StoreItem store={record} />
                 ))}
               </ul>
               <Pagination

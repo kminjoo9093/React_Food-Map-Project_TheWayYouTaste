@@ -6,6 +6,6 @@ export function useStoresByViewport(area){
   return useQuery({
     queryFn: () => getStoreListByViewport(area),
     queryKey: QUERY_KEYS.stores.viewport(area),
-    enabled: false, //버튼 클릭 시 실행
+    enabled: !!area, 
   })
 }
