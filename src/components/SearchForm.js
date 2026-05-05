@@ -1,0 +1,67 @@
+import { useNavigate } from "react-router-dom";
+import style from "../css/SearchForm.module.css";
+import searchIcon from "../resources/img/system/search.png";
+import { useState } from "react";
+import {
+  useDongName,
+  useFilterStore,
+  useSelectedDong,
+  useSelectedSgg,
+  useSelectedSido,
+  useSggName,
+  useSidoName,
+} from "../store/filters";
+import { getSearchPath } from "../lib/utils/getSearchPath";
+
+export default function SearchForm({ device }) {
+  const [keyword, setKeyword] = useState("");
+  const navigate = useNavigate();
+  const mode = device === "mobile" ? style.mob : style.pc;
+
+  const selectedSido = useSelectedSido();
+  const selectedSgg = useSelectedSgg();
+  const selectedDong = useSelectedDong();
+  const sidoName = useSidoName();
+  const sggName = useSggName();
+  const dongName = useDongName();
+  const selectedCategories = useFilterStore(
+    (store) => store.selectedCategories,
+  );
+
+  const searchUrl = getSearchPath({
+    region: {
+      selectedSido,
+      sidoName,
+      selectedSgg,
+      sggName,
+      selectedDong,
+      dongName,
+    },
+    categories: selectedCategories,
+    keyword: keyword,
+  });
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (!keyword) return;
+    navigate(searchUrl);
+    setKeyword("");
+  };
+
+  return (
+    <div className={`${style.searchContainer} ${mode}`}>
+      <form onSubmit={handleSearch} className={style.searchForm}>
+        <input
+          type="text"
+          placeholder="식당명을 검색하세요"
+          className={style.searchInput}
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+        />
+        <button className={style.searchBtn}>
+          <img src={searchIcon} alt="검색하기 버튼" />
+        </button>
+      </form>
+    </div>
+  );
+}

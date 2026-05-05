@@ -30,7 +30,6 @@ function SearchStore() {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  console.log(location.search);
   const keyword = queryParams.get("keyword");
 
   const selectedSido = useSelectedSido();

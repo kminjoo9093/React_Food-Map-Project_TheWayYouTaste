@@ -1,8 +1,8 @@
 import styleHeader from "../css/Header.module.css";
 import styleSidebar from "../css/sidebar.module.css"
 import { useState, useEffect } from "react";
-import { Link, useNavigate, NavLink } from "react-router-dom";
-import searchIcon from "../resources/img/system/search.png";
+import { Link, NavLink } from "react-router-dom";
+import SearchForm from "../components/SearchForm";
 
 function Header(){
 
@@ -10,8 +10,6 @@ function Header(){
     const [openMyMenu, setOpenMyMenu] = useState(false);
     const [isLogin, setIsLogin] = useState(false); 
     const [user, setUser] = useState(null); 
-    const [searchTerm, setSearchTerm] = useState(""); 
-    const navigate = useNavigate();
 
     //모바일 메뉴 버튼 state
     const [openMobMenu, setOpenMobMenu] = useState(false);
@@ -23,15 +21,6 @@ function Header(){
             setIsLogin(true);
         }
     }, []);
-
-
-    const handleSearch = (e) => {
-        if (e.key === "Enter" || e.type === "click") {
-            if (!searchTerm.trim()) return;
-            navigate(`/search/store?keyword=${encodeURIComponent(searchTerm)}`);
-            setSearchTerm("");
-        }
-    };
 
     function handleLoginState(){
         if(isLogin){
@@ -56,18 +45,7 @@ function Header(){
                         <Link to = "/main"> 니맛대로 </Link>    
                     </h1>
                     {/* PC */}
-                    <div className={styleHeader.searchContainer}>
-                        <input type="text" placeholder="지역, 음식 또는 식당명을 검색하세요" className={styleHeader.searchInput} 
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)} 
-                            onKeyDown={handleSearch} 
-                        /> 
-                        <img src={searchIcon} 
-                        alt="search" 
-                        onClick={handleSearch} // 돋보기 클릭 감지
-                        style={{ cursor: "pointer" }}
-                    />
-                    </div>
+                    <SearchForm device={"pc"}/>
                     <div className={styleHeader.rightMenu}>
                         {handleLoginState()}
                     </div>
