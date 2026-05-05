@@ -1,202 +1,194 @@
-@font-face {
-    font-family: 'NexonLv1Gothic';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff');
-    font-weight: normal;
-    font-display: swap;
-}
-
-body {
-    margin: 0;
-    font-family: 'NexonLv1Gothic', sans-serif;
-}
-
 /* Header 전체 컨테이너 */
 header {
-    position: fixed;
-    top: 0;
-    width: 100vw;
-    height: auto;
-    background-color: #ffffff; 
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08); /* 하단 은은한 그림자 */
-    z-index: 1000;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 15rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08); /* 하단 은은한 그림자 */
+  z-index: 1000;
 }
 /* 상단 로고 & 검색창 영역 */
 .headerTop {
-    max-width: 120rem;
-    height: 10rem;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 3rem;
-    border-bottom: 1px solid #f0f0f0;
+  max-width: 120rem;
+  height: 10rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3rem;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 /* 로고 스타일 업그레이드 */
 .logo {
-    font-size: 3.2rem;
-    font-weight: 900;
-    letter-spacing: -1px;
+  font-size: 3.2rem;
+  font-weight: 900;
+  letter-spacing: -1px;
 }
 
 .logo a {
-    color: #ffab15;
-    text-shadow: 1px 1px 0px rgba(255, 171, 21, 0.2);
-    transition: transform 0.3s ease;
-    display: inline-block;
+  color: #ffab15;
+  text-shadow: 1px 1px 0px rgba(255, 171, 21, 0.2);
+  transition: transform 0.3s ease;
+  display: inline-block;
 }
 
 .logo a:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 /* 검색창 디자인 보강 (가장 중요) */
 .searchContainer {
-    display: flex;
-    align-items: center;
-    width: 50%;
-    max-width: 55rem;
-    background: #f8f9fa; /* 배경색 살짝 깔기 */
-    border: 1.5px solid #eee; /* 테두리 추가 */
-    border-radius: 50px;
-    padding: 10px 25px;
-    transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  width: 50%;
+  max-width: 55rem;
+  background: #f8f9fa; /* 배경색 살짝 깔기 */
+  border: 1.5px solid #eee; /* 테두리 추가 */
+  border-radius: 50px;
+  padding: 10px 25px;
+  transition: all 0.3s ease;
 }
 
 .searchContainer:focus-within {
-    background: white;
-    border-color: #ffab15;
-    box-shadow: 0 4px 12px rgba(255, 171, 21, 0.15);
+  background: white;
+  border-color: #ffab15;
+  box-shadow: 0 4px 12px rgba(255, 171, 21, 0.15);
 }
 
 .searchContainer input {
-    flex: 1;
-    height: 3rem;
-    border: none !important; /* 인라인 스타일 제거용 */
-    outline: none;
-    font-size: 1.6rem;
-    color: #333;
+  flex: 1;
+  height: 3rem;
+  border: none !important; /* 인라인 스타일 제거용 */
+  outline: none;
+  font-size: 1.6rem;
+  color: #333;
 }
 
 .searchContainer img {
-    width: 22px;
-    height: 22px;
-    opacity: 0.6;
-    /* transition: opacity 0.3s; */
+  width: 22px;
+  height: 22px;
+  opacity: 0.6;
+  /* transition: opacity 0.3s; */
 }
 
 .searchContainer img:hover {
-    opacity: 1;
+  opacity: 1;
 }
-.searchInput{
-    border: none;
-    background-color: #f8f9fa;
-    transition: all 0.3s ease;
+.searchInput {
+  border: none;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
 }
- .searchInput:focus{
-    background-color: #fff;
- }
+.searchInput:focus {
+  background-color: #fff;
+}
 
 /* 메뉴바 (하단 그라데이션 영역) */
-.menubarPC{
-    background: var(--primary-color); /* 단색 대신 그라데이션 */
-    width: 100vw;
-    height: 5rem; /* 높이 살짝 키움 -> 5rem으로 수정 */
+.menubarPC {
+  background: var(--primary-color); /* 단색 대신 그라데이션 */
+  width: 100vw;
+  height: 5rem;
 }
 .menuListPC {
-    max-width: 120rem;
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 auto;
-    padding: 0 3rem;
-    list-style: none;
+  max-width: 120rem;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0 3rem;
+  list-style: none;
 }
 
 .menuListPC li {
-    width: calc(100% / 4);
-    height: 100%;
-    text-align: center;
+  width: calc(100% / 4);
+  height: 100%;
+  text-align: center;
 }
 
 .menuListPC a {
-    text-decoration: none;
-    text-wrap: nowrap;
-    color: white;
-    font-size: 1.7rem;
-    font-weight: 600;
-    display: inline-block;
-    width: 90%;
-    height: 100%;
-    line-height: 5rem;
-    transition: all 0.3s ease;
-    position: relative;
+  text-decoration: none;
+  text-wrap: nowrap;
+  color: white;
+  font-size: 1.7rem;
+  font-weight: 600;
+  display: inline-block;
+  width: 90%;
+  height: 100%;
+  line-height: 5rem;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
 /* 메뉴 하단 언더라인 애니메이션 추가 - 수정*/
-.menuListPC li a::after{
-    content: "";
-    position: absolute;
-    bottom: 2px;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background: white;
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
+.menuListPC li a::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: white;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
 }
 .menuListPC li a.active::after {
-    width: 80%;
+  width: 80%;
 }
 
 .menuListPC a:hover::after {
-    width: 80%;
+  width: 80%;
 }
 
 /* 로그인/마이메뉴 버튼 */
-.login, .myMenu {
-    background: var(--primary-color);
-    color: white !important;
-    padding: 8px 20px;
-    border-radius: 8px;
-    font-size: 1.5rem;
-    font-weight: 700;
-    transition: all 0.3s;
+.login,
+.myMenu {
+  background: var(--primary-color);
+  color: white !important;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  transition: all 0.3s;
 }
 
-.login:hover, .myMenu:hover {
-    background: #e69500;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+.login:hover,
+.myMenu:hover {
+  background: #e69500;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* 태블릿 */
-@media (max-width: 1023px){
-    .headerTop{
-        height: 7rem;
-    }
-    .logo{
-        font-size: 2.4rem;
-    }
-    .searchContainer{
-        display: none;
-    }
-    .rightMenu{
-        display: none;
-    }
-    .login, .myMenu{
-        color: #fff;
-        font-size: 2rem;
-        margin-bottom: 3rem;
-        text-align: right;
-    }
-    .menubarPC{
-        display: none;
-    }
+@media (max-width: 1023px) {
+  header {
+    height: 7rem;
+  }
+  .headerTop {
+    height: 100%;
+  }
+  .logo {
+    font-size: 2.4rem;
+  }
+  .searchContainer {
+    display: none;
+  }
+  .rightMenu {
+    display: none;
+  }
+  .login,
+  .myMenu {
+    color: #fff;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+    text-align: right;
+  }
+  .menubarPC {
+    display: none;
+  }
 }
 
 /* 모바일 */
-@media (max-width: 767px){
-
-
+@media (max-width: 767px) {
 }

@@ -1,4 +1,3 @@
-// import styleGlobal from "../css/Global.module.css";
 import styleHeader from "../css/Header.module.css";
 import styleSidebar from "../css/sidebar.module.css"
 import { useState, useEffect } from "react";
