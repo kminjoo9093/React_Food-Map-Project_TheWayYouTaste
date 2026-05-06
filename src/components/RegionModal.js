@@ -1,18 +1,27 @@
 import styleRegionModal from "../css/RegionModal.module.css";
 import { useSggList } from "../hooks/queries/useSggList";
 import { useDongList } from "../hooks/queries/useDongList";
-import { useFilterStore, useRegionCode, useSelectedDong, useSelectedSgg, useSelectedSido } from "../store/filters";
+import {
+  useFilterStore,
+  useRegionCode,
+  useSelectedDong,
+  useSelectedSgg,
+  useSelectedSido,
+} from "../store/filters";
 
 function RegionModal({ onConfirm, sidoList }) {
   const selectedSido = useSelectedSido();
   const selectedSgg = useSelectedSgg();
   const selectedDong = useSelectedDong();
 
-  const setSido = useFilterStore((store)=>store.setSido);
-  const setSgg = useFilterStore((store)=>store.setSgg);
-  const setDong = useFilterStore((store)=>store.setDong);
+  const setSido = useFilterStore((store) => store.setSido);
+  const setSgg = useFilterStore((store) => store.setSgg);
+  const setDong = useFilterStore((store) => store.setDong);
 
   const sidoData = sidoList || [];
+
+  console.log("모달", selectedSido, selectedSgg);
+  console.log(sidoData);
 
   //시군구 리스트
   const {
@@ -50,10 +59,10 @@ function RegionModal({ onConfirm, sidoList }) {
               </li>
               {sidoData.map((record) => (
                 <li
-                  key={record.id}
+                  key={record.sidoCd}
                   className={`${styleRegionModal.regionItem}
                                                             ${
-                                                              selectedSido ===
+                                                              Number(selectedSido) ===
                                                               record.sidoCd
                                                                 ? styleRegionModal.activeItem
                                                                 : ""
@@ -91,7 +100,7 @@ function RegionModal({ onConfirm, sidoList }) {
                       key={record.sggCd}
                       className={`${styleRegionModal.regionItem}
                                                                 ${
-                                                                  selectedSgg ===
+                                                                  Number(selectedSgg) ===
                                                                   record.sggCd
                                                                     ? styleRegionModal.activeItem
                                                                     : ""
@@ -129,7 +138,7 @@ function RegionModal({ onConfirm, sidoList }) {
                       key={record.dgCd}
                       className={`${styleRegionModal.regionItem}
                                                         ${
-                                                          selectedDong ===
+                                                          Number(selectedDong) ===
                                                           record.dgCd
                                                             ? styleRegionModal.activeItem
                                                             : ""
