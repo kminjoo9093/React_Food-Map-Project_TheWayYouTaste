@@ -1,13 +1,12 @@
 .regionDimmed {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 15rem 0 0 0;
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 15rem);
   background: rgba(0,0,0,0.55);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   z-index: 9999;
 }
 
@@ -19,10 +18,12 @@
   border-radius: 12px;
   text-align: center;
   position: relative;
+  height: 50rem;
+  margin-block: 15vh;
 }
 .title{
-    font-weight: 400;
-    font-size: 1.6rem;
+  font-weight: 400;
+  font-size: 1.6rem;
 }
 .noticeMsg{
   display: block;

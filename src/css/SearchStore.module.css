@@ -28,6 +28,7 @@
     height: calc(100vh - 15rem);
     position: relative;
     background-color: #e5e3df; /* 지도 로딩 전 배경색 */
+    z-index: 1;
 }
 
 .btnViewList {

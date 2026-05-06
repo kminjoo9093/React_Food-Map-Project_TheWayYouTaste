@@ -274,50 +274,7 @@
       "petYn": false,
       "bplcPhoto": null
     },
-    {
-      "bplcSn": 26,
-      "bplcNm": "서울정가네",
-      "address": "서울특별시 중구 세종대로 110",
-      "lat": 37.56642,
-      "lng": 126.97795,
-      "storeCatNo": "c01",
-      "storeCatName": "한식",
-      "avg": 4.3,
-      "dongCd": 1114010100,
-      "sggCd": 11140,
-      "sidoCd": 11,
-      "sggNm": "중구",
-      "dongNm": "태평로1가",
-      "telno": "010-1111-1026",
-      "bgngTm": "1000",
-      "ddlnTm": "2100",
-      "parkingYn": false,
-      "takeoutYn": true,
-      "petYn": false,
-      "bplcPhoto": null
-    },
-    {
-      "bplcSn": 27,
-      "bplcNm": "롤링파스타",
-      "address": "경기도 수원시 팔달구 정조로 825",
-      "lat": 37.28032,
-      "lng": 127.00956,
-      "storeCatNo": "c03",
-      "storeCatName": "양식",
-      "avg": 4.4,
-      "dongCd": 4111510100,
-      "sggCd": 41115,
-      "sidoCd": 41,
-      "sggNm": "수원시 팔달구",
-      "dongNm": "팔달로2가",
-      "telno": "010-1111-1027",
-      "bgngTm": "1000",
-      "ddlnTm": "2100",
-      "parkingYn": true,
-      "takeoutYn": true,
-      "petYn": false,
-      "bplcPhoto": null
-    },
+
     {
       "bplcSn": 28,
       "bplcNm": "경북풍년식당",
@@ -384,6 +341,7 @@
     { "sidoCd": 41, "sidoNm": "경기도" },
     { "sidoCd": 48, "sidoNm": "경상남도" },
     { "sidoCd": 47, "sidoNm": "경상북도" },
+
     { "sidoCd": 51, "sidoNm": "강원특별자치도" },
     { "sidoCd": 26, "sidoNm": "부산광역시" }
   ],
@@ -394,36 +352,26 @@
     { "sidoCd": 48, "sggCd": 48240, "sggNm": "사천시" },
     { "sidoCd": 41, "sggCd": 41110, "sggNm": "수원시" },
     { "sidoCd": 41, "sggCd": 41115, "sggNm": "수원시 팔달구" },
+    { "sidoCd": 47, "sggCd": 47111, "sggNm": "포항시 남구" },
+
     { "sidoCd": 41, "sggCd": 41130, "sggNm": "성남시" }
   ],
   "dong": [
-    { "sggCd": 48170, "dgCd": 4817010100, "dgNm": "망경동" },
     { "sggCd": 48170, "dgCd": 4817010200, "dgNm": "주약동" },
-    { "sggCd": 48170, "dgCd": 4817010300, "dgNm": "강남동" },
-    { "sggCd": 48170, "dgCd": 4817010400, "dgNm": "칠암동" },
-    { "sggCd": 48170, "dgCd": 4817010500, "dgNm": "본성동" },
-    { "sggCd": 48170, "dgCd": 4817010600, "dgNm": "동성동" },
-    { "sggCd": 48170, "dgCd": 4817010700, "dgNm": "남성동" },
-    { "sggCd": 48170, "dgCd": 4817010800, "dgNm": "인사동" },
     { "sggCd": 48170, "dgCd": 4817010900, "dgNm": "대안동" },
-    { "sggCd": 48170, "dgCd": 4817011000, "dgNm": "평안동" },
-    { "sggCd": 48170, "dgCd": 4817011100, "dgNm": "중안동" },
-    { "sggCd": 48170, "dgCd": 4817011200, "dgNm": "계동" },
-    { "sggCd": 48170, "dgCd": 4817011300, "dgNm": "봉곡동" },
-    { "sggCd": 48170, "dgCd": 4817011400, "dgNm": "상봉동" },
-    { "sggCd": 48170, "dgCd": 4817011500, "dgNm": "봉래동" },
-    { "sggCd": 48170, "dgCd": 4817011600, "dgNm": "수정동" },
-    { "sggCd": 48170, "dgCd": 4817011700, "dgNm": "장대동" },
-    { "sggCd": 48170, "dgCd": 4817011800, "dgNm": "옥봉동" },
     { "sggCd": 48170, "dgCd": 4817011900, "dgNm": "상대동" },
     { "sggCd": 48170, "dgCd": 4817012000, "dgNm": "충무공동" },
-    { "sggCd": 48170, "dgCd": 4817012100, "dgNm": "초전동" },
+    { "sggCd": 48170, "dgCd": 4817011500, "dgNm": "봉래동" },
     { "sggCd": 48170, "dgCd": 4817012200, "dgNm": "가좌동" },
+    { "sggCd": 48170, "dgCd": 4817010600, "dgNm": "신안동" },
 
-    { "sggCd": 41130, "dgCd": 4113010100, "dgNm": "정자동" },
+    { "sggCd": 48240, "dgCd": 4824010100, "dgNm": "사천읍" },
+
+    { "sggCd": 48121, "dgCd": 4812110100, "dgNm": "팔용동" },
+
+    { "sggCd": 41115, "dgCd": 4111510100, "dgNm": "팔달로2가" },
+
     { "sggCd": 41130, "dgCd": 4113010200, "dgNm": "분당동" },
-    { "sggCd": 41130, "dgCd": 4113010300, "dgNm": "판교동" },
-    { "sggCd": 41130, "dgCd": 4113010400, "dgNm": "금곡동" },
-    { "sggCd": 41130, "dgCd": 4113010500, "dgNm": "야탑동" }
+    { "sggCd": 41130, "dgCd": 4113010300, "dgNm": "판교동" }
   ]
 }
