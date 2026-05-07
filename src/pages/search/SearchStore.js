@@ -17,6 +17,7 @@ import {
 import { useStoresByCondition } from "../../hooks/queries/useStoresByCondition";
 import { useStoresByViewport } from "../../hooks/queries/useStoresByViewport";
 import StoreItem from "../../components/StoreItem";
+import { useSigunguType } from "../../hooks/useSigunguType";
 
 function SearchStore() {
   const { categories, sidoList } = useContext(AppDataContext);
@@ -69,12 +70,13 @@ function SearchStore() {
   const [isResetFilter, setIsResetFilter] = useState(false);
   const [isSearchViewport, setIsSearchViewport] = useState(false);
 
+  const sggCode = useSigunguType();
+
   const hasQueryRegion =
     queryParams.get("sido") ||
     queryParams.get("sgg") ||
     queryParams.get("dong");
 
-  //지도 검색 페이지에서 초기 sgg기반 리스트
   const { lat, lng, getCoords } = useInitLocationInfo({
     skip: !!hasQueryRegion,
   });
@@ -91,10 +93,10 @@ function SearchStore() {
     () => ({
       keyword,
       sidoCode: selectedSido,
-      sggCode: selectedSgg,
+      sggCode,
       dongCode: selectedDong,
     }),
-    [keyword, selectedSido, selectedSgg, selectedDong],
+    [keyword, selectedSido, sggCode, selectedDong],
   );
 
   const { data: storeList = [], isLoading } = useStoresByCondition(params);
@@ -132,8 +134,7 @@ function SearchStore() {
     setIsSearchViewport(false);
   }, [keyword, selectedSido, selectedSgg, selectedDong]);
 
-  const { data: viewportStoreList } =
-    useStoresByViewport(viewport);
+  const { data: viewportStoreList } = useStoresByViewport(viewport);
 
   console.log("viewport:", viewport);
   // 범위 내 재검색 함수
@@ -250,7 +251,7 @@ function SearchStore() {
         </div>
 
         <div className={styleSearchStore.storeListArea}>
-          {viewStoreItems.length > 0 ? (
+          {!isLoading ? (
             <>
               <ul className={styleSearchStore.storeList}>
                 {viewStoreItems.map((record) => (
