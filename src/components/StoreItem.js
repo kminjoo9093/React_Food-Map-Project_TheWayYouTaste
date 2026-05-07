@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
 import styleSearchStore from "../css/SearchStore.module.css";
-import serverUrl from "../db/server.json";
+import { getStoreImage } from "../lib/utils/getStoreImage";
 
-function StoreItem({store}) {
-  const SERVER_URL = serverUrl.SERVER_URL;
-
+function StoreItem({ store }) {
   return (
     <li key={store.bplcSn} className={styleSearchStore.storeListItem}>
       <Link
@@ -13,8 +11,8 @@ function StoreItem({store}) {
       >
         <img
           className={styleSearchStore.storeImg}
-          src={`${SERVER_URL}${store.bplcPhoto}`}
-          alt="store"
+          src={getStoreImage(store.storeCatNo)}
+          alt="가게 이미지"
         />
         <div className={styleSearchStore.storeInfo}>
           <h2 className={styleSearchStore.storeName}>{store.bplcNm}</h2>
@@ -27,9 +25,7 @@ function StoreItem({store}) {
           <span className={styleSearchStore.storeTime}>
             {store.bgngTm}-{store.ddlnTm}
           </span>
-          <span className={styleSearchStore.storeAddress}>
-            {store.address}
-          </span>
+          <span className={styleSearchStore.storeAddress}>{store.address}</span>
         </div>
       </Link>
     </li>
