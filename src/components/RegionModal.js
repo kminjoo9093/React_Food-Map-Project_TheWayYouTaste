@@ -17,11 +17,7 @@ function RegionModal({ onConfirm, sidoList }) {
   const setSido = useFilterStore((store) => store.setSido);
   const setSgg = useFilterStore((store) => store.setSgg);
   const setDong = useFilterStore((store) => store.setDong);
-
   const sidoData = sidoList || [];
-
-  console.log("모달", selectedSido, selectedSgg);
-  console.log(sidoData);
 
   //시군구 리스트
   const {

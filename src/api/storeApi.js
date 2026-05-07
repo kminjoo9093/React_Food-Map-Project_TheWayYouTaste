@@ -1,6 +1,6 @@
 import { getData } from "./http";
 
-export function getStoreListByCondition(param) {
+export async function getStoreListByCondition(param) {
   const { keyword, sidoCode, sggCode, dongCode } = param;
 
   if (keyword) {
@@ -10,7 +10,13 @@ export function getStoreListByCondition(param) {
     return getData(`/store?dongCd=${dongCode}`);
   }
   if (sggCode) {
-    return getData(`/store?sggCd=${sggCode}`);
+    // return getData(`/store?sggCd=${sggCode}`);
+    const sidoStoreData = await getData(`/store?sidoCd=${sidoCode}`);
+    const sggStoreData = sidoStoreData.filter((record) =>
+      String(record.sggCd).startsWith(String(sggCode)),
+    );
+
+    return sggStoreData;
   }
   if (sidoCode) {
     return getData(`/store?sidoCd=${sidoCode}`);
@@ -30,10 +36,7 @@ export async function getStoreListByViewport(viewport) {
     const lat = Number(record.lat);
     const lng = Number(record.lng);
     return (
-      lat >= swMinLat &&
-      lat <= neMaxLat &&
-      lng >= swMinLng &&
-      lng <= neMaxLng
+      lat >= swMinLat && lat <= neMaxLat && lng >= swMinLng && lng <= neMaxLng
     );
   });
 
