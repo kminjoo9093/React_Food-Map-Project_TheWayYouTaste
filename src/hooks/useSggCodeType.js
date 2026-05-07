@@ -6,7 +6,7 @@ import {
 } from "../store/filters";
 import { useSggList } from "./queries/useSggList";
 
-export const useSigunguType = () => {
+export const useSggCodeType = () => {
   const selectedSido = useSelectedSido();
   const selectedSgg = useSelectedSgg();
   const selectedDong = useSelectedDong();
