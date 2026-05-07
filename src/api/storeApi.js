@@ -9,8 +9,10 @@ export async function getStoreListByCondition(param) {
   if (dongCode) {
     return getData(`/store?dongCd=${dongCode}`);
   }
+  // 실제 서비스 환경에서는 백엔드에서 SQL Like 데이터 조회 수행
+  // 현재 json-server 환경의 데이터 조회 방식 한계로 인해
+  // 시도 데이터 조회 후 시군구 코드 기반 필터링 수행 
   if (sggCode) {
-    // return getData(`/store?sggCd=${sggCode}`);
     const sidoStoreData = await getData(`/store?sidoCd=${sidoCode}`);
     const sggStoreData = sidoStoreData.filter((record) =>
       String(record.sggCd).startsWith(String(sggCode)),

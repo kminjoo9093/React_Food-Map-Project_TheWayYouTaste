@@ -3,7 +3,6 @@ import { useSggList } from "../hooks/queries/useSggList";
 import { useDongList } from "../hooks/queries/useDongList";
 import {
   useFilterStore,
-  useRegionCode,
   useSelectedDong,
   useSelectedSgg,
   useSelectedSido,

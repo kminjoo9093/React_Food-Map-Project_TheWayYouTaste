@@ -17,7 +17,7 @@ import {
 import { useStoresByCondition } from "../../hooks/queries/useStoresByCondition";
 import { useStoresByViewport } from "../../hooks/queries/useStoresByViewport";
 import StoreItem from "../../components/StoreItem";
-import { useSigunguType } from "../../hooks/useSigunguType";
+import { useSggCodeType } from "../../hooks/useSggCodeType";
 
 function SearchStore() {
   const { categories, sidoList } = useContext(AppDataContext);
@@ -69,8 +69,7 @@ function SearchStore() {
   const [isSelectedAll, setIsSelectedAll] = useState(false);
   const [isResetFilter, setIsResetFilter] = useState(false);
   const [isSearchViewport, setIsSearchViewport] = useState(false);
-
-  const sggCode = useSigunguType();
+  const sggCode = useSggCodeType();
 
   const hasQueryRegion =
     queryParams.get("sido") ||
