@@ -11,10 +11,9 @@ import { Link } from "react-router-dom";
 import iconStar from "../resources/img/search/iconStar.svg";
 import iconCategory from "../resources/img/search/iconTag.svg";
 import styleMap from "../css/Map.module.css";
-import serverUrl from "../db/server.json";
+import { getStoreImage } from "../lib/utils/getStoreImage";
 
 const MAP_KEY = process.env.REACT_APP_KAKAO_MAP_API_KEY;
-const SERVER_URL = serverUrl.SERVER_URL;
 
 export default function MapComponent({
   storeList,
@@ -191,20 +190,21 @@ export default function MapComponent({
                       <p className={styleMap.infoBottom}>
                         {store.avg && (
                           <span>
-                            <img src={iconStar} />
+                            <img src={iconStar} alt="평균 평점"/>
                             {store.avg}
                           </span>
                         )}
                         {store.storeCatName && (
                           <span>
-                            <img src={iconCategory} />
+                            <img src={iconCategory} alt="음식 카테고리"/>
                             {store.storeCatName}
                           </span>
                         )}
                       </p>
                     </div>
                     <img
-                      src={`${SERVER_URL}${store.bplcPhoto}`}
+                      src={getStoreImage(store.storeCatNo)}
+                      alt="가게 이미지"
                       className={styleMap.infoImg}
                     />
                   </Link>
