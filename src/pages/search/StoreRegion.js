@@ -10,7 +10,7 @@ import {
   faTrophy,
 } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../Pagination";
-import serverUrl from "../../db/server.json";
+import serverUrl from "../../config/server.json";
 import { AppDataContext } from "../../context/AppDataProvider";
 
 function StoreRegion() {

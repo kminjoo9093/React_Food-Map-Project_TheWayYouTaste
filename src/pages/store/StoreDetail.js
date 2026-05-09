@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {
-  Link,
-  useSearchParams,
-  useNavigate,
-} from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import ReviewRegister from "../review/ReviewRegister";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import styleStoreDetail from "../../css/StoreDetail.module.css";
-import serverUrl from "../../db/server.json";
+import serverUrl from "../../config/server.json";
 
 function StoreDetail({ storeList }) {
   const REVIEWS_PER_PAGE = 5;

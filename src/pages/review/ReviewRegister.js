@@ -3,7 +3,7 @@ import styleReview from "../../css/ReviewRgister.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import serverUrl from "../../db/server.json"; 
+import serverUrl from "../../config/server.json";
 
 const today = new Date().toISOString().split("T")[0];
 const SERVER_URL = serverUrl.SERVER_URL;
@@ -20,9 +20,15 @@ const StarRating = ({ rating, setRating }) => {
   };
 
   return (
-    <div className={styleReview.starContainer} style={{ display: "flex", alignItems: "center" }}>
+    <div
+      className={styleReview.starContainer}
+      style={{ display: "flex", alignItems: "center" }}
+    >
       {Array.from({ length: stars }).map((_, index) => {
-        const fillPercentage = Math.min(Math.max((rating - index) * 100, 0), 100);
+        const fillPercentage = Math.min(
+          Math.max((rating - index) * 100, 0),
+          100,
+        );
 
         return (
           <div
@@ -72,7 +78,7 @@ const StarRating = ({ rating, setRating }) => {
 const ReviewRegister = ({ isOpen, onClose, bplcSn, userSn }) => {
   const navigate = useNavigate();
   const [rating, setRating] = useState(0);
-  const [images, setImages] = useState([]); 
+  const [images, setImages] = useState([]);
   const [reviewText, setReviewText] = useState("");
 
   if (!isOpen) return null;
@@ -100,8 +106,8 @@ const ReviewRegister = ({ isOpen, onClose, bplcSn, userSn }) => {
       evlScr: rating,
       evlCn: reviewText,
       evlYmd: today,
-      bplcSn: bplcSn, 
-      userSn: userSn,  
+      bplcSn: bplcSn,
+      userSn: userSn,
     };
 
     const formData = new FormData();
@@ -124,7 +130,7 @@ const ReviewRegister = ({ isOpen, onClose, bplcSn, userSn }) => {
 
       alert("리뷰가 등록되었습니다!");
       onClose();
-      window.location.reload(); 
+      window.location.reload();
     } catch (err) {
       console.error(err);
       alert("리뷰 등록 실패");
@@ -133,7 +139,10 @@ const ReviewRegister = ({ isOpen, onClose, bplcSn, userSn }) => {
 
   return (
     <div className={styleReview.modalOverlay} onClick={onClose}>
-      <div className={styleReview.modalContent} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={styleReview.modalContent}
+        onClick={(e) => e.stopPropagation()}
+      >
         <button className={styleReview.closeButton} onClick={onClose}>
           X
         </button>
@@ -156,7 +165,11 @@ const ReviewRegister = ({ isOpen, onClose, bplcSn, userSn }) => {
                 >
                   {imgObj ? (
                     <div className={styleReview.imagePreview}>
-                      <img src={imgObj.preview} alt={`미리보기${idx + 1}`} className={styleReview.previewImage} />
+                      <img
+                        src={imgObj.preview}
+                        alt={`미리보기${idx + 1}`}
+                        className={styleReview.previewImage}
+                      />
                     </div>
                   ) : (
                     <span className={styleReview.imgText}>+</span>
@@ -172,20 +185,24 @@ const ReviewRegister = ({ isOpen, onClose, bplcSn, userSn }) => {
               </div>
             ))}
 
-            {(images.length === 0 || images[images.length - 1]) && images.length < 3 && (
-              <div className={styleReview.customFileBox}>
-                <label htmlFor={`reviewImage${images.length}`} className={styleReview.customFileLabel}>
-                  <span className={styleReview.imgText}>+</span>
-                </label>
-                <input
-                  type="file"
-                  id={`reviewImage${images.length}`}
-                  accept="image/*"
-                  onChange={(e) => handleFileChange(e, images.length)}
-                  className={styleReview.hiddenFileInput}
-                />
-              </div>
-            )}
+            {(images.length === 0 || images[images.length - 1]) &&
+              images.length < 3 && (
+                <div className={styleReview.customFileBox}>
+                  <label
+                    htmlFor={`reviewImage${images.length}`}
+                    className={styleReview.customFileLabel}
+                  >
+                    <span className={styleReview.imgText}>+</span>
+                  </label>
+                  <input
+                    type="file"
+                    id={`reviewImage${images.length}`}
+                    accept="image/*"
+                    onChange={(e) => handleFileChange(e, images.length)}
+                    className={styleReview.hiddenFileInput}
+                  />
+                </div>
+              )}
           </div>
 
           <h3>내용</h3>

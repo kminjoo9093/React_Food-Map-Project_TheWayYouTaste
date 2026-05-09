@@ -21,7 +21,7 @@
     transform: translateY(-3px);
     box-shadow: 0 6px 12px rgba(0,0,0,0.05);
 }
-/* 호버 효과 */
+
 .categoryList button:hover:not(.active) {
     background-color: #fafafa;
     transform: translateY(-5px);

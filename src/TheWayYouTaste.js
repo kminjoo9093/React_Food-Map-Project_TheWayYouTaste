@@ -22,7 +22,7 @@ import MembershipModify from "./pages/member/MembershipModify";
 import MembershipResign from "./pages/member/MembershipResign";
 import RegisterDetail from "./pages/admin/RegisterDetail";
 import StoreRegion from "./pages/search/StoreRegion";
-import serverUrl from "./db/server.json";
+import serverUrl from "./config/server.json";
 import { AppDataProvider } from "./context/AppDataProvider";
 
 function TheWayYouTaste() {

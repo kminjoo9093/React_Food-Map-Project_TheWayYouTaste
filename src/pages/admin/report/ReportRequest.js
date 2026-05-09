@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 // import styleGlobal from "../../../css/Global.module.css";
 import styleReport from "../../../css/Report.module.css";
-import serverUrl from "../../../db/server.json";
+import serverUrl from "../../../config/server.json";
 
 function ReportRequest() {
   const navigate = useNavigate();

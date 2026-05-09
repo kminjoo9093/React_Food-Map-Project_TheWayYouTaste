@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styleStore from "../../css/StoreRegister.module.css";
 import { useState, useRef } from "react";
-import serverURL from "../../db/server.json"
+import serverURL from "../../config/server.json";
 function StoreRegister({ userSn }) {
   const navigate = useNavigate();
   const SERVER_URL = serverURL.SERVER_URL;
@@ -38,7 +38,8 @@ function StoreRegister({ userSn }) {
     }
 
     try {
-      const serviceKey = "nYrvOHdHDUUOV%2Fb8t4ddcrtVY02lgsfE%2BNmWpM%2F88LynhtxTOqBYkJZWbBCccrjZGcvSysLZVipV0g069cKT2A%3D%3D";
+      const serviceKey =
+        "nYrvOHdHDUUOV%2Fb8t4ddcrtVY02lgsfE%2BNmWpM%2F88LynhtxTOqBYkJZWbBCccrjZGcvSysLZVipV0g069cKT2A%3D%3D";
       let url = "";
       let body = null;
 
@@ -48,11 +49,13 @@ function StoreRegister({ userSn }) {
       } else {
         url = `https://api.odcloud.kr/api/nts-businessman/v1/validate?serviceKey=${serviceKey}`;
         body = {
-          businesses: [{
-            b_no: brNo,
-            start_dt: openDate.replaceAll("-", ""),
-            p_nm: owner,
-          }],
+          businesses: [
+            {
+              b_no: brNo,
+              start_dt: openDate.replaceAll("-", ""),
+              p_nm: owner,
+            },
+          ],
         };
       }
 
@@ -65,15 +68,21 @@ function StoreRegister({ userSn }) {
       const data = await res.json();
       let result = data.businesses?.[0] || data.data?.[0];
 
-      if (!result || (registerType === "USER" && result.b_stt !== "계속사업자") || 
-          (registerType === "BUSINESS" && result.valid !== "01")) {
+      if (
+        !result ||
+        (registerType === "USER" && result.b_stt !== "계속사업자") ||
+        (registerType === "BUSINESS" && result.valid !== "01")
+      ) {
         setBrError("유효하지 않은 사업자 정보입니다.");
         return;
       }
 
-      const dupRes = await fetch(`${SERVER_URL}/youtaste/store/check-brno?brno=${brNo}`, {
-        headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
-      });
+      const dupRes = await fetch(
+        `${SERVER_URL}/youtaste/store/check-brno?brno=${brNo}`,
+        {
+          headers: { "Cache-Control": "no-cache", Pragma: "no-cache" },
+        },
+      );
       const dupData = await dupRes.json();
 
       if (!dupData.exists) {
@@ -107,14 +116,12 @@ function StoreRegister({ userSn }) {
   const phoneRegex = /^\d{2,4}-\d{3,4}-\d{4}$/;
 
   const handleStoreTelChange = (e) => {
-  const value = e.target.value;
+    const value = e.target.value;
 
-  // 숫자와 - 만 허용
-  if (!/^[0-9-]*$/.test(value)) return;
+    // 숫자와 - 만 허용
+    if (!/^[0-9-]*$/.test(value)) return;
     setStoreTel(value);
   };
-  
-  
 
   /* 주소 API */
   const [roadAddress, setRoadAddress] = useState("");
@@ -132,7 +139,7 @@ function StoreRegister({ userSn }) {
       alert("주소 서비스 로딩 중입니다. 잠시만 기다려 주세요.");
       return;
     }
-    
+
     new window.daum.Postcode({
       oncomplete: function (data) {
         setRoadAddress(data.roadAddress);
@@ -157,7 +164,7 @@ function StoreRegister({ userSn }) {
       wrapRef.current.style.transform = "translate(-50%, -50%)";
       wrapRef.current.style.width = "400px";
       wrapRef.current.style.height = "500px";
-      wrapRef.current.style.zIndex = "9999"; 
+      wrapRef.current.style.zIndex = "9999";
       wrapRef.current.style.border = "1px solid #ccc";
       wrapRef.current.style.backgroundColor = "white";
     }
@@ -206,29 +213,33 @@ function StoreRegister({ userSn }) {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (file) { setStoreImage(file); setStorePreview(URL.createObjectURL(file)); }
+    if (file) {
+      setStoreImage(file);
+      setStorePreview(URL.createObjectURL(file));
+    }
   };
 
   const [verifyImage, setVerifyImage] = useState(null);
   const [verifyPreview, setVerifyPreview] = useState(null);
   const VerifyImageChange = (e) => {
     const file = e.target.files[0];
-    if (file) { setVerifyImage(file); setVerifyPreview(URL.createObjectURL(file)); }
+    if (file) {
+      setVerifyImage(file);
+      setVerifyPreview(URL.createObjectURL(file));
+    }
   };
 
   const isTelValid = phoneRegex.test(storeTel);
-  
+
   /* 서버 전송 */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
-
     const formData = new FormData();
 
     // 메뉴 데이터 추출
-    const menuNames = items.map(i => i.menu);
-    const menuPrices = items.map(i => i.price);
+    const menuNames = items.map((i) => i.menu);
+    const menuPrices = items.map((i) => i.price);
 
     formData.append("brno", brNo);
     formData.append("userSn", userSn);
@@ -250,7 +261,7 @@ function StoreRegister({ userSn }) {
     formData.append("closeTime", closeTime);
     formData.append("storeCatNo", category);
     formData.append("convenience", JSON.stringify(conveniences));
-    
+
     // 메뉴 정보 전송
     formData.append("menuNm1", JSON.stringify(menuNames));
     formData.append("menuPrc1", JSON.stringify(menuPrices));
@@ -263,7 +274,7 @@ function StoreRegister({ userSn }) {
         method: "POST",
         body: formData,
       });
-      
+
       if (response.ok) {
         alert("등록 완료!");
         navigate("/main");
@@ -279,9 +290,17 @@ function StoreRegister({ userSn }) {
   };
 
   const isFormValid =
-    (brResult?.status === "인증되었습니다." || brResult?.status === "사용자 등록정보를 업데이트했습니다.") &&
-    storeName && roadAddress && detailAddress && openTime && closeTime && category && phoneRegex.test(storeTel) &&
-    items[0].menu !== "" && verifyImage !== null;
+    (brResult?.status === "인증되었습니다." ||
+      brResult?.status === "사용자 등록정보를 업데이트했습니다.") &&
+    storeName &&
+    roadAddress &&
+    detailAddress &&
+    openTime &&
+    closeTime &&
+    category &&
+    phoneRegex.test(storeTel) &&
+    items[0].menu !== "" &&
+    verifyImage !== null;
 
   return (
     <div className="contentTopPosition">
@@ -289,53 +308,138 @@ function StoreRegister({ userSn }) {
         <div className={styleStore.storeContainer}>
           <form onSubmit={handleSubmit}>
             <div className={styleStore.registerBtnWrap}>
-              <button className={`${styleStore.selectBtnL} ${styleStore.button} ${registerType === "USER" ? styleStore.completed : ""}`} type="button" onClick={user}>
+              <button
+                className={`${styleStore.selectBtnL} ${styleStore.button} ${registerType === "USER" ? styleStore.completed : ""}`}
+                type="button"
+                onClick={user}
+              >
                 내 맛집 등록 <br /> (손님 등록)
               </button>
-              <button className={`${styleStore.selectBtnR} ${styleStore.button} ${registerType === "BUSINESS" ? styleStore.completed : ""}`} type="button" onClick={br}>
+              <button
+                className={`${styleStore.selectBtnR} ${styleStore.button} ${registerType === "BUSINESS" ? styleStore.completed : ""}`}
+                type="button"
+                onClick={br}
+              >
                 내 가게 등록 <br /> (사업자 등록)
               </button>
             </div>
             <br />
-            <p className={styleStore.text} style={registerType === null ? {} : { display: "none" }}>항목을 선택해 주세요</p>
+            <p
+              className={styleStore.text}
+              style={registerType === null ? {} : { display: "none" }}
+            >
+              항목을 선택해 주세요
+            </p>
 
             <div style={registerType === null ? { display: "none" } : {}}>
               <label htmlFor="brno">사업자 등록번호</label>
               <div className={styleStore.brNoBox}>
-                <input className={styleStore.brno} id="brno" type="number" maxLength={10} value={brNo} onChange={(e) => setBrNo(e.target.value)} placeholder='"-" 제외 숫자 10자리를 입력해 주세요' readOnly={brResult?.status === "인증되었습니다."} />
-                <button className={`${styleStore.brNoBtn} ${styleStore.button}`} type="button" onClick={checkBusiness}>인증</button>
+                <input
+                  className={styleStore.brno}
+                  id="brno"
+                  type="number"
+                  maxLength={10}
+                  value={brNo}
+                  onChange={(e) => setBrNo(e.target.value)}
+                  placeholder='"-" 제외 숫자 10자리를 입력해 주세요'
+                  readOnly={brResult?.status === "인증되었습니다."}
+                />
+                <button
+                  className={`${styleStore.brNoBtn} ${styleStore.button}`}
+                  type="button"
+                  onClick={checkBusiness}
+                >
+                  인증
+                </button>
               </div>
 
-              {brError && <p style={{ background: "white", padding: "1rem", color: "red" }}>{brError}</p>}
-              {brResult && <div style={{ background: "white", padding: "1rem", marginBottom: "1rem" }}><p>{brResult.status}</p></div>}
+              {brError && (
+                <p
+                  style={{ background: "white", padding: "1rem", color: "red" }}
+                >
+                  {brError}
+                </p>
+              )}
+              {brResult && (
+                <div
+                  style={{
+                    background: "white",
+                    padding: "1rem",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  <p>{brResult.status}</p>
+                </div>
+              )}
 
               {registerType === "BUSINESS" && (
                 <>
                   <label htmlFor="owner">대표자</label>
-                  <input id="owner" type="text" value={owner} onChange={(e) => setOwner(e.target.value)} placeholder="사업자 등록증과 일치하게 작성해 주세요" />
+                  <input
+                    id="owner"
+                    type="text"
+                    value={owner}
+                    onChange={(e) => setOwner(e.target.value)}
+                    placeholder="사업자 등록증과 일치하게 작성해 주세요"
+                  />
                   <label htmlFor="openDate">개업일</label>
-                  <input className={styleStore.inputBox} type="date" value={openDate} onChange={(e) => setOpenDate(e.target.value)} id="openDate" />
+                  <input
+                    className={styleStore.inputBox}
+                    type="date"
+                    value={openDate}
+                    onChange={(e) => setOpenDate(e.target.value)}
+                    id="openDate"
+                  />
                 </>
               )}
-              <br/>
+              <br />
               <div className={styleStore.imgBox}>
-                <label>{registerType === "BUSINESS" ? "사업자 등록증" : "영수증"}</label>
-                <label htmlFor="verifyImage" className={`${styleStore.customFileLabel} ${verifyImage ? styleStore.completed : ""}`}>
+                <label>
+                  {registerType === "BUSINESS" ? "사업자 등록증" : "영수증"}
+                </label>
+                <label
+                  htmlFor="verifyImage"
+                  className={`${styleStore.customFileLabel} ${verifyImage ? styleStore.completed : ""}`}
+                >
                   {verifyImage ? "등록완료" : "파일 선택"}
                 </label>
-                <input type="file" id="verifyImage" accept="image/*" onChange={VerifyImageChange} className={styleStore.hiddenFileInput} />
+                <input
+                  type="file"
+                  id="verifyImage"
+                  accept="image/*"
+                  onChange={VerifyImageChange}
+                  className={styleStore.hiddenFileInput}
+                />
               </div>
-              {verifyPreview && <div style={{ marginTop: "10px" }}><img src={verifyPreview} alt="미리보기" width="200" onClick={() => setSelectedImg(verifyPreview)}/></div>}
+              {verifyPreview && (
+                <div style={{ marginTop: "10px" }}>
+                  <img
+                    src={verifyPreview}
+                    alt="미리보기"
+                    width="200"
+                    onClick={() => setSelectedImg(verifyPreview)}
+                  />
+                </div>
+              )}
               <br></br>
               <label>매장 명</label>
-              <input type="text" value={storeName} onChange={(e) => setStoreName(e.target.value)} />
+              <input
+                type="text"
+                value={storeName}
+                onChange={(e) => setStoreName(e.target.value)}
+              />
 
               <div>
                 <label>전화번호</label>
-                <input type="text" value={storeTel} onChange={handleStoreTelChange} placeholder='"-"을 포함하여 전화번호를 입력해 주세요' />
+                <input
+                  type="text"
+                  value={storeTel}
+                  onChange={handleStoreTelChange}
+                  placeholder='"-"을 포함하여 전화번호를 입력해 주세요'
+                />
                 {/* 입력이 있는데 유효하지 않을 때만 경고 문구 출력 */}
                 {storeTel.length > 0 && !isTelValid && (
-                  <p style={{ color: 'red', fontSize: '12px' }}>
+                  <p style={{ color: "red", fontSize: "12px" }}>
                     올바른 전화번호 형식(하이픈 포함)으로 입력해주세요.
                   </p>
                 )}
@@ -344,38 +448,102 @@ function StoreRegister({ userSn }) {
               <label>주소</label>
               <div>
                 <div ref={wrapRef} style={{ display: "none", zIndex: 10000 }}>
-                  <img src="//t1.daumcdn.net/postcode/resource/images/close.png" alt="닫기"
-                    style={{ cursor: "pointer", position: "absolute", right: 0, top: -1, zIndex: 1 }} onClick={foldAddress} />
+                  <img
+                    src="//t1.daumcdn.net/postcode/resource/images/close.png"
+                    alt="닫기"
+                    style={{
+                      cursor: "pointer",
+                      position: "absolute",
+                      right: 0,
+                      top: -1,
+                      zIndex: 1,
+                    }}
+                    onClick={foldAddress}
+                  />
                 </div>
                 <div className={styleStore.addBox}>
-                  <input type="text" placeholder="도로명 주소" value={roadAddress} readOnly />
-                  <input className={`${styleStore.addBtn} ${styleStore.button}`} type="button" value="검색" onClick={handleAddressSearch} />
+                  <input
+                    type="text"
+                    placeholder="도로명 주소"
+                    value={roadAddress}
+                    readOnly
+                  />
+                  <input
+                    className={`${styleStore.addBtn} ${styleStore.button}`}
+                    type="button"
+                    value="검색"
+                    onClick={handleAddressSearch}
+                  />
                 </div>
-                <input type="text" placeholder="상세주소" value={detailAddress} onChange={(e) => setDetailAddress(e.target.value)} />
+                <input
+                  type="text"
+                  placeholder="상세주소"
+                  value={detailAddress}
+                  onChange={(e) => setDetailAddress(e.target.value)}
+                />
               </div>
 
               <label>운영시간</label>
               <div className={styleStore.flexBox}>
                 <label>OPEN</label>
-                <input className={styleStore.timeinput} type="time" value={openTime} onChange={(e) => setOpenTime(e.target.value)} />
+                <input
+                  className={styleStore.timeinput}
+                  type="time"
+                  value={openTime}
+                  onChange={(e) => setOpenTime(e.target.value)}
+                />
               </div>
               <div className={styleStore.flexBox}>
                 <label>CLOSE</label>
-                <input className={styleStore.timeinput} type="time" value={closeTime} onChange={(e) => setCloseTime(e.target.value)} />
+                <input
+                  className={styleStore.timeinput}
+                  type="time"
+                  value={closeTime}
+                  onChange={(e) => setCloseTime(e.target.value)}
+                />
               </div>
               <br></br>
               <label htmlFor="menuCat">카테고리</label>
-              <select id="menuCat" className={styleStore.inputBox} value={category} onChange={(e) => setCategory(e.target.value)}>
-                <option value="" disabled hidden>선택하세요</option>
-                <option value="1">한식</option><option value="2">일식</option><option value="3">중식</option><option value="4">양식</option>
-                <option value="5">아시안</option><option value="6">햄버거</option><option value="7">치킨</option><option value="8">디저트</option>
+              <select
+                id="menuCat"
+                className={styleStore.inputBox}
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option value="" disabled hidden>
+                  선택하세요
+                </option>
+                <option value="1">한식</option>
+                <option value="2">일식</option>
+                <option value="3">중식</option>
+                <option value="4">양식</option>
+                <option value="5">아시안</option>
+                <option value="6">햄버거</option>
+                <option value="7">치킨</option>
+                <option value="8">디저트</option>
               </select>
-              <br></br><br></br>
+              <br></br>
+              <br></br>
               <p>편의사항</p>
               {convenienceList.map((item) => (
-                <label key={item.key} className={`${styleStore.checkbox} ${conveniences.includes(item.key) ? styleStore.active : ""}`}>
-                  {item.label.split("\n").map((line, idx) => <span key={idx}>{line}<br /></span>)}
-                  <input type="checkbox" className={styleStore.hiddenCheckbox} checked={conveniences.includes(item.key)} onChange={(e) => handleConvenienceChange(e.target.checked, item.key)} />
+                <label
+                  key={item.key}
+                  className={`${styleStore.checkbox} ${conveniences.includes(item.key) ? styleStore.active : ""}`}
+                >
+                  {item.label.split("\n").map((line, idx) => (
+                    <span key={idx}>
+                      {line}
+                      <br />
+                    </span>
+                  ))}
+                  <input
+                    type="checkbox"
+                    className={styleStore.hiddenCheckbox}
+                    checked={conveniences.includes(item.key)}
+                    onChange={(e) =>
+                      handleConvenienceChange(e.target.checked, item.key)
+                    }
+                  />
                 </label>
               ))}
 
@@ -383,24 +551,71 @@ function StoreRegister({ userSn }) {
               {items.map((item, index) => (
                 <div key={index} className={styleStore.menuArea}>
                   <div className={styleStore.menuInputWrap}>
-                    <input className={styleStore.menu} type="text" placeholder={"메뉴" + (index + 1)} value={item.menu} onChange={(e) => handleChange(index, "menu", e.target.value)} />
-                    <input className={styleStore.price} type="number" placeholder="가격" value={item.price} onChange={(e) => handleChange(index, "price", e.target.value)} />
+                    <input
+                      className={styleStore.menu}
+                      type="text"
+                      placeholder={"메뉴" + (index + 1)}
+                      value={item.menu}
+                      onChange={(e) =>
+                        handleChange(index, "menu", e.target.value)
+                      }
+                    />
+                    <input
+                      className={styleStore.price}
+                      type="number"
+                      placeholder="가격"
+                      value={item.price}
+                      onChange={(e) =>
+                        handleChange(index, "price", e.target.value)
+                      }
+                    />
                   </div>
                   <div className={styleStore.menuBtnWrap}>
-                    <button className={`${styleStore.menuBtnL} ${styleStore.button}`} type="button" onClick={addItem}>+</button>
-                    <button className={`${styleStore.menuBtnR} ${styleStore.button}`} type="button" onClick={() => removeItem(index)}>-</button>
+                    <button
+                      className={`${styleStore.menuBtnL} ${styleStore.button}`}
+                      type="button"
+                      onClick={addItem}
+                    >
+                      +
+                    </button>
+                    <button
+                      className={`${styleStore.menuBtnR} ${styleStore.button}`}
+                      type="button"
+                      onClick={() => removeItem(index)}
+                    >
+                      -
+                    </button>
                   </div>
                 </div>
               ))}
 
               <div className={styleStore.imgBox}>
-                <label htmlFor="storeImage">가게 대표 이미지</label><br />
-                <label htmlFor="storeImage" className={`${styleStore.customFileLabel} ${storeImage ? styleStore.completed : ""}`}>
+                <label htmlFor="storeImage">가게 대표 이미지</label>
+                <br />
+                <label
+                  htmlFor="storeImage"
+                  className={`${styleStore.customFileLabel} ${storeImage ? styleStore.completed : ""}`}
+                >
                   {storeImage ? "파일 선택 완료" : "파일 선택"}
                 </label>
-                <input type="file" id="storeImage" accept="image/*" onChange={handleImageChange} className={styleStore.hiddenFileInput} />
+                <input
+                  type="file"
+                  id="storeImage"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className={styleStore.hiddenFileInput}
+                />
               </div>
-              {storePreview && <div style={{ marginTop: "10px" }}><img src={storePreview} alt="미리보기" width="200" onClick={() => setSelectedImg(verifyPreview)}/></div>}
+              {storePreview && (
+                <div style={{ marginTop: "10px" }}>
+                  <img
+                    src={storePreview}
+                    alt="미리보기"
+                    width="200"
+                    onClick={() => setSelectedImg(verifyPreview)}
+                  />
+                </div>
+              )}
 
               {/* 등록버튼 */}
               {isFormValid ? (
@@ -419,37 +634,36 @@ function StoreRegister({ userSn }) {
                   등록
                 </button>
               )}
-              
             </div>
-              {selectedImg && (
-                <div 
-                  onClick={closeModal}
+            {selectedImg && (
+              <div
+                onClick={closeModal}
+                style={{
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  zIndex: 11000,
+                  cursor: "zoom-out",
+                }}
+              >
+                <img
+                  src={selectedImg}
+                  alt="확대보기"
                   style={{
-                    position: "fixed",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    backgroundColor: "rgba(0, 0, 0, 0.8)",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    zIndex: 11000, 
-                    cursor: "zoom-out"
+                    maxWidth: "90%",
+                    maxHeight: "90%",
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
                   }}
-                >
-                  <img 
-                    src={selectedImg} 
-                    alt="확대보기" 
-                    style={{ 
-                      maxWidth: "90%", 
-                      maxHeight: "90%", 
-                      borderRadius: "10px",
-                      boxShadow: "0 4px 20px rgba(0,0,0,0.5)" 
-                    }} 
-                  />
-                </div>
-              )}
+                />
+              </div>
+            )}
           </form>
         </div>
       </div>
