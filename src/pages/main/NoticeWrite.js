@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styleReport from "../../css/Report.module.css";
-import serverUrl from "../../db/server.json";
+import serverUrl from "../../config/server.json";
 
 function NoticeWrite() {
   const navigate = useNavigate();
@@ -13,8 +13,8 @@ function NoticeWrite() {
 
   // 카테고리 → 번호 매핑
   const categoryMap = {
-    "서버점검": 5,
-    "대표공지": 6
+    서버점검: 5,
+    대표공지: 6,
   };
 
   const handleSubmit = async () => {
@@ -24,26 +24,25 @@ function NoticeWrite() {
     }
 
     const data = {
-      userSn: 1000,                   // 관리자 ID (임시)
+      userSn: 1000, // 관리자 ID (임시)
       notiTtl: title,
       notiCn: content,
       dclrCatNo: categoryMap[category],
       prcsYn: "N",
-      prcsRegYmd: new Date()
+      prcsRegYmd: new Date(),
     };
 
     try {
       const res = await fetch(`${SERVER_URL}/youtaste/notice`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       });
 
       if (!res.ok) throw new Error("공지사항 등록 실패");
 
       alert("공지사항이 성공적으로 등록되었습니다.");
       navigate("/notice/list");
-
     } catch (err) {
       console.error(err);
       alert("오류 발생: " + err.message);
@@ -51,10 +50,12 @@ function NoticeWrite() {
   };
 
   return (
-    <div className='container contentTopPosition'>
-      <h1 className='heading'>공지사항 작성</h1>
+    <div className="container contentTopPosition">
+      <h1 className="heading">공지사항 작성</h1>
 
-      <p><strong>제목</strong></p>
+      <p>
+        <strong>제목</strong>
+      </p>
       <input
         type="text"
         className={styleReport.input}
@@ -63,9 +64,11 @@ function NoticeWrite() {
         onChange={(e) => setTitle(e.target.value)}
       />
 
-      <div className='doubleContainer'>
+      <div className="doubleContainer">
         <div>
-          <p><strong>카테고리</strong></p>
+          <p>
+            <strong>카테고리</strong>
+          </p>
           <select
             className={styleReport.input}
             value={category}
@@ -78,7 +81,9 @@ function NoticeWrite() {
         </div>
 
         <div>
-          <p><strong>작성일</strong></p>
+          <p>
+            <strong>작성일</strong>
+          </p>
           <input
             type="text"
             className={styleReport.input}
@@ -88,17 +93,17 @@ function NoticeWrite() {
         </div>
       </div>
 
-      <p><strong>내용</strong></p>
+      <p>
+        <strong>내용</strong>
+      </p>
       <textarea
         className={styleReport.textarea}
         placeholder="내용을 입력하세요"
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
-      <div className='rightContainer'>
-        <button onClick={handleSubmit}>
-          등록하기
-        </button>
+      <div className="rightContainer">
+        <button onClick={handleSubmit}>등록하기</button>
       </div>
     </div>
   );
