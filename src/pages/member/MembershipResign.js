@@ -19,13 +19,13 @@ function MembershipResign() {
   );
   const [isBtnEnabled, setIsBtnEnabled] = useState(false);
   const [user, setUser] = useState(null);
-  const [isInitialized, setIsInitialized] = useState(false);
+  // const [isInitialized, setIsInitialized] = useState(false);
   const SERVER_URL = serverUrl.SERVER_URL;
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) setUser(JSON.parse(storedUser));
-    setIsInitialized(true);
+    // setIsInitialized(true);
   }, []);
 
   useEffect(() => {

@@ -27,9 +27,9 @@ function Footer() {
 
                <div className={`${styleFooter.footerSection} ${styleFooter.footerSocial}`}>
                     <h3>Follow Us</h3>
-                    <a href="#"><img src={iconFacebook} alt="니맛대로 페이스북"></img></a>
-                    <a href="#"><img src={iconTwitter} alt="니맛대로 트위터"></img></a>
-                    <a href="#"><img src={iconInsta} alt="니맛대로 인스타그램"></img></a>
+                    <a href="https://www.facebook.com"><img src={iconFacebook} alt="니맛대로 페이스북"/></a>
+                    <a href="https://www.facebook.com"><img src={iconTwitter} alt="니맛대로 트위터"/></a>
+                    <a href="https://www.instagram.com"><img src={iconInsta} alt="니맛대로 인스타그램"/></a>
                 </div>
 
             </div>

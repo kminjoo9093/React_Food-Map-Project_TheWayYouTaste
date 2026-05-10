@@ -93,7 +93,7 @@ function TheWayYouTaste() {
       }
     };
     fetchData();
-  }, [isInitialized, user]);
+  }, [isInitialized, user, SERVER_URL]);
 
   //f5하였을때 로그인페이지로 넘어가는 상황 방지
   if (!isInitialized) {

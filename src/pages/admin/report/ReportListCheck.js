@@ -20,13 +20,13 @@ function ReportListCheck({ reports }) {
       .get(`${SERVER_URL}/membership/check`)
       .then((res) => setMembers(res.data))
       .catch((err) => console.error("회원 목록 로드 실패", err));
-  }, []);
+  }, [SERVER_URL]);
   useEffect(() => {
     axios
       .get(`${SERVER_URL}/youtaste/search/store/all`) // 경로 확인 필요 (컨트롤러에 따라)
       .then((res) => setStores(res.data))
       .catch((err) => console.error("가게 목록 로드 실패", err));
-  }, []);
+  }, [SERVER_URL]);
 
   const lastMember = nowPage * viewPeople;
   const firstMember = lastMember - viewPeople;
