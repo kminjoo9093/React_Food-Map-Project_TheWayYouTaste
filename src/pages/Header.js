@@ -6,7 +6,7 @@ import SearchForm from "../components/SearchForm";
 
 function Header(){
 
-    const [open, setOpen] = useState(false);
+    // const [open, setOpen] = useState(false);
     const [openMyMenu, setOpenMyMenu] = useState(false);
     const [isLogin, setIsLogin] = useState(false); 
     const [user, setUser] = useState(null); 

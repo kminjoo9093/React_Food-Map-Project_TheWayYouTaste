@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styleReview from "../../css/ReviewRgister.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
 import serverUrl from "../../config/server.json";
 
 const today = new Date().toISOString().split("T")[0];
@@ -76,7 +75,6 @@ const StarRating = ({ rating, setRating }) => {
 
 // 리뷰 등록 모달 - props에 bplcSn 추가
 const ReviewRegister = ({ isOpen, onClose, bplcSn, userSn }) => {
-  const navigate = useNavigate();
   const [rating, setRating] = useState(0);
   const [images, setImages] = useState([]);
   const [reviewText, setReviewText] = useState("");

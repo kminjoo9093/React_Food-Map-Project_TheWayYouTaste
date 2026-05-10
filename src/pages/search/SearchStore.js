@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styleSearchStore from "../../css/SearchStore.module.css";
 import { useEffect, useMemo, useState, useRef } from "react";
 import Pagination from "../Pagination";
@@ -67,7 +67,7 @@ function SearchStore() {
   const [isMoved, setIsMoved] = useState(false);
   const [isChangedRegion, setIsChangedRegion] = useState(false);
   const [isSelectedAll, setIsSelectedAll] = useState(false);
-  const [isResetFilter, setIsResetFilter] = useState(false);
+  // const [isResetFilter, setIsResetFilter] = useState(false);
   const [isSearchViewport, setIsSearchViewport] = useState(false);
   const sggCode = useSggCodeType();
 
@@ -101,6 +101,7 @@ function SearchStore() {
   const { data: storeList = [], isLoading } = useStoresByCondition(params);
 
   //메인페이지에서 넘어온 url상태 동기화
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (hasQueryRegion) {
       const nextRegion = mapQueryToRegion({
@@ -196,7 +197,7 @@ function SearchStore() {
     setIsSearchViewport(false);
 
     setIsMoved(false);
-    setIsResetFilter(true);
+    // setIsResetFilter(true);
     setIsSelectedAll(false);
     setIsChangedRegion(true);
 
