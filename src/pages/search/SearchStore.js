@@ -253,7 +253,7 @@ function SearchStore() {
         </div>
 
         <div className={styleSearchStore.storeListArea}>
-          {!isLoading && viewStoreItems.lenth > 0 ? (
+          {!isLoading && viewStoreItems.length > 0 ? (
             <>
               <ul className={styleSearchStore.storeList}>
                 {viewStoreItems.map((record) => (
