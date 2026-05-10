@@ -7,11 +7,10 @@ import {
 
 export default function useInitLocationInfo({ skip }) {
   const { lat, lng, getCoords } = useGeolocation();
-  const { data: regionData, isLoading } = useRegionByCoords({
+  const { data: regionData } = useRegionByCoords({
     lat,
     lng,
   });
-  if(isLoading) alert("현재 위치 기반 지역 정보를 불러오는데 실패했습니다.");
   const setRegion = useFilterStore((store) => store.setRegion);
   const isInitialized = useRef(false);
 
