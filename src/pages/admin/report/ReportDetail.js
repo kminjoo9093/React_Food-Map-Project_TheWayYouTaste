@@ -19,14 +19,14 @@ function ReportDetail({ setMemberNotices }) {
       .get(`${SERVER_URL}/youtaste/search/store/all`)
       .then((res) => setStores(res.data))
       .catch((err) => console.error("가게 목록 로드 실패", err));
-  }, []);
+  }, [SERVER_URL]);
 
   useEffect(() => {
     axios
       .get(`${SERVER_URL}/membership/check`)
       .then((res) => setMembers(res.data))
       .catch((err) => console.error("회원 목록 로드 실패", err));
-  }, []);
+  }, [SERVER_URL]);
 
   const [showDetail, setShowDetail] = useState(false);
   const [noticeTitle, setNoticeTitle] = useState(report?.dclrTtl || "");
@@ -36,7 +36,7 @@ function ReportDetail({ setMemberNotices }) {
 
   if (!report) return <p>신고 정보가 없습니다.</p>;
 
-  const { dclrTtl, dclrCn, dclrCatNo, userSn, bplcSn, storeName, isAdmin } =
+  const { dclrTtl, dclrCn, dclrCatNo, userSn, bplcSn, isAdmin } =
     report;
 
   function getDclrCatName(catNo) {
@@ -93,29 +93,14 @@ function ReportDetail({ setMemberNotices }) {
       if (!updateRes.ok) throw new Error("신고 처리 업데이트 실패");
 
       // 반려(N) 처리 시 MemberNotice에 바로 추가
-      if (prcsYnValue === "N") {
-        const noticeData = {
-          userSn: report.userSn,
-          notiTtl: title,
-          notiCn: actionReason,
-          prcsYn: "N",
-        };
-
-        // const noticeRes = await fetch(
-        //   `${SERVER_URL}/youtaste/member-notices`,
-        //   {
-        //     method: "POST",
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify(noticeData)
-        //   }
-        // );
-
-        // if (!noticeRes.ok) throw new Error("공지사항 등록 실패");
-
-        // const newNotice = await noticeRes.json();
-        // // MemberNoticeList에 즉시 반영
-        // setMemberNotices(prev => [newNotice, ...prev]);
-      }
+      // if (prcsYnValue === "N") {
+      //   const noticeData = {
+      //     userSn: report.userSn,
+      //     notiTtl: title,
+      //     notiCn: actionReason,
+      //     prcsYn: "N",
+      //   };
+      // }
 
       alert("처리 완료!");
       navigate("/notice/list");

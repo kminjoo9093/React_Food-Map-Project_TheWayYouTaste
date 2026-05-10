@@ -13,7 +13,7 @@ function StoreDetail({ storeList }) {
   //리뷰작성시 로그인여부 확인
   const [user, setUser] = useState(null); // 로그인 사용자 정보
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
-  const [isInitialized, setIsInitialized] = useState(false); // 초기화
+  // const [isInitialized, setIsInitialized] = useState(false); // 초기화
 
   useEffect(() => {
     // 로컬 스토리지에서 사용자 정보 가져오기
@@ -22,7 +22,7 @@ function StoreDetail({ storeList }) {
       setUser(JSON.parse(storedUser)); // 사용자 정보가 있다면 상태에 저장
       setIsLoggedIn(true); // 로그인 상태로 설정
     }
-    setIsInitialized(true);
+    // setIsInitialized(true);
   }, []);
 
   const [searchParams] = useSearchParams();
@@ -50,7 +50,7 @@ function StoreDetail({ storeList }) {
       setStoreData(storeInfo);
     }
     getStoreData();
-  }, [storeId]);
+  }, [storeId, SERVER_URL]);
 
   function formatNumber(number) {
     if (!number) return "0원";
@@ -117,7 +117,7 @@ function StoreDetail({ storeList }) {
         console.error("리뷰 불러오기 실패:", err);
         setLoading(false);
       });
-  }, [storeId]);
+  }, [storeId, SERVER_URL]);
 
   const indexOfLast = currentPage * REVIEWS_PER_PAGE;
   const indexOfFirst = indexOfLast - REVIEWS_PER_PAGE;
@@ -222,7 +222,7 @@ function StoreDetail({ storeList }) {
           .then((data) => setIsLiked(data))
           .catch((err) => console.error("좋아요 상태 조회 실패:", err));
       }
-    }, [evlSn, user]);
+    }, [evlSn]);
 
     const toggleLike = () => {
       if (!user || !user.userSn) {

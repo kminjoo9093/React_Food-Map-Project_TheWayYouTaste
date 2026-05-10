@@ -80,6 +80,10 @@ function SearchStore() {
     skip: !!hasQueryRegion,
   });
 
+  // 페이지네이션
+  const [nowPage, setNowPage] = useState(1);
+  const viewListItemNum = 10;
+
   // URL에서 카테고리 가져오기
   const paramCategories = queryParams.get("categories");
 
@@ -171,6 +175,12 @@ function SearchStore() {
     }));
   }, [filteredStoreList]);
 
+  //렌더링 될 맛집 리스트
+  const viewStoreItems = finalStoreListWithId.slice(
+    (nowPage - 1) * viewListItemNum,
+    nowPage * viewListItemNum,
+  );
+
   // 검색 버튼 클릭 (카테고리 필터 적용)
   const onClickSearchBtn = () => {
     applyCategories(selectedCategories); //적용되는 카테고리 리스트로 복사
@@ -208,15 +218,7 @@ function SearchStore() {
     if (nowPage !== 1) {
       setNowPage(1); // 검색 시 페이지 번호 초기화
     }
-  }, [filteredStoreList]);
-
-  // 페이지네이션
-  const [nowPage, setNowPage] = useState(1);
-  const viewListItemNum = 10;
-  const viewStoreItems = finalStoreListWithId.slice(
-    (nowPage - 1) * viewListItemNum,
-    nowPage * viewListItemNum,
-  );
+  }, [filteredStoreList, nowPage]);
 
   return (
     <div className={`${styleSearchStore.gridMap} contentTopPosition`}>

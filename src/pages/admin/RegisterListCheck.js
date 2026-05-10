@@ -24,7 +24,7 @@ function RegisterListCheck({ registerAdmin }) {
       .get(`${SERVER_URL}/membership/check`)
       .then((res) => setMembers(res.data))
       .catch((err) => console.error("회원 목록 로드 실패", err));
-  }, []);
+  }, [SERVER_URL]);
 
   // 2. userSn을 받아 이름을 반환하는 함수
   function transName(userSn) {

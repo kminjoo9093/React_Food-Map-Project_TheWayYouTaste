@@ -21,7 +21,7 @@ function RegisterDetail() {
   const [brNo, setBrNo] = useState("");
   const [storeName, setStoreName] = useState("");
   const [roadAddress, setRoadAddress] = useState("");
-  const [detailAddress, setDetailAddress] = useState("");
+  // const [detailAddress, setDetailAddress] = useState("");
   const [openTime, setOpenTime] = useState("");
   const [closeTime, setCloseTime] = useState("");
   const [category, setCategory] = useState("");
@@ -77,7 +77,7 @@ function RegisterDetail() {
           : `${SERVER_URL}${registerData.certPhoto}`,
       );
     }
-  }, [registerData]);
+  }, [registerData, SERVER_URL]);
 
   /* 위도/경도 조회 로직 (카카오 API 사용) */
   const handleCoordSearch = async () => {
@@ -102,7 +102,7 @@ function RegisterDetail() {
         const doc = data.documents[0];
         setLat(doc.y); // 위도 업데이트
         setLot(doc.x); // 경도 업데이트
-        setDetailAddress(`위도: ${doc.y} / 경도: ${doc.x}`); // 입력창 표시용
+        // setDetailAddress(`위도: ${doc.y} / 경도: ${doc.x}`); // 입력창 표시용
         alert("좌표 조회가 완료되었습니다.");
       } else {
         alert("주소에 해당하는 좌표를 찾을 수 없습니다.");
