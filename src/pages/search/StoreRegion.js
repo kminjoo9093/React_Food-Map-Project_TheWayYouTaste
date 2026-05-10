@@ -14,7 +14,7 @@ import serverUrl from "../../config/server.json";
 import { AppDataContext } from "../../context/AppDataProvider";
 
 function StoreRegion() {
-  const { categories, sidoList } = useContext(AppDataContext);
+  const { sidoList } = useContext(AppDataContext);
   const SERVER_URL = serverUrl.SERVER_URL;
   const [nowPage, setNowPage] = useState(1);
   const viewPeople = 10;
@@ -59,7 +59,7 @@ function StoreRegion() {
     } catch (error) {
       console.error("랭킹 데이터 로드 실패:", error);
     }
-  }, [selectedDo, selectedSi, selectedDong]);
+  }, [selectedDo, selectedSi, selectedDong, SERVER_URL]);
 
   useEffect(() => {
     fetchRankedData();

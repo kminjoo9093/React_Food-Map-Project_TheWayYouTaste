@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import style from "../../css/MembershipResign.module.css";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import serverUrl from "../../config/server.json";
 
@@ -15,7 +14,6 @@ const AGREEMENT_ITEMS = [
 ];
 
 function MembershipResign() {
-  const navigate = useNavigate();
   const [agreements, setAgreements] = useState(
     new Array(AGREEMENT_ITEMS.length).fill(false),
   );

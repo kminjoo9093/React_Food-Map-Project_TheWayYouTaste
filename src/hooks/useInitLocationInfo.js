@@ -7,10 +7,11 @@ import {
 
 export default function useInitLocationInfo({ skip }) {
   const { lat, lng, getCoords } = useGeolocation();
-  const { data: regionData, isLoading: regionLoading } = useRegionByCoords({
+  const { data: regionData, isLoading } = useRegionByCoords({
     lat,
     lng,
   });
+  if(isLoading) alert("현재 위치 기반 지역 정보를 불러오는데 실패했습니다.");
   const setRegion = useFilterStore((store) => store.setRegion);
   const isInitialized = useRef(false);
 
@@ -22,8 +23,6 @@ export default function useInitLocationInfo({ skip }) {
     if (skip) return;
     if (!regionData) return;
     if (isInitialized.current) return;
-
-    console.log("regionData 들어옴", regionData);
 
     setRegion({
       selectedSido: regionData.sidoCode,
