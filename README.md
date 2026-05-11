@@ -30,7 +30,7 @@
 - **[현재 위치 기반 좌표](./src/hooks/useGeolocation.js) → [행정구역 변환 및 지역 세팅](./src/hooks/useInitLocationInfo.js) → [지역 기반 맛집 데이터 로딩](./src/pages/search/SearchStore.js#L95-L105)** 흐름 설계로 <br>
 초기에 별도의 사용자 입력 없이 지역 자동 설정 및 주변 맛집 리스트 즉시 제공하여 탐색 단계 최소화
 - 포트폴리오 배포 환경 제약으로 기존 '시 전체' 맛집 데이터 조회 방식 사용이 어려운 문제를 [클라이언트 측 조회 로직 개선](./src/api/storeApi.js#L12-L21)으로 해결
-- - **URL Query Parameter와 전역 상태(지역, 음식 카테고리 필터)를 동기화**하여 페이지 간 이동 시 검색 조건 유지 및 실제 적용된 검색 조건과 UI 선택 상태 간 불일치 방지
+- **URL Query Parameter와 전역 상태(지역, 음식 카테고리 필터)를 동기화**하여 페이지 간 이동 시 검색 조건 유지 및 실제 적용된 검색 조건과 UI 선택 상태 간 불일치 방지
 - [카카오 지도 API 연동 및 MarkerClusterer, CustomOverlay를 활용한 맛집 데이터 시각화](./src/components/MapComponent.js)
 - 지도 idle 이벤트를 사용하여 사용자 인터렉션 기반 [뷰포트 범위 내 데이터 재조회](./src/api/storeApi.js#L30-L46) 구현 및 
 **범위 내 재검색 버튼**으로 불필요한 데이터 요청 최소화
