@@ -2,31 +2,32 @@
 
 사용자 참여(맛집 등록 요청, 리뷰, 신고) 기반 맛집 정보 공유 및 관리 웹 서비스
 <br><br>
-<img width="600" alt="image" src="https://github.com/user-attachments/assets/5aaf1207-a632-45d6-8329-95160648785a" />
+
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/cf3cb909-6e83-429b-bcbd-253f13b5fd62" />
 <img width="550" alt="image" src="https://github.com/user-attachments/assets/a2df2246-e4fb-4a0c-898d-a0d4541783f2" />
 
 
-<br>
-
-### Frontend Stack
-
-![React](https://img.shields.io/badge/React-000000?style=for-the-badge&logo=react)
-![Zustand](https://img.shields.io/badge/Zustand-000000?style=for-the-badge)
-![TanStack Query](https://img.shields.io/badge/TanStack_Query-FF4154?style=for-the-badge)
-
 <br><br>
 
-배포 링크 : https://the-way-you-taste.vercel.app <br>
+### 🔗 Link
+🌐 [배포 링크 바로가기 →](https://the-way-you-taste.vercel.app) <br>
 초기 접속 시 서버가 활성화되는 데 약 30초~1분의 로딩 시간이 소요될 수 있습니다. 잠시만 기다려주시면 감사하겠습니다.
 <br><br>
-시연 영상 : https://drive.google.com/file/d/1_KJ2dRvbtXWWgIKGapKBwEmorx42Ctz4/view?usp=sharing
+🎬 [시연 영상 바로가기 →](https://drive.google.com/file/d/1_KJ2dRvbtXWWgIKGapKBwEmorx42Ctz4/view?usp=sharing) 
 <br><br>
 [Backend Repository 바로가기 →](https://github.com/kminjoo9093/SpringBoot_Food-Map-Project_TheWayYouTaste)
 
+<br>
+
+### 🛠 Frontend Stack
+
+![React](https://img.shields.io/badge/React-000000?style=for-the-badge&logo=react)
+![Zustand](https://img.shields.io/badge/Zustand-000000?style=for-the-badge)
+![TanStack Query](https://img.shields.io/badge/TanStack_Query-000000?style=for-the-badge)
+
 <br><br>
 
-## 기여한 부분
+## 🔍 기여한 부분
 
 #### **지도 찾기 페이지 개발** &emsp;
 
@@ -58,7 +59,7 @@
 
 <br><br><br>
 
-## 문제 해결 및 성과
+## 💡 문제 해결 및 성과
 
 #### **1. 데이터 검색 범위가 제한되는 문제를 해결하기 위해 ‘범위 내 재검색’ 버튼 추가로 데이터 호출 메커니즘 전환** &emsp; 
 
