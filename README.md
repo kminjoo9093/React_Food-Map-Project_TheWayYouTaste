@@ -13,8 +13,7 @@
 
 ![React](https://img.shields.io/badge/React-000000?style=for-the-badge&logo=react)
 ![Zustand](https://img.shields.io/badge/Zustand-000000?style=for-the-badge)
-![React](https://img.shields.io/badge/Zustand-000000?style=for-the-badge&logo=Zustand)
-`Tanstack Query`
+![TanStack Query](https://img.shields.io/badge/TanStack_Query-FF4154?style=for-the-badge)
 
 <br><br>
 
