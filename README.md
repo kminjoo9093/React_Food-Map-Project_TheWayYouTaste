@@ -12,6 +12,7 @@
 ### Frontend Stack
 
 ![React](https://img.shields.io/badge/React-000000?style=for-the-badge&logo=react)
+![React](https://img.shields.io/badge/Zustand-000000?style=for-the-badge&logo=zustand)
 `Zustnad`
 `Tanstack Query`
 
