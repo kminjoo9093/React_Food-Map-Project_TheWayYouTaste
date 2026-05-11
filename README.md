@@ -2,8 +2,9 @@
 
 사용자 참여(맛집 등록 요청, 리뷰, 신고) 기반 맛집 정보 공유 및 관리 웹 서비스
 <br><br>
-<img width="450" alt="image" src="https://github.com/user-attachments/assets/5aaf1207-a632-45d6-8329-95160648785a" />
-<img width="450" alt="image" src="https://github.com/user-attachments/assets/cf3cb909-6e83-429b-bcbd-253f13b5fd62" />
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/5aaf1207-a632-45d6-8329-95160648785a" />
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/cf3cb909-6e83-429b-bcbd-253f13b5fd62" />
+<img width="550" alt="image" src="https://github.com/user-attachments/assets/a2df2246-e4fb-4a0c-898d-a0d4541783f2" />
 
 
 <br>
