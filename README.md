@@ -3,12 +3,6 @@
 사용자 참여(맛집 등록 요청, 리뷰, 신고) 기반 맛집 정보 공유 및 관리 웹 서비스
 
 <br>
-배포 링크 : https://the-way-you-taste.vercel.app <br>
-초기 접속 시 서버가 활성화되는 데 약 30초~1분의 로딩 시간이 소요될 수 있습니다. 잠시만 기다려주시면 감사하겠습니다.<br>
-<br>
-시연 영상 : https://drive.google.com/file/d/1_KJ2dRvbtXWWgIKGapKBwEmorx42Ctz4/view?usp=sharing
-
-<br>
 
 ### Tech Skills
 
@@ -19,8 +13,13 @@
 ![Oracle](https://img.shields.io/badge/Oracle-000000?style=for-the-badge&logo=oracle)
 ![SQL](https://img.shields.io/badge/SQL-000000?style=for-the-badge&logo=SQL)
 
-<br>
+<br><br>
 
+배포 링크 : https://the-way-you-taste.vercel.app <br>
+초기 접속 시 서버가 활성화되는 데 약 30초~1분의 로딩 시간이 소요될 수 있습니다. 잠시만 기다려주시면 감사하겠습니다.<br>
+<br>
+시연 영상 : https://drive.google.com/file/d/1_KJ2dRvbtXWWgIKGapKBwEmorx42Ctz4/view?usp=sharing
+<br>
 [Backend Repository 바로가기 →](https://github.com/kminjoo9093/SpringBoot_Food-Map-Project_TheWayYouTaste)
 
 <br><br>
