@@ -9,14 +9,11 @@
 
 <br>
 
-### Tech Skills
+### Frontend Stack
 
 ![React](https://img.shields.io/badge/React-000000?style=for-the-badge&logo=react)
-![Java](https://img.shields.io/badge/Java-000000?style=for-the-badge&logo=Java)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-000000?style=for-the-badge&logo=springboot)
-![JPA](https://img.shields.io/badge/JPA-000000?style=for-the-badge&logo=JPA)
-![Oracle](https://img.shields.io/badge/Oracle-000000?style=for-the-badge&logo=oracle)
-![SQL](https://img.shields.io/badge/SQL-000000?style=for-the-badge&logo=SQL)
+`Zustnad`
+`Tanstack Query`
 
 <br><br>
 
