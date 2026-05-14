@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styleSearchStore from "../css/SearchStore.module.css";
 import { getStoreImage } from "../lib/utils/getStoreImage";
+import { formatTime } from "../lib/utils/formatTime";
 
 function StoreItem({ store }) {
   return (
@@ -23,7 +24,7 @@ function StoreItem({ store }) {
             </span>
           </div>
           <span className={styleSearchStore.storeTime}>
-            {store.bgngTm}-{store.ddlnTm}
+            {`${formatTime(store.bgngTm)} - ${formatTime(store.ddlnTm)}`}
           </span>
           <span className={styleSearchStore.storeAddress}>{store.address}</span>
         </div>
