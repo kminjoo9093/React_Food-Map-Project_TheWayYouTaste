@@ -19,6 +19,14 @@ export default function CategoryFilter({ categories, mode }) {
   const filterClass =
     mode === "main" ? styleCategory.mainMode : styleCategory.searchMode;
 
+  if (!categories || categories.length === 0) {
+    return <div className={styleCategory.loadingBox}>
+      <p className={styleCategory.loadingText}>
+      데이터를 불러오는 중입니다.<br/>잠시만 기다려 주세요.
+      </p>
+      </div>;
+  }
+
   return (
     <ul className={`${styleCategory.categoryList} ${filterClass}`}>
       {categories.map((category) => (
