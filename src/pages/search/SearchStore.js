@@ -103,6 +103,7 @@ function SearchStore() {
   );
 
   const { data: storeList = [], isLoading } = useStoresByCondition(params);
+  const { data: viewportStoreList } = useStoresByViewport(viewport);
 
   //메인페이지에서 넘어온 url상태 동기화
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -138,9 +139,8 @@ function SearchStore() {
     setIsSearchViewport(false);
   }, [keyword, selectedSido, selectedSgg, selectedDong]);
 
-  const { data: viewportStoreList } = useStoresByViewport(viewport);
+  // const { data: viewportStoreList } = useStoresByViewport(viewport);
 
-  console.log("viewport:", viewport);
   // 범위 내 재검색 함수
   const handleSearchViewportArea = () => {
     const currentArea = positionAreaRef.current;
