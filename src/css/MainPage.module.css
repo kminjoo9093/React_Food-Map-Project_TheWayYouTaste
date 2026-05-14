@@ -1,6 +1,6 @@
 .bigContainer {
   height: auto;
-  min-height: calc(100vh - (15rem + 37rem));
+  min-height: calc(100vh - 15rem);
   padding-block: 4rem;
   background-image: url("../resources/img/system/main.png");
   background-size: cover;
@@ -30,23 +30,6 @@
   z-index: 1;
 }
 
-.mainFont {
-  padding: 60px 0px;
-  margin: 0;
-  font-size: 6.4rem;
-  font-weight: 900;
-  text-align: center;
-  color: black;
-  text-shadow:
-    0px 6px 8px #ffd180,
-    /* 6px 6px 8px rgba(247, 169, 106, 0.8), */ 0 0 20px
-      rgba(255, 255, 255, 0.5);
-}
-
-h1 {
-  margin: 50px 0px;
-}
-
 h4 {
   margin-bottom: 0px;
 }
@@ -59,7 +42,6 @@ h4 {
   width: 70vw; 
   max-width: 100rem;
   height: auto; 
-  min-height: 55rem;
   justify-items: center;
   background: rgba(255, 255, 255, 0.8);
   box-shadow: 0px 0.6rem 1.8rem rgba(0, 0, 0, 0.08);
@@ -74,15 +56,15 @@ h4 {
 }
 
 .sectionTitle {
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: bold;
 }
 .mainContainer p {
-  margin: 0px;
+  margin: 0;
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 20px;
+  font-size: 2rem;
 }
 
 .iconGrid {
@@ -90,23 +72,23 @@ h4 {
   justify-items: center;
   align-items: center;
   justify-content: center;
-  grid-template-columns: repeat(8, 60px);
-  gap: 40px;
-  font-size: 30px;
-  margin: 20px 0px;
+  grid-template-columns: repeat(8, 6rem);
+  gap: 4rem;
+  font-size: 3rem;
+  margin: 2rem 0;
 }
 
 .iconRight {
   justify-items: right;
-  font-size: 25px;
-  margin: 40px 0px;
+  font-size: 2.5rem;
+  margin-block: 4rem 0;
 }
 
 .iconBtn {
   position: relative;
   text-align: center;
   cursor: pointer;
-  padding: 10px;
+  padding: 1rem;
   background-color: f5f5f5;
   border-radius: 12px;
   transition: 0.2s;
@@ -267,7 +249,7 @@ h4 {
 /* 태블릿 */
 @media (max-width: 1023px) {
   .bigContainer {
-    min-height: calc(100vh - (7rem + 37rem));
+    min-height: calc(100vh - 7rem);
   }
   .mobContentWrap {
     border: 2px solid blue;

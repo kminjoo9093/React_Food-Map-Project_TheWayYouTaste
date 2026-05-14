@@ -55,7 +55,6 @@ function MainPage() {
   return (
     <div className="contentTopPosition">
       <div className={styleMain.bigContainer}>
-        <h1 className={`${styleMain.mainFont} heading`}>The Way You Taste</h1>
         {/* 모바일 */}x
         <SearchForm device="mobile" />
         <div className={styleMain.mainContainer}>
