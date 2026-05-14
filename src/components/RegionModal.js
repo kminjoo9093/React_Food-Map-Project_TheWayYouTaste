@@ -47,7 +47,7 @@ function RegionModal({ onConfirm, sidoList }) {
             <ul className={styleRegionModal.regionList}>
               <li
                 className={`${styleRegionModal.regionItem} 
-                                                    ${selectedSido === null ? styleRegionModal.activeItem : ""}`}
+                            ${selectedSido === null ? styleRegionModal.activeItem : ""}`}
                 onClick={() => setSido(null, "")}
               >
                 전체
@@ -56,13 +56,9 @@ function RegionModal({ onConfirm, sidoList }) {
                 <li
                   key={record.sidoCd}
                   className={`${styleRegionModal.regionItem}
-                                                            ${
-                                                              Number(selectedSido) ===
-                                                              record.sidoCd
-                                                                ? styleRegionModal.activeItem
-                                                                : ""
-                                                            }
-                                                `}
+                              ${ Number(selectedSido) === record.sidoCd
+                                  ? styleRegionModal.activeItem
+                                  : ""}`}
                   onClick={() => {
                     setSido(record.sidoCd, record.sidoNm);
                   }}
@@ -80,7 +76,7 @@ function RegionModal({ onConfirm, sidoList }) {
               <ul className={styleRegionModal.regionList}>
                 <li
                   className={`${styleRegionModal.regionItem} 
-                                                    ${selectedSgg === null ? styleRegionModal.activeItem : ""}`}
+                              ${selectedSgg === null ? styleRegionModal.activeItem : ""}`}
                   onClick={() => setSgg(null, "")}
                 >
                   전체
@@ -94,13 +90,10 @@ function RegionModal({ onConfirm, sidoList }) {
                     <li
                       key={record.sggCd}
                       className={`${styleRegionModal.regionItem}
-                                                                ${
-                                                                  Number(selectedSgg) ===
-                                                                  record.sggCd
-                                                                    ? styleRegionModal.activeItem
-                                                                    : ""
-                                                                }
-                                                    `}
+                                  ${
+                                    Number(selectedSgg) === record.sggCd
+                                    ? styleRegionModal.activeItem
+                                    : ""}`}
                       onClick={() => setSgg(record.sggCd, record.sggNm)}
                     >
                       {record.sggNm}
@@ -118,7 +111,7 @@ function RegionModal({ onConfirm, sidoList }) {
               <ul className={styleRegionModal.regionList}>
                 <li
                   className={`${styleRegionModal.regionItem} 
-                                                    ${selectedDong === null ? styleRegionModal.activeItem : ""}`}
+                              ${selectedDong === null ? styleRegionModal.activeItem : ""}`}
                   onClick={() => setDong(null, "")}
                 >
                   전체
@@ -132,13 +125,9 @@ function RegionModal({ onConfirm, sidoList }) {
                     <li
                       key={record.dgCd}
                       className={`${styleRegionModal.regionItem}
-                                                        ${
-                                                          Number(selectedDong) ===
-                                                          record.dgCd
-                                                            ? styleRegionModal.activeItem
-                                                            : ""
-                                                        }
-                                                        `}
+                                  ${ Number(selectedDong) === record.dgCd
+                                     ? styleRegionModal.activeItem
+                                      : ""}`}
                       onClick={() => setDong(record.dgCd, record.dgNm)}
                     >
                       {record.dgNm}
