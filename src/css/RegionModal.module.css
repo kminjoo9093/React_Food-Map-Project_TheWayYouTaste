@@ -3,7 +3,7 @@
   inset: 15rem 0 0 0;
   width: 100vw;
   height: calc(100vh - 15rem);
-  background: rgba(0,0,0,0.55);
+  background: rgba(0, 0, 0, 0.55);
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -21,24 +21,22 @@
   height: 50rem;
   margin-block: 15vh;
 }
-.title{
+.title {
   font-weight: 400;
   font-size: 1.6rem;
 }
-.noticeMsg{
+.noticeMsg {
   display: block;
   font-size: 1.4rem;
   color: var(--gray-77);
   margin-top: 1.5rem;
 }
 
-
 /* 도 / 시 / 동 3컬럼 */
 .regionContainer {
   display: flex;
   margin-block: 3rem;
   justify-content: center;
-
 }
 
 .regionColumn {
@@ -52,19 +50,19 @@
 }
 
 /* 리스트 아이템 */
-.regionList{
-    width: 100%;
-    height: 25rem;
-    overflow-y: auto;
-    margin-top: 2rem;
+.regionList {
+  width: 100%;
+  height: 25rem;
+  overflow-y: auto;
+  margin-top: 2rem;
 }
 
-.regionItem{
-    line-height: 2.4em;
-    border-radius: 5px;
-    text-wrap: nowrap;
-    padding-left: 0;
-    text-align: center;
+.regionItem {
+  line-height: 2.4em;
+  border-radius: 5px;
+  text-wrap: nowrap;
+  padding-left: 0;
+  text-align: center;
 }
 
 .regionItem:hover {
@@ -92,45 +90,45 @@
 }
 
 /* 모달 닫기 버튼 */
-.btnClose{
-    width: 2rem;
-    height: 2rem;
-    background: url(/src/resources/img/search/iconClose.svg) no-repeat center / cover;
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
+.btnClose {
+  width: 2rem;
+  height: 2rem;
+  background: url(/src/resources/img/search/iconClose.svg) no-repeat center /
+    cover;
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
 }
 @media (max-width: 1023px) {
   .regionDimmed {
     inset: 7rem 0 0 0;
     height: calc(100vh - 7rem);
   }
-  .regionDimmedMiddle{
-    height: 100%;
-    margin-block: 0;
-  }
-}
-
-@media (max-width: 767px){
   .regionDimmedMiddle {
-    max-width: auto;
+    height: 100%;
+    max-width: 100%;
     width: 100vw;
     border-radius: 0;
+    margin-block: 0;
+  }
+
+  .regionDimmedMiddle {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
-  .regionContainer{
+  .regionContainer {
     margin: 0;
   }
-  .regionColumn{
+  .regionColumn {
     width: 33%;
   }
-  .regionList{
+  .regionList {
     height: auto;
     max-height: 45rem;
   }
-  .topWrap, .bottomWrap{
+  .topWrap,
+  .bottomWrap {
     padding-block: 2rem;
   }
 }
