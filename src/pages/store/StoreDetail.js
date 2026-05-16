@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import styleStoreDetail from "../../css/StoreDetail.module.css";
 import serverUrl from "../../config/server.json";
+import { formatPrice } from "../../lib/utils/formatPrice";
 
 function StoreDetail({ storeList }) {
   const REVIEWS_PER_PAGE = 5;
@@ -51,12 +52,6 @@ function StoreDetail({ storeList }) {
     }
     getStoreData();
   }, [storeId, SERVER_URL]);
-
-  function formatNumber(number) {
-    if (!number) return "0원";
-    const parsedPrice = number.toLocaleString("ko-KR") + "원";
-    return parsedPrice;
-  }
 
   function showStoreImage(imgData) {
     if (imgData) {
@@ -413,7 +408,7 @@ function StoreDetail({ storeList }) {
                       <span className={styleStoreDetail.menuNm}>{name}</span>
                       <div className={styleStoreDetail.menudots}></div>
                       <span className={styleStoreDetail.menuPrice}>
-                        {formatNumber(price)}
+                        {formatPrice(price)}
                       </span>
                     </li>
                   ),
