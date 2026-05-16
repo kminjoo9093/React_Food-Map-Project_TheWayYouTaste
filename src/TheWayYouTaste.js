@@ -116,7 +116,7 @@ function TheWayYouTaste() {
             element={<NoticeDetail isAdmin={isAdmin} />}
           />
           <Route path="/search/store" element={<SearchStore />} />
-          <Route path="/store/storeDetail" element={<StoreDetail />} />
+          <Route path="/store/detail/:id" element={<StoreDetail />} />
           <Route path="/store/region" element={<StoreRegion />} />
           <Route
             path="/login"

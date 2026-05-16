@@ -7,7 +7,7 @@ function StoreItem({ store }) {
   return (
     <li key={store.bplcSn} className={styleSearchStore.storeListItem}>
       <Link
-        to={`/store/storeDetail?storeId=${store.bplcSn}`}
+        to={`/store/detail/${store.bplcSn}`}
         className={styleSearchStore.storeListLink}
       >
         <img

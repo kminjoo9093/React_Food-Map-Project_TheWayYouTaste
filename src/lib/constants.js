@@ -7,5 +7,6 @@ export const QUERY_KEYS = {
   stores: {
     list: (params) => ['stores', 'list', params],
     viewport: (viewport) => ['stores', 'viewport', viewport],
+    detail: (storeId) => ['store', storeId],
   }
 }
