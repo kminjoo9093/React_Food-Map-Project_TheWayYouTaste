@@ -6,6 +6,7 @@ import { faStar, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import styleStoreDetail from "../../css/StoreDetail.module.css";
 import serverUrl from "../../config/server.json";
 import { formatPrice } from "../../lib/utils/formatPrice";
+import { getStoreImage } from "../../lib/utils/getStoreImage";
 
 function StoreDetail({ storeList }) {
   const REVIEWS_PER_PAGE = 5;
@@ -52,20 +53,6 @@ function StoreDetail({ storeList }) {
     }
     getStoreData();
   }, [storeId, SERVER_URL]);
-
-  function showStoreImage(imgData) {
-    if (imgData) {
-      return (
-        <img
-          src={`${SERVER_URL}${imgData}`}
-          alt="대표 이미지"
-          className={styleStoreDetail.storeImage}
-        ></img>
-      );
-    } else {
-      return <span>등록된 이미지가 없습니다.</span>;
-    }
-  }
 
   function showAmtyServices(services) {
     if (!services || !Array.isArray(services)) {
@@ -394,7 +381,11 @@ function StoreDetail({ storeList }) {
             </div>
           </div>
           <div className={`${styleStoreDetail.storeImageWrap} contentBox`}>
-            {showStoreImage(storeData.bplcPhoto)}
+            <img
+              src={getStoreImage(storeData.bplcPhoto)}
+              alt="가게 대표 이미지"
+              className={styleStoreDetail.storeImage}
+            />
           </div>
           <div className={`${styleStoreDetail.storeMenuWrap} contentBox`}>
             <h3 className={`${styleStoreDetail.menuHeading} contentHeading`}>
