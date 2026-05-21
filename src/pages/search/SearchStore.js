@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import styleSearchStore from "../../css/SearchStore.module.css";
 import { useEffect, useMemo, useState, useRef } from "react";
 import Pagination from "../Pagination";
@@ -9,17 +9,22 @@ import { useContext } from "react";
 import { AppDataContext } from "../../context/AppDataProvider";
 import RegionSelector from "../../components/RegionSelector";
 import {
+  useDongName,
   useFilterStore,
   useSelectedDong,
   useSelectedSgg,
   useSelectedSido,
+  useSggName,
+  useSidoName,
 } from "../../store/filters";
 import { useStoresByCondition } from "../../hooks/queries/useStoresByCondition";
 import { useStoresByViewport } from "../../hooks/queries/useStoresByViewport";
 import StoreItem from "../../components/StoreItem";
 import { useSggCodeType } from "../../hooks/useSggCodeType";
+import { getSearchPath } from "../../lib/utils/getSearchPath";
 
 function SearchStore() {
+  const nav = useNavigate();
   const { categories, sidoList } = useContext(AppDataContext);
   const positionAreaRef = useRef({
     swMinLat: 0,
@@ -28,20 +33,39 @@ function SearchStore() {
     neMaxLng: 0,
   });
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const keyword = queryParams.get("keyword");
+  // const navigate = useNavigate();
+  // const location = useLocation();
+  // const queryParams = new URLSearchParams(location.search);
+  // const keyword = queryParams.get("keyword");
 
+  // url - 실제 필터 적용, 검색, 데이터 요청에 활용
+  const [searchParams, setSearchParams] = useSearchParams();
+  const keyword = searchParams.get("keyword");
+  const sidoFromUrl = searchParams.get("sido");
+  const sggFromUrl = searchParams.get("sgg");
+  const dongFromUrl = searchParams.get("dong");
+  // const sidoNameFromUrl = searchParams.get("doName");
+  // const sggNameFromUrl = searchParams.get("siName");
+  // const dongNameFromUrl = searchParams.get("dongName");
+  const categoriesFromUrl = searchParams.get("categories");
+  const urlCategoryArray = useMemo(() => {
+    return categoriesFromUrl ? categoriesFromUrl.split(",") : [];
+  }, [categoriesFromUrl]);
+
+  // zustand store - select ui용 (임시 상태)
   const selectedSido = useSelectedSido();
   const selectedSgg = useSelectedSgg();
   const selectedDong = useSelectedDong();
+  const sidoName = useSidoName();
+  const sggName = useSggName();
+  const dongName = useDongName();
   const selectedCategories = useFilterStore(
     (store) => store.selectedCategories,
   );
-  const appliedCategories = useFilterStore((store) => store.appliedCategories);
+
+  // const appliedCategories = useFilterStore((store) => store.appliedCategories);
   const setCategories = useFilterStore((store) => store.setCategories);
-  const applyCategories = useFilterStore((store) => store.applyCategories);
+  // const applyCategories = useFilterStore((store) => store.applyCategories);
   const resetRegion = useFilterStore((store) => store.resetRegion);
   const resetCategories = useFilterStore((store) => store.resetCategories);
   const setRegion = useFilterStore((store) => store.setRegion);
@@ -62,109 +86,140 @@ function SearchStore() {
   });
 
   const [viewport, setViewport] = useState(null);
+  const [searchMode, setSearchMode] = useState("district");
+  const [isMoved, setIsMoved] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false); //모달 오픈 상태
-  const [isMoved, setIsMoved] = useState(false);
-  const [isChangedRegion, setIsChangedRegion] = useState(false);
   const [isSelectedAll, setIsSelectedAll] = useState(false);
+  // const isSelectedAll = !selectedSido;
   // const [isResetFilter, setIsResetFilter] = useState(false);
-  const [isSearchViewport, setIsSearchViewport] = useState(false);
-  const sggCode = useSggCodeType();
+  const sggCode = useSggCodeType({ sidoFromUrl, sggFromUrl, dongFromUrl });
 
-  const hasQueryRegion =
-    queryParams.get("sido") ||
-    queryParams.get("sgg") ||
-    queryParams.get("dong");
+  const hasQueryRegion = Boolean(sidoFromUrl || sggFromUrl || dongFromUrl);
 
-  const { lat, lng, getCoords } = useInitLocationInfo({
+  const { lat, lng, getCoords, regionData } = useInitLocationInfo({
     skip: !!hasQueryRegion,
   });
+
+  //query 없는 상태로 컴포넌트 진입 시 현재 위치 기반 query 생성
+  useEffect(() => {
+    if (hasQueryRegion || searchMode === "bounds") return; //hasQueryRegion ||
+    if (!regionData) return;
+
+    setIsMoved(false);
+
+    // setSearchParams({
+    //   region: {
+    //     selectedSido,
+    //     selectedSgg,
+    //     selectedDong,
+    //     sidoName,
+    //     sggName,
+    //     dongName,
+    //   },
+    //   categories: selectedCategories,
+    //   keyword: "",
+    // })
+    const searchUrl = getSearchPath({
+      region: {
+        selectedSido,
+        selectedSgg,
+        selectedDong,
+        sidoName,
+        sggName,
+        dongName,
+      },
+      categories: selectedCategories,
+      keyword: "",
+    });
+
+    nav(searchUrl, { replace: true });
+  }, [hasQueryRegion, regionData, nav]);
 
   // 페이지네이션
   const [nowPage, setNowPage] = useState(1);
   const viewListItemNum = 10;
 
-  // URL에서 카테고리 가져오기
-  const paramCategories = queryParams.get("categories");
-
-  const urlCategoryArray = useMemo(() => {
-    return paramCategories ? paramCategories.split(",") : [];
-  }, [paramCategories]);
-
   // fetch -> query storeList 요청
   const params = useMemo(
     () => ({
       keyword,
-      sidoCode: selectedSido,
+      sidoCode: sidoFromUrl,
       sggCode,
-      dongCode: selectedDong,
+      dongCode: dongFromUrl,
     }),
-    [keyword, selectedSido, sggCode, selectedDong],
+    [keyword, sidoFromUrl, sggCode, dongFromUrl],
   );
 
   const { data: storeList = [], isLoading } = useStoresByCondition(params);
   const { data: viewportStoreList } = useStoresByViewport(viewport);
 
-  //메인페이지에서 넘어온 url상태 동기화
+  useEffect(() => {
+    setIsMoved(false);
+  }, [storeList]);
+
+  // url 값 - zustand store 상태 동기화
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if (hasQueryRegion) {
-      const nextRegion = mapQueryToRegion({
-        sidoCode: queryParams.get("sido"),
-        sggCode: queryParams.get("sgg"),
-        dongCode: queryParams.get("dong"),
-        sidoName: queryParams.get("doName"),
-        sggName: queryParams.get("siName"),
-        dongName: queryParams.get("dongName"),
-      });
+    // if (!hasQueryRegion) return;
 
-      if (
-        nextRegion.selectedSido !== selectedSido ||
-        nextRegion.selectedSgg !== selectedSgg ||
-        nextRegion.selectedDong !== selectedDong
-      ) {
-        setRegion(nextRegion);
-      }
+    const nextRegion = mapQueryToRegion({
+      sidoCode: sidoFromUrl,
+      sggCode: sggFromUrl,
+      dongCode: dongFromUrl,
+      sidoName: searchParams.get("doName"),
+      sggName: searchParams.get("siName"),
+      dongName: searchParams.get("dongName"),
+    });
+
+    if (
+      nextRegion.selectedSido !== selectedSido ||
+      nextRegion.selectedSgg !== selectedSgg ||
+      nextRegion.selectedDong !== selectedDong
+    ) {
+      setRegion(nextRegion);
     }
 
     //카테고리
-    if (urlCategoryArray.length > 0) {
-      setCategories(urlCategoryArray);
-      applyCategories(urlCategoryArray);
-    }
-  }, [location.search]);
+    setCategories(urlCategoryArray);
+  }, [searchParams.toString()]);
 
-  useEffect(() => {
-    setIsChangedRegion(true);
-    setIsSearchViewport(false);
-  }, [keyword, selectedSido, selectedSgg, selectedDong]);
+  // useEffect(() => {
+  //   setSearchMode("district");
 
-  // const { data: viewportStoreList } = useStoresByViewport(viewport);
+  //   setIsMoved(false);
+  // }, [keyword, sidoFromUrl, sggFromUrl, dongFromUrl]);
 
   // 범위 내 재검색 함수
   const handleSearchViewportArea = () => {
+    console.log("범위내재검색 버튼 클릭");
     const currentArea = positionAreaRef.current;
     if (!currentArea) return;
     setViewport(currentArea);
+    setSearchParams({
+      mode: "bounds",
+      swMinLat: currentArea.swMinLat,
+      swMinLng: currentArea.swMinLng,
+      neMaxLat: currentArea.neMaxLat,
+      neMaxLng: currentArea.neMaxLng,
+    });
 
-    setIsSearchViewport(true);
-    setIsChangedRegion(false);
-    setIsMoved(false); // 재검색 후 버튼 비활성화
+    setSearchMode("bounds");
+    // setIsMoved(false); // 재검색 후 버튼 비활성화
     setNowPage(1);
   };
 
   //데이터 결정
-  const baseList = isSearchViewport ? viewportStoreList : storeList;
+  const baseList = searchMode === "bounds" ? viewportStoreList : storeList;
 
   //카테고리 필터링한 맛집 리스트
   const filteredStoreList = useMemo(() => {
-    if (appliedCategories.length === 0) return baseList;
+    if (urlCategoryArray.length === 0) return baseList;
 
-    console.log(appliedCategories);
     return baseList.filter((record) =>
-      appliedCategories.includes(record.storeCatNo),
+      urlCategoryArray.includes(String(record.storeCatNo)),
     );
-  }, [baseList, appliedCategories]);
+  }, [baseList, urlCategoryArray]);
 
   // 필터링, 지도범위 적용 최종 맛집 리스트
   const finalStoreListWithId = useMemo(() => {
@@ -183,35 +238,64 @@ function SearchStore() {
 
   // 검색 버튼 클릭 (카테고리 필터 적용)
   const onClickSearchBtn = () => {
-    applyCategories(selectedCategories); //적용되는 카테고리 리스트로 복사
+    // applyCategories(selectedCategories); //적용되는 카테고리 리스트로 복사
+
+    //test
+    setSearchMode("district");
+
+    const nextParams = {};
+
+    if (keyword) nextParams.keyword = keyword;
+    if (selectedSido) {
+      nextParams.sido = selectedSido;
+      nextParams.doName = sidoName;
+    }
+    if (selectedSgg) {
+      nextParams.sgg = selectedSgg;
+      nextParams.siName = sggName;
+    }
+    if (selectedDong) {
+      nextParams.dong = selectedDong;
+      nextParams.dongName = dongName;
+    }
+    if (selectedCategories.length > 0) {
+      nextParams.categories = selectedCategories.join(",");
+    }
+
+    setSearchParams(nextParams);
 
     //map level 조절
-    if (!selectedSido && selectedSido === null) {
+    if (!selectedSido) {
       setIsSelectedAll(true); //level 12
     } else {
       setIsSelectedAll(false); //level 7
     }
 
     // URL 파라미터 제거
-    navigate("/search/store", { replace: true });
+    // navigate("/search/store", { replace: true });
   };
+
+  useEffect(() => {
+    if (!hasQueryRegion) {
+      getCoords();
+    }
+  }, [hasQueryRegion]);
 
   //필터 초기화
   const resetFilter = () => {
     resetRegion();
     resetCategories();
 
+    setSearchParams({});
     // URL 파라미터 제거
-    navigate("/search/store", { replace: true });
-
-    setIsSearchViewport(false);
+    // navigate("/search/store", { replace: true });
 
     setIsMoved(false);
-    // setIsResetFilter(true);
     setIsSelectedAll(false);
-    setIsChangedRegion(true);
+    setSearchMode("district");
 
-    getCoords();
+    // setIsResetFilter(true);
+    // getCoords();
   };
 
   useEffect(() => {
@@ -230,7 +314,12 @@ function SearchStore() {
           onClick={() => setIsOpen(!isOpen)}
         ></button>
         <div className={styleSearchStore.filterArea}>
-          <RegionSelector sidoList={sidoList} />
+          <RegionSelector
+            sidoList={sidoList}
+            searchMode={searchMode}
+            setSearchMode={setSearchMode}
+            setIsMoved={setIsMoved}
+          />
           <div className={styleSearchStore.filterBottomWrap}>
             <CategoryFilter mode="search" categories={categories} />
           </div>
@@ -243,6 +332,7 @@ function SearchStore() {
                 초기화
               </button>
               <button
+                disabled={isMoved}
                 className={styleSearchStore.btnSearch}
                 onClick={onClickSearchBtn}
               >
@@ -288,9 +378,10 @@ function SearchStore() {
           lat={lat}
           lng={lng}
           setIsMoved={setIsMoved}
-          isChangedRegion={isChangedRegion}
+          searchMode={searchMode}
           positionAreaRef={positionAreaRef}
           isSelectedAll={isSelectedAll}
+          hasQueryRegion={hasQueryRegion}
         />
       </section>
     </div>

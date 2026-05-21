@@ -1,21 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { Link, useSearchParams, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ReviewRegister from "../review/ReviewRegister";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import styleStoreDetail from "../../css/StoreDetail.module.css";
 import serverUrl from "../../config/server.json";
 import { formatPrice } from "../../lib/utils/formatPrice";
 import { getStoreImage } from "../../lib/utils/getStoreImage";
+import { formatTime } from "../../lib/utils/formatTime";
+import StarRatingView from "../../components/StarRatingView";
+import ReviewList from "../../components/ReviewList";
+import { useStoreDetailInfo } from "../../hooks/queries/useStoreDetailInfo";
+
+const REVIEWS_PER_PAGE = 5;
 
 function StoreDetail({ storeList }) {
-  const REVIEWS_PER_PAGE = 5;
   const navigate = useNavigate();
+  const param = useParams();
+  const storeId = param.id;
 
   //리뷰작성시 로그인여부 확인
   const [user, setUser] = useState(null); // 로그인 사용자 정보
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
   // const [isInitialized, setIsInitialized] = useState(false); // 초기화
+
+  const SERVER_URL = serverUrl.SERVER_URL;
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     // 로컬 스토리지에서 사용자 정보 가져오기
@@ -27,32 +39,7 @@ function StoreDetail({ storeList }) {
     // setIsInitialized(true);
   }, []);
 
-  const [searchParams] = useSearchParams();
-  const storeId = searchParams.get("storeId");
-  const [storeData, setStoreData] = useState({});
-  const SERVER_URL = serverUrl.SERVER_URL;
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  useEffect(() => {
-    async function getStoreData() {
-      // 음식점 데이터
-      let storeInfo = await fetch(
-        `${SERVER_URL}/youtaste/search/store/detail?storeId=${storeId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
-      setStoreData(storeInfo);
-    }
-    getStoreData();
-  }, [storeId, SERVER_URL]);
+  const { data: storeData, isLoading } = useStoreDetailInfo(Number(storeId));
 
   function showAmtyServices(services) {
     if (!services || !Array.isArray(services)) {
@@ -108,205 +95,9 @@ function StoreDetail({ storeList }) {
 
   const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
-  const StarRatingView = ({
-    rating,
-    starSize = "1.5rem",
-    starBoxSize = "2rem",
-    marginRight = "-0.3rem",
-    ratingFont = "1.5rem",
-  }) => {
-    const stars = 5;
+  if (isLoading) {
     return (
-      <div style={{ display: "flex", alignItems: "center" }}>
-        {Array.from({ length: stars }).map((_, index) => {
-          const fillPercentage = Math.min(
-            Math.max((rating - index) * 100, 0),
-            100,
-          );
-          return (
-            <div
-              key={index}
-              style={{
-                position: "relative",
-                width: starBoxSize,
-                height: starBoxSize,
-                marginRight: marginRight,
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faStar}
-                style={{ color: "#ccc", fontSize: starSize, marginTop: "2px" }}
-              />
-              <div
-                style={{
-                  width: `${fillPercentage}%`,
-                  overflow: "hidden",
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                }}
-              >
-                <FontAwesomeIcon
-                  icon={faStar}
-                  style={{
-                    color: "#ffc107",
-                    fontSize: starSize,
-                    marginTop: "2px",
-                  }}
-                />
-              </div>
-            </div>
-          );
-        })}
-        <span
-          style={{
-            marginLeft: "8px",
-            fontSize: ratingFont,
-            fontWeight: "bold",
-            color: "#333",
-          }}
-        >
-          {(rating || 0).toFixed(1)}
-        </span>
-      </div>
-    );
-  };
-
-  // ===== 리뷰 항목 컴포넌트 (좋아요 로직 포함) =====
-  const ReviewItem = ({ review }) => {
-    const {
-      evlSn,
-      evlScr,
-      evlCn,
-      evlYmd,
-      evlPhoto1,
-      evlPhoto2,
-      evlPhoto3,
-      likeSum,
-      nickname,
-    } = review;
-
-    const [likes, setLikes] = useState(likeSum || 0);
-    const [isLiked, setIsLiked] = useState(false);
-
-    // 추가된 부분: 페이지 로드 시 좋아요 상태 및 최신 개수 가져오기
-    useEffect(() => {
-      // 최신 좋아요 개수 가져오기
-      fetch(`${SERVER_URL}/api/review/${evlSn}/likes/count`)
-        .then((res) => res.json())
-        .then((data) => setLikes(data))
-        .catch((err) => console.error("좋아요 개수 조회 실패:", err));
-
-      // 내가 좋아요를 눌렀는지 상태 확인 (로그인 시에만)
-      if (user && user.userSn) {
-        fetch(`${SERVER_URL}/api/review/${evlSn}/likes/${user.userSn}/status`)
-          .then((res) => res.json())
-          .then((data) => setIsLiked(data))
-          .catch((err) => console.error("좋아요 상태 조회 실패:", err));
-      }
-    }, [evlSn]);
-
-    const toggleLike = () => {
-      if (!user || !user.userSn) {
-        alert("로그인이 필요합니다.");
-        navigate("/login");
-        return;
-      }
-
-      const nextStatus = !isLiked;
-
-      fetch(`${SERVER_URL}/api/review/${evlSn}/likes/${user.userSn}/toggle`, {
-        method: "POST",
-      })
-        .then((res) => {
-          if (!res.ok) throw new Error("좋아요 실패");
-          return res.text();
-        })
-        .then((message) => {
-          setLikes((prev) => (nextStatus ? prev + 1 : prev - 1));
-          setIsLiked(nextStatus);
-        })
-        .catch((err) => console.error("좋아요 통신 에러:", err));
-    };
-
-    return (
-      <li
-        style={{
-          borderBottom: "1px solid #eee",
-          paddingBottom: "20px",
-          marginBottom: "20px",
-          listStyle: "none",
-        }}
-      >
-        <div>
-          <strong style={{ display: "block" }}>{nickname}</strong>
-          <div className={styleStoreDetail.reviewBox}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <StarRatingView rating={evlScr} />
-              <span style={{ margin: "0 10px", color: "#ccc" }}>│</span>
-              <small>{evlYmd}</small>
-            </div>
-            <button
-              onClick={toggleLike}
-              style={{
-                cursor: "pointer",
-                border: "1px solid #ddd",
-                borderRadius: "15px",
-                padding: "5px 15px",
-                backgroundColor: isLiked ? "#ff4757" : "#fff",
-                color: isLiked ? "#fff" : "#333",
-                display: "flex",
-                alignItems: "center",
-                gap: "5px",
-                transition: "all 0.2s",
-              }}
-            >
-              <FontAwesomeIcon icon={faThumbsUp} />
-              {likes}
-            </button>
-          </div>
-        </div>
-
-        <div className={styleStoreDetail.reviewImages}>
-          {evlPhoto1 && (
-            <img
-              src={`${SERVER_URL}/uploads/review/${evlPhoto1}`}
-              alt="사진 1"
-            />
-          )}
-          {evlPhoto2 && (
-            <img
-              src={`${SERVER_URL}/uploads/review/${evlPhoto2}`}
-              alt="사진 2"
-            />
-          )}
-          {evlPhoto3 && (
-            <img
-              src={`${SERVER_URL}/uploads/review/${evlPhoto3}`}
-              alt="사진 3"
-            />
-          )}
-        </div>
-        <p>{evlCn}</p>
-      </li>
-    );
-  };
-
-  const ReviewList = ({ reviews, loading }) => {
-    if (loading) return <p>로딩 중...</p>;
-    if (reviews.length === 0) return <p>등록된 리뷰가 없습니다.</p>;
-    return (
-      <ul className={styleStoreDetail.reviewList} style={{ padding: 0 }}>
-        {reviews.map((review) => (
-          <ReviewItem key={review.evlSn} review={review} />
-        ))}
-      </ul>
-    );
-  };
-
-  if (!storeData.bplcNm) {
-    return (
-      <div className="contentTopPosition">정보를 불러오는 중입니다...</div>
+      <div className="contentTopPosition">가게 정보를 불러오는 중입니다...</div>
     );
   }
 
@@ -333,7 +124,7 @@ function StoreDetail({ storeList }) {
               </li>
               <li className={styleStoreDetail.time}>
                 <em className={styleStoreDetail.detailTitle}>영업시간</em>
-                {storeData.bgngTm} - {storeData.ddlnTm}
+                {`${formatTime(storeData.bgngTm)} - ${formatTime(storeData.ddlnTm)}`}
               </li>
               <li className={styleStoreDetail.tel}>
                 <em className={styleStoreDetail.detailTitle}>전화번호</em>
@@ -382,7 +173,7 @@ function StoreDetail({ storeList }) {
           </div>
           <div className={`${styleStoreDetail.storeImageWrap} contentBox`}>
             <img
-              src={getStoreImage(storeData.bplcPhoto)}
+              src={getStoreImage(storeData.storeCatNo)}
               alt="가게 대표 이미지"
               className={styleStoreDetail.storeImage}
             />
@@ -414,7 +205,11 @@ function StoreDetail({ storeList }) {
               리뷰
             </h3>
             <div className={styleStoreDetail.reviewList}>
-              <ReviewList reviews={currentReviews} loading={loading} />
+              <ReviewList
+                reviews={currentReviews}
+                loading={loading}
+                user={user}
+              />
               <div
                 className="pagination"
                 style={{

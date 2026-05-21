@@ -3,7 +3,7 @@ import { useState } from "react";
 import RegionModal from "./RegionModal";
 import { useDongName, useSggName, useSidoName } from "../store/filters";
 
-export default function RegionSelector({sidoList}) {
+export default function RegionSelector({ sidoList, searchMode, setSearchMode, setIsMoved }) {
   const [isModalOpen, setIsModalOpen] = useState(false); //지역 모달 오픈 상태
   const sidoName = useSidoName();
   const sggName = useSggName();
@@ -18,9 +18,13 @@ export default function RegionSelector({sidoList}) {
         >
           <span className={style.filterIcon}>📍</span>
           <span className={style.filterText}>
-            {sidoName || sggName || dongName
-              ? `${sidoName} ${sggName} ${dongName}`.trim()
-              : "지역 선택"}
+            {
+            // isMoved
+              searchMode === "bounds"
+              ? "범위 내 검색"
+              : sidoName || sggName || dongName
+                ? `${sidoName} ${sggName} ${dongName}`.trim()
+                : "지역 선택"}
           </span>
           <span className={style.arrowIcon}>▼</span>
         </button>
@@ -28,8 +32,10 @@ export default function RegionSelector({sidoList}) {
 
       {isModalOpen && (
         <RegionModal
-          onConfirm={() => setIsModalOpen(false)}
+          // onConfirm={() => setIsModalOpen(false)}
+          setIsModalOpen={setIsModalOpen}
           sidoList={sidoList}
+          setIsMoved={setIsMoved}
         />
       )}
     </div>

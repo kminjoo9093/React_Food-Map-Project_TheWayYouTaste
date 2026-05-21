@@ -35,5 +35,5 @@ export default function useInitLocationInfo({ skip }) {
     isInitialized.current = true;
   }, [regionData, skip]); 
 
-  return { lat, lng, getCoords };
+  return { lat, lng, getCoords, regionData };
 }

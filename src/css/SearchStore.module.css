@@ -100,6 +100,10 @@
     box-shadow: 0 4px 15px rgba(128, 0, 32, 0.2);
 }
 
+.btnSearch:disabled {
+    background-color: #777;
+}
+
 .btnResetFilter {
     flex: 1;
     height: 4.8rem;

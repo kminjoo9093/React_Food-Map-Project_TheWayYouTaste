@@ -44,3 +44,8 @@ export async function getStoreListByViewport(viewport) {
 
   return filtered;
 }
+
+export async function getStoreDetailInfo(id){
+  const data = await getData(`/store?bplcSn=${id}`);
+  return data[0];
+}
