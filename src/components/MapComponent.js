@@ -20,12 +20,12 @@ export default function MapComponent({
   lat,
   lng,
   setIsMoved,
-  isChangedRegion,
+  searchMode,
   positionAreaRef,
   isSelectedAll,
+  hasQueryRegion,
 }) {
   const mapRef = useRef();
-  const isInitialCenterSetRef = useRef(false);
   const [level, setLevel] = useState(7); //지도 레벨
   const [center, setCenter] = useState({
     lat: lat || 37.5665,
@@ -39,13 +39,39 @@ export default function MapComponent({
     libraries: ["clusterer", "drawing", "services"],
   });
 
-  // 현재 위치 기반 중심점 설정
   useEffect(() => {
+    setIsMoved(false);
+    // const map = mapRef.current;
+    // if (!map) return;
+    // if (searchMode === "district" && hasQueryRegion) {
+    //   const { bounds, hasValidPoint } = getBoundsFromStores(storeList);
+
+    //   if (hasValidPoint) {
+    //     moveToBounds(map, bounds);
+    //   }
+    //   return;
+    // }
+  }, []);
+
+  useEffect(() => {
+    if (searchMode === "bounds") return;
+
+    // setIsMoved(false);
+    // const map = mapRef.current;
+    // if (!map) return;
+    // if (searchMode === "district" && hasQueryRegion) {
+    //   const { bounds, hasValidPoint } = getBoundsFromStores(storeList);
+
+    //   if (hasValidPoint) {
+    //     moveToBounds(map, bounds);
+    //   }
+    //   return;
+    // }
+
     if (lat && lng) {
       setCenter({ lat, lng });
-      isInitialCenterSetRef.current = true;
     }
-  }, [lat, lng]);
+  }, [lat, lng, hasQueryRegion]);
 
   useEffect(() => {
     if (isSelectedAll) {
@@ -69,6 +95,7 @@ export default function MapComponent({
         }
       });
     }
+
     return { bounds, hasValidPoint };
   }
 
@@ -78,6 +105,7 @@ export default function MapComponent({
   }
 
   function moveToInitLocation(map, lat, lng) {
+    if (!map || !lat || !lng) return;
     const moveLatLng = new window.kakao.maps.LatLng(lat, lng);
     map.setCenter(moveLatLng);
     map.setLevel(7);
@@ -87,29 +115,45 @@ export default function MapComponent({
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
+    // if (!window.kakao) return;
     if (isSelectedAll) return; // 전국 검색 모드 -> 고정 level(12)
-    if (!isChangedRegion && isInitialCenterSetRef.current) return; // 범위 내 재검색인 경우
+    if (searchMode === "bounds") return; // 범위 내 재검색인 경우
 
     // 실행 타이밍 조절 (맵 렌더링 완료 대기)
     const timer = setTimeout(() => {
-      const { bounds, hasValidPoint } = getBoundsFromStores(storeList);
+      //지역 필터 설정
+      if (searchMode === "district" && hasQueryRegion) {
+        const { bounds, hasValidPoint } = getBoundsFromStores(storeList);
 
-      if (hasValidPoint) {
-        // 최적의 범위로 이동
-        moveToBounds(map, bounds);
+        if (hasValidPoint) {
+          moveToBounds(map, bounds);
+        }
+        return;
       }
-      // 맛집이 없거나 초기화 -> 현재 위치(lat, lng)로 이동
-      else if (lat && lng) {
+
+      //초기 진입
+      if (lat && lng) {
         moveToInitLocation(map, lat, lng);
+        return;
       }
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [storeList, isSelectedAll, lat, lng, isChangedRegion]);
+  }, [storeList, isSelectedAll, lat, lng, searchMode, hasQueryRegion]);
+
+  console.log("가게리스트:", storeList);
 
   return (
     <Map
       center={center}
+      // defaultCenter={{
+      //   lat: lat || 37.5665,
+      //   lng: lng || 126.978,
+      // }}
+      // defaultCenter={{
+      //   lat: 37.5665,
+      //   lng: 126.978,
+      // }}
       style={{ width: "100%", height: "100%" }}
       level={level}
       ref={mapRef}
@@ -127,9 +171,7 @@ export default function MapComponent({
 
         positionAreaRef.current = newPos;
 
-        if (isInitialCenterSetRef.current) {
-          setIsMoved(true);
-        }
+        setIsMoved(true);
       }}
     >
       {/* 현재 위치 마커 */}
@@ -190,13 +232,13 @@ export default function MapComponent({
                       <p className={styleMap.infoBottom}>
                         {store.avg && (
                           <span>
-                            <img src={iconStar} alt="평균 평점"/>
+                            <img src={iconStar} alt="평균 평점" />
                             {store.avg}
                           </span>
                         )}
                         {store.storeCatName && (
                           <span>
-                            <img src={iconCategory} alt="음식 카테고리"/>
+                            <img src={iconCategory} alt="음식 카테고리" />
                             {store.storeCatName}
                           </span>
                         )}

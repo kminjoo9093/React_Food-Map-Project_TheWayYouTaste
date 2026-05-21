@@ -8,7 +8,7 @@ import {
   useSelectedSido,
 } from "../store/filters";
 
-function RegionModal({ onConfirm, sidoList }) {
+function RegionModal({ setIsModalOpen, sidoList, setIsMoved }) {
   const selectedSido = useSelectedSido();
   const selectedSgg = useSelectedSgg();
   const selectedDong = useSelectedDong();
@@ -24,12 +24,19 @@ function RegionModal({ onConfirm, sidoList }) {
     isLoading: isSggLoading,
     isError: isSggError,
   } = useSggList(selectedSido);
+
   //읍면동 리스트
   const {
     data: dongList = [],
     isLoading: isDongLoading,
     isError: isDongError,
   } = useDongList(selectedSgg);
+
+  const handleRegionFilterClick = () => {
+    // setIsSelectRegion(true);
+    setIsMoved(false);
+    setIsModalOpen(false);
+  }
 
   return (
     <div className={styleRegionModal.regionDimmed}>
@@ -142,7 +149,7 @@ function RegionModal({ onConfirm, sidoList }) {
         <div className={styleRegionModal.bottomWrap}>
           <button
             className={styleRegionModal.regionConfirm}
-            onClick={onConfirm}
+            onClick={handleRegionFilterClick}
           >
             확인
           </button>
@@ -150,7 +157,7 @@ function RegionModal({ onConfirm, sidoList }) {
         <button
           className={styleRegionModal.btnClose}
           style={{ border: "1px solid #fff " }}
-          onClick={onConfirm}
+          onClick={()=>setIsModalOpen(false)}
         ></button>
       </div>
     </div>
