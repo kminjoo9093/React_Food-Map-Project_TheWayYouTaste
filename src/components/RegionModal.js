@@ -8,7 +8,7 @@ import {
   useSelectedSido,
 } from "../store/filters";
 
-function RegionModal({ setIsModalOpen, sidoList, setIsMoved }) {
+function RegionModal({ setIsModalOpen, sidoList, setIsMoved, setSearchMode }) {
   const selectedSido = useSelectedSido();
   const selectedSgg = useSelectedSgg();
   const selectedDong = useSelectedDong();
@@ -33,9 +33,9 @@ function RegionModal({ setIsModalOpen, sidoList, setIsMoved }) {
   } = useDongList(selectedSgg);
 
   const handleRegionFilterClick = () => {
-    // setIsSelectRegion(true);
-    setIsMoved(false);
     setIsModalOpen(false);
+    
+    setSearchMode("district"); // region selector 표시
   }
 
   return (

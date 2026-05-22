@@ -29,7 +29,6 @@ function MainPage() {
   const selectedCategories = useFilterStore(
     (store) => store.selectedCategories,
   );
-  // const [keyword, setKeyword] = useState("");
   const keyword = "";
 
   const searchUrl = getSearchPath({
