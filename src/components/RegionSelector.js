@@ -19,7 +19,6 @@ export default function RegionSelector({ sidoList, searchMode, setSearchMode, se
           <span className={style.filterIcon}>📍</span>
           <span className={style.filterText}>
             {
-            // isMoved
               searchMode === "bounds"
               ? "범위 내 검색"
               : sidoName || sggName || dongName
@@ -32,10 +31,10 @@ export default function RegionSelector({ sidoList, searchMode, setSearchMode, se
 
       {isModalOpen && (
         <RegionModal
-          // onConfirm={() => setIsModalOpen(false)}
           setIsModalOpen={setIsModalOpen}
           sidoList={sidoList}
           setIsMoved={setIsMoved}
+          setSearchMode={setSearchMode}
         />
       )}
     </div>

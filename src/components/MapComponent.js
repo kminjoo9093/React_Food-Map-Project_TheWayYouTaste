@@ -40,38 +40,12 @@ export default function MapComponent({
   });
 
   useEffect(() => {
-    setIsMoved(false);
-    // const map = mapRef.current;
-    // if (!map) return;
-    // if (searchMode === "district" && hasQueryRegion) {
-    //   const { bounds, hasValidPoint } = getBoundsFromStores(storeList);
-
-    //   if (hasValidPoint) {
-    //     moveToBounds(map, bounds);
-    //   }
-    //   return;
-    // }
-  }, []);
-
-  useEffect(() => {
     if (searchMode === "bounds") return;
-
-    // setIsMoved(false);
-    // const map = mapRef.current;
-    // if (!map) return;
-    // if (searchMode === "district" && hasQueryRegion) {
-    //   const { bounds, hasValidPoint } = getBoundsFromStores(storeList);
-
-    //   if (hasValidPoint) {
-    //     moveToBounds(map, bounds);
-    //   }
-    //   return;
-    // }
 
     if (lat && lng) {
       setCenter({ lat, lng });
     }
-  }, [lat, lng, hasQueryRegion]);
+  }, [lat, lng, hasQueryRegion, searchMode]);
 
   useEffect(() => {
     if (isSelectedAll) {
@@ -115,7 +89,6 @@ export default function MapComponent({
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
-    // if (!window.kakao) return;
     if (isSelectedAll) return; // 전국 검색 모드 -> 고정 level(12)
     if (searchMode === "bounds") return; // 범위 내 재검색인 경우
 
@@ -141,19 +114,9 @@ export default function MapComponent({
     return () => clearTimeout(timer);
   }, [storeList, isSelectedAll, lat, lng, searchMode, hasQueryRegion]);
 
-  console.log("가게리스트:", storeList);
-
   return (
     <Map
       center={center}
-      // defaultCenter={{
-      //   lat: lat || 37.5665,
-      //   lng: lng || 126.978,
-      // }}
-      // defaultCenter={{
-      //   lat: 37.5665,
-      //   lng: 126.978,
-      // }}
       style={{ width: "100%", height: "100%" }}
       level={level}
       ref={mapRef}
