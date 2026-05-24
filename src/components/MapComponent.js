@@ -207,22 +207,23 @@ export default function MapComponent({
                         <p className={styleMap.infoBottom}>
                           {store.avg && (
                             <span>
-                              <img src={iconStar} alt="평균 평점" />
+                              <img src={iconStar} alt="평균 평점" loading="lazy"/>
                               {store.avg}
                             </span>
                           )}
                           {store.storeCatName && (
                             <span>
-                              <img src={iconCategory} alt="음식 카테고리" />
+                              <img src={iconCategory} alt="음식 카테고리" loading="lazy"/>
                               {store.storeCatName}
                             </span>
                           )}
                         </p>
                       </div>
                       <img
-                        src={getStoreImage(store.storeCatNo)}
-                        alt="가게 이미지"
+                        src={`https://taste-440136652.imgix.net/${getStoreImage(store.storeCatNo)}?w=200&h=200&auto=format`}
+                        alt={`${store.bplcNm} 식당 대표 이미지`}
                         className={styleMap.infoImg}
+                        loading="lazy"
                       />
                     </Link>
                   </div>
