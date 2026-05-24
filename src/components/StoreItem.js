@@ -13,7 +13,8 @@ function StoreItem({ store }) {
         <div className={styleSearchStore.storeImg}>
           <img
             src={`https://taste-440136652.imgix.net/${getStoreImage(store.storeCatNo)}?w=200&h=200&auto=format`}
-            alt="가게 이미지"
+            alt={`${store.bplcNm} 식당 대표 이미지`}
+            loading="lazy"
           />
         </div>
         <div className={styleSearchStore.storeInfo}>
