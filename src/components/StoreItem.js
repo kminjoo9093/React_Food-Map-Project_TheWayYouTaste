@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styleSearchStore from "../css/SearchStore.module.css";
 import { getStoreImage } from "../lib/utils/getStoreImage";
+// import { getStoreImage } from "../lib/utils/getStoreImage copy";
 import { formatTime } from "../lib/utils/formatTime";
 
 function StoreItem({ store }) {
@@ -10,11 +11,13 @@ function StoreItem({ store }) {
         to={`/store/detail/${store.bplcSn}`}
         className={styleSearchStore.storeListLink}
       >
-        <img
-          className={styleSearchStore.storeImg}
-          src={getStoreImage(store.storeCatNo)}
-          alt="가게 이미지"
-        />
+        <div className={styleSearchStore.storeImg}>
+          <img
+            // src={getStoreImage(store.storeCatNo)}
+            src={`https://taste-440136652.imgix.net${getStoreImage(store.storeCatNo)}?w=200&h=200&auto=format`}
+            alt="가게 이미지"
+          />
+        </div>
         <div className={styleSearchStore.storeInfo}>
           <h2 className={styleSearchStore.storeName}>{store.bplcNm}</h2>
           <div className={styleSearchStore.avgNCat}>

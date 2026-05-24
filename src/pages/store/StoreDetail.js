@@ -171,11 +171,11 @@ function StoreDetail({ storeList }) {
               </Link>
             </div>
           </div>
-          <div className={`${styleStoreDetail.storeImageWrap} contentBox`}>
+          <div className={`${styleStoreDetail.storeImgWrap} contentBox`}>
             <img
               src={getStoreImage(storeData.storeCatNo)}
               alt="가게 대표 이미지"
-              className={styleStoreDetail.storeImage}
+              className={styleStoreDetail.storeImg}
             />
           </div>
           <div className={`${styleStoreDetail.storeMenuWrap} contentBox`}>
