@@ -33,6 +33,7 @@ export default function MapComponent({
   });
   const [openMarkerId, setOpenMarkerId] = useState(""); // 인포윈도우 Open 여부
   const [showMarkers, setShowMarkers] = useState(false);
+  const isFirstIdle = useRef(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -130,6 +131,11 @@ export default function MapComponent({
       level={level}
       ref={mapRef}
       onIdle={(map) => {
+        if (isFirstIdle.current) {
+          isFirstIdle.current = false;
+          return;
+        }
+
         const bounds = map.getBounds();
         const sw = bounds.getSouthWest();
         const ne = bounds.getNorthEast();
@@ -207,13 +213,21 @@ export default function MapComponent({
                         <p className={styleMap.infoBottom}>
                           {store.avg && (
                             <span>
-                              <img src={iconStar} alt="평균 평점" loading="lazy"/>
+                              <img
+                                src={iconStar}
+                                alt="평균 평점"
+                                loading="lazy"
+                              />
                               {store.avg}
                             </span>
                           )}
                           {store.storeCatName && (
                             <span>
-                              <img src={iconCategory} alt="음식 카테고리" loading="lazy"/>
+                              <img
+                                src={iconCategory}
+                                alt="음식 카테고리"
+                                loading="lazy"
+                              />
                               {store.storeCatName}
                             </span>
                           )}

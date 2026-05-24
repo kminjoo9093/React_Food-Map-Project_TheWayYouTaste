@@ -21,10 +21,8 @@ import { useStoresByCondition } from "../../hooks/queries/useStoresByCondition";
 import { useStoresByViewport } from "../../hooks/queries/useStoresByViewport";
 import StoreItem from "../../components/StoreItem";
 import { useSggCodeType } from "../../hooks/useSggCodeType";
-import { getSearchPath } from "../../lib/utils/getSearchPath";
 
 function SearchStore() {
-  const nav = useNavigate();
   const { categories, sidoList } = useContext(AppDataContext);
   const positionAreaRef = useRef({
     swMinLat: 0,
@@ -99,11 +97,10 @@ function SearchStore() {
     if (hasQueryRegion) return;
     if (!regionData) return;
 
-    console.log(regionData);
     setIsMoved(false);
 
     setSearchParams({
-      mode:"district",
+      mode: "district",
       sido: selectedSido,
       sgg: selectedSgg,
       doName: sidoName,
@@ -258,11 +255,11 @@ function SearchStore() {
     }, 300);
   };
 
-  useEffect(() => {
-    if (!hasQueryRegion) {
-      getCoords();
-    }
-  }, [hasQueryRegion, getCoords]);
+  // useEffect(() => {
+  //   if (!hasQueryRegion) {
+  //     getCoords();
+  //   }
+  // }, [hasQueryRegion, getCoords]);
 
   //필터 초기화
   const resetFilter = () => {
