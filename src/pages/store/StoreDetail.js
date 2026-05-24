@@ -173,7 +173,7 @@ function StoreDetail({ storeList }) {
           </div>
           <div className={`${styleStoreDetail.storeImgWrap} contentBox`}>
             <img
-              src={getStoreImage(storeData.storeCatNo)}
+              src={`https://taste-440136652.imgix.net/${getStoreImage(storeData.storeCatNo)}?w=200&h=200&auto=format`}
               alt="가게 대표 이미지"
               className={styleStoreDetail.storeImg}
             />

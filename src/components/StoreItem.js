@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import styleSearchStore from "../css/SearchStore.module.css";
-// import { getStoreImage } from "../lib/utils/getStoreImage";
-import { getStoreImage } from "../lib/utils/getStoreImage copy";
+import { getStoreImage } from "../lib/utils/getStoreImage";
 import { formatTime } from "../lib/utils/formatTime";
 
 function StoreItem({ store }) {
@@ -13,7 +12,6 @@ function StoreItem({ store }) {
       >
         <div className={styleSearchStore.storeImg}>
           <img
-            // src={getStoreImage(store.storeCatNo)}
             src={`https://taste-440136652.imgix.net/${getStoreImage(store.storeCatNo)}?w=200&h=200&auto=format`}
             alt="가게 이미지"
           />
