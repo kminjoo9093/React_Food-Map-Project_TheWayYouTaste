@@ -21,6 +21,7 @@ import { useStoresByCondition } from "../../hooks/queries/useStoresByCondition";
 import { useStoresByViewport } from "../../hooks/queries/useStoresByViewport";
 import StoreItem from "../../components/StoreItem";
 import { useSggCodeType } from "../../hooks/useSggCodeType";
+import { getSearchPath } from "../../lib/utils/getSearchPath";
 
 function SearchStore() {
   const nav = useNavigate();
@@ -57,6 +58,8 @@ function SearchStore() {
   const selectedCategories = useFilterStore(
     (store) => store.selectedCategories,
   );
+
+  console.log(selectedSido, selectedSgg, selectedDong);
 
   const setCategories = useFilterStore((store) => store.setCategories);
   const resetRegion = useFilterStore((store) => store.resetRegion);
@@ -96,31 +99,23 @@ function SearchStore() {
     if (hasQueryRegion) return;
     if (!regionData) return;
 
+    console.log(regionData);
     setIsMoved(false);
 
     setSearchParams({
-      region: {
-        selectedSido,
-        selectedSgg,
-        selectedDong,
-        sidoName,
-        sggName,
-        dongName,
-      },
-      categories: selectedCategories,
-      keyword: "",
+      mode:"district",
+      sido: selectedSido,
+      sgg: selectedSgg,
+      doName: sidoName,
+      siName: sggName,
     });
   }, [
     hasQueryRegion,
     regionData,
-    nav,
     selectedSido,
     selectedSgg,
-    selectedDong,
     sidoName,
     sggName,
-    dongName,
-    selectedCategories,
     setSearchParams,
   ]);
 
@@ -140,6 +135,8 @@ function SearchStore() {
 
   // url 값 - zustand store 상태 동기화
   useEffect(() => {
+    if (!hasQueryRegion) return;
+
     const nextRegion = mapQueryToRegion({
       sidoCode: sidoFromUrl,
       sggCode: sggFromUrl,
@@ -159,7 +156,19 @@ function SearchStore() {
 
     //카테고리
     setCategories(urlCategoryArray);
-  }, [searchParams.toString()]);
+  }, [
+    hasQueryRegion,
+    sidoFromUrl,
+    sggFromUrl,
+    dongFromUrl,
+    searchParams,
+    selectedSido,
+    selectedSgg,
+    selectedDong,
+    setCategories,
+    urlCategoryArray,
+    setRegion,
+  ]);
 
   // 범위 내 재검색 함수
   const handleSearchViewportArea = () => {
@@ -181,8 +190,11 @@ function SearchStore() {
   };
 
   //데이터 결정
-  const baseList =
-    searchMode === "bounds" ? (viewportStoreList ?? []) : (storeList ?? []);
+  const baseList = useMemo(() => {
+    return searchMode === "bounds"
+      ? (viewportStoreList ?? [])
+      : (storeList ?? []);
+  }, [searchMode, viewportStoreList, storeList]);
 
   //카테고리 필터링한 맛집 리스트
   const filteredStoreList = useMemo(() => {
@@ -313,7 +325,7 @@ function SearchStore() {
             <>
               <ul className={styleSearchStore.storeList}>
                 {viewStoreItems.map((record) => (
-                  <StoreItem store={record} />
+                  <StoreItem key={record.bplcSn} store={record} />
                 ))}
               </ul>
               <Pagination
