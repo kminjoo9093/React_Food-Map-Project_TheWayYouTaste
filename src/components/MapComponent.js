@@ -32,6 +32,15 @@ export default function MapComponent({
     lng: lng || 126.978,
   });
   const [openMarkerId, setOpenMarkerId] = useState(""); // 인포윈도우 Open 여부
+  const [showMarkers, setShowMarkers] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowMarkers(true);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // 카카오 로더 설정
   useKakaoLoader({
@@ -147,78 +156,82 @@ export default function MapComponent({
         </CustomOverlayMap>
       )}
 
-      <MarkerClusterer
-        averageCenter={true}
-        minLevel={4}
-        disableClickZoom={false}
-      >
-        {storeList.map((store) => (
-          <Fragment key={store.bplcSn}>
-            <MapMarker
-              key={store.bplcSn}
-              position={{
-                lat: parseFloat(store.lat),
-                lng: parseFloat(store.lng),
-              }}
-              title={store.bplcNm}
-              onClick={() => setOpenMarkerId(store.bplcSn)}
-            />
-            {/* 인포윈도우 */}
-            {openMarkerId === store.bplcSn && (
-              <CustomOverlayMap
-                key={`overlay-${store.bplcSn}`}
+      {showMarkers && (
+        <MarkerClusterer
+          averageCenter={true}
+          minLevel={4}
+          disableClickZoom={false}
+        >
+          {storeList.map((store) => (
+            <Fragment key={store.bplcSn}>
+              <MapMarker
+                key={store.bplcSn}
                 position={{
                   lat: parseFloat(store.lat),
                   lng: parseFloat(store.lng),
                 }}
-                yAnchor={1.25}
-                zIndex={1000}
-              >
-                <div className={styleMap.infoWindow}>
-                  <button
-                    className={styleMap.closeBtn}
-                    onClick={(e) => {
-                      e.stopPropagation(); // 지도 클릭 이벤트가 발생하는 것 방지
-                      setOpenMarkerId("");
-                    }}
-                  >
-                    X
-                  </button>
+                title={store.bplcNm}
+                onClick={() => setOpenMarkerId(store.bplcSn)}
+              />
+              {/* 인포윈도우 */}
+              {openMarkerId === store.bplcSn && (
+                <CustomOverlayMap
+                  key={`overlay-${store.bplcSn}`}
+                  position={{
+                    lat: parseFloat(store.lat),
+                    lng: parseFloat(store.lng),
+                  }}
+                  yAnchor={1.25}
+                  zIndex={1000}
+                >
+                  <div className={styleMap.infoWindow}>
+                    <button
+                      className={styleMap.closeBtn}
+                      onClick={(e) => {
+                        e.stopPropagation(); // 지도 클릭 이벤트가 발생하는 것 방지
+                        setOpenMarkerId("");
+                      }}
+                    >
+                      X
+                    </button>
 
-                  <Link
-                    to={`/store/storeDetail?storeId=${store.bplcSn}`}
-                    className={styleMap.link}
-                  >
-                    <div className={styleMap.storeInfo}>
-                      <h3 className={styleMap.storeNm}>{store.bplcNm}</h3>
-                      <span className={styleMap.address}>{store.address}</span>
-                      <p className={styleMap.infoBottom}>
-                        {store.avg && (
-                          <span>
-                            <img src={iconStar} alt="평균 평점" />
-                            {store.avg}
-                          </span>
-                        )}
-                        {store.storeCatName && (
-                          <span>
-                            <img src={iconCategory} alt="음식 카테고리" />
-                            {store.storeCatName}
-                          </span>
-                        )}
-                      </p>
-                    </div>
-                    <img
-                      src={getStoreImage(store.storeCatNo)}
-                      alt="가게 이미지"
-                      className={styleMap.infoImg}
-                    />
-                  </Link>
-                </div>
-              </CustomOverlayMap>
-            )}
-          </Fragment>
-        ))}
-      </MarkerClusterer>
+                    <Link
+                      to={`/store/storeDetail?storeId=${store.bplcSn}`}
+                      className={styleMap.link}
+                    >
+                      <div className={styleMap.storeInfo}>
+                        <h3 className={styleMap.storeNm}>{store.bplcNm}</h3>
+                        <span className={styleMap.address}>
+                          {store.address}
+                        </span>
+                        <p className={styleMap.infoBottom}>
+                          {store.avg && (
+                            <span>
+                              <img src={iconStar} alt="평균 평점" />
+                              {store.avg}
+                            </span>
+                          )}
+                          {store.storeCatName && (
+                            <span>
+                              <img src={iconCategory} alt="음식 카테고리" />
+                              {store.storeCatName}
+                            </span>
+                          )}
+                        </p>
+                      </div>
+                      <img
+                        src={getStoreImage(store.storeCatNo)}
+                        alt="가게 이미지"
+                        className={styleMap.infoImg}
+                      />
+                    </Link>
+                  </div>
+                </CustomOverlayMap>
+              )}
+            </Fragment>
+          ))}
+        </MarkerClusterer>
+      )}
     </Map>
   );
 }

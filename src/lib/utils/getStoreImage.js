@@ -1,22 +1,12 @@
-import korean from "../../resources/img/search/food_korean.webp";
-import japanese from "../../resources/img/search/food_japanese.webp";
-import western from "../../resources/img/search/food_western.webp";
-import chinese from "../../resources/img/search/food_chinese.webp";
-import asian from "../../resources/img/search/food_asian.webp";
-import burger from "../../resources/img/search/food_burger.webp";
-import chicken from "../../resources/img/search/food_chicken.webp";
-import dessert from "../../resources/img/search/food_dessert.webp";
-import noImage from "../../resources/img/default.webp";
-
 const categoryImages = {
-  c01: korean,
-  c02: japanese,
-  c03: western,
-  c04: chinese,
-  c05: asian,
-  c06: burger,
-  c07: chicken,
-  c08: dessert,
+  c01: "images/food_korean.webp",
+  c02: "images/food_japanese.webp",
+  c03: "images/food_western.webp",
+  c04: "images/food_chinese.webp",
+  c05: "images/food_asian.webp",
+  c06: "images/food_burger.webp",
+  c07: "images/food_chicken.webp",
+  c08: "images/food_dessert.webp",
 }
 
-export const getStoreImage = (category) => categoryImages[category] || noImage;
+export const getStoreImage = (category) => categoryImages[category] || "images/default.webp";
