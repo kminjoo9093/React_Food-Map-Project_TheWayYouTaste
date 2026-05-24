@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styleSearchStore from "../css/SearchStore.module.css";
-import { getStoreImage } from "../lib/utils/getStoreImage";
-// import { getStoreImage } from "../lib/utils/getStoreImage copy";
+// import { getStoreImage } from "../lib/utils/getStoreImage";
+import { getStoreImage } from "../lib/utils/getStoreImage copy";
 import { formatTime } from "../lib/utils/formatTime";
 
 function StoreItem({ store }) {
