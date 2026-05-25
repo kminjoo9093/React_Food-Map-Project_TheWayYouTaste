@@ -9,7 +9,7 @@ export const useSggCodeType = ({
   const { data: sggList = [] } = useSggList(sidoFromUrl);
 
   return useMemo(() => {
-    if (!sggFromUrl) return null;
+    if (!sggFromUrl && !sidoFromUrl) return null;
 
     const sggStr = String(sggFromUrl);
     const endNumOfSgg = sggStr.slice(-1);
@@ -23,5 +23,5 @@ export const useSggCodeType = ({
     return dongFromUrl === null && Number(endNumOfSgg) === 0 && isCityWithGu
       ? Number(sggStr.slice(0, -1))
       : Number(sggFromUrl);
-  }, [sggFromUrl, dongFromUrl, sggList]);
+  }, [sggFromUrl, dongFromUrl, sggList, sidoFromUrl]);
 };

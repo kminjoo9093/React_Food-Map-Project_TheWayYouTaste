@@ -3,7 +3,7 @@ import { useState } from "react";
 import RegionModal from "./RegionModal";
 import { useDongName, useSggName, useSidoName } from "../store/filters";
 
-export default function RegionSelector({ sidoList, searchMode, setSearchMode, setIsMoved }) {
+export default function RegionSelector({ sidoList, searchMode, setSearchMode }) {
   const [isModalOpen, setIsModalOpen] = useState(false); //지역 모달 오픈 상태
   const sidoName = useSidoName();
   const sggName = useSggName();
@@ -33,7 +33,6 @@ export default function RegionSelector({ sidoList, searchMode, setSearchMode, se
         <RegionModal
           setIsModalOpen={setIsModalOpen}
           sidoList={sidoList}
-          setIsMoved={setIsMoved}
           setSearchMode={setSearchMode}
         />
       )}

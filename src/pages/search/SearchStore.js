@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import styleSearchStore from "../../css/SearchStore.module.css";
 import { useEffect, useMemo, useState, useRef } from "react";
 import Pagination from "../Pagination";
@@ -57,12 +57,11 @@ function SearchStore() {
     (store) => store.selectedCategories,
   );
 
-  console.log(selectedSido, selectedSgg, selectedDong);
-
   const setCategories = useFilterStore((store) => store.setCategories);
   const resetRegion = useFilterStore((store) => store.resetRegion);
   const resetCategories = useFilterStore((store) => store.resetCategories);
   const setRegion = useFilterStore((store) => store.setRegion);
+  const isInitialized = useRef(false);
   const mapQueryToRegion = ({
     sidoCode,
     sggCode,
@@ -96,6 +95,7 @@ function SearchStore() {
   useEffect(() => {
     if (hasQueryRegion) return;
     if (!regionData) return;
+    if(sidoName === "전국") return;
 
     setIsMoved(false);
 
@@ -133,6 +133,7 @@ function SearchStore() {
   // url 값 - zustand store 상태 동기화
   useEffect(() => {
     if (!hasQueryRegion) return;
+    if (isInitialized.current) return;
 
     const nextRegion = mapQueryToRegion({
       sidoCode: sidoFromUrl,
@@ -153,6 +154,8 @@ function SearchStore() {
 
     //카테고리
     setCategories(urlCategoryArray);
+
+    isInitialized.current = true;
   }, [
     hasQueryRegion,
     sidoFromUrl,
@@ -219,6 +222,9 @@ function SearchStore() {
 
   // 검색 버튼 클릭 (카테고리 필터 적용)
   const onClickSearchBtn = () => {
+    // console.log(sidoFromUrl, sggFromUrl, dongFromUrl);
+    console.log(searchParams.toString());
+
     setSearchMode("district");
 
     const nextParams = {};
@@ -255,11 +261,11 @@ function SearchStore() {
     }, 300);
   };
 
-  // useEffect(() => {
-  //   if (!hasQueryRegion) {
-  //     getCoords();
-  //   }
-  // }, [hasQueryRegion, getCoords]);
+  useEffect(() => {
+    if (!hasQueryRegion) {
+      getCoords();
+    }
+  }, [hasQueryRegion, getCoords]);
 
   //필터 초기화
   const resetFilter = () => {
@@ -274,10 +280,8 @@ function SearchStore() {
   };
 
   useEffect(() => {
-    if (nowPage !== 1) {
-      setNowPage(1); // 검색 시 페이지 번호 초기화
-    }
-  }, [filteredStoreList, nowPage]);
+    setNowPage(1); // 검색 시 페이지 번호 초기화
+  }, [filteredStoreList]);
 
   return (
     <div className={`${styleSearchStore.gridMap} contentTopPosition`}>
@@ -293,7 +297,6 @@ function SearchStore() {
             sidoList={sidoList}
             searchMode={searchMode}
             setSearchMode={setSearchMode}
-            setIsMoved={setIsMoved}
           />
           <div className={styleSearchStore.filterBottomWrap}>
             <CategoryFilter mode="search" categories={categories} />
