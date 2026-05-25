@@ -8,7 +8,7 @@ import {
   useSelectedSido,
 } from "../store/filters";
 
-function RegionModal({ setIsModalOpen, sidoList, setIsMoved, setSearchMode }) {
+function RegionModal({ setIsModalOpen, sidoList, setSearchMode }) {
   const selectedSido = useSelectedSido();
   const selectedSgg = useSelectedSgg();
   const selectedDong = useSelectedDong();
@@ -16,6 +16,7 @@ function RegionModal({ setIsModalOpen, sidoList, setIsMoved, setSearchMode }) {
   const setSido = useFilterStore((store) => store.setSido);
   const setSgg = useFilterStore((store) => store.setSgg);
   const setDong = useFilterStore((store) => store.setDong);
+  const setRegion = useFilterStore((store) => store.setRegion);
   const sidoData = sidoList || [];
 
   //시군구 리스트
@@ -34,9 +35,20 @@ function RegionModal({ setIsModalOpen, sidoList, setIsMoved, setSearchMode }) {
 
   const handleRegionFilterClick = () => {
     setIsModalOpen(false);
-    
-    setSearchMode("district"); // region selector 표시
-  }
+
+    setSearchMode?.("district"); // region selector 표시
+  };
+
+  const handleSelectSidoAll = () => {
+    setRegion({
+      selectedSido: null,
+      selectedSgg: null,
+      selectedDong: null,
+      sidoName: "전국",
+      sggName: "",
+      dongName: "",
+    });
+  };
 
   return (
     <div className={styleRegionModal.regionDimmed}>
@@ -55,7 +67,7 @@ function RegionModal({ setIsModalOpen, sidoList, setIsMoved, setSearchMode }) {
               <li
                 className={`${styleRegionModal.regionItem} 
                             ${selectedSido === null ? styleRegionModal.activeItem : ""}`}
-                onClick={() => setSido(null, "")}
+                onClick={handleSelectSidoAll}
               >
                 전체
               </li>
@@ -63,9 +75,11 @@ function RegionModal({ setIsModalOpen, sidoList, setIsMoved, setSearchMode }) {
                 <li
                   key={record.sidoCd}
                   className={`${styleRegionModal.regionItem}
-                              ${ Number(selectedSido) === record.sidoCd
+                              ${
+                                Number(selectedSido) === record.sidoCd
                                   ? styleRegionModal.activeItem
-                                  : ""}`}
+                                  : ""
+                              }`}
                   onClick={() => {
                     setSido(record.sidoCd, record.sidoNm);
                   }}
@@ -84,7 +98,7 @@ function RegionModal({ setIsModalOpen, sidoList, setIsMoved, setSearchMode }) {
                 <li
                   className={`${styleRegionModal.regionItem} 
                               ${selectedSgg === null ? styleRegionModal.activeItem : ""}`}
-                  onClick={() => setSgg(null, "")}
+                  onClick={() => setSgg(null, "전체")}
                 >
                   전체
                 </li>
@@ -99,8 +113,9 @@ function RegionModal({ setIsModalOpen, sidoList, setIsMoved, setSearchMode }) {
                       className={`${styleRegionModal.regionItem}
                                   ${
                                     Number(selectedSgg) === record.sggCd
-                                    ? styleRegionModal.activeItem
-                                    : ""}`}
+                                      ? styleRegionModal.activeItem
+                                      : ""
+                                  }`}
                       onClick={() => setSgg(record.sggCd, record.sggNm)}
                     >
                       {record.sggNm}
@@ -119,7 +134,7 @@ function RegionModal({ setIsModalOpen, sidoList, setIsMoved, setSearchMode }) {
                 <li
                   className={`${styleRegionModal.regionItem} 
                               ${selectedDong === null ? styleRegionModal.activeItem : ""}`}
-                  onClick={() => setDong(null, "")}
+                  onClick={() => setDong(null, "전체")}
                 >
                   전체
                 </li>
@@ -132,9 +147,11 @@ function RegionModal({ setIsModalOpen, sidoList, setIsMoved, setSearchMode }) {
                     <li
                       key={record.dgCd}
                       className={`${styleRegionModal.regionItem}
-                                  ${ Number(selectedDong) === record.dgCd
-                                     ? styleRegionModal.activeItem
-                                      : ""}`}
+                                  ${
+                                    Number(selectedDong) === record.dgCd
+                                      ? styleRegionModal.activeItem
+                                      : ""
+                                  }`}
                       onClick={() => setDong(record.dgCd, record.dgNm)}
                     >
                       {record.dgNm}
@@ -157,7 +174,7 @@ function RegionModal({ setIsModalOpen, sidoList, setIsMoved, setSearchMode }) {
         <button
           className={styleRegionModal.btnClose}
           style={{ border: "1px solid #fff " }}
-          onClick={()=>setIsModalOpen(false)}
+          onClick={() => setIsModalOpen(false)}
         ></button>
       </div>
     </div>
