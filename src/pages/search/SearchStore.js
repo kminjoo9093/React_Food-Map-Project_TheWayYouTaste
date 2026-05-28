@@ -199,7 +199,6 @@ function SearchStore() {
       neMaxLng: viewportCoords.neMaxLng,
     };
 
-    // 기존 categories 가져와서 유지
     if (selectedCategories.length > 0) {
       nextParams.categories = selectedCategories.join(",");
     }
