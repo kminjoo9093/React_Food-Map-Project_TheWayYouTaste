@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import styleSearchStore from "../../css/SearchStore.module.css";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import Pagination from "../Pagination";
 import MapComponent from "../../components/MapComponent";
 import CategoryFilter from "../../components/CategoryFilter";
@@ -79,6 +79,7 @@ function SearchStore() {
   });
 
   const [viewport, setViewport] = useState(null);
+  const [viewportCoords, setViewportCoords] = useState(null); // viewport 상태를 별도로 관리
   const [searchMode, setSearchMode] = useState("district");
   const [isMoved, setIsMoved] = useState(false);
   const [isOpen, setIsOpen] = useState(false); //모달 오픈 상태
@@ -170,9 +171,6 @@ function SearchStore() {
     setRegion,
   ]);
 
-  // viewport 상태를 별도로 관리
-  const [viewportCoords, setViewportCoords] = useState(null);
-
   // 범위 내 재검색 함수
   const handleSearchViewportArea = () => {
     const currentArea = positionAreaRef.current;
@@ -180,6 +178,12 @@ function SearchStore() {
 
     setViewportCoords(currentArea); // 좌표 상태만 업데이트
     setSearchMode("bounds");
+
+    if (searchMode === "bounds") {
+      updateBoundsCategory();
+      return;
+    }
+
     setIsMoved(false); // 재검색 후 버튼 비활성화
     setNowPage(1);
   };
@@ -187,53 +191,61 @@ function SearchStore() {
   useEffect(() => {
     if (!viewportCoords) return;
 
-    setSearchParams({
+    const nextParams = {
       mode: "bounds",
       swMinLat: viewportCoords.swMinLat,
       swMinLng: viewportCoords.swMinLng,
       neMaxLat: viewportCoords.neMaxLat,
       neMaxLng: viewportCoords.neMaxLng,
-    });
+    };
+
+    // 기존 categories 가져와서 유지
+    if (selectedCategories.length > 0) {
+      nextParams.categories = selectedCategories.join(",");
+    }
+
+    setSearchParams(nextParams);
 
     // viewport 상태 업데이트 (React Query 쿼리 자동 실행)
     setViewport(viewportCoords);
-  }, [viewportCoords, setSearchParams]);
+  }, [
+    viewportCoords,
+    setSearchParams,
+    categoriesFromUrl,
+    urlCategoryArray.length,
+    selectedCategories,
+  ]);
 
-  //데이터 결정
-  const baseList = useMemo(() => {
-    return searchMode === "bounds"
-      ? (viewportStoreList ?? [])
-      : (storeList ?? []);
-  }, [searchMode, viewportStoreList, storeList]);
+  const updateBoundsCategory = useCallback(() => {
+    if (isMoved === true) {
+      // 기존 모든 파라미터 유지
+      const newParams = {};
+      searchParams.forEach((value, key) => {
+        if (key !== "categories") {
+          newParams[key] = value;
+        }
+      });
 
-  //카테고리 필터링한 맛집 리스트
-  const filteredStoreList = useMemo(() => {
-    if (urlCategoryArray.length === 0) return baseList;
+      // 카테고리만 업데이트
+      if (selectedCategories.length > 0) {
+        newParams.categories = selectedCategories.join(",");
+      }
 
-    return baseList.filter((record) =>
-      urlCategoryArray.includes(String(record.storeCatNo)),
-    );
-  }, [baseList, urlCategoryArray]);
+      setSearchParams(newParams);
+      setNowPage(1);
+    }
+  }, [isMoved, selectedCategories, searchParams, setSearchParams]);
 
-  // 필터링, 지도범위 적용 최종 맛집 리스트
-  const finalStoreListWithId = useMemo(() => {
-    if (!Array.isArray(filteredStoreList)) return [];
-    return filteredStoreList.map((record) => ({
-      id: record.bplcSn,
-      ...record,
-    }));
-  }, [filteredStoreList]);
-
-  //렌더링 될 맛집 리스트
-  const viewStoreItems = finalStoreListWithId.slice(
-    (nowPage - 1) * viewListItemNum,
-    nowPage * viewListItemNum,
-  );
-
-  // 검색 버튼 클릭 (카테고리 필터 적용)
+  // 검색 버튼 클릭
   const onClickSearchBtn = () => {
-    setSearchMode("district");
+    //bounds 모드(카테고리 필터 적용)
+    if (searchMode === "bounds") {
+      updateBoundsCategory();
+      return;
+    }
 
+    //district 모드
+    setSearchMode("district");
     const nextParams = {};
 
     if (keyword) nextParams.keyword = keyword;
@@ -273,6 +285,37 @@ function SearchStore() {
       getCoords();
     }
   }, [hasQueryRegion, getCoords]);
+
+  //데이터 결정
+  const baseList = useMemo(() => {
+    return searchMode === "bounds"
+      ? (viewportStoreList ?? [])
+      : (storeList ?? []);
+  }, [searchMode, viewportStoreList, storeList]);
+
+  //카테고리 필터링한 맛집 리스트
+  const filteredStoreList = useMemo(() => {
+    if (urlCategoryArray.length === 0) return baseList;
+
+    return baseList.filter((record) =>
+      urlCategoryArray.includes(String(record.storeCatNo)),
+    );
+  }, [baseList, urlCategoryArray]);
+
+  // 필터링, 지도범위 적용 최종 맛집 리스트
+  const finalStoreListWithId = useMemo(() => {
+    if (!Array.isArray(filteredStoreList)) return [];
+    return filteredStoreList.map((record) => ({
+      id: record.bplcSn,
+      ...record,
+    }));
+  }, [filteredStoreList]);
+
+  //렌더링 될 맛집 리스트
+  const viewStoreItems = finalStoreListWithId.slice(
+    (nowPage - 1) * viewListItemNum,
+    nowPage * viewListItemNum,
+  );
 
   //필터 초기화
   const resetFilter = () => {
@@ -317,7 +360,7 @@ function SearchStore() {
                 초기화
               </button>
               <button
-                disabled={searchMode === "bounds"}
+                // disabled={searchMode === "bounds"}
                 className={styleSearchStore.btnSearch}
                 onClick={onClickSearchBtn}
               >
