@@ -1,12 +1,11 @@
 import styleHeader from "../css/Header.module.css";
 import styleSidebar from "../css/sidebar.module.css"
 import { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import SearchForm from "../components/SearchForm";
 
 function Header(){
-
-    // const [open, setOpen] = useState(false);
+    const location = useLocation();
     const [openMyMenu, setOpenMyMenu] = useState(false);
     const [isLogin, setIsLogin] = useState(false); 
     const [user, setUser] = useState(null); 
@@ -66,7 +65,7 @@ function Header(){
                             <NavLink to = "/store/region" className={({ isActive }) => isActive ? styleHeader.active : ""}>지역 맛집</NavLink>
                         </li>
                         <li>
-                            <NavLink to = "/search/store" className={({ isActive }) => isActive ? styleHeader.active : ""}>지도 찾기</NavLink>
+                            <NavLink to = {`/search/store${location.search}`} className={({ isActive }) => isActive ? styleHeader.active : ""}>지도 찾기</NavLink>
                         </li>
                         <li>
                             <NavLink to = "/store/register" className={({ isActive }) => isActive ? styleHeader.active : ""}>가게 등록</NavLink>
