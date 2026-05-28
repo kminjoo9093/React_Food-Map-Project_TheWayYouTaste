@@ -95,7 +95,7 @@ function SearchStore() {
   useEffect(() => {
     if (hasQueryRegion) return;
     if (!regionData) return;
-    if(sidoName === "전국") return;
+    if (sidoName === "전국") return;
 
     setIsMoved(false);
 
@@ -170,24 +170,34 @@ function SearchStore() {
     setRegion,
   ]);
 
+  // viewport 상태를 별도로 관리
+  const [viewportCoords, setViewportCoords] = useState(null);
+
   // 범위 내 재검색 함수
   const handleSearchViewportArea = () => {
     const currentArea = positionAreaRef.current;
     if (!currentArea) return;
 
-    setViewport(currentArea);
-    setSearchParams({
-      mode: "bounds",
-      swMinLat: currentArea.swMinLat,
-      swMinLng: currentArea.swMinLng,
-      neMaxLat: currentArea.neMaxLat,
-      neMaxLng: currentArea.neMaxLng,
-    });
-
+    setViewportCoords(currentArea); // 좌표 상태만 업데이트
     setSearchMode("bounds");
     setIsMoved(false); // 재검색 후 버튼 비활성화
     setNowPage(1);
   };
+
+  useEffect(() => {
+    if (!viewportCoords) return;
+
+    setSearchParams({
+      mode: "bounds",
+      swMinLat: viewportCoords.swMinLat,
+      swMinLng: viewportCoords.swMinLng,
+      neMaxLat: viewportCoords.neMaxLat,
+      neMaxLng: viewportCoords.neMaxLng,
+    });
+
+    // viewport 상태 업데이트 (React Query 쿼리 자동 실행)
+    setViewport(viewportCoords);
+  }, [viewportCoords, setSearchParams]);
 
   //데이터 결정
   const baseList = useMemo(() => {
@@ -222,9 +232,6 @@ function SearchStore() {
 
   // 검색 버튼 클릭 (카테고리 필터 적용)
   const onClickSearchBtn = () => {
-    // console.log(sidoFromUrl, sggFromUrl, dongFromUrl);
-    console.log(searchParams.toString());
-
     setSearchMode("district");
 
     const nextParams = {};

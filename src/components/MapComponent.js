@@ -51,11 +51,12 @@ export default function MapComponent({
 
   useEffect(() => {
     if (searchMode === "bounds") return;
+    if (hasQueryRegion) return;
 
     if (lat && lng) {
       setCenter({ lat, lng });
     }
-  }, [lat, lng, hasQueryRegion, searchMode]);
+  }, [lat, lng, searchMode]);
 
   useEffect(() => {
     if (isSelectedAll) {
@@ -105,17 +106,16 @@ export default function MapComponent({
     // 실행 타이밍 조절 (맵 렌더링 완료 대기)
     const timer = setTimeout(() => {
       //지역 필터 설정
-      if (searchMode === "district" && hasQueryRegion) {
+      if (searchMode === "district" && hasQueryRegion && storeList.length > 0) {
         const { bounds, hasValidPoint } = getBoundsFromStores(storeList);
-
         if (hasValidPoint) {
           moveToBounds(map, bounds);
+          return;
         }
-        return;
       }
 
       //초기 진입
-      if (lat && lng) {
+      if ( !hasQueryRegion && lat && lng) {
         moveToInitLocation(map, lat, lng);
         return;
       }
