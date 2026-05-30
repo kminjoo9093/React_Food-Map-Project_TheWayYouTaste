@@ -20,7 +20,6 @@ function StoreDetail({ storeList }) {
   //리뷰작성시 로그인여부 확인
   const [user, setUser] = useState(null); // 로그인 사용자 정보
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
-  // const [isInitialized, setIsInitialized] = useState(false); // 초기화
 
   const SERVER_URL = serverUrl.SERVER_URL;
 
@@ -36,7 +35,6 @@ function StoreDetail({ storeList }) {
       setUser(JSON.parse(storedUser)); // 사용자 정보가 있다면 상태에 저장
       setIsLoggedIn(true); // 로그인 상태로 설정
     }
-    // setIsInitialized(true);
   }, []);
 
   const { data: storeData, isLoading } = useStoreDetailInfo(Number(storeId));
@@ -106,74 +104,78 @@ function StoreDetail({ storeList }) {
       <div className={`container ${styleStoreDetail.container}`}>
         <section className={styleStoreDetail.storeInfoArea}>
           <div className={`${styleStoreDetail.storeInfoWrap} contentBox`}>
-            <div className={styleStoreDetail.storeNameWrap}>
-              <h2 className={styleStoreDetail.storeName}>{storeData.bplcNm}</h2>
-              <span className={styleStoreDetail.storeCatName}>
-                {storeData.storeCatName}
-              </span>
-            </div>
-            <ul className={styleStoreDetail.detailInfoList}>
-              <li className={styleStoreDetail.ratingAvgWrap}>
-                <StarRatingView
-                  rating={storeData.avg}
-                  starSize={"3rem"}
-                  starBoxSize={"4rem"}
-                  marginRight={"0rem"}
-                  ratingFont={"2.8rem"}
-                />
-              </li>
-              <li className={styleStoreDetail.time}>
-                <em className={styleStoreDetail.detailTitle}>영업시간</em>
-                {`${formatTime(storeData.bgngTm)} - ${formatTime(storeData.ddlnTm)}`}
-              </li>
-              <li className={styleStoreDetail.tel}>
-                <em className={styleStoreDetail.detailTitle}>전화번호</em>
-                <a
-                  href={`tel:${storeData.tel}`}
-                  className={styleStoreDetail.telNumber}
+            <div className={styleStoreDetail.storeInfoInner}>
+              <div className={styleStoreDetail.storeNameWrap}>
+                <h2 className={styleStoreDetail.storeName}>
+                  {storeData.bplcNm}
+                </h2>
+                <span className={styleStoreDetail.storeCatName}>
+                  {storeData.storeCatName}
+                </span>
+              </div>
+              <ul className={styleStoreDetail.detailInfoList}>
+                <li className={styleStoreDetail.ratingAvgWrap}>
+                  <StarRatingView
+                    rating={storeData.avg}
+                    starSize={"3rem"}
+                    starBoxSize={"4rem"}
+                    marginRight={"0rem"}
+                    ratingFont={"2.8rem"}
+                  />
+                </li>
+                <li className={styleStoreDetail.time}>
+                  <em className={styleStoreDetail.detailTitle}>영업시간</em>
+                  {`${formatTime(storeData.bgngTm)} - ${formatTime(storeData.ddlnTm)}`}
+                </li>
+                <li className={styleStoreDetail.tel}>
+                  <em className={styleStoreDetail.detailTitle}>전화번호</em>
+                  <a
+                    href={`tel:${storeData.tel}`}
+                    className={styleStoreDetail.telNumber}
+                  >
+                    {storeData.tel}
+                  </a>
+                </li>
+                <li className={styleStoreDetail.address}>
+                  <em className={styleStoreDetail.detailTitle}>주소</em>
+                  {storeData.address}
+                </li>
+                <li className={styleStoreDetail.serviceTypes}>
+                  {showAmtyServices(storeData.amenity)}
+                </li>
+              </ul>
+              <div className={styleStoreDetail.linkWrap}>
+                <button
+                  className={styleStoreDetail.linkWriteReview}
+                  onClick={() => {
+                    if (isLoggedIn) {
+                      setIsOpen(true);
+                    } else {
+                      navigate("/login", { replace: true });
+                    }
+                  }}
                 >
-                  {storeData.tel}
-                </a>
-              </li>
-              <li className={styleStoreDetail.address}>
-                <em className={styleStoreDetail.detailTitle}>주소</em>
-                {storeData.address}
-              </li>
-              <li className={styleStoreDetail.serviceTypes}>
-                {showAmtyServices(storeData.amenity)}
-              </li>
-            </ul>
-            <div className={styleStoreDetail.linkWrap}>
-              <button
-                className={styleStoreDetail.linkWriteReview}
-                onClick={() => {
-                  if (isLoggedIn) {
-                    setIsOpen(true);
-                  } else {
-                    navigate("/login", { replace: true });
-                  }
-                }}
-              >
-                리뷰 작성
-              </button>
+                  리뷰 작성
+                </button>
 
-              <Link
-                to={`/store/report/${user?.userSn || ""}`}
-                state={{
-                  bplcSn: storeId,
-                  storeName: storeData.bplcNm,
-                  address: storeData.address,
-                  userName: user?.nickname, //
-                }}
-                className={styleStoreDetail.linkReportStore}
-              >
-                신고
-              </Link>
+                <Link
+                  to={`/store/report/${user?.userSn || ""}`}
+                  state={{
+                    bplcSn: storeId,
+                    storeName: storeData.bplcNm,
+                    address: storeData.address,
+                    userName: user?.nickname, //
+                  }}
+                  className={styleStoreDetail.linkReportStore}
+                >
+                  신고
+                </Link>
+              </div>
             </div>
           </div>
           <div className={`${styleStoreDetail.storeImgWrap} contentBox`}>
             <img
-              src={`https://taste-440136652.imgix.net/${getStoreImage(storeData.storeCatNo)}?w=200&h=200&auto=format`}
+              src={`${process.env.REACT_APP_IMAGE_CDN}/${getStoreImage(storeData.storeCatNo)}?w=750&h=750&auto=format`}
               alt="가게 대표 이미지"
               className={styleStoreDetail.storeImg}
             />
