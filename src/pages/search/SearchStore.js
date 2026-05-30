@@ -30,6 +30,7 @@ function SearchStore() {
     neMaxLat: 0,
     neMaxLng: 0,
   });
+  const [isOpen, setIsOpen] = useState(false); //모달 오픈 상태
 
   // 페이지네이션
   const [nowPage, setNowPage] = useState(1);
@@ -80,12 +81,45 @@ function SearchStore() {
 
   const [viewport, setViewport] = useState(null);
   const [viewportCoords, setViewportCoords] = useState(null); // viewport 상태를 별도로 관리
-  const [searchMode, setSearchMode] = useState("district");
   const [isMoved, setIsMoved] = useState(false);
-  const [isOpen, setIsOpen] = useState(false); //모달 오픈 상태
   const [isSelectedAll, setIsSelectedAll] = useState(false);
 
-  const hasQueryRegion = Boolean(sidoFromUrl || sggFromUrl || dongFromUrl);
+  const modeFromUrl = searchParams.get("mode");
+  const isBoundsMode = modeFromUrl === "bounds";
+  const hasQueryRegion =
+    Boolean(sidoFromUrl || sggFromUrl || dongFromUrl) || isBoundsMode;
+  const [searchMode, setSearchMode] = useState(modeFromUrl || "district");
+
+  // 수정: 마운트 시 한 번만 URL에서 읽어서 설정
+  const [restoredBounds] = useState(() => {
+    if (modeFromUrl !== "bounds") return null;
+    return {
+      swMinLat: Number(searchParams.get("swMinLat")),
+      swMinLng: Number(searchParams.get("swMinLng")),
+      neMaxLat: Number(searchParams.get("neMaxLat")),
+      neMaxLng: Number(searchParams.get("neMaxLng")),
+    };
+  });
+
+  useEffect(() => {
+    if (modeFromUrl !== "bounds") return;
+
+    const bounds = {
+      swMinLat: Number(searchParams.get("swMinLat")),
+      swMinLng: Number(searchParams.get("swMinLng")),
+      neMaxLat: Number(searchParams.get("neMaxLat")),
+      neMaxLng: Number(searchParams.get("neMaxLng")),
+    };
+
+    setSearchMode("bounds");
+    setViewport(bounds);
+    setViewportCoords(bounds);
+
+    //map복원용
+    // setRestoredBounds(bounds);
+  }, [modeFromUrl, searchParams]);
+  //test 여기까지
+
   const { lat, lng, getCoords, regionData } = useInitLocationInfo({
     skip: !!hasQueryRegion,
   });
@@ -131,7 +165,7 @@ function SearchStore() {
   const { data: storeList = [], isLoading } = useStoresByCondition(params);
   const { data: viewportStoreList } = useStoresByViewport(viewport);
 
-  // url 값 - zustand store 상태 동기화
+  // url 값 -> zustand store 상태 동기화 (메인에서 선택한 상태)
   useEffect(() => {
     if (!hasQueryRegion) return;
     if (isInitialized.current) return;
@@ -153,7 +187,6 @@ function SearchStore() {
       setRegion(nextRegion);
     }
 
-    //카테고리
     setCategories(urlCategoryArray);
 
     isInitialized.current = true;
@@ -178,11 +211,6 @@ function SearchStore() {
 
     setViewportCoords(currentArea); // 좌표 상태만 업데이트
     setSearchMode("bounds");
-
-    if (searchMode === "bounds") {
-      updateBoundsCategory();
-      return;
-    }
 
     setIsMoved(false); // 재검색 후 버튼 비활성화
     setNowPage(1);
@@ -215,8 +243,9 @@ function SearchStore() {
     selectedCategories,
   ]);
 
+  //새로고침 시 bounds모드 url 받아오기 + 카테고리 추가
   const updateBoundsCategory = useCallback(() => {
-    if (isMoved === true) {
+    if (searchMode === "bounds") {
       // 기존 모든 파라미터 유지
       const newParams = {};
       searchParams.forEach((value, key) => {
@@ -233,18 +262,11 @@ function SearchStore() {
       setSearchParams(newParams);
       setNowPage(1);
     }
-  }, [isMoved, selectedCategories, searchParams, setSearchParams]);
+  }, [selectedCategories, searchParams, setSearchParams, searchMode]);
 
   // 검색 버튼 클릭
   const onClickSearchBtn = () => {
-    //bounds 모드(카테고리 필터 적용)
-    if (searchMode === "bounds") {
-      updateBoundsCategory();
-      return;
-    }
-
     //district 모드
-    setSearchMode("district");
     const nextParams = {};
 
     if (keyword) nextParams.keyword = keyword;
@@ -264,7 +286,17 @@ function SearchStore() {
       nextParams.categories = selectedCategories.join(",");
     }
 
-    setSearchParams(nextParams);
+    if (searchMode === "bounds") {
+      //bounds + 카테고리 필터만 적용
+      updateBoundsCategory();
+      return;
+    } else {
+      //district 모드
+      setSearchMode("district");
+      setSearchParams(nextParams);
+      setViewport(null);
+      setViewportCoords(null);
+    }
 
     //map level 조절
     if (!selectedSido) {
@@ -359,7 +391,6 @@ function SearchStore() {
                 초기화
               </button>
               <button
-                // disabled={searchMode === "bounds"}
                 className={styleSearchStore.btnSearch}
                 onClick={onClickSearchBtn}
               >
@@ -405,10 +436,11 @@ function SearchStore() {
           lat={lat}
           lng={lng}
           setIsMoved={setIsMoved}
-          searchMode={searchMode}
+          searchMode={modeFromUrl || "district"}
           positionAreaRef={positionAreaRef}
           isSelectedAll={isSelectedAll}
           hasQueryRegion={hasQueryRegion}
+          restoredBounds={restoredBounds}
         />
       </section>
     </div>

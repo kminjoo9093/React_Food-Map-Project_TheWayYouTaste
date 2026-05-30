@@ -1,6 +1,8 @@
 export const getSearchPath = ({region, categories, keyword}) => {
-    // 파라미터 생성
-    const params = new URLSearchParams();
+
+    const params = new URLSearchParams({
+      mode: "district"
+    });
 
     if(keyword) params.append("keyword", String(keyword.trim()));
 
@@ -11,13 +13,11 @@ export const getSearchPath = ({region, categories, keyword}) => {
     if (region?.sggName) params.append("siName", String(region.sggName).trim());
     if (region?.dongName) params.append("dongName", String(region.dongName).trim());
 
-  // 선택된 카테고리들 파라미터에 추가
     if (Array.isArray(categories) && categories.length > 0) {
       params.append("categories", categories.join(","));
     } else if (categories?.selectedCategories?.length > 0) {
       params.append("categories", categories.selectedCategories.join(","));
     }
 
-    // 검색 페이지로 이동
     return `/search/store?${params.toString()}`;
   };
