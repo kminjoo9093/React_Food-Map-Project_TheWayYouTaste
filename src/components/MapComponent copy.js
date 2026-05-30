@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useMemo } from "react";
 import { useEffect, useState, useRef } from "react";
 import {
   Map,
@@ -27,14 +27,21 @@ export default function MapComponent({
   restoredBounds,
 }) {
   const mapRef = useRef();
-  const [level, setLevel] = useState(7);
-  const [openMarkerId, setOpenMarkerId] = useState("");
+  const [level, setLevel] = useState(7); //지도 레벨
+  // const [center, setCenter] = useState({
+  //   lat: lat || 37.5665,
+  //   lng: lng || 126.978,
+  // });
+  //test
+  const currentCenter = useMemo(() => {
+    return {
+      lat: lat || 37.5665,
+      lng: lng || 126.978,
+    };
+  }, [lat, lng]);
+  const [openMarkerId, setOpenMarkerId] = useState(""); // 인포윈도우 Open 여부
   const [showMarkers, setShowMarkers] = useState(false);
   const isFirstIdle = useRef(true);
-  const initialCenter = {
-    lat: lat || 37.5665,
-    lng: lng || 126.978,
-  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -44,10 +51,31 @@ export default function MapComponent({
     return () => clearTimeout(timer);
   }, []);
 
+  // 카카오 로더 설정
   useKakaoLoader({
     appkey: MAP_KEY,
     libraries: ["clusterer", "drawing", "services"],
   });
+
+  // 수정: 초기 map 포커싱
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || searchMode === "bounds" || hasQueryRegion) return;
+
+    if (lat && lng) {
+      const moveLatLng = new window.kakao.maps.LatLng(lat, lng);
+      map.setCenter(moveLatLng);
+    }
+  }, [lat, lng, searchMode, hasQueryRegion]);
+
+  // useEffect(() => {
+  //   if (searchMode === "bounds") return;
+  //   if (hasQueryRegion) return;
+
+  //   if (lat && lng) {
+  //     setCenter({ lat, lng });
+  //   }
+  // }, [lat, lng, searchMode, hasQueryRegion]); //hasQueryRegion
 
   useEffect(() => {
     if (isSelectedAll) {
@@ -86,61 +114,66 @@ export default function MapComponent({
     map.setCenter(moveLatLng);
     map.setLevel(7);
   }
-  
-  // 지도 포커싱
+
+  //bounds 모드 새로고침
+  useEffect(() => {
+    const map = mapRef.current;
+
+    if (!map) return;
+    if (!restoredBounds) return;
+
+    const sw = new window.kakao.maps.LatLng(
+      restoredBounds.swMinLat,
+      restoredBounds.swMinLng,
+    );
+
+    const ne = new window.kakao.maps.LatLng(
+      restoredBounds.neMaxLat,
+      restoredBounds.neMaxLng,
+    );
+
+    const bounds = new window.kakao.maps.LatLngBounds(sw, ne);
+
+    moveToBounds(map, bounds);
+  }, [restoredBounds]);
+
+  // setBounds (지역 변경 or 스토어 리스트 변경)
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
-    if (isSelectedAll) return; // 전국 검색 모드는 고정
+    if (isSelectedAll) return; // 전국 검색 모드 -> 고정 level(12)
 
+    // 실행 타이밍 조절 (맵 렌더링 완료 대기)
     const timer = setTimeout(() => {
-      // 초기 진입: 사용자 현재 위치로 포커싱
-      if (!hasQueryRegion && lat && lng) {
-        moveToInitLocation(map, lat, lng);
-        return;
-      }
-
-      // 지역 필터 설정: bounds로 포커싱
+      //district
       if (searchMode === "district" && hasQueryRegion && storeList.length > 0) {
         const { bounds, hasValidPoint } = getBoundsFromStores(storeList);
         if (hasValidPoint) {
           moveToBounds(map, bounds);
-          return;
         }
+        return;
+      }
+
+      //초기 진입
+      if (!hasQueryRegion && lat && lng) {
+        moveToInitLocation(map, lat, lng);
+        return;
       }
     }, 100);
 
     return () => clearTimeout(timer);
   }, [storeList, isSelectedAll, lat, lng, searchMode, hasQueryRegion]);
 
-  // 새로고침 시 bounds 복원
-  useEffect(() => {
-    if (!restoredBounds || searchMode !== "bounds") return;
-
-    const timer = setTimeout(() => {
-      const map = mapRef.current;
-      if (!map) return;
-
-      const sw = new window.kakao.maps.LatLng(
-        restoredBounds.swMinLat,
-        restoredBounds.swMinLng,
-      );
-      const ne = new window.kakao.maps.LatLng(
-        restoredBounds.neMaxLat,
-        restoredBounds.neMaxLng,
-      );
-      const kakaoMapBounds = new window.kakao.maps.LatLngBounds();
-      kakaoMapBounds.extend(sw);
-      kakaoMapBounds.extend(ne);
-      map.setBounds(kakaoMapBounds);
-    }, 50); // 지도 초기 idle 이벤트보다 늦게 실행되도록
-
-    return () => clearTimeout(timer);
-  }, [restoredBounds, searchMode]);
+  //test
+  if (hasQueryRegion && storeList.length === 0) {
+    return <div>지도 로딩중</div>;
+  }
 
   return (
     <Map
-      center={initialCenter}
+      // center={center}
+      //test
+      center={currentCenter}
       style={{ width: "100%", height: "100%" }}
       level={level}
       ref={mapRef}
@@ -154,12 +187,14 @@ export default function MapComponent({
         const sw = bounds.getSouthWest();
         const ne = bounds.getNorthEast();
 
-        positionAreaRef.current = {
+        const newPos = {
           swMinLat: sw.getLat(),
           swMinLng: sw.getLng(),
           neMaxLat: ne.getLat(),
           neMaxLng: ne.getLng(),
         };
+
+        positionAreaRef.current = newPos;
 
         setIsMoved(true);
       }}
@@ -206,7 +241,7 @@ export default function MapComponent({
                     <button
                       className={styleMap.closeBtn}
                       onClick={(e) => {
-                        e.stopPropagation();
+                        e.stopPropagation(); // 지도 클릭 이벤트가 발생하는 것 방지
                         setOpenMarkerId("");
                       }}
                     >
@@ -246,7 +281,7 @@ export default function MapComponent({
                         </p>
                       </div>
                       <img
-                        src={`${process.env.REACT_APP_IMAGE_CDN}/${getStoreImage(store.storeCatNo)}?w=200&h=200&auto=format`}
+                        src={`https://taste-440136652.imgix.net/${getStoreImage(store.storeCatNo)}?w=200&h=200&auto=format`}
                         alt={`${store.bplcNm} 식당 대표 이미지`}
                         className={styleMap.infoImg}
                         loading="lazy"
