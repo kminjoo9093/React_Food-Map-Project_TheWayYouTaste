@@ -353,11 +353,33 @@ function SearchStore() {
     resetRegion();
     resetCategories();
 
-    setSearchParams({});
+    if (regionData) {
+      setRegion({
+        selectedSido: regionData.sidoCode,
+        selectedSgg: regionData.sggCode,
+        selectedDong: null,
+        sidoName: regionData.sidoName,
+        sggName: regionData.sggName,
+        dongName: "",
+      });
+
+      setSearchParams({
+        mode: "district",
+        sido: regionData.sidoCode,
+        sgg: regionData.sggCode,
+        doName: regionData.sidoName,
+        siName: regionData.sggName,
+      });
+    } else {
+      setSearchParams({});
+    }
 
     setIsMoved(false);
     setIsSelectedAll(false);
     setSearchMode("district");
+
+    setViewport(null);
+    setViewportCoords(null);
   };
 
   useEffect(() => {
