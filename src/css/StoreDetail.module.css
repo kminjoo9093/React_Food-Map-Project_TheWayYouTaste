@@ -1,20 +1,21 @@
 /* 상세페이지 레이아웃 */
-.container{
-    /* border: 1px solid #000; */
-}
 .storeInfoArea{
     width: 100%;
-    height: auto; /*임시높이*/
+    height: auto; 
     margin-bottom: 3rem;
     display: grid;
     grid-template-columns: auto 35%;
-    /* grid-template-rows: 1fr auto; 수정 필요 */
     gap: 3rem;
 }
 
 /* 상세정보 */
 .storeInfoWrap{
     padding: 4rem;
+    display: flex;
+    align-items: center;
+}
+.storeInfoInner{
+    width: 100%;
 }
 .storeInfoWrap > span{
     display: block;
@@ -233,7 +234,7 @@
     .storeInfoArea{
         width: 100%;
         grid-template-columns: 1fr;
-        grid-template-rows: 30rem 1fr 1fr;
+        grid-template-rows: 0.7fr 1fr 1fr;
         gap: 3rem;
     }
     .linkWrap, .serviceTypes{
