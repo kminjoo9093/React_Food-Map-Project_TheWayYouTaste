@@ -11,6 +11,7 @@ import RegionSelector from "../../components/RegionSelector";
 import {
   useDongName,
   useFilterStore,
+  useSelectedCategories,
   useSelectedDong,
   useSelectedSgg,
   useSelectedSido,
@@ -54,9 +55,10 @@ function SearchStore() {
   const sidoName = useSidoName();
   const sggName = useSggName();
   const dongName = useDongName();
-  const selectedCategories = useFilterStore(
-    (store) => store.selectedCategories,
-  );
+  // const selectedCategories = useFilterStore(
+  //   (store) => store.selectedCategories,
+  // );
+  const selectedCategories = useSelectedCategories();
 
   const setCategories = useFilterStore((store) => store.setCategories);
   const resetRegion = useFilterStore((store) => store.resetRegion);
@@ -149,6 +151,7 @@ function SearchStore() {
     sidoName,
     sggName,
     setSearchParams,
+    setRegion
   ]);
 
   // storeList 데이터 요청

@@ -4,7 +4,7 @@ import searchIcon from "../resources/img/system/search.png";
 import { useState } from "react";
 import {
   useDongName,
-  useFilterStore,
+  useSelectedCategories,
   useSelectedDong,
   useSelectedSgg,
   useSelectedSido,
@@ -24,9 +24,7 @@ export default function SearchForm({ device }) {
   const sidoName = useSidoName();
   const sggName = useSggName();
   const dongName = useDongName();
-  const selectedCategories = useFilterStore(
-    (store) => store.selectedCategories,
-  );
+  const selectedCategories = useSelectedCategories();
 
   const searchUrl = getSearchPath({
     region: {

@@ -1,5 +1,5 @@
 import styleCategory from "../css/CategoryFilter.module.css";
-import { useFilterStore } from "../store/filters";
+import { useFilterStore, useSelectedCategories } from "../store/filters";
 
 const foodIcons = {
   c01: "🍚",
@@ -12,9 +12,7 @@ const foodIcons = {
   c08: "🍩",
 };
 export default function CategoryFilter({ categories, mode }) {
-  const selectedCategories = useFilterStore(
-    (store) => store.selectedCategories,
-  );
+  const selectedCategories = useSelectedCategories();
   const toggleCategories = useFilterStore((store) => store.toggleCategories);
   const filterClass =
     mode === "main" ? styleCategory.mainMode : styleCategory.searchMode;

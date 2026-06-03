@@ -7,7 +7,7 @@ import { getSearchPath } from "../../lib/utils/getSearchPath";
 import RegionSelector from "../../components/RegionSelector";
 import {
   useDongName,
-  useFilterStore,
+  useSelectedCategories,
   useSelectedDong,
   useSelectedSgg,
   useSelectedSido,
@@ -26,9 +26,7 @@ function MainPage() {
   const sidoName = useSidoName();
   const sggName = useSggName();
   const dongName = useDongName();
-  const selectedCategories = useFilterStore(
-    (store) => store.selectedCategories,
-  );
+  const selectedCategories = useSelectedCategories();
   const keyword = "";
 
   const searchUrl = getSearchPath({

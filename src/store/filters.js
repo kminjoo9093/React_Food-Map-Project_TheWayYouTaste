@@ -10,9 +10,8 @@ export const useFilterStore = create((set) => ({
   dongName: "",
 
   selectedCategories: [],
-  appliedCategories: [],
 
-  //action
+  //actions
   setSido: (sidoCd, sidoNm) =>
     set({
       selectedSido: sidoCd,
@@ -55,14 +54,13 @@ export const useFilterStore = create((set) => ({
     }),
 
   setCategories: (categories) => set({ selectedCategories: categories }),
-  applyCategories: (categories) => set({ appliedCategories: categories }),
   toggleCategories: (storeCatNo) =>
     set((state) => ({
       selectedCategories: state.selectedCategories.includes(storeCatNo)
         ? state.selectedCategories.filter((id) => id !== storeCatNo)
         : [...state.selectedCategories, storeCatNo],
     })),
-  resetCategories: () => set({ selectedCategories: [], appliedCategories: [] }),
+  resetCategories: () => set({ selectedCategories: [] }),
 }));
 
 export const useSelectedSido = () =>
@@ -74,18 +72,5 @@ export const useSelectedDong = () =>
 export const useSidoName = () => useFilterStore((store) => store.sidoName);
 export const useSggName = () => useFilterStore((store) => store.sggName);
 export const useDongName = () => useFilterStore((store) => store.dongName);
-
-
-export const useCategoryActions = () =>
-  useFilterStore((store) => ({
-    setCategories: store.setCategories,
-    applyCategories: store.applyCategories,
-    toggleCategories: store.toggleCategories,
-    resetCategories: store.resetCategories,
-  }));
-
-export const useFilterReset = () =>
-  useFilterStore((store) => ({
-    resetRegion: store.resetRegion,
-    resetCategories: store.resetCategories,
-  }));
+export const useSelectedCategories = () =>
+  useFilterStore((store) => store.selectedCategories);
