@@ -5,8 +5,7 @@ import Pagination from "../Pagination";
 import MapComponent from "../../components/MapComponent";
 import CategoryFilter from "../../components/CategoryFilter";
 import useInitLocationInfo from "../../hooks/useInitLocationInfo";
-import { useContext } from "react";
-import { AppDataContext } from "../../context/AppDataProvider";
+import { useAppData } from "../../context/AppDataProvider";
 import RegionSelector from "../../components/RegionSelector";
 import {
   useDongName,
@@ -24,7 +23,7 @@ import StoreItem from "../../components/StoreItem";
 import { useSggCodeType } from "../../hooks/useSggCodeType";
 
 function SearchStore() {
-  const { categories, sidoList } = useContext(AppDataContext);
+  const { categories, sidoList } = useAppData();
   const positionAreaRef = useRef({
     swMinLat: 0,
     swMinLng: 0,

@@ -2,12 +2,12 @@ import style from "../css/RegionSelector.module.css";
 import { useState } from "react";
 import RegionModal from "./RegionModal";
 import { useDongName, useSggName, useSidoName } from "../store/filters";
-import type { SearchMode } from "../types";
+import type { SearchMode, Sido } from "../types";
 
 interface RegionSelectorProps {
-  sidoList: any; //임시. Sido 타입 정의 후 any 제거
+  sidoList: Sido[]; 
   searchMode: SearchMode;
-  setSearchMode: (mode: SearchMode)=>void
+  setSearchMode: (mode: SearchMode) => void
 }
 
 export default function RegionSelector({
@@ -15,7 +15,7 @@ export default function RegionSelector({
   searchMode,
   setSearchMode,
 }: RegionSelectorProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false); //지역 모달 오픈 상태
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const sidoName = useSidoName();
   const sggName = useSggName();
   const dongName = useDongName();
