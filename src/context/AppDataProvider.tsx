@@ -1,11 +1,6 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { getData } from "../api/http";
-import { Sido } from "../types";
-
-type Category = {
-  storeCatNo: string;
-  storeCatName: string;
-};
+import { Category, Sido } from "../types";
 
 type AppDataContextType = {
   categories: Category[];
