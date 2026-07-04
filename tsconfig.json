@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "sourceMap": true,
+    "allowJs": true,
+    "noEmit": true,
+    "strict": true,
+    "jsx": "react-jsx",
+    "isolatedModules": true,
+    "moduleResolution": "bundler",
+    // "moduleDetection": "force",
+    "skipLibCheck": true,
+  },
+  "include": ["src"]
+}
