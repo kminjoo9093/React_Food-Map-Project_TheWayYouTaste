@@ -1,14 +1,42 @@
 import { create } from "zustand";
+import { CategoryCode } from "../types/category.types";
 
-export const useFilterStore = create((set) => ({
+type RegionState = {
+  selectedSido: number | null;
+  selectedSgg: number | null;
+  selectedDong: number | null;
+  sidoName: string;
+  sggName: string;
+  dongName: string;
+};
+
+type FilterStore = RegionState & {
+  selectedCategories: string[];
+
+  setSido: (sidoCd: number | null, sidoNm: string) => void;
+  setSgg: (sggCd: number | null, sggNm: string) => void;
+  setDong: (dongCd: number | null, dongNm: string) => void;
+  setRegion: (region: RegionState) => void;
+  setCategories: (categories: string[]) => void;
+  toggleCategories: (storeCatNo: CategoryCode) => void;
+};
+
+const initialRegionState: RegionState = {
   selectedSido: null,
   selectedSgg: null,
   selectedDong: null,
-
   sidoName: "",
   sggName: "",
   dongName: "",
+};
 
+export const useFilterStore = create<FilterStore>((set) => ({
+  selectedSido: null,
+  selectedSgg: null,
+  selectedDong: null,
+  sidoName: "",
+  sggName: "",
+  dongName: "",
   selectedCategories: [],
 
   //actions
@@ -33,26 +61,8 @@ export const useFilterStore = create((set) => ({
       selectedDong: dongCd,
       dongName: dongNm || "",
     }),
-  setRegion: ({ selectedSido, selectedSgg, selectedDong, sidoName, sggName, dongName }) =>
-    set({
-      selectedSido,
-      selectedSgg,
-      selectedDong,
-      sidoName,
-      sggName,
-      dongName,
-    }),
-  resetRegion: () =>
-    set({
-      selectedSido: null,
-      selectedSgg: null,
-      selectedDong: null,
-
-      sidoName: "",
-      sggName: "",
-      dongName: "",
-    }),
-
+  setRegion: (region) => set(region),
+  resetRegion: () => set(initialRegionState),
   setCategories: (categories) => set({ selectedCategories: categories }),
   toggleCategories: (storeCatNo) =>
     set((state) => ({

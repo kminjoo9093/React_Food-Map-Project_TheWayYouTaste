@@ -1,4 +1,5 @@
-import type { Coords, Region } from "../types";
+import type { RegionByCoords } from "../types/region.types";
+import type { Coords } from "../types/types";
 
 type KakaoRegionDocument = {
   region_type: "B" | "H";
@@ -19,7 +20,10 @@ type KakaoRegionResponse = {
   documents: KakaoRegionDocument[];
 };
 
-export async function fetchRegionByCoords({ lat, lng }:Coords) : Promise<Region | null> {
+export async function fetchRegionByCoords({
+  lat,
+  lng,
+}: Coords): Promise<RegionByCoords | null> {
   const key = process.env.REACT_APP_KAKAO_LOCAL_API_KEY;
   let localUrl = `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${lng}&y=${lat}`;
   const headers = { Authorization: `KakaoAK ${key}` };
@@ -27,15 +31,17 @@ export async function fetchRegionByCoords({ lat, lng }:Coords) : Promise<Region 
   const response = await fetch(localUrl, { headers });
   const data: KakaoRegionResponse = await response.json();
 
-  const regionInfo = data.documents.find((region) => region.region_type === "B");
-  if(!regionInfo) return null;
+  const regionInfo = data.documents.find(
+    (region) => region.region_type === "B",
+  );
+  if (!regionInfo) return null;
 
-  const sggCode = regionInfo.code.slice(0, 5);
-  const sidoCode = sggCode.slice(0, 2);
-  const dongCode = regionInfo.code;
+  const sggCode = Number(regionInfo.code.slice(0, 5));
+  const sidoCode = Number(regionInfo.code.slice(0, 2));
+  const dongCode = Number(regionInfo.code);
   const sidoName = regionInfo.region_1depth_name;
   const sggName = regionInfo.region_2depth_name;
   const dongName = regionInfo.region_3depth_name;
 
-  return {sggCode, sidoCode, dongCode, sidoName, sggName, dongName};
+  return { sggCode, sidoCode, dongCode, sidoName, sggName, dongName };
 }

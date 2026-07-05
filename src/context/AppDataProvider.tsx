@@ -1,16 +1,25 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { getData } from "../api/http";
-import { Category, Sido } from "../types";
+import { Category } from "../types/category.types";
+import { Sido } from "../types/region.types";
 
 type AppDataContextType = {
   categories: Category[];
   sidoList: Sido[];
   loading: boolean;
-}
+};
 
-export const AppDataContext = createContext<AppDataContextType | undefined>(undefined);
+export const AppDataContext = createContext<AppDataContextType | undefined>(
+  undefined,
+);
 
-export function AppDataProvider({ children } : {children: ReactNode}) {
+export function AppDataProvider({ children }: { children: ReactNode }) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [sidoList, setSidoList] = useState<Sido[]>([]);
   const [loading, setLoading] = useState(true);
@@ -43,8 +52,8 @@ export function AppDataProvider({ children } : {children: ReactNode}) {
 
 export const useAppData = () => {
   const context = useContext(AppDataContext);
-  if(!context) {
-    throw new Error("AppDataProvider 내부에서만 사용할 수 있는 hook입니다.")
+  if (!context) {
+    throw new Error("AppDataProvider 내부에서만 사용할 수 있는 hook입니다.");
   }
   return context;
-}
+};

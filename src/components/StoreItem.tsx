@@ -2,8 +2,9 @@ import { Link } from "react-router-dom";
 import styleSearchStore from "../css/SearchStore.module.css";
 import { getStoreImage } from "../lib/utils/getStoreImage";
 import { formatTime } from "../lib/utils/formatTime";
+import { Store } from "../types/store.types";
 
-function StoreItem({ store }) {
+function StoreItem({ store }: { store: Store }) {
   return (
     <li key={store.bplcSn} className={styleSearchStore.storeListItem}>
       <Link

@@ -1,4 +1,4 @@
-import type { Dong, Sgg } from "../types";
+import type { Dong, Sgg } from "../types/region.types";
 import { apiFetch } from "./client";
 
 //매개변수 타입 임시 정의

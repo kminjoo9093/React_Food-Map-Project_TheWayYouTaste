@@ -2,12 +2,13 @@ import style from "../css/RegionSelector.module.css";
 import { useState } from "react";
 import RegionModal from "./RegionModal";
 import { useDongName, useSggName, useSidoName } from "../store/filters";
-import type { SearchMode, Sido } from "../types";
+import type { SearchMode } from "../types/types";
+import type { Sido } from "../types/region.types";
 
 interface RegionSelectorProps {
-  sidoList: Sido[]; 
+  sidoList: Sido[];
   searchMode: SearchMode;
-  setSearchMode: (mode: SearchMode) => void
+  setSearchMode: (mode: SearchMode) => void;
 }
 
 export default function RegionSelector({

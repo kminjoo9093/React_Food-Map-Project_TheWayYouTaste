@@ -1,6 +1,6 @@
 import styleCategory from "../css/CategoryFilter.module.css";
 import { useFilterStore, useSelectedCategories } from "../store/filters";
-import type { Category, CategoryCode, CategoryFilterMode } from "../types";
+import type { Category, CategoryCode, CategoryFilterMode } from "../types/category.types";
 
 const foodIcons: Record<CategoryCode, string> = {
   c01: "🍚",

@@ -1,7 +1,10 @@
-import type { Store, StoreSearchParam, Viewport } from "../types";
+import type { Store, StoreSearchParam } from "../types/store.types";
+import type { Viewport } from "../types/types";
 import { apiFetch } from "./client";
 
-export async function getStoreListByCondition(param: StoreSearchParam): Promise<Store[]> {
+export async function getStoreListByCondition(
+  param: StoreSearchParam,
+): Promise<Store[]> {
   const { keyword, sidoCode, sggCode, dongCode } = param;
 
   if (keyword) {
@@ -30,7 +33,9 @@ export async function getStoreListByCondition(param: StoreSearchParam): Promise<
 
 // 실제 서비스 환경에서는 백엔드에서 좌표 기반(Bounding Box) 필터링 수행
 // 현재는 json-server 환경이므로 프론트에서 필터링 처리
-export async function getStoreListByViewport(viewport: Viewport): Promise<Store[]> {
+export async function getStoreListByViewport(
+  viewport: Viewport,
+): Promise<Store[]> {
   const { swMinLat, swMinLng, neMaxLat, neMaxLng } = viewport;
 
   const data = await apiFetch<Store[]>("/store");
