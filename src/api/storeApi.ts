@@ -1,12 +1,5 @@
-import { Store, Viewport } from "../types";
+import type { Store, StoreSearchParam, Viewport } from "../types";
 import { apiFetch } from "./client";
-
-type StoreSearchParam = {
-  keyword?: string;
-  sidoCode?: number;
-  sggCode?: number;
-  dongCode?: number;
-}
 
 export async function getStoreListByCondition(param: StoreSearchParam): Promise<Store[]> {
   const { keyword, sidoCode, sggCode, dongCode } = param;

@@ -22,6 +22,11 @@ export type Dong = {
   dgNm: string;
 };
 
+export type Coords = {
+  lat: number;
+  lng: number;
+}
+
 export type Viewport = {
   [key: string]: number;
 };
@@ -47,4 +52,20 @@ export type Store = {
   takeoutYn: boolean;
   petYn: boolean;
   bplcPhoto: string | null;
+};
+
+export type StoreSearchParam = {
+  keyword?: string;
+  sidoCode?: number;
+  sggCode?: number;
+  dongCode?: number;
+}
+
+export type Region = {
+  sidoCode: string;
+  sggCode: string;
+  dongCode: string;
+  sidoName: string;
+  sggName: string;
+  dongName: string;
 };
