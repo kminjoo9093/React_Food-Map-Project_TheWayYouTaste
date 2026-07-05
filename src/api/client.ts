@@ -1,6 +1,6 @@
 const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-export async function apiFetch(url, options = {}) {
+export async function apiFetch<T>(url: string, options: RequestInit = {}): Promise<T> {
   const res = await fetch(`${BASE_URL}${url}`, {
     ...options,
     headers: {

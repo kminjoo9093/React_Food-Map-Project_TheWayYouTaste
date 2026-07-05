@@ -18,8 +18,8 @@ export function AppDataProvider({ children } : {children: ReactNode}) {
   const fetchAppData = async () => {
     try {
       const [categoryData, sidoData] = await Promise.all([
-        getData("/category"),
-        getData("/sido"),
+        getData<Category[]>("/category"),
+        getData<Sido[]>("/sido"),
       ]);
       setCategories(categoryData);
       setSidoList(sidoData);
