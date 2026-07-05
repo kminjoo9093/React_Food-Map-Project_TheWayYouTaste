@@ -27,9 +27,6 @@ export async function fetchRegionByCoords({ lat, lng }:Coords) : Promise<Region 
   const response = await fetch(localUrl, { headers });
   const data: KakaoRegionResponse = await response.json();
 
-  
-  if (data.documents.length === 0) return null;
-
   const regionInfo = data.documents.find((region) => region.region_type === "B");
   if(!regionInfo) return null;
 
