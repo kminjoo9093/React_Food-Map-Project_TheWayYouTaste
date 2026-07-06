@@ -3,10 +3,10 @@ import { fetchRegionByCoords } from "../../api/fetchRegionByCoords";
 import { QUERY_KEYS } from "../../lib/constants";
 import type { Coords } from "../../types/types";
 
-export function useRegionByCoords({ lat, lng }: Coords) {
+export function useRegionByCoords(coords: Coords | null) {
   return useQuery({
-    queryFn: () => fetchRegionByCoords({ lat, lng }),
-    queryKey: QUERY_KEYS.region.coords(lat, lng),
-    enabled: !!lat && !!lng,
+    queryFn: () => fetchRegionByCoords(coords!),
+    queryKey: QUERY_KEYS.region.coords(coords),
+    enabled: coords !== null,
   });
 }

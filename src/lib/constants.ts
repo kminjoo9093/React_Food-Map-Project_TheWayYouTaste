@@ -1,9 +1,9 @@
 import type { StoreSearchParam } from "../types/store.types";
-import type { Viewport } from "../types/types";
+import type { Coords, Viewport } from "../types/types";
 
 export const QUERY_KEYS = {
   region: {
-    coords: (lat: number, lng: number) => ["region", lat, lng],
+    coords: (coords: Coords | null) => ["region", coords],
     sgg: (sidoCode: number | null) => ["region", "sgg", sidoCode],
     dong: (sggCode: number | null) => ["region", "dong", sggCode],
   },

@@ -121,7 +121,7 @@ function SearchStore() {
   }, [modeFromUrl, searchParams]);
   //test 여기까지
 
-  const { lat, lng, getCoords, regionData } = useInitLocationInfo({
+  const { coords, getCoords, regionData } = useInitLocationInfo({
     skip: !!hasQueryRegion,
   });
 
@@ -457,8 +457,8 @@ function SearchStore() {
         </button>
         <MapComponent
           storeList={finalStoreListWithId}
-          lat={lat}
-          lng={lng}
+          lat={coords.lat}
+          lng={coords.lng}
           setIsMoved={setIsMoved}
           searchMode={modeFromUrl || "district"}
           positionAreaRef={positionAreaRef}

@@ -1,15 +1,16 @@
 import { useCallback, useState } from "react";
+import { Coords } from "../types/types";
 
 export function useGeolocation() {
-  const [lat, setLat] = useState<number | null>(null);
-  const [lng, setLng] = useState<number | null>(null);
+  const [coords, setCoords] = useState<Coords | null>(null);
 
   const getCoords = useCallback(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const { latitude, longitude } = position.coords;
-        setLat(latitude);
-        setLng(longitude);
+        setCoords({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
       },
       (error) => {
         console.error("위치를 찾지 못했습니다.");
@@ -17,5 +18,5 @@ export function useGeolocation() {
     );
   }, []);
 
-  return { lat, lng, getCoords };
+  return { coords, getCoords };
 }

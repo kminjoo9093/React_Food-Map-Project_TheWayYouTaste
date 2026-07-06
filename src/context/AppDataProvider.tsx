@@ -5,9 +5,9 @@ import {
   useEffect,
   useState,
 } from "react";
-import { getData } from "../api/http";
 import { Category } from "../types/category.types";
 import { Sido } from "../types/region.types";
+import { apiFetch } from "../api/client";
 
 type AppDataContextType = {
   categories: Category[];
@@ -27,8 +27,8 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
   const fetchAppData = async () => {
     try {
       const [categoryData, sidoData] = await Promise.all([
-        getData<Category[]>("/category"),
-        getData<Sido[]>("/sido"),
+        apiFetch<Category[]>("/category"),
+        apiFetch<Sido[]>("/sido"),
       ]);
       setCategories(categoryData);
       setSidoList(sidoData);

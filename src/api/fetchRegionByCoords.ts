@@ -20,12 +20,9 @@ type KakaoRegionResponse = {
   documents: KakaoRegionDocument[];
 };
 
-export async function fetchRegionByCoords({
-  lat,
-  lng,
-}: Coords): Promise<RegionByCoords | null> {
+export async function fetchRegionByCoords( coords : Coords): Promise<RegionByCoords | null> {
   const key = process.env.REACT_APP_KAKAO_LOCAL_API_KEY;
-  let localUrl = `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${lng}&y=${lat}`;
+  let localUrl = `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${coords.lng}&y=${coords.lat}`;
   const headers = { Authorization: `KakaoAK ${key}` };
 
   const response = await fetch(localUrl, { headers });
