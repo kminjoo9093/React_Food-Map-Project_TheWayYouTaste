@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../../lib/constants";
 import { getDongList } from "../../api/regionApi";
 
-export function useDongList(selectedSgg: number){
+export function useDongList(selectedSgg: number | null){
   return useQuery({
-    queryFn: () => getDongList(selectedSgg),
+    queryFn: () => getDongList(selectedSgg!),
     queryKey: QUERY_KEYS.region.dong(selectedSgg),
-    enabled: !!selectedSgg,
+    enabled: selectedSgg !== null,
   })
 }

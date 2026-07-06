@@ -1,7 +1,6 @@
 import type { Dong, Sgg } from "../types/region.types";
 import { apiFetch } from "./client";
 
-//매개변수 타입 임시 정의
 export function getSggList(selectedSido: number): Promise<Sgg[]> {
   return apiFetch<Sgg[]>(`/sgg?sidoCd=${selectedSido}`);
 }
