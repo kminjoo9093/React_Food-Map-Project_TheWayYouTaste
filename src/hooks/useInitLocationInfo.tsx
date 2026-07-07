@@ -3,12 +3,9 @@ import { useGeolocation } from "./useGeolocation";
 import { useRegionByCoords } from "./queries/useRegionByCoords";
 import { useFilterStore } from "../store/filters";
 
-export default function useInitLocationInfo({ skip }) {
-  const { lat, lng, getCoords } = useGeolocation();
-  const { data: regionData } = useRegionByCoords({
-    lat,
-    lng,
-  });
+export default function useInitLocationInfo({ skip }: {skip: boolean}) {
+  const { coords, getCoords } = useGeolocation();
+  const { data: regionData } = useRegionByCoords(coords);
   const setRegion = useFilterStore((store) => store.setRegion);
   const isInitialized = useRef(false);
 
@@ -33,5 +30,5 @@ export default function useInitLocationInfo({ skip }) {
     isInitialized.current = true;
   }, [regionData, skip]);
 
-  return { lat, lng, getCoords, regionData };
+  return { coords, getCoords, regionData };
 }

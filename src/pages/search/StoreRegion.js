@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback, useContext } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import styleRanking from "../../css/StoreRegion.module.css";
 import styleMain from "../../css/MainPage.module.css";
@@ -11,10 +11,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../Pagination";
 import serverUrl from "../../config/server.json";
-import { AppDataContext } from "../../context/AppDataProvider";
+import { useAppData } from "../../context/AppDataProvider";
 
 function StoreRegion() {
-  const { sidoList } = useContext(AppDataContext);
+  const { sidoList } = useAppData();
   const SERVER_URL = serverUrl.SERVER_URL;
   const [nowPage, setNowPage] = useState(1);
   const viewPeople = 10;

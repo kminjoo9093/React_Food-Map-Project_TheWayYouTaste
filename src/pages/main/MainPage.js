@@ -1,13 +1,12 @@
 import { Link } from "react-router-dom";
 import styleMain from "../../css/MainPage.module.css";
-import { useContext } from "react";
 import CategoryFilter from "../../components/CategoryFilter";
-import { AppDataContext } from "../../context/AppDataProvider";
+import { useAppData } from "../../context/AppDataProvider";
 import { getSearchPath } from "../../lib/utils/getSearchPath";
 import RegionSelector from "../../components/RegionSelector";
 import {
   useDongName,
-  useFilterStore,
+  useSelectedCategories,
   useSelectedDong,
   useSelectedSgg,
   useSelectedSido,
@@ -18,7 +17,7 @@ import useInitLocationInfo from "../../hooks/useInitLocationInfo";
 import SearchForm from "../../components/SearchForm";
 
 function MainPage() {
-  const { categories, sidoList } = useContext(AppDataContext);
+  const { categories, sidoList } = useAppData();
   useInitLocationInfo({ skip: false });
   const selectedSido = useSelectedSido();
   const selectedSgg = useSelectedSgg();
@@ -26,9 +25,7 @@ function MainPage() {
   const sidoName = useSidoName();
   const sggName = useSggName();
   const dongName = useDongName();
-  const selectedCategories = useFilterStore(
-    (store) => store.selectedCategories,
-  );
+  const selectedCategories = useSelectedCategories();
   const keyword = "";
 
   const searchUrl = getSearchPath({

@@ -86,7 +86,7 @@ export default function MapComponent({
     map.setCenter(moveLatLng);
     map.setLevel(7);
   }
-  
+
   // 지도 포커싱
   useEffect(() => {
     const map = mapRef.current;

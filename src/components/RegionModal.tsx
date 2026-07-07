@@ -7,8 +7,20 @@ import {
   useSelectedSgg,
   useSelectedSido,
 } from "../store/filters";
+import type { Sido } from "../types/region.types";
+import { SearchMode } from "../types/types";
 
-function RegionModal({ setIsModalOpen, sidoList, setSearchMode }) {
+type RegionModalProps = {
+  setIsModalOpen: ( isModalOpen : boolean ) => void;
+  sidoList: Sido[];
+  setSearchMode: ( mode: SearchMode ) => void;
+};
+
+function RegionModal({
+  setIsModalOpen,
+  sidoList,
+  setSearchMode,
+}: RegionModalProps) {
   const selectedSido = useSelectedSido();
   const selectedSgg = useSelectedSgg();
   const selectedDong = useSelectedDong();
@@ -17,7 +29,6 @@ function RegionModal({ setIsModalOpen, sidoList, setSearchMode }) {
   const setSgg = useFilterStore((store) => store.setSgg);
   const setDong = useFilterStore((store) => store.setDong);
   const setRegion = useFilterStore((store) => store.setRegion);
-  const sidoData = sidoList || [];
 
   //시군구 리스트
   const {
@@ -71,7 +82,7 @@ function RegionModal({ setIsModalOpen, sidoList, setSearchMode }) {
               >
                 전체
               </li>
-              {sidoData.map((record) => (
+              {sidoList.map((record) => (
                 <li
                   key={record.sidoCd}
                   className={`${styleRegionModal.regionItem}

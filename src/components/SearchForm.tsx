@@ -4,7 +4,7 @@ import searchIcon from "../resources/img/system/search.png";
 import { useState } from "react";
 import {
   useDongName,
-  useFilterStore,
+  useSelectedCategories,
   useSelectedDong,
   useSelectedSgg,
   useSelectedSido,
@@ -13,7 +13,9 @@ import {
 } from "../store/filters";
 import { getSearchPath } from "../lib/utils/getSearchPath";
 
-export default function SearchForm({ device }) {
+type Device = "mobile" | "pc";
+
+export default function SearchForm({ device } : {device : Device}) {
   const [keyword, setKeyword] = useState("");
   const navigate = useNavigate();
   const mode = device === "mobile" ? style.mob : style.pc;
@@ -24,9 +26,7 @@ export default function SearchForm({ device }) {
   const sidoName = useSidoName();
   const sggName = useSggName();
   const dongName = useDongName();
-  const selectedCategories = useFilterStore(
-    (store) => store.selectedCategories,
-  );
+  const selectedCategories = useSelectedCategories();
 
   const searchUrl = getSearchPath({
     region: {
@@ -41,7 +41,7 @@ export default function SearchForm({ device }) {
     keyword: keyword,
   });
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!keyword) return;
     navigate(searchUrl);

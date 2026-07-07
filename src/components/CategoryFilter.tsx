@@ -1,7 +1,8 @@
 import styleCategory from "../css/CategoryFilter.module.css";
-import { useFilterStore } from "../store/filters";
+import { useFilterStore, useSelectedCategories } from "../store/filters";
+import type { Category, CategoryCode, CategoryFilterMode } from "../types/category.types";
 
-const foodIcons = {
+const foodIcons: Record<CategoryCode, string> = {
   c01: "🍚",
   c02: "🍣",
   c03: "🍝",
@@ -11,20 +12,28 @@ const foodIcons = {
   c07: "🍗",
   c08: "🍩",
 };
-export default function CategoryFilter({ categories, mode }) {
-  const selectedCategories = useFilterStore(
-    (store) => store.selectedCategories,
-  );
+export default function CategoryFilter({
+  categories,
+  mode,
+}: {
+  categories: Category[];
+  mode: CategoryFilterMode;
+}) {
+  const selectedCategories = useSelectedCategories();
   const toggleCategories = useFilterStore((store) => store.toggleCategories);
   const filterClass =
     mode === "main" ? styleCategory.mainMode : styleCategory.searchMode;
 
   if (!categories || categories.length === 0) {
-    return <div className={styleCategory.loadingBox}>
-      <p className={styleCategory.loadingText}>
-      데이터를 불러오는 중입니다.<br/>잠시만 기다려 주세요.
-      </p>
-      </div>;
+    return (
+      <div className={styleCategory.loadingBox}>
+        <p className={styleCategory.loadingText}>
+          데이터를 불러오는 중입니다.
+          <br />
+          잠시만 기다려 주세요.
+        </p>
+      </div>
+    );
   }
 
   return (

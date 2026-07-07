@@ -2,9 +2,21 @@ import style from "../css/RegionSelector.module.css";
 import { useState } from "react";
 import RegionModal from "./RegionModal";
 import { useDongName, useSggName, useSidoName } from "../store/filters";
+import type { SearchMode } from "../types/types";
+import type { Sido } from "../types/region.types";
 
-export default function RegionSelector({ sidoList, searchMode, setSearchMode }) {
-  const [isModalOpen, setIsModalOpen] = useState(false); //지역 모달 오픈 상태
+interface RegionSelectorProps {
+  sidoList: Sido[];
+  searchMode: SearchMode;
+  setSearchMode: (mode: SearchMode) => void;
+}
+
+export default function RegionSelector({
+  sidoList,
+  searchMode,
+  setSearchMode,
+}: RegionSelectorProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const sidoName = useSidoName();
   const sggName = useSggName();
   const dongName = useDongName();
@@ -18,8 +30,7 @@ export default function RegionSelector({ sidoList, searchMode, setSearchMode }) 
         >
           <span className={style.filterIcon}>📍</span>
           <span className={style.filterText}>
-            {
-              searchMode === "bounds"
+            {searchMode === "bounds"
               ? "범위 내 검색"
               : sidoName || sggName || dongName
                 ? `${sidoName} ${sggName} ${dongName}`.trim()
