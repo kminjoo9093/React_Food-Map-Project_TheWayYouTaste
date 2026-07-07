@@ -1,10 +1,12 @@
+import { CategoryCode } from "./category.types";
+
 export type Store = {
   bplcSn: number;
   bplcNm: string;
   address: string;
   lat: number;
   lng: number;
-  storeCatNo: string;
+  storeCatNo: CategoryCode;
   storeCatName: string;
   avg: number;
   dongCd: number;

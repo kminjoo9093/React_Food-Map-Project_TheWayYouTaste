@@ -6,5 +6,8 @@ export type Coords = {
 };
 
 export type Viewport = {
-  [key: string]: number;
+  swMinLat: number;
+  swMinLng: number;
+  neMaxLat: number;
+  neMaxLng: number;
 };

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { CategoryCode } from "../types/category.types";
 
-type RegionState = {
+export type RegionState = {
   selectedSido: number | null;
   selectedSgg: number | null;
   selectedDong: number | null;
@@ -11,13 +11,15 @@ type RegionState = {
 };
 
 type FilterStore = RegionState & {
-  selectedCategories: string[];
+  selectedCategories: CategoryCode[];
 
   setSido: (sidoCd: number | null, sidoNm: string) => void;
   setSgg: (sggCd: number | null, sggNm: string) => void;
   setDong: (dongCd: number | null, dongNm: string) => void;
   setRegion: (region: RegionState) => void;
-  setCategories: (categories: string[]) => void;
+  setCategories: (categories: CategoryCode[]) => void;
+  resetRegion: () => void;
+  resetCategories: () => void;
   toggleCategories: (storeCatNo: CategoryCode) => void;
 };
 
@@ -31,12 +33,7 @@ const initialRegionState: RegionState = {
 };
 
 export const useFilterStore = create<FilterStore>((set) => ({
-  selectedSido: null,
-  selectedSgg: null,
-  selectedDong: null,
-  sidoName: "",
-  sggName: "",
-  dongName: "",
+  ...initialRegionState,
   selectedCategories: [],
 
   //actions

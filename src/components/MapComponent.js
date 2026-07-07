@@ -31,8 +31,6 @@ export default function MapComponent({
   const [openMarkerId, setOpenMarkerId] = useState("");
   const [showMarkers, setShowMarkers] = useState(false);
   const isFirstIdle = useRef(true);
-  // const didMoveToInitLocation = useRef(false); // 추가
-  // const isInitialGeolocSearch = useRef(!hasQueryRegion);
   const initialCenter = {
     lat: lat || 37.5665,
     lng: lng || 126.978,
@@ -102,9 +100,6 @@ export default function MapComponent({
         return;
       }
 
-      // if (isInitialGeolocSearch.current && searchMode === "district") {
-      //   return;
-      // }
       // 지역 필터 설정: bounds로 포커싱
       if (searchMode === "district" && hasQueryRegion && storeList.length > 0) {
         const { bounds, hasValidPoint } = getBoundsFromStores(storeList);

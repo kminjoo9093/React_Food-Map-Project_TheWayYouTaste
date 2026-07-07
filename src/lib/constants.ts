@@ -9,7 +9,7 @@ export const QUERY_KEYS = {
   },
   stores: {
     list: (params: StoreSearchParam) => ["stores", "list", params],
-    viewport: (viewport: Viewport) => ["stores", "viewport", viewport],
+    viewport: (viewport: Viewport | null) => ["stores", "viewport", viewport],
     detail: (storeId: number) => ["store", storeId],
   },
 };
