@@ -2,7 +2,6 @@ import styleSearchStore from "../../css/SearchStore.module.css";
 import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import Pagination from "../Pagination";
 import MapComponent from "../../components/MapComponent";
-import CategoryFilter from "../../components/CategoryFilter";
 import useInitLocationInfo from "../../hooks/useInitLocationInfo";
 import { useAppData } from "../../context/AppDataProvider";
 import RegionSelector from "../../components/RegionSelector";
@@ -23,6 +22,7 @@ import StoreItem from "../../components/StoreItem";
 import { useSggCodeType } from "../../hooks/useSggCodeType";
 import { Viewport } from "../../types/types";
 import { useSearchQuery } from "../../hooks/useSearchQuery";
+import CategoryFilter from "../../components/CategoryFilter";
 
 const LIST_ITEM_NUM = 10;
 
