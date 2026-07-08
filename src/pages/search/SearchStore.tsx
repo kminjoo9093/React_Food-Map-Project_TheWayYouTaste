@@ -183,7 +183,7 @@ function SearchStore() {
       setRegion(nextRegion);
     }
 
-    setCategories(query.categories);
+    setCategories(query.categories ?? []);
 
     isInitialized.current = true;
   }, [
@@ -218,21 +218,27 @@ function SearchStore() {
       swMinLng: viewportCoords.swMinLng,
       neMaxLat: viewportCoords.neMaxLat,
       neMaxLng: viewportCoords.neMaxLng,
-    });
+      categories: selectedCategories,
+    }, "replace");
 
     // viewport 상태 업데이트 (React Query 쿼리 자동 실행)
     setViewport(viewportCoords);
-  }, [viewportCoords, setQuery]);
+  }, [viewportCoords, setQuery, selectedCategories]);
 
   //새로고침 시 bounds모드 url 받아오기 + 카테고리 추가
   const updateBoundsCategory = useCallback(() => {
     if (searchMode !== "bounds") return;
-    setQuery({ categories: selectedCategories });
+    if(selectedCategories.length > 0){
+
+    }
+    setQuery({ categories: selectedCategories }, "replace");
     setNowPage(1);
   }, [selectedCategories, searchMode, setQuery]);
 
-  // 검색 버튼 클릭
   const onClickSearchBtn = () => {
+    console.log("selected", selectedCategories);
+    console.log("query", query.categories);
+
     if (searchMode === "bounds") {
       updateBoundsCategory();
       return;

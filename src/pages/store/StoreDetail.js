@@ -9,6 +9,7 @@ import { formatTime } from "../../lib/utils/formatTime";
 import StarRatingView from "../../components/StarRatingView";
 import ReviewList from "../../components/ReviewList";
 import { useStoreDetailInfo } from "../../hooks/queries/useStoreDetailInfo";
+import { getImageCdn } from "../../lib/utils/getImageCdn";
 
 const REVIEWS_PER_PAGE = 5;
 
@@ -175,7 +176,7 @@ function StoreDetail({ storeList }) {
           </div>
           <div className={`${styleStoreDetail.storeImgWrap} contentBox`}>
             <img
-              src={`${process.env.REACT_APP_IMAGE_CDN}/${getStoreImage(storeData.storeCatNo)}?w=750&h=750&auto=format`}
+            src={getImageCdn(getStoreImage(storeData.storeCatNo), "w_750,h_750")}
               alt="가게 대표 이미지"
               className={styleStoreDetail.storeImg}
             />

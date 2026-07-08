@@ -20,7 +20,7 @@ interface SearchQuery {
   neMaxLng: number | null;
 }
 
-// URL 문자열(URLSearchParams) -> 앱에서 쓰는 SearchQuery 객체로 읽기
+// URL 문자열(URLSearchParams) -> SearchQuery 객체로 읽기
 function parseSearchQuery(searchParams: URLSearchParams): SearchQuery {
   return {
     mode: searchParams.get("mode") === "bounds" ? "bounds" : "district",
