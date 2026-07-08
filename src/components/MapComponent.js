@@ -12,6 +12,7 @@ import iconStar from "../resources/img/search/iconStar.svg";
 import iconCategory from "../resources/img/search/iconTag.svg";
 import styleMap from "../css/Map.module.css";
 import { getStoreImage } from "../lib/utils/getStoreImage";
+import { getImageCdn } from "../lib/utils/getImageCdn";
 
 const MAP_KEY = process.env.REACT_APP_KAKAO_MAP_API_KEY;
 
@@ -246,7 +247,9 @@ export default function MapComponent({
                         </p>
                       </div>
                       <img
-                        src={`${process.env.REACT_APP_IMAGE_CDN}/${getStoreImage(store.storeCatNo)}?w=200&h=200&auto=format`}
+                        src={getImageCdn(getStoreImage(store.storeCatNo),
+                          "w_200,h_200",
+                        )}
                         alt={`${store.bplcNm} 식당 대표 이미지`}
                         className={styleMap.infoImg}
                         loading="lazy"

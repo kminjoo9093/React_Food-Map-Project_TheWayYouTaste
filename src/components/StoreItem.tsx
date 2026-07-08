@@ -3,6 +3,7 @@ import styleSearchStore from "../css/SearchStore.module.css";
 import { getStoreImage } from "../lib/utils/getStoreImage";
 import { formatTime } from "../lib/utils/formatTime";
 import { Store } from "../types/store.types";
+import { getImageCdn } from "../lib/utils/getImageCdn";
 
 function StoreItem({ store }: { store: Store }) {
   return (
@@ -13,7 +14,7 @@ function StoreItem({ store }: { store: Store }) {
       >
         <div className={styleSearchStore.storeImg}>
           <img
-            src={`${process.env.REACT_APP_IMAGE_CDN}/${getStoreImage(store.storeCatNo)}?w=200&h=200&auto=format`}
+            src={getImageCdn(getStoreImage(store.storeCatNo), "w_200,h_200")}
             alt={`${store.bplcNm} 식당 대표 이미지`}
           />
         </div>
