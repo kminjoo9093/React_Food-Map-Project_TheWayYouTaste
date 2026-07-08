@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import { useEffect, useState, useRef } from "react";
 import {
   Map,
@@ -13,8 +13,22 @@ import iconCategory from "../resources/img/search/iconTag.svg";
 import styleMap from "../css/Map.module.css";
 import { getStoreImage } from "../lib/utils/getStoreImage";
 import { getImageCdn } from "../lib/utils/getImageCdn";
+import type { Store } from "../types/store.types";
+import { SearchMode, Viewport } from "../types/types";
 
 const MAP_KEY = process.env.REACT_APP_KAKAO_MAP_API_KEY;
+
+type MapComponentProps = {
+  storeList: Store[],
+  lat?: number,
+  lng?: number,
+  setIsMoved: (isMoved: boolean) => void,
+  searchMode: SearchMode,
+  positionAreaRef: React.RefObject<Viewport>,
+  isSelectedAll: boolean,
+  hasQueryRegion: boolean,
+  restoredBounds: Viewport | null,
+}
 
 export default function MapComponent({
   storeList,
@@ -26,10 +40,10 @@ export default function MapComponent({
   isSelectedAll,
   hasQueryRegion,
   restoredBounds,
-}) {
-  const mapRef = useRef();
+}: MapComponentProps) {
+  const mapRef = useRef<kakao.maps.Map>(null);
   const [level, setLevel] = useState(7);
-  const [openMarkerId, setOpenMarkerId] = useState("");
+  const [openMarkerId, setOpenMarkerId] = useState<number | null>(null);
   const [showMarkers, setShowMarkers] = useState(false);
   const isFirstIdle = useRef(true);
   const initialCenter = {
@@ -46,7 +60,7 @@ export default function MapComponent({
   }, []);
 
   useKakaoLoader({
-    appkey: MAP_KEY,
+    appkey: MAP_KEY as string,
     libraries: ["clusterer", "drawing", "services"],
   });
 
@@ -58,14 +72,14 @@ export default function MapComponent({
     }
   }, [isSelectedAll]);
 
-  function getBoundsFromStores(storeList) {
+  function getBoundsFromStores(storeList: Store[]) {
     const bounds = new window.kakao.maps.LatLngBounds();
     let hasValidPoint = false;
 
     if (storeList && storeList.length > 0) {
       storeList.forEach((store) => {
-        const sLat = parseFloat(store.lat);
-        const sLng = parseFloat(store.lng);
+        const sLat = store.lat;
+        const sLng = store.lng;
         if (!isNaN(sLat) && !isNaN(sLng)) {
           bounds.extend(new window.kakao.maps.LatLng(sLat, sLng));
           hasValidPoint = true;
@@ -76,12 +90,12 @@ export default function MapComponent({
     return { bounds, hasValidPoint };
   }
 
-  function moveToBounds(map, bounds) {
+  function moveToBounds(map: kakao.maps.Map, bounds: kakao.maps.LatLngBounds) {
     const padding = window.innerWidth < 768 ? 80 : 50;
     map.setBounds(bounds, padding, padding, padding, padding);
   }
 
-  function moveToInitLocation(map, lat, lng) {
+  function moveToInitLocation(map: kakao.maps.Map, lat: number, lng: number) {
     if (!map || !lat || !lng) return;
     const moveLatLng = new window.kakao.maps.LatLng(lat, lng);
     map.setCenter(moveLatLng);
@@ -186,8 +200,8 @@ export default function MapComponent({
               <MapMarker
                 key={store.bplcSn}
                 position={{
-                  lat: parseFloat(store.lat),
-                  lng: parseFloat(store.lng),
+                  lat: store.lat,
+                  lng: store.lng,
                 }}
                 title={store.bplcNm}
                 onClick={() => setOpenMarkerId(store.bplcSn)}
@@ -197,8 +211,8 @@ export default function MapComponent({
                 <CustomOverlayMap
                   key={`overlay-${store.bplcSn}`}
                   position={{
-                    lat: parseFloat(store.lat),
-                    lng: parseFloat(store.lng),
+                    lat: store.lat,
+                    lng: store.lng,
                   }}
                   yAnchor={1.25}
                   zIndex={1000}
@@ -208,7 +222,7 @@ export default function MapComponent({
                       className={styleMap.closeBtn}
                       onClick={(e) => {
                         e.stopPropagation();
-                        setOpenMarkerId("");
+                        setOpenMarkerId(null);
                       }}
                     >
                       X
