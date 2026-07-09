@@ -9,8 +9,7 @@
 <br><br>
 
 ### 🔗 Link
-- 🌐 배포 사이트 : https://the-way-you-taste.vercel.app <br>
-
+- 🌐 배포 사이트 : https://the-way-you-taste.vercel.app
 <br><br>
 - 🎬 [시연 영상 바로가기 →](https://drive.google.com/file/d/1_KJ2dRvbtXWWgIKGapKBwEmorx42Ctz4/view?usp=sharing) 
 <br><br>
