@@ -1,0 +1,38 @@
+[
+  {
+    "MENU_SN": 1111,
+    "BPLC_SN": 1,
+    "MENU_NM": "김치찌개",
+    "MENU_PRC": 11000
+  },
+  {
+    "MENU_SN": 2222,
+    "BPLC_SN": 1,
+    "MENU_NM": "메뉴2",
+    "MENU_PRC": 12000
+  },
+  {
+    "MENU_SN": 3333,
+    "BPLC_SN": 1,
+    "MENU_NM": "메뉴3",
+    "MENU_PRC": 13000
+  },
+  {
+    "MENU_SN": 4444,
+    "BPLC_SN": 1,
+    "MENU_NM": "메뉴4",
+    "MENU_PRC": 14000
+  },
+  {
+    "MENU_SN": 5555,
+    "BPLC_SN": 1,
+    "MENU_NM": "메뉴5",
+    "MENU_PRC": 15000
+  },
+  {
+    "MENU_SN": 6666,
+    "BPLC_SN": 1,
+    "MENU_NM": "메뉴6",
+    "MENU_PRC": 16000
+  }
+]

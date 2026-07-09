@@ -7,7 +7,8 @@ import {
 } from "react";
 import { Category } from "../types/category.types";
 import { Sido } from "../types/region.types";
-import { apiFetch } from "../api/client";
+import { getRegions } from "../api/regionApi";
+import { getCategories } from "../api/categoryApi";
 
 type AppDataContextType = {
   categories: Category[];
@@ -26,12 +27,12 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
 
   const fetchAppData = async () => {
     try {
-      const [categoryData, sidoData] = await Promise.all([
-        apiFetch<Category[]>("/category"),
-        apiFetch<Sido[]>("/sido"),
+      const [categoryData, regionData] = await Promise.all([
+        getCategories(),
+        getRegions(),
       ]);
       setCategories(categoryData);
-      setSidoList(sidoData);
+      setSidoList(regionData.sido);
     } catch (error) {
       console.error("공통 데이터 요청 실패", error);
     } finally {
