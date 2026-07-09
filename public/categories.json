@@ -1,0 +1,34 @@
+[
+  {
+    "storeCatNo": "c01",
+    "storeCatName": "한식"
+  },
+  {
+    "storeCatNo": "c02",
+    "storeCatName": "일식"
+  },
+  {
+    "storeCatNo": "c03",
+    "storeCatName": "양식"
+  },
+  {
+    "storeCatNo": "c04",
+    "storeCatName": "중식"
+  },
+  {
+    "storeCatNo": "c05",
+    "storeCatName": "아시안"
+  },
+  {
+    "storeCatNo": "c06",
+    "storeCatName": "햄버거"
+  },
+  {
+    "storeCatNo": "c07",
+    "storeCatName": "치킨"
+  },
+  {
+    "storeCatNo": "c08",
+    "storeCatName": "디저트"
+  }
+]

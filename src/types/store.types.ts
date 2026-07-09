@@ -29,3 +29,10 @@ export type StoreSearchParam = {
   sggCode?: number;
   dongCode?: number;
 };
+
+export interface Menu {
+  MENU_SN: number;
+  BPLC_SN: number;
+  MENU_NM: string;
+  MENU_PRC: number;
+}

@@ -1,10 +1,23 @@
-import type { Dong, Sgg } from "../types/region.types";
+import type { Dong, Sgg, Sido } from "../types/region.types";
 import { apiFetch } from "./client";
+import { memoizeAsync } from "./cache";
 
-export function getSggList(selectedSido: number): Promise<Sgg[]> {
-  return apiFetch<Sgg[]>(`/sgg?sidoCd=${selectedSido}`);
+export type RegionData = {
+  sido: Sido[];
+  sgg: Sgg[];
+  dong: Dong[];
+};
+
+export const getRegions = memoizeAsync(() =>
+  apiFetch<RegionData>("/regions.json"),
+);
+
+export async function getSggList(selectedSido: number): Promise<Sgg[]> {
+  const regions = await getRegions();
+  return regions.sgg.filter((record) => record.sidoCd === selectedSido);
 }
 
-export function getDongList(selectedSgg: number): Promise<Dong[]> {
-  return apiFetch<Dong[]>(`/dong?sggCd=${selectedSgg}`);
+export async function getDongList(selectedSgg: number): Promise<Dong[]> {
+  const regions = await getRegions();
+  return regions.dong.filter((record) => record.sggCd === selectedSgg);
 }
