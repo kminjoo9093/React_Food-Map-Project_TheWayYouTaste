@@ -10,7 +10,7 @@
 
 ### 🔗 Link
 - 🌐 배포 사이트 : https://the-way-you-taste.vercel.app <br>
-  - 초기 접속 시 서버가 활성화되는 데 약 30초~1분의 로딩 시간이 소요될 수 있습니다. 잠시만 기다려주시면 감사하겠습니다.
+
 <br><br>
 - 🎬 [시연 영상 바로가기 →](https://drive.google.com/file/d/1_KJ2dRvbtXWWgIKGapKBwEmorx42Ctz4/view?usp=sharing) 
 <br><br>
