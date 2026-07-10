@@ -24,6 +24,8 @@
 ![TanStack Query](https://img.shields.io/badge/TanStack_Query-000000?style=for-the-badge)
 ![Typescript](https://img.shields.io/badge/Typescript-000000?style=for-the-badge&logo=typescript)
 
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=kminjoo9093)
+
 <br><br>
 
 ## 🔍 기여한 부분
