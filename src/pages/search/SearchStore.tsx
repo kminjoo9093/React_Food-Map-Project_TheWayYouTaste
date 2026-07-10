@@ -73,7 +73,6 @@ function SearchStore() {
   const [isMoved, setIsMoved] = useState(false);
   const [isSelectedAll, setIsSelectedAll] = useState(false);
 
-  // const modeFromUrl = searchParams.get("mode");
   const isBoundsMode = query.mode === "bounds";
   const hasQueryRegion =
     Boolean(query.sido || query.sgg || query.dong) || isBoundsMode;
@@ -205,42 +204,36 @@ function SearchStore() {
     setViewportCoords(currentArea); // 좌표 상태만 업데이트
     setSearchMode("bounds");
     setIsMoved(false); // 재검색 후 버튼 비활성화
-    setNowPage(1);
   };
 
-  // 좌표 바뀌면 URL 반영
+  // bounds 모드 : 좌표/카테고리 수정 (URL 반영)
+  const updateBoundsQuery = useCallback(
+  (coords: Viewport) => {
+    setQuery(
+      {
+        mode: "bounds",
+        swMinLat: coords.swMinLat,
+        swMinLng: coords.swMinLng,
+        neMaxLat: coords.neMaxLat,
+        neMaxLng: coords.neMaxLng,
+        categories: selectedCategories,
+      },
+      "replace",
+    );
+  },
+  [selectedCategories, setQuery],
+);
+
   useEffect(() => {
     if (!viewportCoords) return;
-
-    setQuery({
-      mode: "bounds",
-      swMinLat: viewportCoords.swMinLat,
-      swMinLng: viewportCoords.swMinLng,
-      neMaxLat: viewportCoords.neMaxLat,
-      neMaxLng: viewportCoords.neMaxLng,
-      categories: selectedCategories,
-    }, "replace");
-
+    updateBoundsQuery(viewportCoords);
     // viewport 상태 업데이트 (React Query 쿼리 자동 실행)
     setViewport(viewportCoords);
-  }, [viewportCoords, setQuery, selectedCategories]);
-
-  //새로고침 시 bounds모드 url 받아오기 + 카테고리 추가
-  const updateBoundsCategory = useCallback(() => {
-    if (searchMode !== "bounds") return;
-    if(selectedCategories.length > 0){
-
-    }
-    setQuery({ categories: selectedCategories }, "replace");
-    setNowPage(1);
-  }, [selectedCategories, searchMode, setQuery]);
+  }, [viewportCoords, updateBoundsQuery]);
 
   const onClickSearchBtn = () => {
-    console.log("selected", selectedCategories);
-    console.log("query", query.categories);
-
     if (searchMode === "bounds") {
-      updateBoundsCategory();
+      if (viewportCoords) updateBoundsQuery(viewportCoords);
       return;
     }
 

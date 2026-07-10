@@ -35,7 +35,8 @@ function parseSearchQuery(searchParams: URLSearchParams): SearchQuery {
     sggName: searchParams.get("siName"),
     dongName: searchParams.get("dongName"),
 
-    categories: (searchParams.get("categories")?.split(",") ?? []) as CategoryCode[],
+    categories: (searchParams.get("categories")?.split(",") ??
+      []) as CategoryCode[],
 
     swMinLat: searchParams.get("swMinLat")
       ? Number(searchParams.get("swMinLat"))
@@ -84,10 +85,13 @@ export function useSearchQuery() {
 
   const query = useMemo(() => parseSearchQuery(searchParams), [searchParams]);
 
-  const setQuery = (next: Partial<SearchQuery>, mode: "merge" | "replace" = "merge") => {
-    const merged = mode === "merge" ? {...query, ...next} : next;
+  const setQuery = (
+    next: Partial<SearchQuery>,
+    mode: "merge" | "replace" = "merge",
+  ) => {
+    const merged = mode === "merge" ? { ...query, ...next } : next;
     setSearchParams(buildSearchParams(merged));
-  }
+  };
 
   return {
     query,
