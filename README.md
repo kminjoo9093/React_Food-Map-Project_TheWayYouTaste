@@ -24,7 +24,7 @@
 ![TanStack Query](https://img.shields.io/badge/TanStack_Query-000000?style=for-the-badge)
 ![Typescript](https://img.shields.io/badge/Typescript-000000?style=for-the-badge&logo=typescript)
 
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=kminjoo9093)
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=minjoo)
 
 <br><br>
 
