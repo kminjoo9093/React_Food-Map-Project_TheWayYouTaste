@@ -20,9 +20,9 @@
 ### 🛠 Frontend Stack
 
 ![React](https://img.shields.io/badge/React-000000?style=for-the-badge&logo=react)
-![Zustand](https://img.shields.io/badge/Zustand-000000?style=for-the-badge)
+![Zustand](https://img.shields.io/badge/Zustand-000000?style=for-the-badge&logo=zustand)
 ![TanStack Query](https://img.shields.io/badge/TanStack_Query-000000?style=for-the-badge)
-![Typescript](https://img.shields.io/badge/Typescript-000000?style=for-the-badge)
+![Typescript](https://img.shields.io/badge/Typescript-000000?style=for-the-badge&logo=typescript)
 
 <br><br>
 
