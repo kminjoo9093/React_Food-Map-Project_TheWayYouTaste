@@ -1,4 +1,3 @@
-<img width="290" height="633" alt="image" src="https://github.com/user-attachments/assets/70630222-1aa6-4a87-9bf1-87595a30cccc" /># 맛집 공유 서비스 [니맛대로] - Frontend
 
 사용자 참여(맛집 등록 요청, 리뷰, 신고) 기반 맛집 정보 공유 및 관리 웹 서비스
 <br><br>
@@ -30,9 +29,6 @@
 ## 🔍 기여한 부분
 
 #### **지도 찾기 페이지 개발** &emsp;
-
-<img width="250" height="450" alt="image" src="https://github.com/user-attachments/assets/eb6797f4-55fb-4b44-bbdf-64b9024d259c" />
-<img width="280" height="450" alt="image" src="https://github.com/user-attachments/assets/0447d4b8-affa-4ac7-8d51-63100ea0fa79" />
 
 
 
