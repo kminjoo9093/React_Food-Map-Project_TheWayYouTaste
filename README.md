@@ -30,10 +30,10 @@
 #### **지도 찾기 페이지 개발** &emsp;
 
 <img height="380" alt="image" src="https://github.com/user-attachments/assets/8f22897f-3946-467c-8f28-4930bad25c06" />
-<span>&nbsp;&nbsp;</span>
+<div style="margin: 24px 0;"></div>
 <img height="380" alt="image" src="https://github.com/user-attachments/assets/77cf5a57-87a8-4c53-ba4e-57f8f03af0d1" />
 
-<br>
+<br><br>
 
 - [브라우저 Geolocation API](./src/hooks/useGeolocation.js)와 [카카오 로컬 API활용한 좌표 → 행정구역 변환 로직](./src/hooks/useInitLocationInfo.js)을 활용하여 <br>
 초기 별도의 사용자 입력 없이 지역 자동 설정 및 [주변 맛집 리스트를 즉시 제공](./src/pages/search/SearchStore.js)하여 탐색 단계 최소화 및 사용자 경험 개선
