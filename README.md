@@ -60,6 +60,9 @@
 
 #### **1. 검색 상태와 UI상태 분리 및 동기화로 검색 조건 유지 및 상태 불일치 문제 해결**
 
+<img width="500" height="330" alt="image" src="https://github.com/user-attachments/assets/70a555d1-094a-41f7-a8cc-b041091cbfbd" />
+<br>
+
 - **문제**
   - 기존 Zustand 및 로컬 상태를 중심으로 검색 조건을 관리하여 새로고침 시 검색 상태가 유지되지 않고,<br/>
     실제 검색 조건과 UI선택 상태가 일치하지 않는 문제 발생 
@@ -78,12 +81,17 @@
 
 #### **2. 행정구역 중심의 검색 제한 문제 해결을 위해 ‘범위 내 재검색’ 기능 구현으로 동적 검색 환경 제공** &emsp; 
 
+<img width="650" height="246" alt="image" src="https://github.com/user-attachments/assets/9da5bd14-51e2-4fe8-9390-cf6396e17eb0" />
+<br>
+
 - **문제**
   - 사용자의 지도 이동 및 확대/축소에 따른 지역 변화에 대응하기 위해 고정된 행정구역 경계를 벗어나 <br/>
     **실시간으로 다중 지역 데이터를 통합 조회해야 할 필요성**을 인식
     <br/>
     
 - **해결**
+  <img width="600" height="270" alt="image" src="https://github.com/user-attachments/assets/50ba1971-3948-4d75-b83a-923db42e5d76" />
+  <br>
   - [**‘범위 내 재검색' 기능**](./src/pages/search/SearchStore.js)을 도입하여  <br/>
      특정 행정 구역 기반 검색에서 **뷰포트 좌표(positionAreaRef) 기반 검색으로 전환**
   - 지도 이동 시 최신 뷰포트 좌표를 저장하고, 사용자 요청 시 해당 범위의 데이터만 조회하도록 설계
@@ -99,11 +107,16 @@
 
 #### **3. 지역 리스트의 '시 전체' 데이터 누락 문제 해결을 위해 행정 구역 코드 패턴 분석 기반의 데이터 파싱 로직 재설계**
 
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/cd8dfc83-0ffc-4cf8-9d09-6deb7ce68ba0" />
+<br>
+
 - **문제**
   - 지역 선택 시 '구'가 포함된 지역의 경우 **'시 전체' 데이터가 제공되지 않아** <br/> 사용자가 상위 행정구역을 선택할 수 없는 문제 발생
     <br/>
     
 - **해결**
+  <img width="600" alt="image" src="https://github.com/user-attachments/assets/5d0b19a6-c9bd-403b-8f98-8db02161d26e" />
+  <br>
   - 행정구역 코드 패턴 기반의 데이터 파싱 로직 설계
     1. 지역명을 분리 및 행정구역 단위(시·군·구)를 판별
     2. '구'가 포함된 지역은 상위 행정구역 조회를 지원할 수 있도록 **'시+구' 데이터와 '시' 데이터를 각각 추출**하도록 설계
