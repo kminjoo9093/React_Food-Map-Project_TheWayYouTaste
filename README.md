@@ -30,7 +30,7 @@
 #### **지도 찾기 페이지 개발** &emsp;
 
 <img height="380" alt="image" src="https://github.com/user-attachments/assets/8f22897f-3946-467c-8f28-4930bad25c06" />
-<div style="margin: 24px 0;"></div>
+<p style="margin: 24px 0;"></p>
 <img height="380" alt="image" src="https://github.com/user-attachments/assets/77cf5a57-87a8-4c53-ba4e-57f8f03af0d1" />
 
 <br><br>
