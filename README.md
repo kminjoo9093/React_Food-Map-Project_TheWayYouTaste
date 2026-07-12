@@ -31,8 +31,9 @@
 
 #### **지도 찾기 페이지 개발** &emsp;
 
-<img width="320" height="auto" alt="image" src="https://github.com/user-attachments/assets/a8f2539e-560b-48a4-b1c5-a714101b03e8" />
-<img width="320" height="auto" alt="image" src="https://github.com/user-attachments/assets/f1398fc5-ef3f-446a-9ca5-87f1f1bf330f" />
+<img height="450" alt="image" src="https://github.com/user-attachments/assets/eb6797f4-55fb-4b44-bbdf-64b9024d259c" />
+<img height="450" alt="image" src="https://github.com/user-attachments/assets/0447d4b8-affa-4ac7-8d51-63100ea0fa79" />
+
 
 
 - [브라우저 Geolocation API](./src/hooks/useGeolocation.js)와 [카카오 로컬 API활용한 좌표 → 행정구역 변환 로직](./src/hooks/useInitLocationInfo.js)을 활용하여 <br>
