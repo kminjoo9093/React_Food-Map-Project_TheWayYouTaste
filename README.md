@@ -107,7 +107,10 @@
 
 #### **3. 지역 리스트의 '시 전체' 데이터 누락 문제 해결을 위해 행정 구역 코드 패턴 분석 기반의 데이터 파싱 로직 재설계**
 
+<p align="center">
 <img width="350" alt="image" src="https://github.com/user-attachments/assets/cd8dfc83-0ffc-4cf8-9d09-6deb7ce68ba0" />
+</p>
+
 <br>
 
 - **문제**
