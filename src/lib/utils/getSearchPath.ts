@@ -1,4 +1,13 @@
-export const getSearchPath = ({region, categories, keyword}) => {
+import { CategoryCode } from "../../types/category.types";
+import { RegionState } from "../../types/region.types";
+
+type SearchPathProps = {
+  region: RegionState;
+  categories: CategoryCode[];
+  keyword: string;
+}
+
+export const getSearchPath = ({region, categories, keyword}: SearchPathProps) => {
 
     const params = new URLSearchParams({
       mode: "district"
@@ -13,10 +22,8 @@ export const getSearchPath = ({region, categories, keyword}) => {
     if (region?.sggName) params.append("siName", String(region.sggName).trim());
     if (region?.dongName) params.append("dongName", String(region.dongName).trim());
 
-    if (Array.isArray(categories) && categories.length > 0) {
+    if (categories.length > 0) {
       params.append("categories", categories.join(","));
-    } else if (categories?.selectedCategories?.length > 0) {
-      params.append("categories", categories.selectedCategories.join(","));
     }
 
     return `/search/store?${params.toString()}`;

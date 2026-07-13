@@ -1,14 +1,6 @@
 import { create } from "zustand";
 import { CategoryCode } from "../types/category.types";
-
-export type RegionState = {
-  selectedSido: number | null;
-  selectedSgg: number | null;
-  selectedDong: number | null;
-  sidoName: string;
-  sggName: string;
-  dongName: string;
-};
+import { RegionState } from "../types/region.types";
 
 type FilterStore = RegionState & {
   selectedCategories: CategoryCode[];
