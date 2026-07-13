@@ -23,3 +23,12 @@ export type RegionByCoords = {
   sggName: string;
   dongName: string;
 };
+
+export type RegionState = {
+  selectedSido: number | null;
+  selectedSgg: number | null;
+  selectedDong: number | null;
+  sidoName: string;
+  sggName: string;
+  dongName: string;
+};

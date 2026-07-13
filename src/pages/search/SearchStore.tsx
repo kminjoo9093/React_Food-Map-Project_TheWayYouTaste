@@ -6,7 +6,6 @@ import useInitLocationInfo from "../../hooks/useInitLocationInfo";
 import { useAppData } from "../../context/AppDataProvider";
 import RegionSelector from "../../components/RegionSelector";
 import {
-  RegionState,
   useDongName,
   useFilterStore,
   useSelectedCategories,
@@ -23,6 +22,7 @@ import { useSggCodeType } from "../../hooks/useSggCodeType";
 import { Viewport } from "../../types/types";
 import { useSearchQuery } from "../../hooks/useSearchQuery";
 import CategoryFilter from "../../components/CategoryFilter";
+import { RegionState } from "../../types/region.types";
 
 const LIST_ITEM_NUM = 10;
 

@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import style from "../css/SearchForm.module.css";
 import searchIcon from "../resources/img/system/search.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useDongName,
   useSelectedCategories,
@@ -15,9 +15,12 @@ import { getSearchPath } from "../lib/utils/getSearchPath";
 
 type Device = "mobile" | "pc";
 
-export default function SearchForm({ device } : {device : Device}) {
+export default function SearchForm({ device }: { device: Device }) {
   const [keyword, setKeyword] = useState("");
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const urlKeyword = params.get("keyword") as string;
+  
   const mode = device === "mobile" ? style.mob : style.pc;
 
   const selectedSido = useSelectedSido();
@@ -43,10 +46,14 @@ export default function SearchForm({ device } : {device : Device}) {
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!keyword) return;
+    if (keyword === urlKeyword ) return; 
     navigate(searchUrl);
-    setKeyword("");
   };
+
+  useEffect(()=>{
+    setKeyword(urlKeyword || "");
+  }, [urlKeyword])
+
 
   return (
     <div className={`${style.searchContainer} ${mode}`}>
