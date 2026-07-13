@@ -5,30 +5,31 @@ import { memoizeAsync } from "./cache";
 
 const getStores = memoizeAsync(() => apiFetch<Store[]>("/stores.json"));
 
+// 실제 서비스 환경에서는 백엔드에서 데이터 조회 수행
+// 현재 json-server 환경에서 데이터 조회
 export async function getStoreListByCondition(
   param: StoreSearchParam,
 ): Promise<Store[]> {
   const { keyword, sidoCode, sggCode, dongCode } = param;
   const stores = await getStores();
 
-  if (keyword) {
-    return stores.filter((record) => record.bplcNm.includes(keyword));
-  }
+  let filtered = stores;
+
   if (dongCode) {
-    return stores.filter((record) => record.dongCd === dongCode);
-  }
-  // 실제 서비스 환경에서는 백엔드에서 SQL Like 데이터 조회 수행
-  // 현재 json-server 환경에서 데이터 조회
-  if (sggCode) {
-    return stores.filter((record) =>
+    filtered = filtered.filter((record) => record.dongCd === dongCode);
+  } else if (sggCode) {
+    filtered = filtered.filter((record) =>
       String(record.sggCd).startsWith(String(sggCode)),
     );
-  }
-  if (sidoCode) {
-    return stores.filter((record) => record.sidoCd === sidoCode);
+  } else if (sidoCode) {
+    filtered = filtered.filter((record) => record.sidoCd === sidoCode);
   }
 
-  return stores;
+  if (keyword) {
+    filtered = filtered.filter((record) => record.bplcNm.includes(keyword));
+  }
+
+  return filtered;
 }
 
 // 실제 서비스 환경에서는 백엔드에서 좌표 기반(Bounding Box) 필터링 수행
