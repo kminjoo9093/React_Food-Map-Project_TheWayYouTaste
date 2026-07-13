@@ -1,7 +1,7 @@
 import { CategoryCode } from "../../types/category.types";
 import { RegionState } from "../../types/region.types";
 
-type SearchPathProps = {
+interface SearchPathProps {
   region: RegionState;
   categories: CategoryCode[];
   keyword: string;

@@ -10,7 +10,7 @@ import {
 import type { Sido } from "../types/region.types";
 import { SearchMode } from "../types/types";
 
-type RegionModalProps = {
+interface RegionModalProps {
   setIsModalOpen: ( isModalOpen : boolean ) => void;
   sidoList: Sido[];
   setSearchMode: ( mode: SearchMode ) => void;

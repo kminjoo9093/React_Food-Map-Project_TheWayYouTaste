@@ -1,6 +1,6 @@
 import { CategoryCode } from "./category.types";
 
-export type Store = {
+export interface Store {
   bplcSn: number;
   bplcNm: string;
   address: string;
@@ -23,7 +23,7 @@ export type Store = {
   bplcPhoto: string | null;
 };
 
-export type StoreSearchParam = {
+export interface StoreSearchParam {
   keyword?: string;
   sidoCode?: number;
   sggCode?: number;

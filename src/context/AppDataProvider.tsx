@@ -10,7 +10,7 @@ import { Sido } from "../types/region.types";
 import { getRegions } from "../api/regionApi";
 import { getCategories } from "../api/categoryApi";
 
-type AppDataContextType = {
+interface AppDataContextType {
   categories: Category[];
   sidoList: Sido[];
   loading: boolean;

@@ -1,7 +1,7 @@
 import type { RegionByCoords } from "../types/region.types";
 import type { Coords } from "../types/types";
 
-type KakaoRegionDocument = {
+interface KakaoRegionDocument {
   region_type: "B" | "H";
   code: string;
   address_name: string;
@@ -13,7 +13,7 @@ type KakaoRegionDocument = {
   y: number;
 };
 
-type KakaoRegionResponse = {
+interface KakaoRegionResponse {
   meta: {
     total_count: number;
   };
