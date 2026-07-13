@@ -18,7 +18,7 @@ import { SearchMode, Viewport } from "../types/types";
 
 const MAP_KEY = process.env.REACT_APP_KAKAO_MAP_API_KEY;
 
-type MapComponentProps = {
+interface MapComponentProps {
   storeList: Store[],
   lat?: number,
   lng?: number,

@@ -1,21 +1,21 @@
-export type Sido = {
+export interface Sido {
   sidoCd: number;
   sidoNm: string;
 };
 
-export type Sgg = {
+export interface Sgg {
   sidoCd: number;
   sggCd: number;
   sggNm: string;
 };
 
-export type Dong = {
+export interface Dong {
   sggCd: number;
   dgCd: number;
   dgNm: string;
 };
 
-export type RegionByCoords = {
+export interface RegionByCoords {
   sidoCode: number;
   sggCode: number;
   dongCode: number;
@@ -24,7 +24,7 @@ export type RegionByCoords = {
   dongName: string;
 };
 
-export type RegionState = {
+export interface RegionState {
   selectedSido: number | null;
   selectedSgg: number | null;
   selectedDong: number | null;

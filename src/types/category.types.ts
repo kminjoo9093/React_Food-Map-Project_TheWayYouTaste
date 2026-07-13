@@ -8,7 +8,7 @@ export type CategoryCode =
   | "c07"
   | "c08";
 
-export type Category = {
+export interface Category {
   storeCatNo: CategoryCode;
   storeCatName: string;
 };

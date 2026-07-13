@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { useSggList } from "./queries/useSggList";
 
-type UseSggCodeTypeParams = {
-    sidoFromUrl: string | null,
+interface UseSggCodeTypeParams {
+  sidoFromUrl: string | null,
   sggFromUrl: string | null,
   dongFromUrl: string | null,
 }

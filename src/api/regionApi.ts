@@ -2,7 +2,7 @@ import type { Dong, Sgg, Sido } from "../types/region.types";
 import { apiFetch } from "./client";
 import { memoizeAsync } from "./cache";
 
-export type RegionData = {
+export interface RegionData {
   sido: Sido[];
   sgg: Sgg[];
   dong: Dong[];

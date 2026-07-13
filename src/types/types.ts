@@ -13,12 +13,12 @@ export interface DbJson {
   dong: Dong[];
 }
 
-export type Coords = {
+export interface Coords {
   lat: number;
   lng: number;
 };
 
-export type Viewport = {
+export interface Viewport {
   swMinLat: number;
   swMinLng: number;
   neMaxLat: number;
