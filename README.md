@@ -1,10 +1,10 @@
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/cf3cb909-6e83-429b-bcbd-253f13b5fd62" />
 
-<br><br>
+<br>
 
-사용자 참여(맛집 등록 요청, 리뷰, 신고) 기반 맛집 정보 공유 및 관리 웹 서비스
+#### 사용자 참여(맛집 등록 요청, 리뷰, 신고) 기반 맛집 정보 공유 및 관리 웹 서비스
 
-<br><br>
+<br>
 
 ### 🔗 Link
 - 🌐 배포 사이트 : https://the-way-you-taste.vercel.app
