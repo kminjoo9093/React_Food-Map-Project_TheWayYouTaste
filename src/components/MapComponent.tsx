@@ -19,15 +19,15 @@ import { SearchMode, Viewport } from "../types/types";
 const MAP_KEY = process.env.REACT_APP_KAKAO_MAP_API_KEY;
 
 interface MapComponentProps {
-  storeList: Store[],
-  lat?: number,
-  lng?: number,
-  setIsMoved: (isMoved: boolean) => void,
-  searchMode: SearchMode,
-  positionAreaRef: React.RefObject<Viewport>,
-  isSelectedAll: boolean,
-  hasQueryRegion: boolean,
-  restoredBounds: Viewport | null,
+  storeList: Store[];
+  lat?: number;
+  lng?: number;
+  setIsMoved: (isMoved: boolean) => void;
+  searchMode: SearchMode;
+  positionAreaRef: React.RefObject<Viewport>;
+  isSelectedAll: boolean;
+  hasQueryRegion: boolean;
+  restoredBounds: Viewport | null;
 }
 
 export default function MapComponent({
@@ -153,6 +153,8 @@ export default function MapComponent({
     return () => clearTimeout(timer);
   }, [restoredBounds, searchMode]);
 
+  const openStore = storeList.find((store) => store.bplcSn === openMarkerId);
+
   return (
     <Map
       center={initialCenter}
@@ -190,91 +192,91 @@ export default function MapComponent({
       )}
 
       {showMarkers && (
-        <MarkerClusterer
-          averageCenter={true}
-          minLevel={4}
-          disableClickZoom={false}
-        >
-          {storeList.map((store) => (
-            <Fragment key={store.bplcSn}>
-              <MapMarker
-                key={store.bplcSn}
-                position={{
-                  lat: store.lat,
-                  lng: store.lng,
-                }}
-                title={store.bplcNm}
-                onClick={() => setOpenMarkerId(store.bplcSn)}
-              />
-              {/* 인포윈도우 */}
-              {openMarkerId === store.bplcSn && (
-                <CustomOverlayMap
-                  key={`overlay-${store.bplcSn}`}
+        <>
+          <MarkerClusterer
+            averageCenter={true}
+            minLevel={4}
+            disableClickZoom={false}
+          >
+            {storeList.map((store) => (
+              <Fragment key={store.bplcSn}>
+                <MapMarker
+                  key={store.bplcSn}
                   position={{
                     lat: store.lat,
                     lng: store.lng,
                   }}
-                  yAnchor={1.25}
-                  zIndex={1000}
-                >
-                  <div className={styleMap.infoWindow}>
-                    <button
-                      className={styleMap.closeBtn}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setOpenMarkerId(null);
-                      }}
-                    >
-                      X
-                    </button>
+                  title={store.bplcNm}
+                  onClick={() => setOpenMarkerId(store.bplcSn)}
+                />
+              </Fragment>
+            ))}
+          </MarkerClusterer>
 
-                    <Link
-                      to={`/store/storeDetail?storeId=${store.bplcSn}`}
-                      className={styleMap.link}
-                    >
-                      <div className={styleMap.storeInfo}>
-                        <h3 className={styleMap.storeNm}>{store.bplcNm}</h3>
-                        <span className={styleMap.address}>
-                          {store.address}
+          {/* 인포윈도우 */}
+          {openStore && (
+            <CustomOverlayMap
+              key={`overlay-${openStore.bplcSn}`}
+              position={{
+                lat: openStore.lat,
+                lng: openStore.lng,
+              }}
+              yAnchor={1.25}
+              zIndex={1000}
+            >
+              <div className={styleMap.infoWindow}>
+                <button
+                  className={styleMap.closeBtn}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenMarkerId(null);
+                  }}
+                >
+                  X
+                </button>
+
+                <Link
+                  to={`/store/storeDetail?storeId=${openStore.bplcSn}`}
+                  className={styleMap.link}
+                >
+                  <div className={styleMap.storeInfo}>
+                    <h3 className={styleMap.storeNm}>{openStore.bplcNm}</h3>
+                    <span className={styleMap.address}>
+                      {openStore.address}
+                    </span>
+                    <p className={styleMap.infoBottom}>
+                      {openStore.avg && (
+                        <span>
+                          <img src={iconStar} alt="평균 평점" loading="lazy" />
+                          {openStore.avg}
                         </span>
-                        <p className={styleMap.infoBottom}>
-                          {store.avg && (
-                            <span>
-                              <img
-                                src={iconStar}
-                                alt="평균 평점"
-                                loading="lazy"
-                              />
-                              {store.avg}
-                            </span>
-                          )}
-                          {store.storeCatName && (
-                            <span>
-                              <img
-                                src={iconCategory}
-                                alt="음식 카테고리"
-                                loading="lazy"
-                              />
-                              {store.storeCatName}
-                            </span>
-                          )}
-                        </p>
-                      </div>
-                      <img
-                        src={getImageCdn(getStoreImage(store.storeCatNo),
-                          "w_200,h_200",
-                        )}
-                        alt={`${store.bplcNm} 식당 대표 이미지`}
-                        className={styleMap.infoImg}
-                        loading="lazy"
-                      />
-                    </Link>
+                      )}
+                      {openStore.storeCatName && (
+                        <span>
+                          <img
+                            src={iconCategory}
+                            alt="음식 카테고리"
+                            loading="lazy"
+                          />
+                          {openStore.storeCatName}
+                        </span>
+                      )}
+                    </p>
                   </div>
-                </CustomOverlayMap>
-              )}
-            </Fragment>
-          ))}
-        </MarkerClusterer>
+                  <img
+                    src={getImageCdn(
+                      getStoreImage(openStore.storeCatNo),
+                      "w_200,h_200",
+                    )}
+                    alt={`${openStore.bplcNm} 식당 대표 이미지`}
+                    className={styleMap.infoImg}
+                    loading="lazy"
+                  />
+                </Link>
+              </div>
+            </CustomOverlayMap>
+          )}
+        </>
       )}
     </Map>
   );
