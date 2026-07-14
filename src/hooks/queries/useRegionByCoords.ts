@@ -8,5 +8,6 @@ export function useRegionByCoords(coords: Coords | null) {
     queryFn: () => fetchRegionByCoords(coords!),
     queryKey: QUERY_KEYS.region.coords(coords),
     enabled: coords !== null,
+    staleTime: Infinity,
   });
 }
