@@ -8,5 +8,6 @@ export function useStoresByViewport(viewport: Viewport | null) {
     queryFn: () => getStoreListByViewport(viewport!),
     queryKey: QUERY_KEYS.stores.viewport(viewport),
     enabled: viewport !== null,
+    gcTime: 60 * 1000
   });
 }
