@@ -16,6 +16,7 @@ function StoreItem({ store }: { store: Store }) {
           <img
             src={getImageCdn(getStoreImage(store.storeCatNo), "w_200,h_200")}
             alt={`${store.bplcNm} 식당 대표 이미지`}
+            loading="lazy"
           />
         </div>
         <div className={styleSearchStore.storeInfo}>
