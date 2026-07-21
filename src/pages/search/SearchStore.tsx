@@ -136,7 +136,6 @@ function SearchStore() {
         sidoName: sidoName,
         sggName: sggName,
       },
-      "replace",
     );
   }, [
     hasQueryRegion,
@@ -218,7 +217,6 @@ function SearchStore() {
         neMaxLng: coords.neMaxLng,
         categories: selectedCategories,
       },
-      "replace",
     );
   },
   [selectedCategories, setQuery],
@@ -251,7 +249,6 @@ function SearchStore() {
         dongName,
         categories: selectedCategories,
       },
-      "replace",
     );
     setViewport(null);
     setViewportCoords(null);
@@ -328,10 +325,9 @@ function SearchStore() {
           sidoName: regionData.sidoName,
           sggName: regionData.sggName,
         },
-        "replace",
       );
     } else {
-      setQuery({}, "replace");
+      setQuery({});
     }
 
     setIsMoved(false);

@@ -87,10 +87,8 @@ export function useSearchQuery() {
 
   const setQuery = (
     next: Partial<SearchQuery>,
-    mode: "merge" | "replace" = "merge",
   ) => {
-    const merged = mode === "merge" ? { ...query, ...next } : next;
-    setSearchParams(buildSearchParams(merged));
+    setSearchParams(buildSearchParams(next));
   };
 
   return {

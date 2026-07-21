@@ -10,8 +10,9 @@ export default function useInitLocationInfo({ skip }: {skip: boolean}) {
   const isInitialized = useRef(false);
 
   useEffect(() => {
+    if (skip) return;
     getCoords();
-  }, [getCoords]);
+  }, [skip, getCoords]);
 
   useEffect(() => {
     if (skip) return;
