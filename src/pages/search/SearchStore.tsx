@@ -115,9 +115,9 @@ function SearchStore() {
   });
 
   const sggCode = useSggCodeType({
-    sidoFromUrl: String(query.sido),
-    sggFromUrl: String(query.sgg),
-    dongFromUrl: String(query.dong),
+    sidoFromUrl: query.sido !== null ? String(query.sido) : null,
+    sggFromUrl: query.sgg !== null ? String(query.sgg) : null,
+    dongFromUrl: query.dong !== null ? String(query.dong) : null,
   });
 
   //query 없는 상태로 컴포넌트 진입 시 현재 위치 기반 query 생성
@@ -128,15 +128,13 @@ function SearchStore() {
 
     setIsMoved(false);
 
-    setQuery(
-      {
-        mode: "district",
-        sido: selectedSido,
-        sgg: selectedSgg,
-        sidoName: sidoName,
-        sggName: sggName,
-      },
-    );
+    setQuery({
+      mode: "district",
+      sido: selectedSido,
+      sgg: selectedSgg,
+      sidoName: sidoName,
+      sggName: sggName,
+    });
   }, [
     hasQueryRegion,
     regionData,
@@ -207,20 +205,18 @@ function SearchStore() {
 
   // bounds 모드 : 좌표/카테고리 수정 (URL 반영)
   const updateBoundsQuery = useCallback(
-  (coords: Viewport) => {
-    setQuery(
-      {
+    (coords: Viewport) => {
+      setQuery({
         mode: "bounds",
         swMinLat: coords.swMinLat,
         swMinLng: coords.swMinLng,
         neMaxLat: coords.neMaxLat,
         neMaxLng: coords.neMaxLng,
         categories: selectedCategories,
-      },
-    );
-  },
-  [selectedCategories, setQuery],
-);
+      });
+    },
+    [selectedCategories, setQuery],
+  );
 
   useEffect(() => {
     if (!viewportCoords) return;
@@ -237,19 +233,17 @@ function SearchStore() {
 
     //district 모드: 이전 bounds 좌표가 섞이면 안 되므로 replace
     setSearchMode("district");
-    setQuery(
-      {
-        mode: "district",
-        keyword: query.keyword,
-        sido: selectedSido,
-        sidoName,
-        sgg: selectedSgg,
-        sggName,
-        dong: selectedDong,
-        dongName,
-        categories: selectedCategories,
-      },
-    );
+    setQuery({
+      mode: "district",
+      keyword: query.keyword,
+      sido: selectedSido,
+      sidoName,
+      sgg: selectedSgg,
+      sggName,
+      dong: selectedDong,
+      dongName,
+      categories: selectedCategories,
+    });
     setViewport(null);
     setViewportCoords(null);
 
@@ -317,15 +311,13 @@ function SearchStore() {
         dongName: "",
       });
 
-      setQuery(
-        {
-          mode: "district",
-          sido: regionData.sidoCode,
-          sgg: regionData.sggCode,
-          sidoName: regionData.sidoName,
-          sggName: regionData.sggName,
-        },
-      );
+      setQuery({
+        mode: "district",
+        sido: regionData.sidoCode,
+        sgg: regionData.sggCode,
+        sidoName: regionData.sidoName,
+        sggName: regionData.sggName,
+      });
     } else {
       setQuery({});
     }
